@@ -1,5 +1,5 @@
 package domain.enchantments;
 
-public class ExtraTime(){
+public class ExtraTime{
     private float duration;
 }
