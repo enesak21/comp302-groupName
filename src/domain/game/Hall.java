@@ -7,4 +7,11 @@ public class Hall {
         this.minNumStructure = minNumStructure;
     }
 
+    public Integer getMinNumStructure() {
+        return minNumStructure;
+    }
+
+    public void setMinNumStructure(Integer minNumStructure) {
+        this.minNumStructure = minNumStructure;
+    }
 }
