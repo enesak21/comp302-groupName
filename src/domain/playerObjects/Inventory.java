@@ -3,7 +3,7 @@ package domain.playerObjects;
 import java.util.HashMap;
 
 public class Inventory {
-    HashMap<String, Integer> content;
+    private HashMap<String, Integer> content;
 
     public Inventory() {
 
