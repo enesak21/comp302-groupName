@@ -1,17 +1,17 @@
 package domain.game;
 
 public class Hall {
-    private Integer minNumStructure;
+    private int minNumStructure;
 
-    public Hall(Integer minNumStructure) {
+    public Hall(int minNumStructure) {
         this.minNumStructure = minNumStructure;
     }
 
-    public Integer getMinNumStructure() {
+    public int getMinNumStructure() {
         return minNumStructure;
     }
 
-    public void setMinNumStructure(Integer minNumStructure) {
+    public void setMinNumStructure(int minNumStructure) {
         this.minNumStructure = minNumStructure;
     }
 }
