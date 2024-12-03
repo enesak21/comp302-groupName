@@ -6,4 +6,12 @@ public class ExtraTime extends Enchantment {
     public ExtraTime(String type, float visibilityDuration) {
         super(type, visibilityDuration);
     }
+
+    public float getDuration() {
+        return duration;
+    }
+
+    public void setDuration(float duration) {
+        this.duration = duration;
+    }
 }
