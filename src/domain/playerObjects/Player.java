@@ -8,6 +8,7 @@ enum Direction {
     LEFT,
     RIGHT
 }
+
 public class Player {
     private String name;
     private int health;
@@ -19,6 +20,12 @@ public class Player {
         this.name = name;
     }
 
+    /**
+     * Uses an enchantment
+     * 
+     * @param enchantmentType The type of the enchantment to be used
+     * @return true if the enchantment was used succesfully
+     */
     public boolean useEnchantment(String enchantmentType) {
         return false;
     }
