@@ -1,5 +1,5 @@
 package domain.enchantments;
 
-public class ExtraLife(){
+public class ExtraLife {
 
 }

@@ -1,5 +1,5 @@
 package domain.game;
 
-public class Grid(){
+public class Grid{
 
 }
