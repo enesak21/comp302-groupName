@@ -3,8 +3,12 @@ package domain.enchantments;
 /**
  * This enchantment provides invisibility for given duration time against monsters
  */
-public class CloakOfProtection{
+public class CloakOfProtection extends Enchantment{
     private int effectDuration;
+
+    public CloakOfProtection(String type, float visibilityDuration) {
+        super(type, visibilityDuration);
+    }
 
     /**
      * gets the duration time of cloak of protection enchantment
