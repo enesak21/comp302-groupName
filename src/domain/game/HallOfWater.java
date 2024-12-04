@@ -1,8 +1,6 @@
 package domain.game;
 
-public class HallOfWater extends Hall {
+public class HallOfWater {
 
-    public HallOfWater(int minNumStructure) {
-        super(minNumStructure);
-    }
+
 }
