@@ -5,6 +5,36 @@ public class Game {
     public boolean isRuneFound = false;
 
     /**
+     * @return remaining time
+     */
+    public float getRemainingTime(){
+        return this.remainingTime;
+    }
+
+    /**
+     * Sets the remaining time
+     * @param time The time requested to be set
+     */
+    public void setRemainingTime(float time){
+        this.remainingTime = time;
+    }
+
+    /**
+     * @return Rune is found
+     */
+    public boolean isRuneFound() {
+        return this.isRuneFound;
+    }
+
+    /**
+     * Sets the Rune to be found
+     * @param runeFound boolean
+     */
+    public void setRuneFound(boolean runeFound) {
+        isRuneFound = runeFound;
+    }
+
+    /**
      * Pauses the game
      */
     public void pauseGame(){
@@ -47,5 +77,6 @@ public class Game {
     public boolean validateHall(Hall hall){
         return false;
     }
+
 
 }
