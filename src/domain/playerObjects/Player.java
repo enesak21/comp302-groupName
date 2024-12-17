@@ -43,13 +43,13 @@ public class Player extends Entity {
         if(playerController.upPressed){
             y -= speed;
         }
-        if(playerController.downPressed){
+        else if(playerController.downPressed){
             y += speed;
         }
-        if(playerController.leftPressed){
+        else if(playerController.leftPressed){
             x -= speed;
         }
-        if(playerController.rightPressed){
+        else if(playerController.rightPressed){
             x += speed;
         }
     }
