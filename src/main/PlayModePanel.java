@@ -10,13 +10,23 @@ public class PlayModePanel extends JPanel implements Runnable{
     final int scale = 3;
 
     final int tileSize = originalTileSize * scale;
+
     //Here We chose 4:3 ratio for screen. Argue it!!! Then, Choose most common one.
     final int maxScreenColumn = 16;
     final int maxScreenRow = 12;
     final int screenWidth = tileSize * maxScreenColumn;
     final int screenHeight = tileSize * maxScreenRow;
 
+    //FPS
+    int FPS = 60;
+
+    PlayerController playerController = new PlayerController();
     Thread gameThread;
+
+    //Set player default position
+    int playerX = 100;
+    int playerY = 100;
+    int playerSpeed = 4;
 
     //Constructor
     public PlayModePanel(){
@@ -24,6 +34,8 @@ public class PlayModePanel extends JPanel implements Runnable{
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
+        this.addKeyListener(playerController);
+        this.setFocusable(true);
     }
 
 
@@ -38,17 +50,43 @@ public class PlayModePanel extends JPanel implements Runnable{
     @Override
     public void run() {
 
+        double drawInterval = 1000000000 / FPS;
+        double delta = 0;
+        long lastTime = System.nanoTime();
+        long currentTime;
+
         while (gameThread != null){
 
-            // 1 Update: update information
-            update();
+            currentTime = System.nanoTime();
 
-            // 2 Paint: paint or draw screen with the updated information
-            repaint();
+            delta += (currentTime - lastTime) / drawInterval;
+
+            lastTime = currentTime;
+
+            if(delta >= 1){
+                // 1 Update: update information
+                update();
+                // 2 Paint: paint or draw screen with the updated information
+                repaint();
+                delta--;
+            }
         }
     }
 
     public void update(){
+
+        if(playerController.upPressed){
+            playerY -= playerSpeed;
+        }
+        if(playerController.downPressed){
+            playerY += playerSpeed;
+        }
+        if(playerController.leftPressed){
+            playerX -= playerSpeed;
+        }
+        if(playerController.rightPressed){
+            playerX += playerSpeed;
+        }
 
     }
 
@@ -57,7 +95,7 @@ public class PlayModePanel extends JPanel implements Runnable{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(Color.white);
-        g2.fillRect(100,100,tileSize,tileSize);
+        g2.fillRect(playerX,playerY,tileSize,tileSize);
         g2.dispose();
 
     }
