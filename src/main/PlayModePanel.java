@@ -1,5 +1,7 @@
 package main;
 
+import domain.playerObjects.Player;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,7 +11,7 @@ public class PlayModePanel extends JPanel implements Runnable{
     final int originalTileSize = 16; //our assets are 16x16 pixels originally
     final int scale = 3;
 
-    final int tileSize = originalTileSize * scale;
+    public final int tileSize = originalTileSize * scale;
 
     //Here We chose 4:3 ratio for screen. Argue it!!! Then, Choose most common one.
     final int maxScreenColumn = 16;
@@ -22,6 +24,7 @@ public class PlayModePanel extends JPanel implements Runnable{
 
     PlayerController playerController = new PlayerController();
     Thread gameThread;
+    Player player = new Player("Cemal Baba", this, playerController);
 
     //Set player default position
     int playerX = 100;
@@ -75,27 +78,14 @@ public class PlayModePanel extends JPanel implements Runnable{
 
     public void update(){
 
-        if(playerController.upPressed){
-            playerY -= playerSpeed;
-        }
-        if(playerController.downPressed){
-            playerY += playerSpeed;
-        }
-        if(playerController.leftPressed){
-            playerX -= playerSpeed;
-        }
-        if(playerController.rightPressed){
-            playerX += playerSpeed;
-        }
-
+        player.update();
     }
 
     public void paintComponent(Graphics g){
 
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(Color.white);
-        g2.fillRect(playerX,playerY,tileSize,tileSize);
+        player.draw(g2);
         g2.dispose();
 
     }
