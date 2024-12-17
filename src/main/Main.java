@@ -16,6 +16,8 @@ public class Main {
 
             window.pack();
 
+            playModePanel.startGameThread();
+
             window.setLocationRelativeTo(null);
             window.setVisible(true);
     }
