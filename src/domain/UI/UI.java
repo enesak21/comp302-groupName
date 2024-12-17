@@ -1,16 +1,16 @@
 package domain.UI;
+
+import main.PlayModePanel;
+
 import javax.swing.*;
 import java.awt.*;
-
 
 public class UI {
     private JFrame frame;
     private CardLayout cardLayout;
     private JPanel mainPanel;
 
-
     public UI() {
-        //controller class can be added as parameter here
         initializeUI();
     }
 
@@ -19,16 +19,14 @@ public class UI {
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
-        // Add screens
+        // Add only the home screen initially
         mainPanel.add(createHomeScreen(), "Home");
-        mainPanel.add(createBuildScreen(), "Build");
-        mainPanel.add(createGameScreen(), "Game");
 
         frame.add(mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
-        frame.setResizable(false);  //change later
+        frame.setResizable(false); // Change if needed
     }
 
     public void show() {
@@ -46,19 +44,21 @@ public class UI {
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
         JLabel imageLabel = new JLabel(scaledIcon);
-        imageLabel.setBounds(0, 0, 800, 600); // Full screen for the image
+        imageLabel.setBounds(0, 0, 800, 600);
 
         // Transparent Button
-        JButton startButton = new JButton("Start Game");
-        startButton.setBounds(300, 470, 200, 50); // Position button on the image
+        JButton startButton = new JButton("Start Game"); //GO TO BUİLD MODE DIRECTLY
+        startButton.setBounds(300, 470, 200, 50);
         startButton.setOpaque(false);
         startButton.setContentAreaFilled(false);
         startButton.setBorderPainted(false);
-        startButton.setFont(new Font("", Font.BOLD, 25));  //font can be added here
+        startButton.setFont(new Font("", Font.BOLD, 25));
         startButton.setForeground(Color.black);
 
         startButton.addActionListener(e -> {
-
+            if (!isPanelAdded("Build")) {
+                mainPanel.add(createBuildScreen(), "Build");
+            }
             cardLayout.show(mainPanel, "Build");
         });
 
@@ -72,15 +72,21 @@ public class UI {
         return panel;
     }
 
-    private JPanel createBuildScreen() {
+    private JPanel createBuildScreen() {  // BUİLD SCREEN İÇİN DE PLAYERMODEPANEL GİBİ AYRI BİR
+                                          //CLASSINI OLUŞTURUP BURADA ÇAĞIRIRIZ
         JPanel panel = new JPanel(new BorderLayout());
-        JLabel title = new JLabel("build components here", SwingConstants.CENTER);
+        JLabel title = new JLabel("Build Components Here", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 24));
 
         JButton completeButton = new JButton("Complete Build");
-        completeButton.addActionListener(e -> {
 
+        completeButton.addActionListener(e -> {
+            if (!isPanelAdded("Game")) {
+                mainPanel.add(createGameScreen(), "Game");
+            }
             cardLayout.show(mainPanel, "Game");
+            mainPanel.revalidate();
+            mainPanel.repaint();
         });
 
         panel.add(title, BorderLayout.CENTER);
@@ -89,24 +95,19 @@ public class UI {
     }
 
     private JPanel createGameScreen() {
-        JPanel panel = new JPanel() {  //BURASI YERİNE KENDİ PLAY MODE EKRANINI EKLEYİN @CEMAL @MUHAMMED @İBRAHİM
-                                       //UI PACKAGE İÇİNDE AYRI Bİ ŞEKİLDE GAME_PANEL CLASS OLARAK TANIMLANABİLİR (böyle yaparsak
-                                       //homescreenin de öyle tanımlanması mantıklı olur) YA DA
-                                       //DİREKT BURADA TANIMLANABİLİR NET KONUŞULMADIĞI İÇİN BU ŞEKİLDE YAPTIM DEĞİŞTİRİLEBİLİR
-                                       //BÖYLE KALACAKSA UI PACKAGE SİLİNİP, UI CLASS GAME'İN İÇİNE ALINABİLİR
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.setColor(Color.BLUE);
-                g.fillRect(50, 50, 50, 50); // Example player square
+        PlayModePanel playModePanel = new PlayModePanel();
+
+        playModePanel.startGameThread(); // Start the game loop
+        SwingUtilities.invokeLater(playModePanel::requestFocusInWindow); // Ensure focus is set
+        return playModePanel;
+    }
+
+    private boolean isPanelAdded(String panelName) {
+        for (Component comp : mainPanel.getComponents()) {
+            if (comp.getName() != null && comp.getName().equals(panelName)) {
+                return true;
             }
-        };
-        panel.setBackground(Color.WHITE);
-
-        JLabel gameLabel = new JLabel("Game Playing Mode");
-        gameLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        panel.add(gameLabel);
-
-        return panel;
+        }
+        return false;
     }
 }
