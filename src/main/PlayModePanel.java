@@ -43,6 +43,7 @@ public class PlayModePanel extends JPanel implements Runnable{
 
 
     public void startGameThread(){
+        System.out.println("Starting game thread");
 
         gameThread = new Thread(this);
         gameThread.start();
