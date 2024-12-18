@@ -47,7 +47,7 @@ public class Grid{
                 if (column < (width / tileSize) && row < (height / tileSize)){
 
                     tiles[i] = new Tile(x, y);
-                    tiles[i].image = ImageIO.read(getClass().getResourceAsStream("/resources/tiles/background.png"));
+                    tiles[i].setImage(ImageIO.read(getClass().getResourceAsStream("/resources/tiles/background.png")));
                     column++;
                     x += 16 * scale;
 
@@ -69,7 +69,7 @@ public class Grid{
     public void draw(Graphics2D g2){
 
         for (int i = 0; i < tile_number; i++){
-            g2.drawImage(tiles[i].image, tiles[i].getX(), tiles[i].getY(), playModePanel.tileSize, playModePanel.tileSize, null);
+            g2.drawImage(tiles[i].getImage(), tiles[i].getX(), tiles[i].getY(), playModePanel.tileSize, playModePanel.tileSize, null);
         }
     }
 

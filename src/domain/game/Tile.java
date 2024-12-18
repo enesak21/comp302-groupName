@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 public class Tile {
     private int x;
     private int y;
-    public BufferedImage image;
+    private BufferedImage image;
 
     //not sure about parameters
     public Tile(int x, int y) {
@@ -35,5 +35,13 @@ public class Tile {
 
     public void setX(int x) {
         this.x = x;
+    }
+
+    public BufferedImage getImage() {
+        return image;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
     }
 }
