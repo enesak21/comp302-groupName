@@ -3,9 +3,9 @@ package domain.entity;
 import java.awt.image.BufferedImage;
 
 public class Entity {
-    public int x, y;
-    public int speed;
+    protected int x, y;
+    protected int speed;
 
-    public BufferedImage down1;
-    public Direction direction;
+    protected BufferedImage down1;
+    protected Direction direction;
 }

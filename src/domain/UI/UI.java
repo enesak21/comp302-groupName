@@ -72,7 +72,7 @@ public class UI {
         return panel;
     }
 
-    private JPanel createBuildScreen() {  // BUİLD SCREEN İÇİN DE PLAYERMODEPANEL GİBİ AYRI BİR
+    private JPanel createBuildScreen() {  // BUİLD SCREEN İÇİN DE PLAYMODEPANEL GİBİ AYRI BİR
                                           //CLASSINI OLUŞTURUP BURADA ÇAĞIRIRIZ
         JPanel panel = new JPanel(new BorderLayout());
         JLabel title = new JLabel("Build Components Here", SwingConstants.CENTER);
