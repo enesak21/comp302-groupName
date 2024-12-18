@@ -69,7 +69,7 @@ public class Grid{
     public void draw(Graphics2D g2){
 
         for (int i = 0; i < tile_number; i++){
-            g2.drawImage(tiles[i].getImage(), tiles[i].getX(), tiles[i].getY(), playModePanel.tileSize, playModePanel.tileSize, null);
+            g2.drawImage(tiles[i].getImage(), tiles[i].getX(), tiles[i].getY(), playModePanel.getTileSize(), playModePanel.getTileSize(), null);
         }
     }
 

@@ -87,7 +87,7 @@ public class Player extends Entity {
                     break;
             }
             pixelCounter += speed;
-            if(pixelCounter == playModePanel.scale * 16){
+            if(pixelCounter == playModePanel.getScale() * 16){
                 moving = false;
                 pixelCounter = 0;
             }
@@ -114,7 +114,7 @@ public class Player extends Entity {
         }
 
 
-        g2.drawImage(image, x, y, playModePanel.tileSize, playModePanel.tileSize, null);
+        g2.drawImage(image, x, y, playModePanel.getTileSize(), playModePanel.getTileSize(), null);
     }
 
 

@@ -10,9 +10,8 @@ public class PlayModePanel extends JPanel implements Runnable{
 
     //Screen settings
     final int originalTileSize = 16; //our assets are 16x16 pixels originally
-    public final int scale = 3;
-
-    public final int tileSize = originalTileSize * scale;
+    private final int scale = 3;
+    private final int tileSize = originalTileSize * scale;
 
     //Here We chose 4:3 ratio for screen. Argue it!!! Then, Choose most common one.
     final int maxScreenColumn = 16;
@@ -93,4 +92,13 @@ public class PlayModePanel extends JPanel implements Runnable{
 
 
 
+
+    //Getter functions for scale and tileSize
+    public int getScale() {
+        return scale;
+    }
+
+    public int getTileSize() {
+        return tileSize;
+    }
 }
