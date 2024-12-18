@@ -19,6 +19,8 @@ public class Player extends Entity {
     //private Direction direction;  //Entity classından direction alıyoruz zaten, buna gerek yok şimdilik
     private Inventory inventory;
     private Tile location;
+    boolean moving = false;
+    int pixelCounter = 0;
 
     PlayModePanel playModePanel;
     PlayerController playerController;
@@ -51,21 +53,44 @@ public class Player extends Entity {
 
     public void update(){
 
-        if(playerController.upPressed){
-            direction = Direction.UP;
-            y -= speed;
-        }
-        else if(playerController.downPressed){
-            direction = Direction.DOWN;
-            y += speed;
-        }
-        else if(playerController.leftPressed){
-            direction = Direction.LEFT;
-            x -= speed;
-        }
-        else if(playerController.rightPressed){
-            direction = Direction.RIGHT;
-            x += speed;
+        if(!moving){
+
+            if(playerController.upPressed){
+                direction = Direction.UP;
+                moving = true;
+            }
+            else if(playerController.downPressed){
+                direction = Direction.DOWN;
+                moving = true;
+            }
+            else if(playerController.leftPressed){
+                direction = Direction.LEFT;
+                moving = true;
+            }
+            else if(playerController.rightPressed){
+                direction = Direction.RIGHT;
+                moving = true;
+            }
+        }else {
+            switch (direction){
+                case UP:
+                    y -= speed;
+                    break;
+                case DOWN:
+                    y += speed;
+                    break;
+                case LEFT:
+                    x -= speed;
+                    break;
+                case RIGHT:
+                    x += speed;
+                    break;
+            }
+            pixelCounter += speed;
+            if(pixelCounter == playModePanel.scale * 16){
+                moving = false;
+                pixelCounter = 0;
+            }
         }
     }
 

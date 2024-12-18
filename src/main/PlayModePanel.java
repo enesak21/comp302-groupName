@@ -10,7 +10,7 @@ public class PlayModePanel extends JPanel implements Runnable{
 
     //Screen settings
     final int originalTileSize = 16; //our assets are 16x16 pixels originally
-    final int scale = 3;
+    public final int scale = 3;
 
     public final int tileSize = originalTileSize * scale;
 
