@@ -1,6 +1,7 @@
 package main;
 
 import domain.entity.playerObjects.Player;
+import domain.game.Grid;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,14 +23,11 @@ public class PlayModePanel extends JPanel implements Runnable{
     //FPS
     int FPS = 60;
 
+    Grid grid = new Grid(screenWidth, screenHeight, scale,this);
     PlayerController playerController = new PlayerController();
     Thread gameThread;
     Player player = new Player("Cemal Baba", this, playerController);
 
-    //Set player default position
-    int playerX = 100;
-    int playerY = 100;
-    int playerSpeed = 4;
 
     //Constructor
     public PlayModePanel(){
@@ -86,6 +84,7 @@ public class PlayModePanel extends JPanel implements Runnable{
 
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+        grid.draw(g2);
         player.draw(g2);
         g2.dispose();
 
