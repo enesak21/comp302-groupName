@@ -1,4 +1,4 @@
-package domain.playerObjects;
+package domain.entity.playerObjects;
 
 import java.util.HashMap;
 

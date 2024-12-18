@@ -1,6 +1,6 @@
 package main;
 
-import domain.playerObjects.Player;
+import domain.entity.playerObjects.Player;
 
 import javax.swing.*;
 import java.awt.*;
