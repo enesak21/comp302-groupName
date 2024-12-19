@@ -3,14 +3,14 @@ package domain.game;
 import java.awt.image.BufferedImage;
 
 public class Tile {
-    private int x;
-    private int y;
+    private int gridX;
+    private int gridY;
     private BufferedImage image;
 
     //not sure about parameters
-    public Tile(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Tile(int gridX, int gridY) {
+        this.gridX = gridX;
+        this.gridY = gridY;
     }
     public Tile(){
 
@@ -21,20 +21,20 @@ public class Tile {
         //test
     }
 
-    public int getY() {
-        return y;
+    public int getGridY() {
+        return gridY;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setGridY(int gridY) {
+        this.gridY = gridY;
     }
 
-    public int getX() {
-        return x;
+    public int getGridX() {
+        return gridX;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setGridX(int gridX) {
+        this.gridX = gridX;
     }
 
     public BufferedImage getImage() {

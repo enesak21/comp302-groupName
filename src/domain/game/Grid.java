@@ -5,73 +5,50 @@ import main.PlayModePanel;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
-import java.util.List;
 
 public class Grid{
-    private Tile[] tiles;
-    private int width;
-    private int height;
-    private int scale;
-    private int tile_number;
+    private Tile[][] tiles;
+    private int columns= 16;
+    private int rows= 16;
+    private int tileSize;
     PlayModePanel playModePanel;
 
-    public Grid(int width, int height, int scale, PlayModePanel playModePanel) { // this case width = column * tilesize
-                                         // column = 16, tilesize = 16*3
-        this.width = width;
-        this.height = height;
-        this.scale = scale;
+    public Grid(int tileSize, PlayModePanel playModePanel) {
+        this.tileSize = tileSize;
         this.playModePanel = playModePanel;
-
-        this.tile_number = (width / (16 * scale)) * (height / (16 * scale));
-        this.tiles = new Tile[tile_number];
+        this.tiles = new Tile[columns][rows];
 
         tileGenerator();
     }
 
-
-
-
-    public void tileGenerator(){
-
+    public void tileGenerator() {
         try {
-
-            int x = 0;
-            int y = 0;
-            int column = 0;
-            int row = 0;
-            int tileSize = 16 * scale;
-
-
-            for (int i = 0; i < tile_number; i++){
-
-                if (column < (width / tileSize) && row < (height / tileSize)){
-
-                    tiles[i] = new Tile(x, y);
-                    tiles[i].setImage(ImageIO.read(getClass().getResourceAsStream("/resources/tiles/background.png")));
-                    column++;
-                    x += 16 * scale;
-
-                    if(column == (width / tileSize)){
-                        column = 0;
-                        x = 0;
-                        row++;
-                        y += 16 * scale;
-                    }
-
+            for (int column = 0; column < columns; column++) {
+                for (int row = 0; row < rows; row++) {
+                    tiles[column][row] = new Tile(column, row); // Grid koordinatları atanır
+                    tiles[column][row].setImage(ImageIO.read(
+                            getClass().getResourceAsStream("/resources/tiles/background.png"))
+                    );
                 }
             }
-
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void draw(Graphics2D g2){
-
-        for (int i = 0; i < tile_number; i++){
-            g2.drawImage(tiles[i].getImage(), tiles[i].getX(), tiles[i].getY(), playModePanel.getTileSize(), playModePanel.getTileSize(), null);
+    public void draw(Graphics2D g2, int offsetX, int offsetY) {
+        for (int column = 0; column < columns; column++) {
+            for (int row = 0; row < rows; row++) {
+                Tile tile = tiles[column][row];
+                g2.drawImage(
+                        tile.getImage(),
+                        offsetX + column * tileSize, //offset bizim gridin ekranda nerede oldugunu ayarlamak icin
+                        offsetY + row * tileSize,
+                        tileSize, tileSize,
+                        null
+                );
+            }
         }
     }
-
 
 }
