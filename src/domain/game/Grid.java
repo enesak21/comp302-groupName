@@ -5,11 +5,12 @@ import main.PlayModePanel;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
+import java.awt.image.BufferedImage;
 
-public class Grid{
+public class Grid {
     private Tile[][] tiles;
-    private int columns= 16;
-    private int rows= 16;
+    private int columns = 16;
+    private int rows = 16;
     private int tileSize;
     PlayModePanel playModePanel;
 
@@ -23,12 +24,10 @@ public class Grid{
 
     public void tileGenerator() {
         try {
+            BufferedImage defaultImage = ImageIO.read(getClass().getResourceAsStream("/resources/tiles/background.png"));
             for (int column = 0; column < columns; column++) {
                 for (int row = 0; row < rows; row++) {
-                    tiles[column][row] = new Tile(column, row); // Grid koordinatları atanır
-                    tiles[column][row].setImage(ImageIO.read(
-                            getClass().getResourceAsStream("/resources/tiles/background.png"))
-                    );
+                    tiles[column][row] = new Tile(column, row, false, defaultImage); // Updated constructor call
                 }
             }
         } catch (IOException e) {
@@ -40,13 +39,15 @@ public class Grid{
         for (int column = 0; column < columns; column++) {
             for (int row = 0; row < rows; row++) {
                 Tile tile = tiles[column][row];
-                g2.drawImage(
-                        tile.getImage(),
-                        offsetX + column * tileSize, //offset bizim gridin ekranda nerede oldugunu ayarlamak icin
-                        offsetY + row * tileSize,
-                        tileSize, tileSize,
-                        null
-                );
+                if (tile != null && tile.getImage() != null) {
+                    g2.drawImage(
+                            tile.getImage(),
+                            offsetX + column * tileSize,
+                            offsetY + row * tileSize,
+                            tileSize, tileSize,
+                            null
+                    );
+                }
             }
         }
     }

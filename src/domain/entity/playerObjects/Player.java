@@ -11,12 +11,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-
-
 public class Player extends Entity {
     private String name;
     private int health;
-    //private Direction direction;  //Entity classından direction alıyoruz zaten, buna gerek yok şimdilik
     private Inventory inventory;
     private Tile location;
     boolean moving = false;
@@ -30,28 +27,24 @@ public class Player extends Entity {
         this.name = name;
         this.playModePanel = playModePanel;
         this.playerController = playerController;
-        this.speed= 4;
+        this.speed = 4;
         this.health = 3;
         this.direction = Direction.DOWN;
         getPlayerImage();
-
         updatePixelPosition();
     }
 
-    public void getPlayerImage(){
-
+    public void getPlayerImage() {
         try {
             down1 = ImageIO.read(getClass().getResourceAsStream("/resources/player/player.png"));
-            //diger yonler eklenir belki
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
     public void update() {
-        if (!moving) { // hareket yoksa
+        if (!moving) {
             if (playerController.upPressed) {
                 direction = Direction.UP;
                 moving = true;
@@ -66,7 +59,6 @@ public class Player extends Entity {
                 moving = true;
             }
         }
-        // Hareket ediyorsa (else yapısı hoşuma gitmedi karmaşık duruyor)
         if (moving) {
             switch (direction) {
                 case UP -> pixelY -= speed;
@@ -85,44 +77,25 @@ public class Player extends Entity {
                 }
                 pixelCounter = 0;
                 moving = false;
-                updatePixelPosition(); //entity classına bak anlamadıysan
+                updatePixelPosition();
             }
         }
     }
 
-
-    public void draw(Graphics2D g2){
-
+    public void draw(Graphics2D g2) {
         BufferedImage image = null;
 
-        switch (direction){
-            case UP:
-                image = down1;
-                break;
-            case DOWN:
-                image = down1;
-                break;
-            case LEFT:
-                image = down1;
-                break;
-            case RIGHT:
-                image = down1;
-                break;
+        switch (direction) {
+            case UP, DOWN, LEFT, RIGHT -> image = down1;
         }
-
 
         g2.drawImage(image, pixelX, pixelY, playModePanel.getTileSize(), playModePanel.getTileSize(), null);
     }
 
+    public PlayerController getPlayerController() {
+        return playerController;
+    }
 
-
-
-    /**
-     * Uses an enchantment
-     * 
-     * @param enchantmentType The type of the enchantment to be used
-     * @return true if the enchantment was used succesfully
-     */
     public boolean useEnchantment(String enchantmentType) {
         return false;
     }
