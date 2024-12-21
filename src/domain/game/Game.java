@@ -54,7 +54,7 @@ public class Game {
      * @param tile2 The second tile
      * @return The distance between tile1 and tile2
      */
-    public float calculateDistance(Tile tile1,Tile tile2){
+    public static float calculateDistance(Tile tile1,Tile tile2){
         return 0;
     }
 
@@ -65,7 +65,8 @@ public class Game {
      * @param range maximum range
      * @return true if tile1 is within range distance of tile2
      */
-    public boolean isInRange(Tile tile1,Tile tile2, float range){
+    public static boolean isInRange(Tile tile1,Tile tile2,float range){
+
         return calculateDistance(tile1,tile2) <= range;
     }
 

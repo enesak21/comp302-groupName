@@ -30,7 +30,7 @@ public class CollisionChecker {
                 return false;
             }
         }
-        Tile nexTile = grid.getTileAt(nextX, nextY); // Get the tile at the next position
+        Tile nexTile = grid.getTileAt(nextX, nextY); // Get the at the next position
         if (nexTile == null) { //The tile is out of bounds
             return true;
         }

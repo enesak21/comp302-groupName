@@ -1,9 +1,24 @@
 package domain.entity.monsters;
 
-public class FighterMonster {
+import domain.entity.Entity;
+
+public class FighterMonster extends BaseMonster {
     private int daggerRange;
 
-    public void attack() {}
+    public FighterMonster(int gridX, int gridY, int tileSize) {
+        super(gridX, gridY, tileSize);
+    }
+
     public void move() {}
 
+
+    @Override
+    public void update() {
+
+    }
+
+    @Override
+    public void attack() {
+
+    }
 }
