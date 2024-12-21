@@ -8,6 +8,10 @@ import domain.game.TimeController;
 import javax.swing.*;
 import java.awt.*;
 
+import java.awt.FontFormatException;
+import java.io.File;
+import java.io.IOException;
+
 public class PlayModePanel extends JPanel implements Runnable {
 
     // Screen settings
@@ -28,6 +32,8 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     private TimeController timeController;
 
+    private Font pressStart2PFont;
+
     // FPS
     int FPS = 60;
 
@@ -47,6 +53,15 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         // Initialize the TimeController
         timeController = new TimeController();
+
+        // Load the PressStart2P font
+        try {
+            pressStart2PFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/resources/fonts/PressStart2P-Regular.ttf")).deriveFont(20f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(pressStart2PFont);
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void startGameThread() {
@@ -83,7 +98,6 @@ public class PlayModePanel extends JPanel implements Runnable {
     public void update() {
         game.update();
     }
-
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -92,13 +106,16 @@ public class PlayModePanel extends JPanel implements Runnable {
         game.getGrid().draw(g2, offsetX * tileSize, offsetY * tileSize);
         game.getPlayer().draw(g2);
 
+        // Set the PressStart2P font
+        g2.setFont(pressStart2PFont);
         g2.setColor(Color.WHITE);
-        g2.setFont(new Font("Arial", Font.BOLD, 20));
+
         int textX = (offsetX + gridColumns) * tileSize + 10; // Position to the right of the grid
         int textY = offsetY * tileSize + 20; // Align with the top of the grid
 
         if (timeController.getTimeLeft() > 0) {
-            // Draw the text "Time:" and the remaining time on a new line
+            // Draw the text "Time:" and the remaining time on a new line with a smaller font size
+            g2.setFont(pressStart2PFont.deriveFont(15f));
             g2.drawString("Time:", textX, textY);
 
             int timeX = textX; // Same X position as "Time:"
@@ -106,7 +123,7 @@ public class PlayModePanel extends JPanel implements Runnable {
             g2.drawString(timeController.getTimeLeft() + " seconds", timeX, timeY);
         } else {
             // Draw "Game Over!" message centered on the screen
-            g2.setFont(new Font("Arial", Font.BOLD, 80));
+            g2.setFont(pressStart2PFont.deriveFont(40f));
             FontMetrics fm = g2.getFontMetrics();
             String gameOverText = "Game Over!";
             int gameOverX = (screenWidth - fm.stringWidth(gameOverText)) / 2;
