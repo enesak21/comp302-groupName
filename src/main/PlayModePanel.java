@@ -146,25 +146,23 @@ public class PlayModePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        // Grid ve Player View Çizimi
+        // Grid and Player View Drawing
         drawGridAndPlayerView(g2);
 
-        // Zamanı Çiz
+        // Draw Time (always display the sidebar)
         drawTime(g2);
-
-        // Oyun Bitti Mesajını Çiz
-        if (timeController.getTimeLeft() <= 0) {
-            drawGameOverMessage(g2);
-        }
-
-        // Duraklatma Menüsünü Çiz
-        if (isPaused) {
-            drawPauseOverlay(g2);
-        }
 
         // Draw game grid and player
         gridView.draw(g2, offsetX * tileSize, offsetY * tileSize);
         playerView.draw(g2);
+
+        // Draw Game Over Message
+        if (timeController.getTimeLeft() <= 0) {
+            drawGameOverMessage(g2);
+        } else if (isPaused) {
+            // Draw Pause Overlay only if the game is not over
+            drawPauseOverlay(g2);
+        }
 
         g2.dispose();
     }
@@ -181,44 +179,44 @@ public class PlayModePanel extends JPanel implements Runnable {
         int textX = (offsetX + gridColumns) * tileSize + 10; // Gridin sağında konum
         int textY = offsetY * tileSize + 20; // Gridin üst kısmıyla hizalı
 
-        if (timeController.getTimeLeft() > 0) {
-            g2.drawString("Time:", textX, textY);
-            g2.drawString(timeController.getTimeLeft() + " seconds", textX, textY + 30);
+        // Sidebar Background
+        int sidebarWidth = 4 * tileSize + 20; // Make the sidebar slightly wider by 12 pixels
+        int sidebarX = screenWidth - sidebarWidth - (tileSize + 10); // Adjust position accordingly
+        int sidebarY = offsetY * tileSize; // Set Y position to offsetY * tileSize
+        g2.setColor(new Color(30, 30, 30));
+        g2.fillRect(sidebarX, sidebarY, sidebarWidth, gridHeight); // Set height to gridHeight
 
-            // Sidebar Background
-            int sidebarWidth = 4 * tileSize + 20; // Make the sidebar slightly wider by 12 pixels
-            int sidebarX = screenWidth - sidebarWidth - (tileSize + 10); // Adjust position accordingly
-            int sidebarY = offsetY * tileSize; // Set Y position to offsetY * tileSize
-            g2.setColor(new Color(30, 30, 30));
-            g2.fillRect(sidebarX, sidebarY, sidebarWidth, gridHeight); // Set height to gridHeight
+        // Add Time section
+        try {
+            Image clockIcon = ImageIO.read(getClass().getResource("/resources/icons/clock.png"));
+            g2.drawImage(clockIcon, sidebarX + 10, sidebarY + 20, 24, 24, null); // Make the icon smaller
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        g2.setFont(pressStart2PFont.deriveFont(13f));
+        g2.setColor(Color.WHITE);
+        g2.drawString("Time:", sidebarX + 40, sidebarY + 45); // Move the time text 10 pixels to the left
+        g2.drawString(timeController.getTimeLeft() + " seconds", sidebarX + 5, sidebarY + 75); // Move the time left text 10 pixels to the left
 
-            // Add Time section
-            try {
-                Image clockIcon = ImageIO.read(getClass().getResource("/resources/icons/clock.png"));
-                g2.drawImage(clockIcon, sidebarX + 10, sidebarY + 20, 24, 24, null); // Make the icon smaller
-            } catch (IOException e) {
-                e.printStackTrace();
+        // Add health hearts
+        try {
+            Image heartIcon = ImageIO.read(getClass().getResource("/resources/player/heart.png"));
+            for (int i = 0; i < game.getPlayer().getHealth(); i++) {
+                g2.drawImage(heartIcon, sidebarX + 5 + i * 32, sidebarY + 100, 32, 32, null);
             }
-            g2.setFont(pressStart2PFont.deriveFont(13f));
-            g2.setColor(Color.WHITE);
-            g2.drawString("Time:", sidebarX + 40, sidebarY + 45); // Move the time text 10 pixels to the left
-            g2.drawString(timeController.getTimeLeft() + " seconds", sidebarX + 5, sidebarY + 75); // Move the time left text 10 pixels to the left
-
-            // Add health hearts
-            try {
-                Image heartIcon = ImageIO.read(getClass().getResource("/resources/player/heart.png"));
-                for (int i = 0; i < game.getPlayer().getHealth(); i++) {
-                    g2.drawImage(heartIcon, sidebarX + 5 + i * 32, sidebarY + 100, 32, 32, null);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     private void drawGameOverMessage(Graphics2D g2) {
+        // Draw a semi-transparent dark overlay
+        g2.setColor(new Color(0, 0, 0, 150)); // Semi-transparent black
+        g2.fillRect(0, 0, screenWidth, screenHeight);
+
+        // Draw the game over message
         g2.setFont(pressStart2PFont.deriveFont(40f));
-        g2.setColor(Color.WHITE);
+        g2.setColor(Color.RED); // Change the color to red
 
         FontMetrics fm = g2.getFontMetrics();
         String gameOverText = "Game Over!";
@@ -229,22 +227,22 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
     private void drawPauseOverlay(Graphics2D g2) {
-        g2.setColor(new Color(0, 0, 0, 150)); // Yarı şeffaf arka plan
+        g2.setColor(new Color(0, 0, 0, 150)); // Semi-transparent background
         g2.fillRect(0, 0, screenWidth, screenHeight);
 
         g2.setColor(Color.WHITE);
         g2.setFont(pressStart2PFont.deriveFont(15f));
 
-        // Duraklatma mesajını çiz
+        // Draw pause message in the middle
         String pauseText = "Game Paused";
         FontMetrics fm = g2.getFontMetrics();
         int x = (screenWidth - fm.stringWidth(pauseText)) / 2;
-        int y = screenHeight / 2 - fm.getHeight();
+        int y = (screenHeight - fm.getHeight()) / 2;
         g2.drawString(pauseText, x, y);
 
         String resumeText = "Press 'ESC' to Resume";
         x = (screenWidth - fm.stringWidth(resumeText)) / 2;
-        y += fm.getHeight() + 40;
+        y += fm.getHeight() + 20;
         g2.drawString(resumeText, x, y);
     }
 
