@@ -62,7 +62,7 @@ public class Grid{
                         null
                 );
                 if (tile.containsStructure() == true) {
-                    Structure structure = new Structure("kafatasi", tiles[column][row]);
+                    Structure structure = new Structure("kafatasi", tiles[column][row]); // remove later
                     g2.drawImage(
                         structure.getStructureImage(),
 
