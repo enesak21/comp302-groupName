@@ -1,5 +1,6 @@
 package domain.game;
 
+import domain.Structures.Structure;
 import main.PlayModePanel;
 
 import javax.imageio.ImageIO;
@@ -14,12 +15,13 @@ public class Grid {
     private int tileSize;
     PlayModePanel playModePanel;
 
+
     public Grid(int tileSize, PlayModePanel playModePanel) {
         this.tileSize = tileSize;
         this.playModePanel = playModePanel;
         this.tiles = new Tile[columns][rows];
-
         tileGenerator();
+        //fillStructures(); used for testing fill structures. can be removed later
     }
 
     public void tileGenerator() {
@@ -35,10 +37,25 @@ public class Grid {
         }
     }
 
+    /*
+    // used for testing. can be removed later.
+    public void fillStructures() {
+        for (int column = 0; column < columns; column++) {
+            for (int row = 0; row < rows; row++) {
+                if ( column == 9 && row == 9) {
+                    Structure skullStructure = new Structure("skull", tiles[column][row]);
+                    tiles[column][row].setStructure(skullStructure);
+                }
+            }
+        }
+    }
+    */
+
     public void draw(Graphics2D g2, int offsetX, int offsetY) {
         for (int column = 0; column < columns; column++) {
             for (int row = 0; row < rows; row++) {
                 Tile tile = tiles[column][row];
+
                 if (tile != null && tile.getImage() != null) {
                     g2.drawImage(
                             tile.getImage(),
@@ -48,11 +65,15 @@ public class Grid {
                             null
                     );
                 }
+
             }
         }
     }
 
     public Tile getTileAt(int nextX, int nextY) {
+        if (nextX < 0 || nextX >= columns || nextY < 0 || nextY >= rows) {
+            return null;
+        }
         return tiles[nextX][nextY];
     }
 }

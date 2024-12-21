@@ -40,6 +40,18 @@ public class Game {
         int x2 = tile2.getGridX();
         int y2 = tile2.getGridY();
         return (float) Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+
+
+    /**
+     * Checks if two tiles are within the given range of each other
+     * @param tile1 The first tile
+     * @param tile2 The second tile
+     * @param range maximum range
+     * @return true if tile1 is within range distance of tile2
+     */
+    public static boolean isInRange(Tile tile1,Tile tile2,float range){
+
+        return calculateDistance(tile1,tile2) <= range;
     }
 
     public boolean isInRange(Tile tile1, Tile tile2, float range) {

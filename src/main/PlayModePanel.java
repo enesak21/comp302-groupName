@@ -2,6 +2,7 @@ package main;
 
 import domain.entity.playerObjects.Player;
 import domain.game.Game;
+import domain.game.CollisionChecker;
 import domain.game.Grid;
 import domain.game.TimeController;
 
@@ -34,7 +35,6 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     private Font pressStart2PFont;
 
-    // FPS
     int FPS = 60;
 
     Thread gameThread;
@@ -50,6 +50,11 @@ public class PlayModePanel extends JPanel implements Runnable {
         Player player = new Player("Osimhen", 0, 0, tileSize, this, new PlayerController());
         game = new Game(player, tileSize, this); // Pass the required arguments
         this.addKeyListener(player.getPlayerController());
+
+        grid = new Grid(tileSize, this);
+        CollisionChecker collisionChecker = new CollisionChecker(grid);
+        player.setCollisionChecker(collisionChecker);
+    }
 
         // Initialize the TimeController
         timeController = new TimeController();
