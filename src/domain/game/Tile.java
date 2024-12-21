@@ -5,6 +5,8 @@ import java.awt.image.BufferedImage;
 public class Tile {
     private int gridX;
     private int gridY;
+    private boolean solid; // The tile is solid (e.g walls)
+
     private BufferedImage image;
 
     //not sure about parameters
@@ -23,6 +25,9 @@ public class Tile {
 
     public int getGridY() {
         return gridY;
+
+    public boolean isSolid() {
+        return solid;
     }
 
     public void setGridY(int gridY) {
