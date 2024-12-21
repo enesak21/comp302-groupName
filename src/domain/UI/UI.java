@@ -34,6 +34,11 @@ public class UI {
         frame.setVisible(true);
         cardLayout.show(mainPanel, "Home");
     }
+    public void showPanel(String panelName) {
+        cardLayout.show(mainPanel, panelName);
+        mainPanel.revalidate();
+        mainPanel.repaint();
+    }
 
     private JPanel createHomeScreen() {
         JLayeredPane layeredPane = new JLayeredPane();
@@ -63,7 +68,7 @@ public class UI {
             cardLayout.show(mainPanel, "Build");
         });
 
-        //HELP SCREEN BUTTOn
+        //HELP SCREEN BUTTON
         JButton helpButton = new JButton("Help"); //GO TO BUİLD MODE DIRECTLY
         helpButton.setBounds(300, 510, 200, 50);
         helpButton.setOpaque(false);
@@ -71,6 +76,15 @@ public class UI {
         helpButton.setBorderPainted(false);
         helpButton.setFont(new Font("", Font.BOLD, 25));
         helpButton.setForeground(Color.black);
+
+        helpButton.addActionListener(e -> {
+            if (!isPanelAdded("Help")) {
+                mainPanel.add(createHelpScreen(), "Help");
+            }
+            cardLayout.show(mainPanel, "Help");
+            mainPanel.revalidate();
+            mainPanel.getComponent(1).requestFocusInWindow(); // Ensure HelpPanel gets focus
+        });
 
 
         // Add Components to LayeredPane
@@ -114,9 +128,7 @@ public class UI {
         return playModePanel;
     }
     private JPanel createHelpScreen() {
-        HelpPanel helpPanel = new HelpPanel();
-
-        return helpPanel;
+        return new HelpPanel(this); // Pass the current UI instance
     }
 
     private boolean isPanelAdded(String panelName) {
