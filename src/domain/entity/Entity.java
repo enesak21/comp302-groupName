@@ -53,4 +53,12 @@ public abstract class Entity {
     public void setGridY(int gridY) {
         this.gridY = gridY;
     }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
 }
