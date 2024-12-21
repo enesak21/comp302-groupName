@@ -21,7 +21,7 @@ public class PlayModePanel extends JPanel implements Runnable{
     static final int screenWidth = 24 * tileSize; // Tüm ekran genişliği
     static final int screenHeight = 20 * tileSize; // Tüm ekran yüksekliği
 
-    public static final int offsetX = (screenWidth - gridWidth) / (2*tileSize); //offset for gridi ortalama (tile-based)
+    public static final int offsetX = ((screenWidth - gridWidth) / (2*tileSize))-2; //offset for gridi ortalama (tile-based)
     public static final int offsetY = (screenHeight - gridHeight) / (2*tileSize);
 
     //FPS
