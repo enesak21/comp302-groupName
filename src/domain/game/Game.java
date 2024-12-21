@@ -66,6 +66,7 @@ public class Game {
      * @return true if tile1 is within range distance of tile2
      */
     public static boolean isInRange(Tile tile1,Tile tile2,float range){
+
         return calculateDistance(tile1,tile2) <= range;
     }
 

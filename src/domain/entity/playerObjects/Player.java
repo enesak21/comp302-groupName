@@ -1,6 +1,7 @@
 package domain.entity.playerObjects;
 
 import domain.entity.Direction;
+import domain.game.CollisionChecker;
 import domain.game.Tile;
 import domain.entity.Entity;
 import main.PlayModePanel;
@@ -24,6 +25,7 @@ public class Player extends Entity {
 
     PlayModePanel playModePanel;
     PlayerController playerController;
+    private CollisionChecker collisionChecker;
 
     public Player(String name, int gridX, int gridY, int tileSize, PlayModePanel playModePanel, PlayerController playerController) {
         super(gridX, gridY, tileSize);
@@ -54,15 +56,14 @@ public class Player extends Entity {
         if (!moving) { // hareket yoksa
             if (playerController.upPressed) {
                 direction = Direction.UP;
-                moving = true;
             } else if (playerController.downPressed) {
                 direction = Direction.DOWN;
-                moving = true;
             } else if (playerController.leftPressed) {
                 direction = Direction.LEFT;
-                moving = true;
             } else if (playerController.rightPressed) {
                 direction = Direction.RIGHT;
+            }
+            if (playerController.movePressed() && !collisionChecker.checkCollision(this)) {
                 moving = true;
             }
         }
@@ -115,7 +116,9 @@ public class Player extends Entity {
     }
 
 
-
+public void setCollisionChecker(CollisionChecker collisionChecker) {
+        this.collisionChecker = collisionChecker;
+    }
 
     /**
      * Uses an enchantment
