@@ -30,7 +30,7 @@ public class Player extends Entity {
         this.name = name;
         this.playModePanel = playModePanel;
         this.playerController = playerController;
-        this.speed= 8;
+        this.speed= 4;
         this.health = 3;
         this.direction = Direction.DOWN;
         getPlayerImage();

@@ -19,15 +19,15 @@ public class PlayerController implements KeyListener {
             upPressed = true;
         }
 
-        if (keyCode == KeyEvent.VK_LEFT) {
+        else if (keyCode == KeyEvent.VK_LEFT) {
             leftPressed = true;
         }
 
-        if (keyCode == KeyEvent.VK_DOWN) {
+        else if (keyCode == KeyEvent.VK_DOWN) {
             downPressed = true;
         }
 
-        if (keyCode == KeyEvent.VK_RIGHT) {
+        else if (keyCode == KeyEvent.VK_RIGHT) {
             rightPressed = true;
         }
     }
