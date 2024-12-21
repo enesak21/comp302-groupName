@@ -168,7 +168,7 @@ public class PlayModePanel extends JPanel implements Runnable {
             g2.fillRect(0, 0, screenWidth, screenHeight);
 
             g2.setColor(Color.WHITE);
-            g2.setFont(new Font("Arial", Font.BOLD, 40));
+            g2.setFont(pressStart2PFont.deriveFont(20f)); // Use PressStart2P font for Pause text
             String pauseText = "Game Paused";
             FontMetrics fm = g2.getFontMetrics();
             int x = (screenWidth - fm.stringWidth(pauseText)) / 2;
@@ -181,8 +181,23 @@ public class PlayModePanel extends JPanel implements Runnable {
             g2.drawString(resumeText, x, y);
         }
 
+        // Draw the game over overlay if time is up
+        if (timeController.getTimeLeft() <= 0) {
+            g2.setColor(new Color(0, 0, 0, 150));
+            g2.fillRect(0, 0, screenWidth, screenHeight);
+
+            g2.setColor(Color.RED);
+            g2.setFont(pressStart2PFont.deriveFont(40f)); // Use PressStart2P font for Game Over text
+            String gameOverText = "Game Over";
+            FontMetrics fm = g2.getFontMetrics();
+            int x = (screenWidth - fm.stringWidth(gameOverText)) / 2;
+            int y = screenHeight / 2 - fm.getHeight();
+            g2.drawString(gameOverText, x, y);
+        }
+
         g2.dispose();
     }
+
     // Getter functions for scale and tileSize
     public int getScale() {
         return scale;
