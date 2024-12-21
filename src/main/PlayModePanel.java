@@ -3,6 +3,7 @@ package main;
 import domain.entity.playerObjects.Player;
 import domain.game.Game;
 import domain.game.Grid;
+import domain.game.TimeController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +26,8 @@ public class PlayModePanel extends JPanel implements Runnable {
     public static final int offsetX = ((screenWidth - gridWidth) / (2 * tileSize)) - 2; // offset for gridi ortalama (tile-based)
     public static final int offsetY = (screenHeight - gridHeight) / (2 * tileSize);
 
+    private TimeController timeController;
+
     // FPS
     int FPS = 60;
 
@@ -41,6 +44,9 @@ public class PlayModePanel extends JPanel implements Runnable {
         Player player = new Player("Osimhen", 0, 0, tileSize, this, new PlayerController());
         game = new Game(player, tileSize, this); // Pass the required arguments
         this.addKeyListener(player.getPlayerController());
+
+        // Initialize the TimeController
+        timeController = new TimeController();
     }
 
     public void startGameThread() {
@@ -78,12 +84,36 @@ public class PlayModePanel extends JPanel implements Runnable {
         game.update();
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
         game.getGrid().draw(g2, offsetX * tileSize, offsetY * tileSize);
         game.getPlayer().draw(g2);
+
+        g2.setColor(Color.WHITE);
+        g2.setFont(new Font("Arial", Font.BOLD, 20));
+        int textX = (offsetX + gridColumns) * tileSize + 10; // Position to the right of the grid
+        int textY = offsetY * tileSize + 20; // Align with the top of the grid
+
+        if (timeController.getTimeLeft() > 0) {
+            // Draw the text "Time:" and the remaining time on a new line
+            g2.drawString("Time:", textX, textY);
+
+            int timeX = textX; // Same X position as "Time:"
+            int timeY = textY + 30; // Position below "Time:"
+            g2.drawString(timeController.getTimeLeft() + " seconds", timeX, timeY);
+        } else {
+            // Draw "Game Over!" message centered on the screen
+            g2.setFont(new Font("Arial", Font.BOLD, 80));
+            FontMetrics fm = g2.getFontMetrics();
+            String gameOverText = "Game Over!";
+            int gameOverX = (screenWidth - fm.stringWidth(gameOverText)) / 2;
+            int gameOverY = (screenHeight - fm.getHeight()) / 2 + fm.getAscent();
+            g2.drawString(gameOverText, gameOverX, gameOverY);
+        }
+
         g2.dispose();
     }
 
