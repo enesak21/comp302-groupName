@@ -1,5 +1,7 @@
 package main;
 
+import domain.UI.GridView;
+import domain.UI.PlayerView;
 import domain.entity.playerObjects.Player;
 import domain.game.Game;
 import domain.game.CollisionChecker;
@@ -38,6 +40,8 @@ public class PlayModePanel extends JPanel implements Runnable {
     private Grid grid;
     private Font pressStart2PFont;
     private boolean isPaused = false; // Add a boolean to track game state
+    private PlayerView playerView;
+    private GridView gridView;
 
     int FPS = 60;
     Thread gameThread;
@@ -51,11 +55,19 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.setFocusable(true);
 
         Player player = new Player("Osimhen", 0, 0, tileSize, this, new PlayerController());
+        playerView = new PlayerView(player);
+
         game = new Game(player, tileSize, this); // Pass the required arguments
         this.addKeyListener(player.getPlayerController());
 
         // Initialize the grid
+
+        Grid grid = new Grid(tileSize, this);
+        gridView = new GridView(grid);
+
+
         Grid grid = new Grid(tileSize);
+
         CollisionChecker collisionChecker = new CollisionChecker(grid);
         player.setCollisionChecker(collisionChecker);
 
@@ -117,7 +129,21 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        game.update();
+        if (!isPaused) {
+            // Oyuncunun durumunu güncelle
+            game.getPlayer().update();
+
+            // Zaman bitti mi kontrol et
+            if (timeController.getTimeLeft() <= 0) {
+                isPaused = true;
+                handleGameOver(); // Oyun bitişini işlemek için ayrı bir metot
+            }
+        }
+    }
+
+    private void handleGameOver() {
+        System.out.println("Game Over! Time's up.");
+        // Burada oyun bitiş ekranına geçebilir veya başka bir işlem yapabilirsiniz
     }
 
     @Override
@@ -125,13 +151,47 @@ public class PlayModePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
+
+        // Grid ve Player View Çizimi
+        drawGridAndPlayerView(g2);
+
+        // Zamanı Çiz
+        drawTime(g2);
+
+        // Oyun Bitti Mesajını Çiz
+        if (timeController.getTimeLeft() <= 0) {
+            drawGameOverMessage(g2);
+        }
+
+        // Duraklatma Menüsünü Çiz
+        if (isPaused) {
+            drawPauseOverlay(g2);
+        }
+
         // Draw game grid and player
         game.getGrid().draw(g2, offsetX * tileSize, offsetY * tileSize);
         game.getPlayer().draw(g2);
 
-        // Set the PressStart2P font
-        g2.setFont(pressStart2PFont);
+
+        g2.dispose();
+    }
+
+    private void drawGridAndPlayerView(Graphics2D g2) {
+        gridView.draw(g2, offsetX * tileSize, offsetY * tileSize); // Grid'i View ile çiz
+        playerView.draw(g2); // Player'ı View ile çiz
+    }
+
+    private void drawTime(Graphics2D g2) {
+        g2.setFont(pressStart2PFont.deriveFont(15f));
         g2.setColor(Color.WHITE);
+
+
+        int textX = (offsetX + gridColumns) * tileSize + 10; // Gridin sağında konum
+        int textY = offsetY * tileSize + 20; // Gridin üst kısmıyla hizalı
+
+        if (timeController.getTimeLeft() > 0) {
+            g2.drawString("Time:", textX, textY);
+            g2.drawString(timeController.getTimeLeft() + " seconds", textX, textY + 30);
 
         // Sidebar Background
         int sidebarWidth = 4 * tileSize + 20; // Make the sidebar slightly wider by 12 pixels
@@ -160,7 +220,21 @@ public class PlayModePanel extends JPanel implements Runnable {
             }
         } catch (IOException e) {
             e.printStackTrace();
+
         }
+    }
+
+
+    private void drawGameOverMessage(Graphics2D g2) {
+        g2.setFont(pressStart2PFont.deriveFont(40f));
+        g2.setColor(Color.WHITE);
+
+        FontMetrics fm = g2.getFontMetrics();
+        String gameOverText = "Game Over!";
+        int gameOverX = (screenWidth - fm.stringWidth(gameOverText)) / 2;
+        int gameOverY = (screenHeight - fm.getHeight()) / 2 + fm.getAscent();
+
+        g2.drawString(gameOverText, gameOverX, gameOverY);
 
         // Draw the pause menu overlay if paused
         if (isPaused) {
@@ -196,7 +270,30 @@ public class PlayModePanel extends JPanel implements Runnable {
         }
 
         g2.dispose();
+
     }
+
+    private void drawPauseOverlay(Graphics2D g2) {
+        g2.setColor(new Color(0, 0, 0, 150)); // Yarı şeffaf arka plan
+        g2.fillRect(0, 0, screenWidth, screenHeight);
+
+        g2.setColor(Color.WHITE);
+        g2.setFont(pressStart2PFont.deriveFont(15f));
+
+        // Duraklatma mesajını çiz
+        String pauseText = "Game Paused";
+        FontMetrics fm = g2.getFontMetrics();
+        int x = (screenWidth - fm.stringWidth(pauseText)) / 2;
+        int y = screenHeight / 2 - fm.getHeight();
+        g2.drawString(pauseText, x, y);
+
+
+        String resumeText = "Press 'ESC' to Resume";
+        x = (screenWidth - fm.stringWidth(resumeText)) / 2;
+        y += fm.getHeight() + 40;
+        g2.drawString(resumeText, x, y);
+    }
+
 
     // Getter functions for scale and tileSize
     public int getScale() {
