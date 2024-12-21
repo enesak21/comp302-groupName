@@ -2,8 +2,8 @@ package main;
 
 import javax.swing.*;
 
-import domain.Structures.Structure;
 import domain.game.Grid;
+import domain.structures.Structure;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;

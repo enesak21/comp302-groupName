@@ -1,9 +1,11 @@
 package domain.game;
 
-import domain.Structures.Structure;
 import main.PlayModePanel;
 
 import javax.imageio.ImageIO;
+
+import domain.structures.Structure;
+
 import java.awt.*;
 import java.io.IOException;
 import java.awt.image.BufferedImage;
