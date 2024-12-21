@@ -17,7 +17,6 @@ import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
 
-
 public class PlayModePanel extends JPanel implements Runnable {
 
     // Screen settings
@@ -61,12 +60,8 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.addKeyListener(player.getPlayerController());
 
         // Initialize the grid
-
-        Grid grid = new Grid(tileSize, this);
+        grid = new Grid(tileSize);
         gridView = new GridView(grid);
-
-
-        Grid grid = new Grid(tileSize);
 
         CollisionChecker collisionChecker = new CollisionChecker(grid);
         player.setCollisionChecker(collisionChecker);
@@ -151,7 +146,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-
         // Grid ve Player View Çizimi
         drawGridAndPlayerView(g2);
 
@@ -169,9 +163,8 @@ public class PlayModePanel extends JPanel implements Runnable {
         }
 
         // Draw game grid and player
-        game.getGrid().draw(g2, offsetX * tileSize, offsetY * tileSize);
-        game.getPlayer().draw(g2);
-
+        gridView.draw(g2, offsetX * tileSize, offsetY * tileSize);
+        playerView.draw(g2);
 
         g2.dispose();
     }
@@ -185,7 +178,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         g2.setFont(pressStart2PFont.deriveFont(15f));
         g2.setColor(Color.WHITE);
 
-
         int textX = (offsetX + gridColumns) * tileSize + 10; // Gridin sağında konum
         int textY = offsetY * tileSize + 20; // Gridin üst kısmıyla hizalı
 
@@ -193,37 +185,36 @@ public class PlayModePanel extends JPanel implements Runnable {
             g2.drawString("Time:", textX, textY);
             g2.drawString(timeController.getTimeLeft() + " seconds", textX, textY + 30);
 
-        // Sidebar Background
-        int sidebarWidth = 4 * tileSize + 20; // Make the sidebar slightly wider by 12 pixels
-        int sidebarX = screenWidth - sidebarWidth - (tileSize + 10); // Adjust position accordingly
-        int sidebarY = offsetY * tileSize; // Set Y position to offsetY * tileSize
-        g2.setColor(new Color(30, 30, 30));
-        g2.fillRect(sidebarX, sidebarY, sidebarWidth, gridHeight); // Set height to gridHeight
+            // Sidebar Background
+            int sidebarWidth = 4 * tileSize + 20; // Make the sidebar slightly wider by 12 pixels
+            int sidebarX = screenWidth - sidebarWidth - (tileSize + 10); // Adjust position accordingly
+            int sidebarY = offsetY * tileSize; // Set Y position to offsetY * tileSize
+            g2.setColor(new Color(30, 30, 30));
+            g2.fillRect(sidebarX, sidebarY, sidebarWidth, gridHeight); // Set height to gridHeight
 
-        // Add Time section
-        try {
-            Image clockIcon = ImageIO.read(getClass().getResource("/resources/icons/clock.png"));
-            g2.drawImage(clockIcon, sidebarX + 10, sidebarY + 20, 24, 24, null); // Make the icon smaller
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        g2.setFont(pressStart2PFont.deriveFont(13f));
-        g2.setColor(Color.WHITE);
-        g2.drawString("Time:", sidebarX + 40, sidebarY + 45); // Move the time text 10 pixels to the left
-        g2.drawString(timeController.getTimeLeft() + " seconds", sidebarX + 5, sidebarY + 75); // Move the time left text 10 pixels to the left
-
-        // Add health hearts
-        try {
-            Image heartIcon = ImageIO.read(getClass().getResource("/resources/player/heart.png"));
-            for (int i = 0; i < game.getPlayer().getHealth(); i++) {
-                g2.drawImage(heartIcon, sidebarX + 5 + i * 32, sidebarY + 100, 32, 32, null);
+            // Add Time section
+            try {
+                Image clockIcon = ImageIO.read(getClass().getResource("/resources/icons/clock.png"));
+                g2.drawImage(clockIcon, sidebarX + 10, sidebarY + 20, 24, 24, null); // Make the icon smaller
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            g2.setFont(pressStart2PFont.deriveFont(13f));
+            g2.setColor(Color.WHITE);
+            g2.drawString("Time:", sidebarX + 40, sidebarY + 45); // Move the time text 10 pixels to the left
+            g2.drawString(timeController.getTimeLeft() + " seconds", sidebarX + 5, sidebarY + 75); // Move the time left text 10 pixels to the left
 
+            // Add health hearts
+            try {
+                Image heartIcon = ImageIO.read(getClass().getResource("/resources/player/heart.png"));
+                for (int i = 0; i < game.getPlayer().getHealth(); i++) {
+                    g2.drawImage(heartIcon, sidebarX + 5 + i * 32, sidebarY + 100, 32, 32, null);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
-
 
     private void drawGameOverMessage(Graphics2D g2) {
         g2.setFont(pressStart2PFont.deriveFont(40f));
@@ -235,42 +226,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         int gameOverY = (screenHeight - fm.getHeight()) / 2 + fm.getAscent();
 
         g2.drawString(gameOverText, gameOverX, gameOverY);
-
-        // Draw the pause menu overlay if paused
-        if (isPaused) {
-            g2.setColor(new Color(0, 0, 0, 150));
-            g2.fillRect(0, 0, screenWidth, screenHeight);
-
-            g2.setColor(Color.WHITE);
-            g2.setFont(pressStart2PFont.deriveFont(20f)); // Use PressStart2P font for Pause text
-            String pauseText = "Game Paused";
-            FontMetrics fm = g2.getFontMetrics();
-            int x = (screenWidth - fm.stringWidth(pauseText)) / 2;
-            int y = screenHeight / 2 - fm.getHeight();
-            g2.drawString(pauseText, x, y);
-
-            String resumeText = "Press 'ESC' to Resume";
-            x = (screenWidth - fm.stringWidth(resumeText)) / 2;
-            y += fm.getHeight() + 40;
-            g2.drawString(resumeText, x, y);
-        }
-
-        // Draw the game over overlay if time is up
-        if (timeController.getTimeLeft() <= 0) {
-            g2.setColor(new Color(0, 0, 0, 150));
-            g2.fillRect(0, 0, screenWidth, screenHeight);
-
-            g2.setColor(Color.RED);
-            g2.setFont(pressStart2PFont.deriveFont(40f)); // Use PressStart2P font for Game Over text
-            String gameOverText = "Game Over";
-            FontMetrics fm = g2.getFontMetrics();
-            int x = (screenWidth - fm.stringWidth(gameOverText)) / 2;
-            int y = screenHeight / 2 - fm.getHeight();
-            g2.drawString(gameOverText, x, y);
-        }
-
-        g2.dispose();
-
     }
 
     private void drawPauseOverlay(Graphics2D g2) {
@@ -287,13 +242,11 @@ public class PlayModePanel extends JPanel implements Runnable {
         int y = screenHeight / 2 - fm.getHeight();
         g2.drawString(pauseText, x, y);
 
-
         String resumeText = "Press 'ESC' to Resume";
         x = (screenWidth - fm.stringWidth(resumeText)) / 2;
         y += fm.getHeight() + 40;
         g2.drawString(resumeText, x, y);
     }
-
 
     // Getter functions for scale and tileSize
     public int getScale() {
