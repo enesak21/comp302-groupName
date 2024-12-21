@@ -1,62 +1,46 @@
 package domain.game;
 
+import domain.entity.playerObjects.Player;
+import main.PlayModePanel;
+
 public class Game {
-    public float remainingTime;
-    public boolean isRuneFound = false;
+    private boolean isRuneFound = false;
+    private boolean isPaused = false;
+    private Player player;
+    private Grid grid;
 
-    /**
-     * @return remaining time
-     */
-    public float getRemainingTime(){
-        return this.remainingTime;
+    public Game(Player player, int tileSize, PlayModePanel playModePanel) {
+        this.player = player;
+        this.grid = new Grid(tileSize, playModePanel);
     }
 
-    /**
-     * Sets the remaining time
-     * @param time The time requested to be set
-     */
-    public void setRemainingTime(float time){
-        this.remainingTime = time;
-    }
-
-    /**
-     * @return Rune is found
-     */
     public boolean isRuneFound() {
         return this.isRuneFound;
     }
 
-    /**
-     * Sets the Rune to be found
-     * @param runeFound boolean
-     */
     public void setRuneFound(boolean runeFound) {
         isRuneFound = runeFound;
     }
 
-    /**
-     * Pauses the game
-     */
-    public void pauseGame(){
-        return;
+    public void pauseGame() {
+        isPaused = true;
     }
 
-    /**
-     * Resumes the game
-     */
-    public void resumeGame(){
-        return;
+    public void resumeGame() {
+        isPaused = false;
     }
 
-    /**
-     * Calculates the distance between two tiles
-     * @param tile1 The first tile
-     * @param tile2 The second tile
-     * @return The distance between tile1 and tile2
-     */
-    public static float calculateDistance(Tile tile1,Tile tile2){
-        return 0;
+    public boolean isPaused() {
+        return isPaused;
     }
+
+    public float calculateDistance(Tile tile1, Tile tile2) {
+        int x1 = tile1.getGridX();
+        int y1 = tile1.getGridY();
+        int x2 = tile2.getGridX();
+        int y2 = tile2.getGridY();
+        return (float) Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+
 
     /**
      * Checks if two tiles are within the given range of each other
@@ -70,14 +54,25 @@ public class Game {
         return calculateDistance(tile1,tile2) <= range;
     }
 
-    /**
-     * Validates that a hall satisfies the minimum criteria
-     * @param hall The hall to be validated
-     * @return true if the hall satisfies the minimum criteria
-     */
-    public boolean validateHall(Hall hall){
-        return false;
+    public boolean isInRange(Tile tile1, Tile tile2, float range) {
+        return calculateDistance(tile1, tile2) <= range;
     }
 
+    public boolean validateHall(Hall hall) {
+        return hall != null && hall.getLength() > 0;
+    }
 
+    public void update() {
+        if (!isPaused) {
+            player.update();
+        }
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public Grid getGrid() {
+        return grid;
+    }
 }
