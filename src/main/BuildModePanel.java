@@ -2,6 +2,7 @@ package main;
 
 import javax.swing.*;
 
+import domain.Structures.Structure;
 import domain.game.Grid;
 
 import java.awt.*;
@@ -23,23 +24,24 @@ public class BuildModePanel extends JPanel {
     private static final int SCREEN_WIDTH = 24 * TILE_SIZE;
     private static final int SCREEN_HEIGHT = 20 * TILE_SIZE;
 
-    private Grid grid;
+    private final int TOOLBAR_WIDTH = 200; // Width of the toolbar
+
+    private Structure selectedStructure; // Track the selected structure
+    private JPanel toolbar; // Toolbar for selecting structures
     
-    private String currentHall = "Earth"; // Track the current hall being designed
-    private int objectsPlaced = 0; // Count of placed objects
-    private ArrayList<Point> objectPositions = new ArrayList<>(); // Track object placements
 
     public BuildModePanel() {
-        this.setPreferredSize(new Dimension(GRID_COLUMNS * TILE_SIZE, GRID_ROWS * TILE_SIZE));
+        this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.setFocusable(true);
+        
+        createToolbar();
 
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-            }
-        });
+    }
+
+    private void createToolbar() {
+
     }
 
 
