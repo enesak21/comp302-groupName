@@ -64,15 +64,6 @@ public class Grid {
                             tileSize, tileSize,
                             null
                     );
-                    if (tile.getStructure() != null) {
-                        g2.drawImage(
-                                tile.getStructure().getStructureImage(),
-                                offsetX + column * tileSize,
-                                offsetY + row * tileSize,
-                                tileSize, tileSize,
-                                null
-                        );
-                    }
                 }
 
             }

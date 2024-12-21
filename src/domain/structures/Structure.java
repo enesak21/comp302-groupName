@@ -17,7 +17,7 @@ public class Structure {
         this.position = position;
     }
 
-    public BufferedImage getStructureImage(){
+    public BufferedImage getImage(){
         try {
             image = ImageIO.read(getClass().getResourceAsStream("/resources/structures/" + this.type + ".png"));
 

@@ -1,6 +1,7 @@
 package domain.UI;
 import domain.game.Grid;
 import domain.game.Tile;
+import domain.structures.Structure;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -19,6 +20,10 @@ public class GridView {
 
                 if (tile != null && tile.getImage() != null) {
                     drawTile(g2, tile, column, row, offsetX, offsetY);
+
+                    if (tile.getStructure() != null && tile.getStructure().getImage() != null) {
+                        drawStructure(g2, tile.getStructure(), column, row, offsetX, offsetY);
+                    }
                 }
             }
         }
@@ -37,6 +42,15 @@ public class GridView {
         g2.setColor(Color.GRAY);
         g2.drawRect(x, y, tileSize, tileSize);
          */
+    }
+
+    private void drawStructure(Graphics2D g2, Structure structure, int column, int row, int offsetX, int offsetY) {
+        int tileSize = grid.getTileSize();
+        BufferedImage image = structure.getImage();
+        int x = offsetX + column * tileSize;
+        int y = offsetY + row * tileSize;
+
+        g2.drawImage(image, x, y, tileSize, tileSize, null);
     }
 
     public int getColumns() {
