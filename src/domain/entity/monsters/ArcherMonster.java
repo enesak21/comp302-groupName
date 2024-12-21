@@ -19,12 +19,11 @@ public class ArcherMonster extends BaseMonster{
 
     @Override
     public void update() {
-        attack(); //Archer Monster cannot move.
+        attack(); //Archer Monster cannot move. It just attacks.
     }
 
     @Override
     public void attack() {
-
 
     }
 }
