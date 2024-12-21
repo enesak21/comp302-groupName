@@ -1,23 +1,8 @@
 package domain.game;
 
 public class Game {
-    public float remainingTime;
     public boolean isRuneFound = false;
 
-    /**
-     * @return remaining time
-     */
-    public float getRemainingTime(){
-        return this.remainingTime;
-    }
-
-    /**
-     * Sets the remaining time
-     * @param time The time requested to be set
-     */
-    public void setRemainingTime(float time){
-        this.remainingTime = time;
-    }
 
     /**
      * @return Rune is found
@@ -35,7 +20,7 @@ public class Game {
     }
 
     /**
-     * Pauses the game
+     *
      */
     public void pauseGame(){
         return;
@@ -55,7 +40,9 @@ public class Game {
      * @return The distance between tile1 and tile2
      */
     public float calculateDistance(Tile tile1,Tile tile2){
-        return 0;
+        int deltaX = tile1.getGridX() - tile2.getGridX();
+        int deltaY = tile1.getGridY() - tile2.getGridY();
+        return (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY); //eucladian distance
     }
 
     /**
