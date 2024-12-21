@@ -19,7 +19,7 @@ public class Grid{
         this.playModePanel = playModePanel;
         this.tiles = new Tile[columns][rows];
         tileGenerator();
-        fillStructures();
+        //fillStructures(); used for testing fill structures. can be removed later
     }
 
     public void tileGenerator() {
@@ -37,36 +37,42 @@ public class Grid{
         }
     }
 
-    public void fillStructures(Structure[][] structuresList) {
+    /*
+    // used for testing. can be removed later.
+    public void fillStructures() {
         for (int column = 0; column < columns; column++) {
             for (int row = 0; row < rows; row++) {
-                if (structuresList[column][row] != null) {
-                    if ( column == 9 && row == 9) {
-                        Structure structure = new Structure("kafatasi", tiles[column][row]);
-                        tiles[column][row].setStructure(true);
-                    }
+                if ( column == 9 && row == 9) {
+                    Structure skullStructure = new Structure("skull", tiles[column][row]);
+                    tiles[column][row].setStructure(skullStructure);
                 }
             }
         }
     }
+    */
 
     public void draw(Graphics2D g2, int offsetX, int offsetY) {
         for (int column = 0; column < columns; column++) {
             for (int row = 0; row < rows; row++) {
                 Tile tile = tiles[column][row];
+
                 g2.drawImage(
                         tile.getImage(),
+                        column * tileSize, //offset bizim gridin ekranda nerede oldugunu ayarlamak icin
+                         row * tileSize,
+                        tileSize, tileSize,
+                        null
+                );
+
+                if (tile.containsStructure()) {
+                    Structure structure = tile.getStructure(); // remove later
+                    g2.drawImage(
+                        structure.getStructureImage(),
                         offsetX + column * tileSize, //offset bizim gridin ekranda nerede oldugunu ayarlamak icin
                         offsetY + row * tileSize,
                         tileSize, tileSize,
                         null
-                );
-                if (tile.containsStructure() == true) {
-                    Structure structure = new Structure("kafatasi", tiles[column][row]); // remove later
-                    g2.drawImage(
-                        structure.getStructureImage(),
-
-                    )
+                    );
                 }
 
             }

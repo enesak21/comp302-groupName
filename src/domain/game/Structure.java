@@ -15,14 +15,14 @@ public class Structure {
         this.position = position;
     }
 
-    public void getStructureImage(){
-
+    public BufferedImage getStructureImage(){
         try {
-            BufferedImage structureImage = ImageIO.read(getClass().getResourceAsStream("/resources/structure/skull.png"));
+            image = ImageIO.read(getClass().getResourceAsStream("/resources/structures/" + this.type + ".png"));
+
         }catch (IOException e){
             e.printStackTrace();
         }
-
+        return image;
     }
 
     public void draw(Graphics2D g2, int offsetX, int offsetY) {

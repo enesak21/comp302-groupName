@@ -6,13 +6,13 @@ public class Tile {
     private int gridX;
     private int gridY;
     private BufferedImage image;
-    private boolean hasStructure;
+    private Structure structure;
     
     //not sure about parameters
     public Tile(int gridX, int gridY) {
         this.gridX = gridX;
         this.gridY = gridY;
-        this.hasStructure = false;
+        this.structure= null;
     }
     public Tile(){
     
@@ -47,8 +47,10 @@ public class Tile {
         this.image = image;
     }
 
-    public boolean containsStructure() { return hasStructure; }
+    public Structure getStructure() { return structure; }
 
-    public void setStructure(boolean hasStructure) { this.hasStructure = hasStructure; }
+    public void setStructure(Structure structure) { this.structure= structure; }
+
+    public boolean containsStructure() { return structure != null; }
 }
 
