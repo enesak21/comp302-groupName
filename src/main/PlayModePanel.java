@@ -1,6 +1,7 @@
 package main;
 
 import domain.entity.playerObjects.Player;
+import domain.game.Game;
 import domain.game.Grid;
 
 import javax.swing.*;
@@ -51,6 +52,7 @@ public class PlayModePanel extends JPanel implements Runnable{
     public void startGameThread(){
         System.out.println("Starting game thread");
 
+
         gameThread = new Thread(this);
         gameThread.start();
     }
@@ -64,6 +66,8 @@ public class PlayModePanel extends JPanel implements Runnable{
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
+
+
 
         while (gameThread != null){
 
