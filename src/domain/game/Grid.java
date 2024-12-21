@@ -81,6 +81,9 @@ public class Grid{
     }
 
     public Tile getTileAt(int nextX, int nextY) {
+        if (nextX < 0 || nextX >= columns || nextY < 0 || nextY >= rows) {
+            return null;
+        }
         return tiles[nextX][nextY];
     }
 }

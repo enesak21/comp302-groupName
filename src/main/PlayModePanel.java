@@ -1,6 +1,7 @@
 package main;
 
 import domain.entity.playerObjects.Player;
+import domain.game.CollisionChecker;
 import domain.game.Grid;
 
 import javax.swing.*;
@@ -48,6 +49,8 @@ public class PlayModePanel extends JPanel implements Runnable{
 
         grid = new Grid(tileSize, this);
         player = new Player("Osimhen", 0, 0, tileSize, this, playerController);
+        CollisionChecker collisionChecker = new CollisionChecker(grid);
+        player.setCollisionChecker(collisionChecker);
     }
 
 
