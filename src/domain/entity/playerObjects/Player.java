@@ -30,7 +30,7 @@ public class Player extends Entity {
         this.playModePanel = playModePanel;
         this.playerController = playerController;
         this.speed = 4;
-        this.health = 3;
+        this.health = 4;
         this.direction = Direction.DOWN;
         getPlayerImage();
         updatePixelPosition();
@@ -95,6 +95,14 @@ public class Player extends Entity {
 
     public PlayerController getPlayerController() {
         return playerController;
+    }
+
+    public boolean isMoving() {
+        return moving;
+    }
+
+    public int getHealth() {
+        return health;
     }
 
 

@@ -13,12 +13,10 @@ public class Grid {
     private int columns = 16;
     private int rows = 16;
     private int tileSize;
-    PlayModePanel playModePanel;
 
 
-    public Grid(int tileSize, PlayModePanel playModePanel) {
+    public Grid(int tileSize) {
         this.tileSize = tileSize;
-        this.playModePanel = playModePanel;
         this.tiles = new Tile[columns][rows];
         tileGenerator();
         //fillStructures(); used for testing fill structures. can be removed later
