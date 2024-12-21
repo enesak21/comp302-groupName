@@ -1,6 +1,6 @@
-package domain.monsters;
+package domain.entity.monsters;
 
-public class ArcherMonster extends Monster {
+public class ArcherMonster {
     private float arrowRange;
     private float shootFrequency;
 
