@@ -8,7 +8,4 @@ public class ExtraLife extends Enchantment{
     public ExtraLife(String type, float visibilityDuration) {
         super(type, visibilityDuration);
     }
-    public void addExtraTime(Game game) {
-        game.setRemainingTime(game.getRemainingTime()+5);
-    }
 }
