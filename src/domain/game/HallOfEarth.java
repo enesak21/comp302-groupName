@@ -1,8 +1,8 @@
 package domain.game;
 
 public class HallOfEarth extends Hall {
-
-    public HallOfEarth(int minNumStructure) {
-        super(minNumStructure);
+    private static final int MIN_NUM_STRUCTURE = 6;
+    public HallOfEarth() {
+        super(MIN_NUM_STRUCTURE);
     }
 }
