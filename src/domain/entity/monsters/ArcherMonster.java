@@ -2,7 +2,7 @@ package domain.entity.monsters;
 
 import domain.entity.Entity;
 
-public class ArcherMonster extends Entity {
+public class ArcherMonster extends BaseMonster{
     private float arrowRange;
     private float shootFrequency;
 
@@ -16,6 +16,11 @@ public class ArcherMonster extends Entity {
 
     @Override
     public void update() {
+
+    }
+
+    @Override
+    public void attack() {
 
     }
 }
