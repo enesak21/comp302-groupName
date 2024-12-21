@@ -1,5 +1,6 @@
 package domain.game;
 
+import domain.Structures.Structure;
 import main.PlayModePanel;
 
 import javax.imageio.ImageIO;

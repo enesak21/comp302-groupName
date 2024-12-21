@@ -2,7 +2,6 @@ package main;
 
 import domain.entity.playerObjects.Player;
 import domain.game.Grid;
-import domain.game.Structure;
 
 import javax.swing.*;
 import java.awt.*;

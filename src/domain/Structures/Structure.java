@@ -1,4 +1,6 @@
-package domain.game;
+package domain.Structures;
+
+import domain.game.Tile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -8,7 +10,7 @@ import java.io.IOException;
 public class Structure {
     String type;
     Tile position;
-    private BufferedImage image;
+    BufferedImage image;
 
     public Structure(String type, Tile position) {
         this.type = type;

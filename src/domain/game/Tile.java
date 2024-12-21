@@ -1,5 +1,7 @@
 package domain.game;
 
+import domain.Structures.Structure;
+
 import java.awt.image.BufferedImage;
 
 public class Tile {
