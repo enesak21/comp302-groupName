@@ -30,20 +30,12 @@ public class Player extends Entity {
         this.name = name;
         this.playModePanel = playModePanel;
         this.playerController = playerController;
-        this.speed= 8;
+        this.speed= 4;
         this.health = 3;
         this.direction = Direction.DOWN;
-        //setDefaultValues();
         getPlayerImage();
 
         updatePixelPosition();
-    }
-
-    public void setDefaultValues(){
-        pixelX = 100;
-        pixelY = 100;
-        speed = 4;
-        direction = Direction.DOWN; //buraya şimdilik dokunmuyorum ama çok ömrü yok haberi olsun
     }
 
     public void getPlayerImage(){
@@ -104,16 +96,16 @@ public class Player extends Entity {
         BufferedImage image = null;
 
         switch (direction){
-            case Direction.UP:
+            case UP:
                 image = down1;
                 break;
-            case Direction.DOWN:
+            case DOWN:
                 image = down1;
                 break;
-            case Direction.LEFT:
+            case LEFT:
                 image = down1;
                 break;
-            case Direction.RIGHT:
+            case RIGHT:
                 image = down1;
                 break;
         }

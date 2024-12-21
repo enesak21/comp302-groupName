@@ -1,4 +1,4 @@
-package domain.monsters;
+package domain.entity.monsters;
 
 public class WizardMonster{
     private float teleportFrequency;
