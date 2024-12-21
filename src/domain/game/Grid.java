@@ -51,4 +51,7 @@ public class Grid{
         }
     }
 
+    public Tile getTileAt(int nextX, int nextY) {
+        return tiles[nextX][nextY];
+    }
 }

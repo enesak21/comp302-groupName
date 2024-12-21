@@ -9,17 +9,20 @@ import java.awt.*;
 public class PlayModePanel extends JPanel implements Runnable{
 
     //Screen settings
-    final int originalTileSize = 16; //our assets are 16x16 pixels originally
-    private final int scale = 2;
-    private final int tileSize = originalTileSize * scale;
+    static final int originalTileSize = 16; //our assets are 16x16 pixels originally
+    static final int scale = 2;
+    static final int tileSize = originalTileSize * scale;
 
-    private final int gridColumns = 16; // Arena sütun sayısı
-    private final int gridRows = 16;    // Arena satır sayısı
-    private final int gridWidth = gridColumns * tileSize; // Arena genişliği
-    private final int gridHeight = gridRows * tileSize;   // Arena yüksekliği
+    static final int gridColumns = 16; // Arena sütun sayısı
+    static final int gridRows = 16;    // Arena satır sayısı
+    static final int gridWidth = gridColumns * tileSize; // Arena genişliği
+    static final int gridHeight = gridRows * tileSize;   // Arena yüksekliği
 
-    private final int screenWidth = 24 * tileSize; // Tüm ekran genişliği
-    private final int screenHeight = 20 * tileSize; // Tüm ekran yüksekliği
+    static final int screenWidth = 24 * tileSize; // Tüm ekran genişliği
+    static final int screenHeight = 20 * tileSize; // Tüm ekran yüksekliği
+
+    public static final int offsetX = (screenWidth - gridWidth) / (2*tileSize); //offset for gridi ortalama (tile-based)
+    public static final int offsetY = (screenHeight - gridHeight) / (2*tileSize);
 
     //FPS
     int FPS = 60;
@@ -41,7 +44,7 @@ public class PlayModePanel extends JPanel implements Runnable{
         this.setFocusable(true);
 
         grid = new Grid(tileSize, this);
-        player = new Player("Osimhen", 7, 6, tileSize, this, playerController);
+        player = new Player("Osimhen", 0, 0, tileSize, this, playerController);
     }
 
 
@@ -90,10 +93,8 @@ public class PlayModePanel extends JPanel implements Runnable{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        int offsetX = (screenWidth - gridWidth) / 2;
-        int offsetY = (screenHeight - gridHeight) / 2;
 
-        grid.draw(g2, offsetX, offsetY);
+        grid.draw(g2, offsetX*tileSize, offsetY*tileSize);
         player.draw(g2);
         g2.dispose();
 
@@ -107,4 +108,6 @@ public class PlayModePanel extends JPanel implements Runnable{
     public int getTileSize() {
         return tileSize;
     }
+
+
 }

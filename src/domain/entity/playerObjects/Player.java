@@ -33,17 +33,9 @@ public class Player extends Entity {
         this.speed= 8;
         this.health = 3;
         this.direction = Direction.DOWN;
-        //setDefaultValues();
         getPlayerImage();
 
         updatePixelPosition();
-    }
-
-    public void setDefaultValues(){
-        pixelX = 100;
-        pixelY = 100;
-        speed = 4;
-        direction = Direction.DOWN; //buraya şimdilik dokunmuyorum ama çok ömrü yok haberi olsun
     }
 
     public void getPlayerImage(){
