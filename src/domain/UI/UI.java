@@ -1,5 +1,6 @@
 package domain.UI;
 
+import main.HelpPanel;
 import main.PlayModePanel;
 
 import javax.swing.*;
@@ -46,7 +47,7 @@ public class UI {
         JLabel imageLabel = new JLabel(scaledIcon);
         imageLabel.setBounds(0, 0, 800, 600);
 
-        // Transparent Button
+        // START BUTTON
         JButton startButton = new JButton("Start Game"); //GO TO BUİLD MODE DIRECTLY
         startButton.setBounds(300, 470, 200, 50);
         startButton.setOpaque(false);
@@ -62,9 +63,20 @@ public class UI {
             cardLayout.show(mainPanel, "Build");
         });
 
+        //HELP SCREEN BUTTOn
+        JButton helpButton = new JButton("Help"); //GO TO BUİLD MODE DIRECTLY
+        helpButton.setBounds(300, 510, 200, 50);
+        helpButton.setOpaque(false);
+        helpButton.setContentAreaFilled(false);
+        helpButton.setBorderPainted(false);
+        helpButton.setFont(new Font("", Font.BOLD, 25));
+        helpButton.setForeground(Color.black);
+
+
         // Add Components to LayeredPane
         layeredPane.add(imageLabel, Integer.valueOf(0)); // Background layer
         layeredPane.add(startButton, Integer.valueOf(1)); // Foreground layer
+        layeredPane.add(helpButton, Integer.valueOf(1)); // Foreground layer
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(layeredPane, BorderLayout.CENTER);
@@ -100,6 +112,11 @@ public class UI {
         playModePanel.startGameThread(); // Start the game loop
         SwingUtilities.invokeLater(playModePanel::requestFocusInWindow); // Ensure focus is set
         return playModePanel;
+    }
+    private JPanel createHelpScreen() {
+        HelpPanel helpPanel = new HelpPanel();
+
+        return helpPanel;
     }
 
     private boolean isPanelAdded(String panelName) {
