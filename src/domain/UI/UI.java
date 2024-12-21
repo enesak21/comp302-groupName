@@ -1,5 +1,6 @@
 package domain.UI;
 
+import main.BuildModePanel;
 import main.PlayModePanel;
 
 import javax.swing.*;
@@ -99,7 +100,7 @@ public class UI {
 
     private JPanel createBuildScreen() {  // BUİLD SCREEN İÇİN DE PLAYMODEPANEL GİBİ AYRI BİR
                                           //CLASSINI OLUŞTURUP BURADA ÇAĞIRIRIZ
-        JPanel panel = new JPanel(new BorderLayout());
+        BuildModePanel buildModePanel = new BuildModePanel();
         JLabel title = new JLabel("Build Components Here", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 24));
 
@@ -114,9 +115,9 @@ public class UI {
             mainPanel.repaint();
         });
 
-        panel.add(title, BorderLayout.CENTER);
-        panel.add(completeButton, BorderLayout.SOUTH);
-        return panel;
+        buildModePanel.add(title);
+        buildModePanel.add(completeButton);
+        return buildModePanel;
     }
 
     private JPanel createGameScreen() {
