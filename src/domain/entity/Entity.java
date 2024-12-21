@@ -9,7 +9,6 @@ public abstract class Entity {
     protected int gridX, gridY; // Grid üzerindeki konumları için bunlar
     protected int speed; //pixel türünde hareket için
 
-    protected BufferedImage down1, up1, left1, right1; //diğer yönler için döndürebiliriz direkt komik olur
     protected Direction direction;
 
     protected int tileSize; //public yapmak istemedim, burada tekrar tanımladım
@@ -29,16 +28,6 @@ public abstract class Entity {
     }
 
     public abstract void update(); //bunu player ve monsterlar icin ayri yazacagiz
-
-    public void draw(java.awt.Graphics2D g2) {
-        BufferedImage image = switch (direction) {
-            case UP -> down1;
-            case DOWN -> down1;
-            case LEFT -> down1;
-            case RIGHT -> down1;
-        };
-        g2.drawImage(image, pixelX, pixelY, tileSize, tileSize, null);
-    }
 
     public int getGridX() {
         return gridX-PlayModePanel.offsetX;
@@ -62,5 +51,29 @@ public abstract class Entity {
 
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    public int getPixelX() {
+        return pixelX;
+    }
+
+    public void setPixelX(int pixelX) {
+        this.pixelX = pixelX;
+    }
+
+    public int getPixelY() {
+        return pixelY;
+    }
+
+    public void setPixelY(int pixelY) {
+        this.pixelY = pixelY;
+    }
+
+    public int getTileSize() {
+        return tileSize;
+    }
+
+    public void setTileSize(int tileSize) {
+        this.tileSize = tileSize;
     }
 }

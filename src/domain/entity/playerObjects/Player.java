@@ -32,16 +32,7 @@ public class Player extends Entity {
         this.speed = 4;
         this.health = 3;
         this.direction = Direction.DOWN;
-        getPlayerImage();
         updatePixelPosition();
-    }
-
-    public void getPlayerImage() {
-        try {
-            down1 = ImageIO.read(getClass().getResourceAsStream("/resources/player/player.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -81,16 +72,6 @@ public class Player extends Entity {
                 updatePixelPosition();
             }
         }
-    }
-
-    public void draw(Graphics2D g2) {
-        BufferedImage image = null;
-
-        switch (direction) {
-            case UP, DOWN, LEFT, RIGHT -> image = down1;
-        }
-
-        g2.drawImage(image, pixelX, pixelY, playModePanel.getTileSize(), playModePanel.getTileSize(), null);
     }
 
     public PlayerController getPlayerController() {
