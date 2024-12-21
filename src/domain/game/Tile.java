@@ -25,7 +25,8 @@ public class Tile {
 
     public int getGridY() {
         return gridY;
-
+    }
+    
     public boolean isSolid() {
         return solid;
     }
