@@ -13,12 +13,13 @@ public class Grid{
     private int tileSize;
     PlayModePanel playModePanel;
 
+
     public Grid(int tileSize, PlayModePanel playModePanel) {
         this.tileSize = tileSize;
         this.playModePanel = playModePanel;
         this.tiles = new Tile[columns][rows];
-
         tileGenerator();
+        fillStructures();
     }
 
     public void tileGenerator() {
@@ -36,6 +37,19 @@ public class Grid{
         }
     }
 
+    public void fillStructures(Structure[][] structuresList) {
+        for (int column = 0; column < columns; column++) {
+            for (int row = 0; row < rows; row++) {
+                if (structuresList[column][row] != null) {
+                    if ( column == 9 && row == 9) {
+                        Structure structure = new Structure("kafatasi", tiles[column][row]);
+                        tiles[column][row].setStructure(true);
+                    }
+                }
+            }
+        }
+    }
+
     public void draw(Graphics2D g2, int offsetX, int offsetY) {
         for (int column = 0; column < columns; column++) {
             for (int row = 0; row < rows; row++) {
@@ -47,6 +61,14 @@ public class Grid{
                         tileSize, tileSize,
                         null
                 );
+                if (tile.containsStructure() == true) {
+                    Structure structure = new Structure("kafatasi", tiles[column][row]);
+                    g2.drawImage(
+                        structure.getStructureImage(),
+
+                    )
+                }
+
             }
         }
     }

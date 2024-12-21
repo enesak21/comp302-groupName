@@ -2,6 +2,7 @@ package main;
 
 import domain.entity.playerObjects.Player;
 import domain.game.Grid;
+import domain.game.Structure;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,6 +30,9 @@ public class PlayModePanel extends JPanel implements Runnable{
     Thread gameThread;
     Player player;
 
+    // To be removed after we complete buildmode
+
+
 
     //Constructor
     public PlayModePanel(){
@@ -40,7 +44,8 @@ public class PlayModePanel extends JPanel implements Runnable{
         this.addKeyListener(playerController);
         this.setFocusable(true);
 
-        grid = new Grid(tileSize, this);
+
+        grid = new Grid(tileSize,this);
         player = new Player("Osimhen", 7, 6, tileSize, this, playerController);
     }
 
