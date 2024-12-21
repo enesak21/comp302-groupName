@@ -43,7 +43,7 @@ public class Grid {
         for (int column = 0; column < columns; column++) {
             for (int row = 0; row < rows; row++) {
                 if ( column == 9 && row == 9) {
-                    Structure skullStructure = new Structure("bottle", tiles[column][row]);
+                    Structure skullStructure = new Structure("chest", tiles[column][row]);
                     tiles[column][row].setStructure(skullStructure);
                 }
             }
