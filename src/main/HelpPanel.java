@@ -17,18 +17,18 @@ public class HelpPanel extends JPanel {
         this.add(title, BorderLayout.NORTH);
 
         JTextArea instructions = new JTextArea("""
-            Controls:
-            - Arrow Keys: Move the hero
-            - Mouse Left Click: Interact with objects
-            - R Key: Use Reveal Enchantment
-            - P Key: Use Cloak of Protection
-            - B Key + Direction: Throw Luring Gem
-            
-            Gameplay:
-            - Collect runes to unlock new halls.
-            - Avoid monsters and use enchantments to help your journey.
-            - Design the halls during build mode.
-            """);
+        Controls:
+        - Arrow Keys: Move the hero
+        - Mouse Left Click: Interact with objects
+        - R Key: Use Reveal Enchantment
+        - P Key: Use Cloak of Protection
+        - B Key + Direction: Throw Luring Gem
+        
+        Gameplay:
+        - Collect runes to unlock new halls.
+        - Avoid monsters and use enchantments to help your journey.
+        - Design the halls during build mode.
+        """);
         instructions.setFont(new Font("Arial", Font.PLAIN, 16));
         instructions.setEditable(false);
         instructions.setLineWrap(true);
@@ -50,7 +50,13 @@ public class HelpPanel extends JPanel {
             }
         });
 
-        this.setFocusable(true);
-        this.requestFocusInWindow(); // Ensure the panel has focus for key events
+        this.setFocusable(true);  // Ensure panel is focusable
+        this.requestFocusInWindow(); // Request focus on the panel
+
+        // Ensure focus is properly set when the panel is shown
+        SwingUtilities.invokeLater(() -> {
+            this.requestFocusInWindow();
+        });
     }
+
 }
