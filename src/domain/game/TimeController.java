@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TimeController {
-    private int timeLeft = 10; // Timer set for 60 seconds
+    private int timeLeft = 60; // Timer set for 60 seconds
     private Timer timer; // Timer instance
 
     public TimeController() {
@@ -13,11 +13,9 @@ public class TimeController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (timeLeft >= 0) { // Counts down from 60 to 0
-                    System.out.println("Time left: " + timeLeft + " seconds");
                     timeLeft--;
                 } else {
                     timer.stop();
-                    System.out.println("Time's up!");
                 }
             }
         });

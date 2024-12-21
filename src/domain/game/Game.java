@@ -13,7 +13,7 @@ public class Game {
 
     public Game(Player player, int tileSize, PlayModePanel playModePanel) {
         this.player = player;
-        this.grid = new Grid(tileSize, playModePanel);
+        this.grid = new Grid(tileSize);
         this.remainingTime = 60; // Initialize with a default value
     }
 
