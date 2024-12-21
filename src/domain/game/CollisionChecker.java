@@ -13,7 +13,6 @@ public class CollisionChecker {
     /**
      * Checks if the given entity collides with the given tile when moving
      * @param entity
-     * @param tile
      * @return true if the entity cannot move into tile
      */
     public boolean checkCollision(Entity entity) {
