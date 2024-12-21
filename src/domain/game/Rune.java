@@ -1,6 +1,6 @@
 package domain.game;
 
-import domain.Structures.Structure;
+import domain.structures.Structure;
 
 public class Rune {
     private Structure storedStructure;

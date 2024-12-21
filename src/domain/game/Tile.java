@@ -1,8 +1,8 @@
 package domain.game;
 
-import domain.Structures.Structure;
-
 import java.awt.image.BufferedImage;
+
+import domain.structures.Structure;
 
 public class Tile {
     private int gridX;

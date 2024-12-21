@@ -1,4 +1,4 @@
-package domain.Structures;
+package domain.structures;
 
 import domain.game.Tile;
 
