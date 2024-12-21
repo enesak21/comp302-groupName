@@ -32,6 +32,9 @@ public class PlayModePanel extends JPanel implements Runnable{
     Thread gameThread;
     Player player;
 
+    // To be removed after we complete buildmode
+
+
 
     //Constructor
     public PlayModePanel(){
