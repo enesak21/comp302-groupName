@@ -8,7 +8,8 @@ import domain.game.TimeController;
 
 import javax.swing.*;
 import java.awt.*;
-
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
@@ -32,17 +33,13 @@ public class PlayModePanel extends JPanel implements Runnable {
     public static final int offsetY = (screenHeight - gridHeight) / (2 * tileSize);
 
     private TimeController timeController;
-
     private Grid grid;
-
     private Font pressStart2PFont;
+    private boolean isPaused = false; // Add a boolean to track game state
 
     int FPS = 60;
-
     Thread gameThread;
     Game game;
-
-    // Constructor
 
     // Constructor
     public PlayModePanel() {
@@ -63,6 +60,22 @@ public class PlayModePanel extends JPanel implements Runnable {
         // Initialize the TimeController
         timeController = new TimeController();
 
+        // Add a KeyListener to toggle pause
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_P || e.getKeyCode() == KeyEvent.VK_ESCAPE) { // Toggle with 'P' or 'Esc'
+                    isPaused = !isPaused;
+                    if (isPaused) {
+                        timeController.pauseTimer();
+                    } else {
+                        timeController.resumeTimer();
+                    }
+                    repaint(); // Refresh screen to display/hide menu
+                }
+            }
+        });
+
         // Load the PressStart2P font
         try {
             pressStart2PFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/resources/fonts/PressStart2P-Regular.ttf")).deriveFont(20f);
@@ -72,6 +85,7 @@ public class PlayModePanel extends JPanel implements Runnable {
             e.printStackTrace();
         }
     }
+
     public void startGameThread() {
         System.out.println("Starting game thread");
 
@@ -92,12 +106,9 @@ public class PlayModePanel extends JPanel implements Runnable {
             delta += (currentTime - lastTime) / drawInterval;
             lastTime = currentTime;
 
-            if (delta >= 1) {
-                // 1 Update: update information
+            if (!isPaused && delta >= 1) { // Skip updates when paused
                 update();
-                // 2 Paint: paint or draw screen with the updated information
                 repaint();
-                System.out.println(game.getPlayer().getGridX() + " " + game.getPlayer().getGridY());
                 delta--;
             }
         }
@@ -138,6 +149,25 @@ public class PlayModePanel extends JPanel implements Runnable {
             int gameOverX = (screenWidth - fm.stringWidth(gameOverText)) / 2;
             int gameOverY = (screenHeight - fm.getHeight()) / 2 + fm.getAscent();
             g2.drawString(gameOverText, gameOverX, gameOverY);
+        }
+
+        // Draw the pause menu overlay if paused
+        if (isPaused) {
+            g2.setColor(new Color(0, 0, 0, 150)); // Semi-transparent overlay
+            g2.fillRect(0, 0, screenWidth, screenHeight);
+
+            g2.setColor(Color.WHITE);
+            g2.setFont(new Font("Arial", Font.BOLD, 40));
+            String pauseText = "Game Paused";
+            FontMetrics fm = g2.getFontMetrics();
+            int x = (screenWidth - fm.stringWidth(pauseText)) / 2;
+            int y = screenHeight / 2 - fm.getHeight();
+            g2.drawString(pauseText, x, y);
+
+            String resumeText = "Press 'ESC' to Resume";
+            x = (screenWidth - fm.stringWidth(resumeText)) / 2;
+            y += fm.getHeight() + 40;
+            g2.drawString(resumeText, x, y);
         }
 
         g2.dispose();
