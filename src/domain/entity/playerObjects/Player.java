@@ -25,74 +25,79 @@ public class Player extends Entity {
     PlayModePanel playModePanel;
     PlayerController playerController;
 
-    public Player(String name, PlayModePanel playModePanel, PlayerController playerController) {
+    public Player(String name, int gridX, int gridY, int tileSize, PlayModePanel playModePanel, PlayerController playerController) {
+        super(gridX, gridY, tileSize);
         this.name = name;
         this.playModePanel = playModePanel;
         this.playerController = playerController;
-
-        setDefaultValues();
+        this.speed= 8;
+        this.health = 3;
+        this.direction = Direction.DOWN;
+        //setDefaultValues();
         getPlayerImage();
+
+        updatePixelPosition();
     }
 
     public void setDefaultValues(){
-        x = 100;
-        y = 100;
+        pixelX = 100;
+        pixelY = 100;
         speed = 4;
-        direction = Direction.DOWN;
+        direction = Direction.DOWN; //buraya şimdilik dokunmuyorum ama çok ömrü yok haberi olsun
     }
 
     public void getPlayerImage(){
 
         try {
             down1 = ImageIO.read(getClass().getResourceAsStream("/resources/player/player.png"));
+            //diger yonler eklenir belki
         }catch (IOException e){
             e.printStackTrace();
         }
 
     }
 
-    public void update(){
-
-        if(!moving){
-
-            if(playerController.upPressed){
+    @Override
+    public void update() {
+        if (!moving) { // hareket yoksa
+            if (playerController.upPressed) {
                 direction = Direction.UP;
                 moving = true;
-            }
-            else if(playerController.downPressed){
+            } else if (playerController.downPressed) {
                 direction = Direction.DOWN;
                 moving = true;
-            }
-            else if(playerController.leftPressed){
+            } else if (playerController.leftPressed) {
                 direction = Direction.LEFT;
                 moving = true;
-            }
-            else if(playerController.rightPressed){
+            } else if (playerController.rightPressed) {
                 direction = Direction.RIGHT;
                 moving = true;
             }
-        }else {
-            switch (direction){
-                case UP:
-                    y -= speed;
-                    break;
-                case DOWN:
-                    y += speed;
-                    break;
-                case LEFT:
-                    x -= speed;
-                    break;
-                case RIGHT:
-                    x += speed;
-                    break;
+        }
+        // Hareket ediyorsa (else yapısı hoşuma gitmedi karmaşık duruyor)
+        if (moving) {
+            switch (direction) {
+                case UP -> pixelY -= speed;
+                case DOWN -> pixelY += speed;
+                case LEFT -> pixelX -= speed;
+                case RIGHT -> pixelX += speed;
             }
             pixelCounter += speed;
-            if(pixelCounter == playModePanel.getScale() * 16){
-                moving = false;
+
+            if (pixelCounter >= tileSize) {
+                switch (direction) {
+                    case UP -> gridY--;
+                    case DOWN -> gridY++;
+                    case LEFT -> gridX--;
+                    case RIGHT -> gridX++;
+                }
                 pixelCounter = 0;
+                moving = false;
+                updatePixelPosition(); //entity classına bak anlamadıysan
             }
         }
     }
+
 
     public void draw(Graphics2D g2){
 
@@ -114,7 +119,7 @@ public class Player extends Entity {
         }
 
 
-        g2.drawImage(image, x, y, playModePanel.getTileSize(), playModePanel.getTileSize(), null);
+        g2.drawImage(image, pixelX, pixelY, playModePanel.getTileSize(), playModePanel.getTileSize(), null);
     }
 
 
