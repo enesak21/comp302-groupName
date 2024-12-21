@@ -37,16 +37,12 @@ public class Game {
         return isPaused;
     }
 
-    public static float calculateDistance(Tile tile1, Tile tile2) {
-        int x1 = tile1.getGridX();
-        int y1 = tile1.getGridY();
-        int x2 = tile2.getGridX();
-        int y2 = tile2.getGridY();
-        return (float) Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    public static float calculateDistance(int gridx1, int gridy1, int gridx2, int gridy2) {
+        return (float) Math.sqrt(Math.pow(gridx2 - gridx1, 2) + Math.pow(gridy2 - gridy1, 2));
     }
 
-    public static boolean isInRange(Tile tile1, Tile tile2, float range) {
-        return calculateDistance(tile1, tile2) <= range;
+    public static boolean isInRange(int gridx1, int gridy1, int gridx2, int gridy2, float range) {
+        return calculateDistance(gridx1,gridy1,gridx2,gridy2) <= range;
     }
 
     public boolean validateHall(Hall hall) {
