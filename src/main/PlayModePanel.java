@@ -33,12 +33,16 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     private TimeController timeController;
 
+    private Grid grid;
+
     private Font pressStart2PFont;
 
     int FPS = 60;
 
     Thread gameThread;
     Game game;
+
+    // Constructor
 
     // Constructor
     public PlayModePanel() {
@@ -51,10 +55,10 @@ public class PlayModePanel extends JPanel implements Runnable {
         game = new Game(player, tileSize, this); // Pass the required arguments
         this.addKeyListener(player.getPlayerController());
 
+        // Initialize the grid
         grid = new Grid(tileSize, this);
         CollisionChecker collisionChecker = new CollisionChecker(grid);
         player.setCollisionChecker(collisionChecker);
-    }
 
         // Initialize the TimeController
         timeController = new TimeController();
@@ -68,7 +72,6 @@ public class PlayModePanel extends JPanel implements Runnable {
             e.printStackTrace();
         }
     }
-
     public void startGameThread() {
         System.out.println("Starting game thread");
 
@@ -103,6 +106,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     public void update() {
         game.update();
     }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
