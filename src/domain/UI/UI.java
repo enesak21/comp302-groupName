@@ -1,6 +1,5 @@
 package domain.UI;
 
-import main.HelpPanel;
 import main.PlayModePanel;
 
 import javax.swing.*;

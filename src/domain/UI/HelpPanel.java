@@ -1,6 +1,4 @@
-package main;
-
-import domain.UI.UI;
+package domain.UI;
 
 import javax.swing.*;
 import java.awt.*;

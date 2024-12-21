@@ -53,7 +53,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.addKeyListener(player.getPlayerController());
 
         // Initialize the grid
-        grid = new Grid(tileSize, this);
+        Grid grid = new Grid(tileSize, this);
         CollisionChecker collisionChecker = new CollisionChecker(grid);
         player.setCollisionChecker(collisionChecker);
 
@@ -153,6 +153,7 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         // Draw the pause menu overlay if paused
         if (isPaused) {
+
             g2.setColor(new Color(0, 0, 0, 150)); // Semi-transparent overlay
             g2.fillRect(0, 0, screenWidth, screenHeight);
 
