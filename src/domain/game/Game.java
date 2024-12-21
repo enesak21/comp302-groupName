@@ -1,23 +1,7 @@
 package domain.game;
 
 public class Game {
-    public float remainingTime;
     public boolean isRuneFound = false;
-
-    /**
-     * @return remaining time
-     */
-    public float getRemainingTime(){
-        return this.remainingTime;
-    }
-
-    /**
-     * Sets the remaining time
-     * @param time The time requested to be set
-     */
-    public void setRemainingTime(float time){
-        this.remainingTime = time;
-    }
 
     /**
      * @return Rune is found
