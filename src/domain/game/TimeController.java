@@ -13,11 +13,9 @@ public class TimeController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (timeLeft >= 0) { // Counts down from 60 to 0
-                    System.out.println("Time left: " + timeLeft + " seconds");
                     timeLeft--;
                 } else {
                     timer.stop();
-                    System.out.println("Time's up!");
                 }
             }
         });
