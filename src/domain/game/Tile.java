@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 public class Tile {
     private int x;
     private int y;
+    private boolean solid; // The tile is solid (e.g walls)
     private BufferedImage image;
 
     //not sure about parameters
@@ -19,6 +20,10 @@ public class Tile {
     public boolean isEmpty() {
         return false;
         //test
+    }
+
+    public boolean isSolid() {
+        return solid;
     }
 
     public int getY() {
