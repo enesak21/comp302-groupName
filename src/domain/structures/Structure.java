@@ -11,23 +11,36 @@ public class Structure {
     String type;
     Tile position;
     BufferedImage image;
+    private int width;
+    private int height;
 
     public Structure(String type, Tile position) {
         this.type = type;
         this.position = position;
     }
 
-    public BufferedImage getImage(){
+    public BufferedImage loadImage(){
         try {
             image = ImageIO.read(getClass().getResourceAsStream("/resources/structures/" + this.type + ".png"));
-
+            if (image != null) {
+                width = image.getWidth();
+                height = image.getHeight();
+            }
         }catch (IOException e){
             e.printStackTrace();
         }
         return image;
     }
 
-    public void draw(Graphics2D g2, int offsetX, int offsetY) {
+    public BufferedImage getImage() {
+        return image;
+    }
 
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
     }
 }

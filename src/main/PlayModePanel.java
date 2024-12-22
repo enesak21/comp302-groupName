@@ -152,10 +152,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         // Draw Time (always display the sidebar)
         drawTime(g2);
 
-        // Draw game grid and player
-        gridView.draw(g2, offsetX * tileSize, offsetY * tileSize);
-        playerView.draw(g2);
-
         // Draw Game Over Message
         if (timeController.getTimeLeft() <= 0) {
             drawGameOverMessage(g2);
@@ -170,6 +166,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     private void drawGridAndPlayerView(Graphics2D g2) {
         gridView.draw(g2, offsetX * tileSize, offsetY * tileSize); // Grid'i View ile çiz
         playerView.draw(g2); // Player'ı View ile çiz
+        gridView.drawStructures(g2, offsetX * tileSize, offsetY * tileSize); // Structures'ları View ile çiz
     }
 
     private void drawTime(Graphics2D g2) {
