@@ -102,8 +102,6 @@ public class PlayModePanel extends JPanel implements Runnable {
                 int mouseX = e.getX();
                 int mouseY = e.getY();
 
-                System.out.println("Mouse Clicked at: (" + mouseX + ", " + mouseY + ")");
-
                 int sidebarWidth = 4 * tileSize + 20; // Sidebar width
                 int sidebarX = screenWidth - sidebarWidth - (tileSize + 10) + 20;
 
@@ -113,9 +111,6 @@ public class PlayModePanel extends JPanel implements Runnable {
                 int buttonX1 = sidebarX + 10; // Pause button position
                 int buttonX2 = buttonX1 + buttonWidth + buttonPadding; // Exit button position
                 int buttonY = offsetY * tileSize + 10; // Top margin for both buttons
-
-                System.out.println("Pause Button Bounds: (" + buttonX1 + ", " + buttonY + ") to (" + (buttonX1 + buttonWidth) + ", " + (buttonY + buttonHeight) + ")");
-                System.out.println("Exit Button Bounds: (" + buttonX2 + ", " + buttonY + ") to (" + (buttonX2 + buttonWidth) + ", " + (buttonY + buttonHeight) + ")");
 
                 // Check if Pause Button is clicked
                 if (mouseX >= buttonX1 && mouseX <= buttonX1 + buttonWidth &&
