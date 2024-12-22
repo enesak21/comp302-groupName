@@ -191,7 +191,7 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         // Sidebar Background
         int sidebarWidth = 4 * tileSize + 20; // Make the sidebar slightly wider by 12 pixels
-        int sidebarX = screenWidth - sidebarWidth - (tileSize + 10); // Adjust position accordingly
+        int sidebarX = screenWidth - sidebarWidth - (tileSize + 10) + 20;
         int sidebarY = offsetY * tileSize; // Set Y position to offsetY * tileSize
         g2.setColor(new Color(30, 30, 30));
         g2.fillRect(sidebarX, sidebarY, sidebarWidth, gridHeight); // Set height to gridHeight
