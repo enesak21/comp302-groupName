@@ -175,6 +175,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         // Draw game grid and player
         gridView.draw(g2, offsetX * tileSize, offsetY * tileSize);
         playerView.draw(g2);
+        gridView.drawStructures(g2, offsetX * tileSize, offsetY * tileSize);
 
         //Draw monsters
         archerView.draw(g2);
@@ -190,12 +191,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         }
 
         g2.dispose();
-    }
-
-    private void drawGridAndPlayerView(Graphics2D g2) {
-        gridView.draw(g2, offsetX * tileSize, offsetY * tileSize); // Grid'i View ile çiz
-        playerView.draw(g2); // Player'ı View ile çiz
-        gridView.drawStructures(g2, offsetX * tileSize, offsetY * tileSize); // Structures'ları View ile çiz
     }
 
     private void drawTime(Graphics2D g2) {
