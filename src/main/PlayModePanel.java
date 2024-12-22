@@ -49,7 +49,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     // Constructor
     public PlayModePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.black);
+        this.setBackground(new Color(66, 40, 53));
         this.setDoubleBuffered(true);
         this.setFocusable(true);
 
@@ -76,12 +76,7 @@ public class PlayModePanel extends JPanel implements Runnable {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_P || e.getKeyCode() == KeyEvent.VK_ESCAPE) { // Toggle with 'P' or 'Esc'
-                    isPaused = !isPaused;
-                    if (isPaused) {
-                        timeController.pauseTimer();
-                    } else {
-                        timeController.resumeTimer();
-                    }
+                    game.togglePause();
                     repaint(); // Refresh screen to display/hide menu
                 }
             }
