@@ -321,7 +321,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         // Draw left and right walls
         for (int row = 0; row < gridRows; row++) {
             int y = (offsetY + row) * tileSize;
-            System.out.println(tileSize);
+            //System.out.println(tileSize);
             g2.drawImage(leftWall, leftX, y, leftWall.getWidth(null), tileSize, null); // Draw with fixed height
             g2.drawImage(rightWall, rightX, y, rightWall.getWidth(null), tileSize, null); // Draw with fixed height
         }
