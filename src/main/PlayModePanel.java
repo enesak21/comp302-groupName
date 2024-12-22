@@ -55,6 +55,7 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     // Declare the halls variable
     private List<Hall> halls;
+    private int hallNum = 0;
 
     //WALL PART
     private Image leftWall, rightWall, topWall, bottomWall;
@@ -80,7 +81,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.setFocusable(true);
 
-        initializeGameComponents();
+        initializeGameComponents(0);
         addPauseKeyListener();
         loadFont();
 
@@ -136,11 +137,14 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     }
 
-    private void initializeGameComponents() {
+    private void initializeGameComponents(int hallNum) {
+        System.out.println("current hall num: " + hallNum);
+        System.out.println("total halls: " + halls.size());
+
         Player player = new Player("Osimhen", 0, 0, tileSize, this, new PlayerController());
         playerView = new PlayerView(player);
         // Initialize the grid
-        grid = halls.get(0).toGrid(tileSize);
+        grid = halls.get(hallNum).toGrid(tileSize);
         game = new Game(player, tileSize, this, grid);
         placeRune();
 
@@ -188,9 +192,28 @@ public class PlayModePanel extends JPanel implements Runnable {
                 if (clickedStructure != null) {
                     if (clickedStructure.hasRune()) {
                         System.out.println("Rune collected!");
+
+                        // Transition to the next hall
+                        // Move to the next hall
+                        if (hallNum < halls.size()) {
+                            moveToNextHall();
+                        } else {
+                            System.out.println("Game Completed!");
+                            System.exit(0); // End the game if no more halls
+                        }
                     }
                 }
             }
+        }
+    }
+
+    private void moveToNextHall() {
+        hallNum++; // Move to the next hall
+        if (hallNum < halls.size()) {
+            initializeGameComponents(hallNum); // Initialize the next hall
+        } else {
+            System.out.println("Game Completed!");
+            System.exit(0); // End the game if no more halls
         }
     }
 
