@@ -10,11 +10,13 @@ public class Game {
     private Player player;
     private Grid grid;
     private int remainingTime; // Add this field
+    private TimeController timeController;
 
     public Game(Player player, int tileSize, PlayModePanel playModePanel, Grid grid) {
         this.player = player;
         this.grid = grid;
         this.remainingTime = 60; // Initialize with a default value
+        this.timeController = new TimeController();
     }
 
     public boolean isRuneFound() {
@@ -26,11 +28,11 @@ public class Game {
     }
 
     public void pauseGame() {
-        isPaused = true;
+        timeController.pauseTimer();
     }
 
     public void resumeGame() {
-        isPaused = false;
+        timeController.resumeTimer();
     }
 
     public boolean isPaused() {
@@ -74,5 +76,9 @@ public class Game {
 
     public void togglePause() {
         isPaused = !isPaused;
+    }
+
+    public TimeController getTimeController() {
+        return timeController;
     }
 }

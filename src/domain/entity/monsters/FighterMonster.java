@@ -1,38 +1,50 @@
 package domain.entity.monsters;
 
 import domain.entity.Entity;
+import domain.entity.playerObjects.Player;
+
+import java.util.Random;
+
+import static domain.game.Game.isInRange;
 
 public class FighterMonster extends BaseMonster {
-    private int daggerRange = 1;
+    private final int DAGGER_RANGE = 1;
+    private Random random;
 
     public FighterMonster(int gridX, int gridY, int tileSize) {
         super(gridX, gridY, tileSize);
+        this.random = new Random();
+    }
+
+    @Override
+    public void update() {
+
     }
 
 
     public void move() {
         //simple random movement code
-        int direction = (int) (Math.random() * 4); //0: UP, 1: DOWN, 2: LEFT, 3:RIGHT
+        int direction = (random.nextInt(4)); //0: UP, 1: DOWN, 2: LEFT, 3:RIGHT
         switch (direction){
             case 0 -> gridY--; //Move Up
             case 1 -> gridY++; //Move Down
             case 2 -> gridX--; //Move Left
             case 3 -> gridX++; //Move Right
         }
-        updatePixelPosition();
+        updatePixelPosition(); //This method could be in MonsterView
     }
 
 
     @Override
-    public void update() {
+    public void update(Player player) {
         move();
-        attack();
-
+        attack(player);
     }
+
     @Override
-    public void attack() {
-        // Eğer hero yanındaysa saldır
-        // Bu kısım collision checker ile desteklenebilir
-        //System.out.println("Hero attacked by FighterMonster!");
+    public void attack(Player player) {
+        if (isInRange(this.getGridX(),this.getGridX(),player.getGridX(),player.getGridY(), DAGGER_RANGE)) {
+
+        }
     }
 }

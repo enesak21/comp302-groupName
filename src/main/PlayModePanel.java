@@ -97,12 +97,12 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_P || e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     isPaused = !isPaused;
                     if (isPaused) {
-                        timeController.pauseTimer();
+                        game.pauseGame();
                     } else {
-                        timeController.resumeTimer();
+                        game.resumeGame();
                     }
                     repaint();
                 }

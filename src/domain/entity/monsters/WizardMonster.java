@@ -1,6 +1,7 @@
 package domain.entity.monsters;
 
 import domain.entity.Entity;
+import domain.entity.playerObjects.Player;
 
 public class WizardMonster extends BaseMonster{
     private float teleportFrequency = 5; //It teleports the rune in every 5 sec.
@@ -9,18 +10,24 @@ public class WizardMonster extends BaseMonster{
         super(gridX, gridY, tileSize);
     }
 
-
-    private void switchRune() {}
-
-
     @Override
     public void update() {
 
     }
 
     @Override
-    public void attack() {
-        //Wizard does not attack
+    public void update(Player player) {
+        attack(player);
+        move();
     }
 
+    @Override
+    public void attack(Player player) {
+        //a.k.a switchRune()
+    }
+
+    @Override
+    public void move(){
+
+    }
 }

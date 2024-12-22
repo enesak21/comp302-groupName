@@ -7,10 +7,16 @@ import domain.game.Game;
 
 public class ArcherMonster extends BaseMonster{
     private float arrowRange = 4;
-    private float shootFrequency;
+    private final long SHOOT_FREQUENCY = 1000;
+    private long lastAttackTime;
 
     public ArcherMonster(int gridX, int gridY, int tileSize) {
         super(gridX, gridY, tileSize);
+    }
+
+    @Override
+    public void update() {
+
     }
 
     public void throwArrow() {}
@@ -18,12 +24,19 @@ public class ArcherMonster extends BaseMonster{
     public void move() {}
 
     @Override
-    public void update() {
-        attack(); //Archer Monster cannot move. It just attacks.
+    public void update(Player player) {
+         attack(player);
     }
 
     @Override
-    public void attack() {
-
+    public void attack(Player player) {
+        if (Game.isInRange(this.getGridX(), this.getGridY(), player.getGridX(), player.getGridY(), arrowRange)) {
+            long currentTime = System.currentTimeMillis();
+            if ((currentTime - lastAttackTime) > SHOOT_FREQUENCY) {
+                throwArrow();
+                lastAttackTime = currentTime;
+            }
+        }
     }
+
 }
