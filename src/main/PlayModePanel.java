@@ -53,10 +53,12 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.setFocusable(true);
 
+        // Initialize the player
         Player player = new Player("Osimhen", 0, 0, tileSize, this, new PlayerController());
         playerView = new PlayerView(player);
 
-        game = new Game(player, tileSize, this); // Pass the required arguments
+        //Initialize the game
+        game = new Game(player, tileSize, this,grid); // Pass the required arguments
         this.addKeyListener(player.getPlayerController());
 
         // Initialize the grid
@@ -125,7 +127,7 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public void update() {
         if (!isPaused) {
-            // Oyuncunun durumunu güncelle
+            // Update the player
             game.getPlayer().update();
 
             // Zaman bitti mi kontrol et
@@ -253,5 +255,9 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public int getTileSize() {
         return tileSize;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 }
