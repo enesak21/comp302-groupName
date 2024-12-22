@@ -16,8 +16,8 @@ import java.util.List;
 
 public class BuildModePanel extends JPanel {
 
-    private static final int GRID_SIZE = 16;
-    private static final int CELL_SIZE = 32;
+    private static final int GRID_SIZE = 16; // Grid size
+    private static final int CELL_SIZE = 32; // Original cell size restored
 
     private final List<Hall> halls = new ArrayList<>();
     private int currentGridIndex = 0;
@@ -31,31 +31,29 @@ public class BuildModePanel extends JPanel {
         structureMap = initializeStructureMap();
 
         setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(800, 600));
+        setPreferredSize(new Dimension(GRID_SIZE * CELL_SIZE + 150, GRID_SIZE * CELL_SIZE + 100));
 
-        // Create a dynamic hall name label (to replace "Build Components Here")
+        // Create the hall name label dynamically
         hallNameLabel = new JLabel(halls.get(currentGridIndex).getName(), SwingConstants.CENTER);
         hallNameLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        add(hallNameLabel, BorderLayout.NORTH); // Place the hall name at the very top
+        add(hallNameLabel, BorderLayout.NORTH);
 
         // Create the grid panel for drawing
-        gridPanel = new GridPanel(halls.get(currentGridIndex), structureMap, CELL_SIZE, GRID_SIZE, this);
+        gridPanel = new GridPanel(halls.get(currentGridIndex), structureMap, this);
         add(gridPanel, BorderLayout.CENTER);
 
-        // Create the combined action and navigation panel at the bottom
-        JPanel bottomPanel = createBottomPanel();
-        add(bottomPanel, BorderLayout.SOUTH);
+        JPanel navigationPanel = createNavigationPanel();
+        add(navigationPanel, BorderLayout.SOUTH);
 
-        // Create the structure selection panel on the right
         JPanel structurePanel = createStructurePanel();
         add(structurePanel, BorderLayout.EAST);
     }
 
     private void initializeHalls() {
-        halls.add(new HallOfEarth());
         halls.add(new HallOfAir());
+        halls.add(new HallOfEarth());
         halls.add(new HallOfWater());
-        halls.add(new HallOfFire());
+        halls.add(new HallOfFire());// Added Hall of Water
     }
 
     private HashMap<String, String> initializeStructureMap() {
@@ -71,10 +69,32 @@ public class BuildModePanel extends JPanel {
         return map;
     }
 
+    private JPanel createNavigationPanel() {
+        JPanel navigationPanel = new JPanel(new FlowLayout());
+
+        // Previous Grid Button
+        JButton prevGridButton = new JButton("Previous Grid");
+        prevGridButton.addActionListener(e -> switchGrid(-1));
+
+        // Next Grid Button
+        JButton nextGridButton = new JButton("Next Grid");
+        nextGridButton.addActionListener(e -> switchGrid(1));
+
+        // Check Button
+        JButton checkButton = new JButton("Check");
+        checkButton.addActionListener(e -> checkCurrentHall());
+
+        navigationPanel.add(prevGridButton);
+        navigationPanel.add(nextGridButton);
+        navigationPanel.add(checkButton);
+
+        return navigationPanel;
+    }
+
     private JPanel createStructurePanel() {
         JPanel structurePanel = new JPanel();
         structurePanel.setLayout(new GridLayout(0, 1, 5, 5));
-        structurePanel.setPreferredSize(new Dimension(150, 600));
+        structurePanel.setPreferredSize(new Dimension(150, GRID_SIZE * CELL_SIZE));
 
         for (String key : structureMap.keySet()) {
             JButton button = new JButton(new ImageIcon(new ImageIcon(structureMap.get(key))
@@ -92,29 +112,10 @@ public class BuildModePanel extends JPanel {
         return structurePanel;
     }
 
-    private JPanel createBottomPanel() {
-        JPanel bottomPanel = new JPanel(new BorderLayout());
-
-        // Create navigation panel for Previous and Next Grid buttons
-        JPanel navigationPanel = new JPanel(new FlowLayout());
-        JButton prevGridButton = new JButton("Previous Grid");
-        prevGridButton.addActionListener(e -> switchGrid(-1));
-        JButton nextGridButton = new JButton("Next Grid");
-        nextGridButton.addActionListener(e -> switchGrid(1));
-        navigationPanel.add(prevGridButton);
-        navigationPanel.add(nextGridButton);
-
-        // Create action panel for the Check button
-        JPanel actionPanel = new JPanel(new FlowLayout());
-        JButton checkButton = new JButton("Check");
-        checkButton.addActionListener(e -> checkCurrentHall());
-        actionPanel.add(checkButton);
-
-        // Add the navigation and action panels to the bottom panel
-        bottomPanel.add(navigationPanel, BorderLayout.NORTH);
-        bottomPanel.add(actionPanel, BorderLayout.SOUTH);
-
-        return bottomPanel;
+    private void switchGrid(int direction) {
+        currentGridIndex = (currentGridIndex + direction + halls.size()) % halls.size();
+        gridPanel.setHall(halls.get(currentGridIndex)); // Update the grid panel's hall
+        hallNameLabel.setText(halls.get(currentGridIndex).getName()); // Update the hall name
     }
 
     private void checkCurrentHall() {
@@ -122,18 +123,11 @@ public class BuildModePanel extends JPanel {
 
         if (currentHall.isRequirementMet()) {
             JOptionPane.showMessageDialog(this, "The current hall has enough structures! Confirmed.", "Success", JOptionPane.INFORMATION_MESSAGE);
-            currentHall.setGrid(gridPanel.getCurrentGrid());
+            currentHall.setGrid(currentHall.getGrid()); // Confirm and store the grid
         } else {
             int remainingStructures = currentHall.getMinStructures() - currentHall.getPlacedStructuresCount();
             JOptionPane.showMessageDialog(this, "You need " + remainingStructures + " more structures.", "Requirement Not Met", JOptionPane.WARNING_MESSAGE);
         }
-    }
-
-    private void switchGrid(int direction) {
-        currentGridIndex = (currentGridIndex + direction + halls.size()) % halls.size();
-        gridPanel.setHall(halls.get(currentGridIndex));
-        hallNameLabel.setText(halls.get(currentGridIndex).getName()); // Dynamically update hall name
-        gridPanel.repaint();
     }
 
     public void setSelectedStructure(String structureKey) {
