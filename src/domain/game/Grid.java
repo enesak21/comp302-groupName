@@ -8,6 +8,7 @@ import domain.structures.Structure;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 
 public class Grid {
@@ -92,5 +93,18 @@ public class Grid {
 
     public void setTileSize(int tileSize) {
         this.tileSize = tileSize;
+    }
+
+    public ArrayList<Structure> getStructures() {
+        ArrayList<Structure> structures = new ArrayList<>();
+        for (int column = 0; column < columns; column++) {
+            for (int row = 0; row < rows; row++) {
+                Tile tile = tiles[column][row];
+                if (tile != null && tile.getStructure() != null) {
+                    structures.add(tile.getStructure());
+                }
+            }
+        }
+        return structures;
     }
 }
