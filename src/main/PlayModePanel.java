@@ -107,9 +107,7 @@ public class PlayModePanel extends JPanel implements Runnable {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (!isPaused) {
-                    int mouseX = e.getX();
-                    int mouseY = e.getY();
-                    handleMouseClick(mouseX, mouseY);
+                    handleMouseClick(e);
                 }
             }
         });
@@ -120,7 +118,21 @@ public class PlayModePanel extends JPanel implements Runnable {
         timeController = new TimeController();
     }
 
-    private void handleMouseClick(int mouseX, int mouseY) {
+    /**
+     * Handles mouse click events on the game grid.
+     *
+     * @param e the MouseEvent triggered by the mouse click
+     *
+     * This method calculates the grid coordinates based on the mouse click position.
+     * If the click is within the bounds of the grid, it identifies the clicked tile
+     * and checks if it is near the player's current position. If the clicked tile
+     * contains a structure, it further checks if the structure has a rune and collects
+     * the rune if it does.
+     */
+    private void handleMouseClick(MouseEvent e) {
+        int mouseX = e.getX();
+        int mouseY = e.getY();
+
         int gridX = (mouseX / tileSize) - offsetX;
         int gridY = (mouseY / tileSize) - offsetY;
 
@@ -128,10 +140,12 @@ public class PlayModePanel extends JPanel implements Runnable {
             System.out.println("Clicked on grid: " + gridX + ", " + gridY);
             Tile clickedTile = grid.getTileAt(gridX, gridY);
             Structure clickedStructure = clickedTile.getStructure();
-            if (clickedStructure != null) {
-                System.out.println("Clicked on structure: " + clickedTile.getStructure());
-                if (clickedStructure.hasRune()) {
-                    System.out.println("Rune collected!");
+            Tile playerTile = grid.getTileAt(game.getPlayer().getGridX(), game.getPlayer().getGridY());
+            if (Game.isInRange(clickedTile, playerTile, 1)) {
+                if (clickedStructure != null) {
+                    if (clickedStructure.hasRune()) {
+                        System.out.println("Rune collected!");
+                    }
                 }
             }
         }
