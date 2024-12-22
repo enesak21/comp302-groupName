@@ -47,10 +47,18 @@ public class PlayModePanel extends JPanel implements Runnable {
     private PlayerView playerView;
     private GridView gridView;
 
+
+    //WALL PART
+    private Image leftWall, rightWall, topWall, bottomWall;
+    private Image topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner;
+    private Image testPhoto;
+    private boolean[][] wallGrid;
+
     //Cemal test. Bunlar sonradan otomatik oluşturulacak. Şimdilik dokunmayın
     private MonsterView archerView;
     private MonsterView fighterView;
     private MonsterView wizardView;
+
 
     int FPS = 60;
     Thread gameThread;
@@ -118,6 +126,9 @@ public class PlayModePanel extends JPanel implements Runnable {
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
         }
+
+        initializeWalls();
+        loadWallImages();
     }
 
     public void startGameThread() {
@@ -192,6 +203,7 @@ public class PlayModePanel extends JPanel implements Runnable {
             // Draw Pause Overlay only if the game is not over
             drawPauseOverlay(g2);
         }
+        drawWallsAndCorners(g2);
 
         g2.dispose();
     }
@@ -205,7 +217,7 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         // Sidebar Background
         int sidebarWidth = 4 * tileSize + 20; // Make the sidebar slightly wider by 12 pixels
-        int sidebarX = screenWidth - sidebarWidth - (tileSize + 10); // Adjust position accordingly
+        int sidebarX = screenWidth - sidebarWidth - (tileSize + 10) + 20;
         int sidebarY = offsetY * tileSize; // Set Y position to offsetY * tileSize
         g2.setColor(new Color(30, 30, 30));
         g2.fillRect(sidebarX, sidebarY, sidebarWidth, gridHeight); // Set height to gridHeight
@@ -269,6 +281,76 @@ public class PlayModePanel extends JPanel implements Runnable {
         y += fm.getHeight() + 20;
         g2.drawString(resumeText, x, y);
     }
+
+
+    private void loadWallImages() {
+        try {
+            leftWall = ImageIO.read(getClass().getResource("/resources/Walls/leftWall.png"));
+            rightWall = ImageIO.read(getClass().getResource("/resources/Walls/rightWall2.png"));
+            topWall = ImageIO.read(getClass().getResource("/resources/Walls/frontWall.png"));
+            bottomWall = ImageIO.read(getClass().getResource("/resources/Walls/frontWall.png"));
+            topLeftCorner = ImageIO.read(getClass().getResource("/resources/Walls/topLeftCorner.png"));
+            topRightCorner = ImageIO.read(getClass().getResource("/resources/Walls/topRightCorner.png"));
+            bottomLeftCorner = ImageIO.read(getClass().getResource("/resources/Walls/BottomLeftCorner.png"));
+            bottomRightCorner = ImageIO.read(getClass().getResource("/resources/Walls/BottomRightCorner.png"));
+            testPhoto = ImageIO.read(getClass().getResource("/resources/tiles/Walls.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void drawWallsAndCorners(Graphics2D g2) {
+        int leftX = offsetX * tileSize - leftWall.getWidth(null); // Adjust X for left wall
+        int rightX = (offsetX + gridColumns) * tileSize;         // Adjust X for right wall
+        int topY = offsetY * tileSize - topWall.getHeight(null); // Adjust Y for top wall
+        int bottomY = (offsetY + gridRows) * tileSize;           // Adjust Y for bottom wall
+
+        // Draw top and bottom walls
+        for (int col = 0; col < gridColumns; col++) {
+            int x = (offsetX + col) * tileSize;
+            g2.drawImage(topWall, x, topY, tileSize, topWall.getHeight(null), null); // Draw with fixed width
+            g2.drawImage(bottomWall, x, bottomY, tileSize, bottomWall.getHeight(null), null); // Draw with fixed width
+        }
+
+        // Draw left and right walls
+        for (int row = 0; row < gridRows; row++) {
+            int y = (offsetY + row) * tileSize;
+            System.out.println(tileSize);
+            g2.drawImage(leftWall, leftX, y, leftWall.getWidth(null), tileSize, null); // Draw with fixed height
+            g2.drawImage(rightWall, rightX, y, rightWall.getWidth(null), tileSize, null); // Draw with fixed height
+        }
+
+        // Draw corners
+        g2.drawImage(topLeftCorner, leftX, topY, null);                  // Top-left corner
+        g2.drawImage(topRightCorner, rightX-11 , topY, null);     // Top-right corner (adjusted)
+        g2.drawImage(bottomLeftCorner, leftX, bottomY, null);            // Bottom-left corner
+        g2.drawImage(bottomRightCorner, rightX-11, bottomY, null); // Bottom-right corner (adjusted)
+    }
+
+
+    private void initializeWalls() {
+        wallGrid = new boolean[gridColumns][gridRows];
+
+        // Create a border of walls around the grid
+        for (int col = 0; col < gridColumns; col++) {
+            wallGrid[col][0] = true; // Top border
+            wallGrid[col][gridRows - 1] = true; // Bottom border
+        }
+        for (int row = 0; row < gridRows; row++) {
+            wallGrid[0][row] = true; // Left border
+            wallGrid[gridColumns - 1][row] = true; // Right border
+        }
+
+    }
+
+
+
+
+
+
+
+
+
 
     // Getter functions for scale and tileSize
     public int getScale() {
