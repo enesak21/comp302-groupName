@@ -36,8 +36,6 @@ public class Grid {
         }
     }
 
-
-
     public void draw(Graphics2D g2, int offsetX, int offsetY) {
         for (int column = 0; column < columns; column++) {
             for (int row = 0; row < rows; row++) {

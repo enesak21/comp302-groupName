@@ -1,7 +1,12 @@
 package main;
 
 import domain.UI.GridView;
+import domain.UI.MonsterView;
 import domain.UI.PlayerView;
+import domain.entity.Entity;
+import domain.entity.monsters.ArcherMonster;
+import domain.entity.monsters.FighterMonster;
+import domain.entity.monsters.WizardMonster;
 import domain.entity.playerObjects.Player;
 import domain.game.*;
 
@@ -40,6 +45,19 @@ public class PlayModePanel extends JPanel implements Runnable {
     private PlayerView playerView;
     private GridView gridView;
 
+
+    //WALL PART
+    private Image leftWall, rightWall, topWall, bottomWall;
+    private Image topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner;
+    private Image testPhoto;
+    private boolean[][] wallGrid;
+
+    //Cemal test. Bunlar sonradan otomatik oluşturulacak. Şimdilik dokunmayın
+    private MonsterView archerView;
+    private MonsterView fighterView;
+    private MonsterView wizardView;
+
+
     int FPS = 60;
     Thread gameThread;
     Game game;
@@ -47,43 +65,59 @@ public class PlayModePanel extends JPanel implements Runnable {
     // Constructor
     public PlayModePanel(List<Hall> halls) {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.black);
+        this.setBackground(new Color(66, 40, 53));
         this.setDoubleBuffered(true);
         this.setFocusable(true);
 
+        initializeGameComponents();
+        addPauseKeyListener();
+        loadFont();
+
+        //***TEST***
+        //Initialize 3 monsters
+        ArcherMonster archerMonster = new ArcherMonster(2, 5, tileSize);
+        archerView = new MonsterView((Entity) archerMonster);
+
+        FighterMonster fighterMonster = new FighterMonster(5, 8, tileSize);
+        fighterView = new MonsterView((Entity) fighterMonster);
+
+        WizardMonster wizardMonster = new WizardMonster(10, 8, tileSize);
+        wizardView = new MonsterView((Entity) wizardMonster);
+        //End of the test
+
+    }
+
+    private void initializeGameComponents() {
         Player player = new Player("Osimhen", 0, 0, tileSize, this, new PlayerController());
         playerView = new PlayerView(player);
-
-        game = new Game(player, tileSize, this); // Pass the required arguments
-        this.addKeyListener(player.getPlayerController());
-
-        // Initialize the grid
+         // Initialize the grid
         grid = halls.get(0).toGrid(tileSize);
+        game = new Game(player, tileSize, this, grid);
+        this.addKeyListener(player.getPlayerController());
         gridView = new GridView(grid);
-
         CollisionChecker collisionChecker = new CollisionChecker(grid);
         player.setCollisionChecker(collisionChecker);
-
-        // Initialize the TimeController
         timeController = new TimeController();
+    }
 
-        // Add a KeyListener to toggle pause
+    private void addPauseKeyListener() {
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_P || e.getKeyCode() == KeyEvent.VK_ESCAPE) { // Toggle with 'P' or 'Esc'
+                if (e.getKeyCode() == KeyEvent.VK_P || e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     isPaused = !isPaused;
                     if (isPaused) {
                         timeController.pauseTimer();
                     } else {
                         timeController.resumeTimer();
                     }
-                    repaint(); // Refresh screen to display/hide menu
+                    repaint();
                 }
             }
         });
+    }
 
-        // Load the PressStart2P font
+    private void loadFont() {
         try {
             pressStart2PFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/resources/fonts/PressStart2P-Regular.ttf")).deriveFont(20f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -91,6 +125,9 @@ public class PlayModePanel extends JPanel implements Runnable {
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
         }
+
+        initializeWalls();
+        loadWallImages();
     }
 
     public void startGameThread() {
@@ -123,7 +160,7 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public void update() {
         if (!isPaused) {
-            // Oyuncunun durumunu güncelle
+            // Update the player
             game.getPlayer().update();
 
             // Zaman bitti mi kontrol et
@@ -144,15 +181,19 @@ public class PlayModePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        // Grid and Player View Drawing
-        drawGridAndPlayerView(g2);
-
         // Draw Time (always display the sidebar)
         drawTime(g2);
+
 
         // Draw game grid and player
         gridView.draw(g2, offsetX * tileSize, offsetY * tileSize);
         playerView.draw(g2);
+        gridView.drawStructures(g2, offsetX * tileSize, offsetY * tileSize);
+
+        //Draw monsters
+        archerView.draw(g2);
+        fighterView.draw(g2);
+        wizardView.draw(g2);
 
         // Draw Game Over Message
         if (timeController.getTimeLeft() <= 0) {
@@ -161,13 +202,9 @@ public class PlayModePanel extends JPanel implements Runnable {
             // Draw Pause Overlay only if the game is not over
             drawPauseOverlay(g2);
         }
+        drawWallsAndCorners(g2);
 
         g2.dispose();
-    }
-
-    private void drawGridAndPlayerView(Graphics2D g2) {
-        gridView.draw(g2, offsetX * tileSize, offsetY * tileSize); // Grid'i View ile çiz
-        playerView.draw(g2); // Player'ı View ile çiz
     }
 
     private void drawTime(Graphics2D g2) {
@@ -179,7 +216,7 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         // Sidebar Background
         int sidebarWidth = 4 * tileSize + 20; // Make the sidebar slightly wider by 12 pixels
-        int sidebarX = screenWidth - sidebarWidth - (tileSize + 10); // Adjust position accordingly
+        int sidebarX = screenWidth - sidebarWidth - (tileSize + 10) + 20;
         int sidebarY = offsetY * tileSize; // Set Y position to offsetY * tileSize
         g2.setColor(new Color(30, 30, 30));
         g2.fillRect(sidebarX, sidebarY, sidebarWidth, gridHeight); // Set height to gridHeight
@@ -244,6 +281,76 @@ public class PlayModePanel extends JPanel implements Runnable {
         g2.drawString(resumeText, x, y);
     }
 
+
+    private void loadWallImages() {
+        try {
+            leftWall = ImageIO.read(getClass().getResource("/resources/Walls/leftWall.png"));
+            rightWall = ImageIO.read(getClass().getResource("/resources/Walls/rightWall2.png"));
+            topWall = ImageIO.read(getClass().getResource("/resources/Walls/frontWall.png"));
+            bottomWall = ImageIO.read(getClass().getResource("/resources/Walls/frontWall.png"));
+            topLeftCorner = ImageIO.read(getClass().getResource("/resources/Walls/topLeftCorner.png"));
+            topRightCorner = ImageIO.read(getClass().getResource("/resources/Walls/topRightCorner.png"));
+            bottomLeftCorner = ImageIO.read(getClass().getResource("/resources/Walls/BottomLeftCorner.png"));
+            bottomRightCorner = ImageIO.read(getClass().getResource("/resources/Walls/BottomRightCorner.png"));
+            testPhoto = ImageIO.read(getClass().getResource("/resources/tiles/Walls.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void drawWallsAndCorners(Graphics2D g2) {
+        int leftX = offsetX * tileSize - leftWall.getWidth(null); // Adjust X for left wall
+        int rightX = (offsetX + gridColumns) * tileSize;         // Adjust X for right wall
+        int topY = offsetY * tileSize - topWall.getHeight(null); // Adjust Y for top wall
+        int bottomY = (offsetY + gridRows) * tileSize;           // Adjust Y for bottom wall
+
+        // Draw top and bottom walls
+        for (int col = 0; col < gridColumns; col++) {
+            int x = (offsetX + col) * tileSize;
+            g2.drawImage(topWall, x, topY, tileSize, topWall.getHeight(null), null); // Draw with fixed width
+            g2.drawImage(bottomWall, x, bottomY, tileSize, bottomWall.getHeight(null), null); // Draw with fixed width
+        }
+
+        // Draw left and right walls
+        for (int row = 0; row < gridRows; row++) {
+            int y = (offsetY + row) * tileSize;
+            System.out.println(tileSize);
+            g2.drawImage(leftWall, leftX, y, leftWall.getWidth(null), tileSize, null); // Draw with fixed height
+            g2.drawImage(rightWall, rightX, y, rightWall.getWidth(null), tileSize, null); // Draw with fixed height
+        }
+
+        // Draw corners
+        g2.drawImage(topLeftCorner, leftX, topY, null);                  // Top-left corner
+        g2.drawImage(topRightCorner, rightX-11 , topY, null);     // Top-right corner (adjusted)
+        g2.drawImage(bottomLeftCorner, leftX, bottomY, null);            // Bottom-left corner
+        g2.drawImage(bottomRightCorner, rightX-11, bottomY, null); // Bottom-right corner (adjusted)
+    }
+
+
+    private void initializeWalls() {
+        wallGrid = new boolean[gridColumns][gridRows];
+
+        // Create a border of walls around the grid
+        for (int col = 0; col < gridColumns; col++) {
+            wallGrid[col][0] = true; // Top border
+            wallGrid[col][gridRows - 1] = true; // Bottom border
+        }
+        for (int row = 0; row < gridRows; row++) {
+            wallGrid[0][row] = true; // Left border
+            wallGrid[gridColumns - 1][row] = true; // Right border
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
     // Getter functions for scale and tileSize
     public int getScale() {
         return scale;
@@ -251,5 +358,10 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public int getTileSize() {
         return tileSize;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+        this.playerView= new PlayerView(game.getPlayer());
     }
 }

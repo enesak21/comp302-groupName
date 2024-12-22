@@ -13,10 +13,12 @@ public class PlayerView extends EntityView {
 
     public PlayerView(Player player) {
         super(player);
-        loadPlayerImages();
+        loadEntityImages();
     }
 
-    private void loadPlayerImages() {
+    @Override
+    public void loadEntityImages() {
+
         try {
             downImage = ImageIO.read(getClass().getResourceAsStream("/resources/player/player.png"));
             upImage = ImageIO.read(getClass().getResourceAsStream("/resources/player/player.png"));
@@ -27,7 +29,6 @@ public class PlayerView extends EntityView {
             throw new RuntimeException("Failed to load player images.", e);
         }
     }
-
     @Override
     public void draw(Graphics2D g2) {
         Player player = (Player) entity; // Cast Entity to Player
