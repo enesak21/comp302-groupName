@@ -71,4 +71,8 @@ public class Game {
     public void setRemainingTime(int remainingTime) {
         this.remainingTime = remainingTime;
     }
+
+    public void togglePause() {
+        isPaused = !isPaused;
+    }
 }
