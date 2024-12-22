@@ -262,7 +262,19 @@ public class PlayModePanel extends JPanel implements Runnable {
         }
     }
 
+    private void drawWalls(Graphics2D g2) {
+        if (wallImage == null) return;
 
+        for (int col = 0; col < gridColumns; col++) {
+            for (int row = 0; row < gridRows; row++) {
+                if (wallGrid[col][row]) {
+                    int screenX = (offsetX + col) * tileSize;
+                    int screenY = (offsetY + row) * tileSize;
+                    g2.drawImage(wallImage, screenX, screenY, tileSize, tileSize, null);
+                }
+            }
+        }
+    }
 
     private void initializeWalls() {
         wallGrid = new boolean[gridColumns][gridRows];
