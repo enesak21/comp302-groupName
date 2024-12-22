@@ -59,14 +59,15 @@ public class PlayModePanel extends JPanel implements Runnable {
     // Constructor
     public PlayModePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.black);
+        this.setBackground(new Color(66, 40, 53));
         this.setDoubleBuffered(true);
         this.setFocusable(true);
 
-        Player player = new Player("Rafa Silva", 0, 0, tileSize, this, new PlayerController());
-        playerView = new PlayerView(player);
+        // Initialize the player
+        Player player = new Player("Osimhen", 0, 0, tileSize, this, new PlayerController());
 
-        game = new Game(player, tileSize, this); // Pass the required arguments
+        //Initialize the game
+        game = new Game(player, tileSize, this,grid); // Pass the required arguments
         this.addKeyListener(player.getPlayerController());
 
         //***TEST***
@@ -96,12 +97,7 @@ public class PlayModePanel extends JPanel implements Runnable {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_P || e.getKeyCode() == KeyEvent.VK_ESCAPE) { // Toggle with 'P' or 'Esc'
-                    isPaused = !isPaused;
-                    if (isPaused) {
-                        timeController.pauseTimer();
-                    } else {
-                        timeController.resumeTimer();
-                    }
+                    game.togglePause();
                     repaint(); // Refresh screen to display/hide menu
                 }
             }
@@ -147,7 +143,7 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public void update() {
         if (!isPaused) {
-            // Oyuncunun durumunu güncelle
+            // Update the player
             game.getPlayer().update();
 
             // Zaman bitti mi kontrol et
@@ -274,5 +270,9 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public int getTileSize() {
         return tileSize;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 }

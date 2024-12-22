@@ -11,9 +11,9 @@ public class Game {
     private Grid grid;
     private int remainingTime; // Add this field
 
-    public Game(Player player, int tileSize, PlayModePanel playModePanel) {
+    public Game(Player player, int tileSize, PlayModePanel playModePanel, Grid grid) {
         this.player = player;
-        this.grid = new Grid(tileSize);
+        this.grid = grid;
         this.remainingTime = 60; // Initialize with a default value
     }
 
@@ -70,5 +70,9 @@ public class Game {
 
     public void setRemainingTime(int remainingTime) {
         this.remainingTime = remainingTime;
+    }
+
+    public void togglePause() {
+        isPaused = !isPaused;
     }
 }
