@@ -127,7 +127,12 @@ public class PlayModePanel extends JPanel implements Runnable {
         if (gridX >= 0 && gridX < gridColumns && gridY >= 0 && gridY < gridRows) {
             System.out.println("Clicked on grid: " + gridX + ", " + gridY);
             Tile clickedTile = grid.getTileAt(gridX, gridY);
-            if (clickedTile.getStructure() != null) {
+            Structure clickedStructure = clickedTile.getStructure();
+            if (clickedStructure != null) {
+                System.out.println("Clicked on structure: " + clickedTile.getStructure());
+                if (clickedStructure.hasRune()) {
+                    System.out.println("Rune collected!");
+                }
             }
         }
     }
@@ -137,6 +142,7 @@ public class PlayModePanel extends JPanel implements Runnable {
      */
     public void placeRune() {
         List <Structure> structures = grid.getStructures();
+        System.out.println(structures);
         if (structures != null && !structures.isEmpty()) {
             Random random = new Random();
             int randomIndex = random.nextInt(structures.size());

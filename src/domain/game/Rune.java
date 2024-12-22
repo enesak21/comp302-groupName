@@ -6,7 +6,7 @@ public class Rune {
     private Structure storedStructure;
     
     public Rune(Structure structure) {
-        this.storedStructure = structure;
+        setStoredStructure(structure);
     }
 
     public Structure getStoredStructure() {
@@ -15,7 +15,9 @@ public class Rune {
 
     public void setStoredStructure(Structure storedStructure) {
         Structure oldStructure = this.storedStructure;
-        oldStructure.setHasRune(false);
+        if (oldStructure != null) { // If the rune was in a structure, remove the rune from it
+            oldStructure.setHasRune(false);
+        }
         this.storedStructure = storedStructure;
         storedStructure.setHasRune(true);
     }
