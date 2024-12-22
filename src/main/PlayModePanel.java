@@ -16,6 +16,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
@@ -100,10 +102,34 @@ public class PlayModePanel extends JPanel implements Runnable {
         placeRune();
 
         this.addKeyListener(player.getPlayerController());
+
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (!isPaused) {
+                    int mouseX = e.getX();
+                    int mouseY = e.getY();
+                    handleMouseClick(mouseX, mouseY);
+                }
+            }
+        });
+
         gridView = new GridView(grid);
         CollisionChecker collisionChecker = new CollisionChecker(grid);
         player.setCollisionChecker(collisionChecker);
         timeController = new TimeController();
+    }
+
+    private void handleMouseClick(int mouseX, int mouseY) {
+        int gridX = (mouseX / tileSize) - offsetX;
+        int gridY = (mouseY / tileSize) - offsetY;
+
+        if (gridX >= 0 && gridX < gridColumns && gridY >= 0 && gridY < gridRows) {
+            System.out.println("Clicked on grid: " + gridX + ", " + gridY);
+            Tile clickedTile = grid.getTileAt(gridX, gridY);
+            if (clickedTile.getStructure() != null) {
+            }
+        }
     }
 
     /**
@@ -309,7 +335,6 @@ public class PlayModePanel extends JPanel implements Runnable {
             topRightCorner = ImageIO.read(getClass().getResource("/resources/Walls/topRightCorner.png"));
             bottomLeftCorner = ImageIO.read(getClass().getResource("/resources/Walls/BottomLeftCorner.png"));
             bottomRightCorner = ImageIO.read(getClass().getResource("/resources/Walls/BottomRightCorner.png"));
-            testPhoto = ImageIO.read(getClass().getResource("/resources/tiles/Walls.png"));
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error loading wall images. Please check the file paths.");
@@ -335,7 +360,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         // Draw left and right walls
         for (int row = 0; row < gridRows; row++) {
             int y = (offsetY + row) * tileSize;
-            System.out.println(tileSize);
             g2.drawImage(leftWall, leftX, y, leftWall.getWidth(null), tileSize, null); // Draw with fixed height
             g2.drawImage(rightWall, rightX, y, rightWall.getWidth(null), tileSize, null); // Draw with fixed height
         }
