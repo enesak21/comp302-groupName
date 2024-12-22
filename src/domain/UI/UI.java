@@ -1,15 +1,18 @@
 package domain.UI;
 
+import domain.game.Hall;
 import main.BuildModePanel;
 import main.PlayModePanel;
-
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
+import domain.game.Hall;
 
 public class UI {
     private JFrame frame;
     private CardLayout cardLayout;
     private JPanel mainPanel;
+    private List<Hall> halls;
 
     public UI() {
         initializeUI();
@@ -122,6 +125,7 @@ public class UI {
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(completeButton);
         buildScreen.add(buttonPanel, BorderLayout.SOUTH);
+        halls = buildModePanel.getHalls(); // Retrieve the halls from BuildModePanel
 
         return buildScreen;
     }
@@ -129,7 +133,7 @@ public class UI {
 
 
     private JPanel createGameScreen() {
-        PlayModePanel playModePanel = new PlayModePanel();
+        PlayModePanel playModePanel = new PlayModePanel(halls);
 
         playModePanel.startGameThread(); // Start the game loop
         SwingUtilities.invokeLater(playModePanel::requestFocusInWindow); // Ensure focus is set

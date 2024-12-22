@@ -3,10 +3,7 @@ package main;
 import domain.UI.GridView;
 import domain.UI.PlayerView;
 import domain.entity.playerObjects.Player;
-import domain.game.Game;
-import domain.game.CollisionChecker;
-import domain.game.Grid;
-import domain.game.TimeController;
+import domain.game.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class PlayModePanel extends JPanel implements Runnable {
 
@@ -47,7 +45,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     Game game;
 
     // Constructor
-    public PlayModePanel() {
+    public PlayModePanel(List<Hall> halls) {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
@@ -60,7 +58,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.addKeyListener(player.getPlayerController());
 
         // Initialize the grid
-        grid = new Grid(tileSize);
+        grid = halls.get(0).toGrid(tileSize);
         gridView = new GridView(grid);
 
         CollisionChecker collisionChecker = new CollisionChecker(grid);

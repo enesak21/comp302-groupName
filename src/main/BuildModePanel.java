@@ -16,11 +16,6 @@ import domain.game.HallOfWater;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class BuildModePanel extends JPanel {
 
@@ -69,10 +64,10 @@ public class BuildModePanel extends JPanel {
     }
 
     private void initializeHalls() {
-        halls.add(new HallOfAir());
         halls.add(new HallOfEarth());
-        halls.add(new HallOfFire());
-        halls.add(new HallOfWater()); // Added Hall of Water
+        halls.add(new HallOfAir());
+        halls.add(new HallOfWater());
+        halls.add(new HallOfFire());; // Added Hall of Wa
     }
 
     private HashMap<String, String> initializeStructureMap() {
@@ -207,6 +202,10 @@ public class BuildModePanel extends JPanel {
 
     public String getSelectedStructure() {
         return selectedStructure;
+    }
+
+    public List<Hall> getHalls() {
+        return halls;
     }
 }
 
