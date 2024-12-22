@@ -71,8 +71,7 @@ public class Hall {
                 if (structureKey != null) {
                     // Create a Structure object for the tile if there's a structure key
                     Structure structure = new Structure(structureKey, tiles[x][y]);
-                    tiles[x][y].setStructure(structure);
-                    tiles[x][y].setSolid(true); // Mark tile as solid
+                    tiles[x][y].addStructure(structure);
                 }
             }
         }

@@ -45,6 +45,8 @@ public class PlayModePanel extends JPanel implements Runnable {
     private PlayerView playerView;
     private GridView gridView;
 
+    // Declare the halls variable
+    private List<Hall> halls;
 
     //WALL PART
     private Image leftWall, rightWall, topWall, bottomWall;
@@ -57,13 +59,13 @@ public class PlayModePanel extends JPanel implements Runnable {
     private MonsterView fighterView;
     private MonsterView wizardView;
 
-
     int FPS = 60;
     Thread gameThread;
     Game game;
 
     // Constructor
     public PlayModePanel(List<Hall> halls) {
+        this.halls = halls; // Initialize the halls variable
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(new Color(66, 40, 53));
         this.setDoubleBuffered(true);
@@ -84,13 +86,12 @@ public class PlayModePanel extends JPanel implements Runnable {
         WizardMonster wizardMonster = new WizardMonster(10, 8, tileSize);
         wizardView = new MonsterView((Entity) wizardMonster);
         //End of the test
-
     }
 
     private void initializeGameComponents() {
         Player player = new Player("Osimhen", 0, 0, tileSize, this, new PlayerController());
         playerView = new PlayerView(player);
-         // Initialize the grid
+        // Initialize the grid
         grid = halls.get(0).toGrid(tileSize);
         game = new Game(player, tileSize, this, grid);
         this.addKeyListener(player.getPlayerController());
@@ -183,7 +184,6 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         // Draw Time (always display the sidebar)
         drawTime(g2);
-
 
         // Draw game grid and player
         gridView.draw(g2, offsetX * tileSize, offsetY * tileSize);
@@ -281,7 +281,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         g2.drawString(resumeText, x, y);
     }
 
-
     private void loadWallImages() {
         try {
             leftWall = ImageIO.read(getClass().getResource("/resources/Walls/leftWall.png"));
@@ -326,7 +325,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         g2.drawImage(bottomRightCorner, rightX-11, bottomY, null); // Bottom-right corner (adjusted)
     }
 
-
     private void initializeWalls() {
         wallGrid = new boolean[gridColumns][gridRows];
 
@@ -339,17 +337,7 @@ public class PlayModePanel extends JPanel implements Runnable {
             wallGrid[0][row] = true; // Left border
             wallGrid[gridColumns - 1][row] = true; // Right border
         }
-
     }
-
-
-
-
-
-
-
-
-
 
     // Getter functions for scale and tileSize
     public int getScale() {
