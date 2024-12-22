@@ -13,7 +13,7 @@ public class PlayerView extends EntityView {
 
     public PlayerView(Player player) {
         super(player);
-        loadEntityImages();;
+        loadEntityImages();
     }
 
     @Override

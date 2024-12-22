@@ -1,7 +1,12 @@
 package main;
 
 import domain.UI.GridView;
+import domain.UI.MonsterView;
 import domain.UI.PlayerView;
+import domain.entity.Entity;
+import domain.entity.monsters.ArcherMonster;
+import domain.entity.monsters.FighterMonster;
+import domain.entity.monsters.WizardMonster;
 import domain.entity.playerObjects.Player;
 import domain.game.Game;
 import domain.game.CollisionChecker;
@@ -42,11 +47,18 @@ public class PlayModePanel extends JPanel implements Runnable {
     private PlayerView playerView;
     private GridView gridView;
 
+
     //WALL PART
     private Image leftWall, rightWall, topWall, bottomWall;
     private Image topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner;
     private Image testPhoto;
     private boolean[][] wallGrid;
+
+    //Cemal test. Bunlar sonradan otomatik oluşturulacak. Şimdilik dokunmayın
+    private MonsterView archerView;
+    private MonsterView fighterView;
+    private MonsterView wizardView;
+
 
     int FPS = 60;
     Thread gameThread;
@@ -55,43 +67,58 @@ public class PlayModePanel extends JPanel implements Runnable {
     // Constructor
     public PlayModePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.black);
+        this.setBackground(new Color(66, 40, 53));
         this.setDoubleBuffered(true);
         this.setFocusable(true);
 
+        initializeGameComponents();
+        addPauseKeyListener();
+        loadFont();
+
+        //***TEST***
+        //Initialize 3 monsters
+        ArcherMonster archerMonster = new ArcherMonster(2, 5, tileSize);
+        archerView = new MonsterView((Entity) archerMonster);
+
+        FighterMonster fighterMonster = new FighterMonster(5, 8, tileSize);
+        fighterView = new MonsterView((Entity) fighterMonster);
+
+        WizardMonster wizardMonster = new WizardMonster(10, 8, tileSize);
+        wizardView = new MonsterView((Entity) wizardMonster);
+        //End of the test
+
+    }
+
+    private void initializeGameComponents() {
         Player player = new Player("Osimhen", 0, 0, tileSize, this, new PlayerController());
         playerView = new PlayerView(player);
-
-        game = new Game(player, tileSize, this); // Pass the required arguments
-        this.addKeyListener(player.getPlayerController());
-
-        // Initialize the grid
         grid = new Grid(tileSize);
+        game = new Game(player, tileSize, this, grid);
+        this.addKeyListener(player.getPlayerController());
         gridView = new GridView(grid);
-
         CollisionChecker collisionChecker = new CollisionChecker(grid);
         player.setCollisionChecker(collisionChecker);
-
-        // Initialize the TimeController
         timeController = new TimeController();
+    }
 
-        // Add a KeyListener to toggle pause
+    private void addPauseKeyListener() {
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_P || e.getKeyCode() == KeyEvent.VK_ESCAPE) { // Toggle with 'P' or 'Esc'
+                if (e.getKeyCode() == KeyEvent.VK_P || e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     isPaused = !isPaused;
                     if (isPaused) {
                         timeController.pauseTimer();
                     } else {
                         timeController.resumeTimer();
                     }
-                    repaint(); // Refresh screen to display/hide menu
+                    repaint();
                 }
             }
         });
+    }
 
-        // Load the PressStart2P font
+    private void loadFont() {
         try {
             pressStart2PFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/resources/fonts/PressStart2P-Regular.ttf")).deriveFont(20f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -134,7 +161,7 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public void update() {
         if (!isPaused) {
-            // Oyuncunun durumunu güncelle
+            // Update the player
             game.getPlayer().update();
 
             // Zaman bitti mi kontrol et
@@ -155,15 +182,19 @@ public class PlayModePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        // Grid and Player View Drawing
-        drawGridAndPlayerView(g2);
-
         // Draw Time (always display the sidebar)
         drawTime(g2);
+
 
         // Draw game grid and player
         gridView.draw(g2, offsetX * tileSize, offsetY * tileSize);
         playerView.draw(g2);
+        gridView.drawStructures(g2, offsetX * tileSize, offsetY * tileSize);
+
+        //Draw monsters
+        archerView.draw(g2);
+        fighterView.draw(g2);
+        wizardView.draw(g2);
 
         // Draw Game Over Message
         if (timeController.getTimeLeft() <= 0) {
@@ -175,11 +206,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         drawWallsAndCorners(g2);
 
         g2.dispose();
-    }
-
-    private void drawGridAndPlayerView(Graphics2D g2) {
-        gridView.draw(g2, offsetX * tileSize, offsetY * tileSize); // Grid'i View ile çiz
-        playerView.draw(g2); // Player'ı View ile çiz
     }
 
     private void drawTime(Graphics2D g2) {
@@ -333,5 +359,10 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public int getTileSize() {
         return tileSize;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+        this.playerView= new PlayerView(game.getPlayer());
     }
 }

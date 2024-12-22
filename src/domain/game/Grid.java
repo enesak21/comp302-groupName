@@ -44,7 +44,7 @@ public class Grid {
             for (int row = 0; row < rows; row++) {
                 if ( column == 9 && row == 9) {
                     Structure skullStructure = new Structure("column", tiles[column][row]);
-                    tiles[column][row].setStructure(skullStructure);
+                    tiles[column][row].addStructure(skullStructure);
                 }
             }
         }
