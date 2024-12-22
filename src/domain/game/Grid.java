@@ -95,6 +95,10 @@ public class Grid {
         this.tileSize = tileSize;
     }
 
+    /**
+     * Returns an ArrayList of all structures on the grid.
+     * @return ArrayList<Structure> of all structures on the grid.
+     */
     public ArrayList<Structure> getStructures() {
         ArrayList<Structure> structures = new ArrayList<>();
         for (int column = 0; column < columns; column++) {
