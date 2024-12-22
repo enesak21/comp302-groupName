@@ -3,6 +3,8 @@ package main;
 import javax.swing.*;
 import java.awt.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
 import domain.game.Hall;
@@ -31,17 +33,28 @@ public class BuildModePanel extends JPanel {
     private final HashMap<String, String> structureMap;
     private String selectedStructure = null;
     private final JLabel hallNameLabel;
+    private Font pressStart2PFont;
+
 
     public BuildModePanel() {
+        try {
+            pressStart2PFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/resources/fonts/PressStart2P-Regular.ttf")).deriveFont(24f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(pressStart2PFont);
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+        }
         initializeHalls();
         structureMap = initializeStructureMap();
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(GRID_SIZE * CELL_SIZE + 150, GRID_SIZE * CELL_SIZE + 100));
+        this.setBackground(new Color(66, 40, 53));
 
         // Create the hall name label dynamically
         hallNameLabel = new JLabel(halls.get(currentGridIndex).getName(), SwingConstants.CENTER);
-        hallNameLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        hallNameLabel.setFont(pressStart2PFont);
+        hallNameLabel.setForeground(Color.WHITE);
         add(hallNameLabel, BorderLayout.NORTH);
 
         // Create the grid panel for drawing
@@ -76,7 +89,15 @@ public class BuildModePanel extends JPanel {
     }
 
     private JPanel createNavigationPanel() {
-        JPanel navigationPanel = new JPanel(new FlowLayout());
+        JPanel navigationPanel = new JPanel(new FlowLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                // Set a custom color for the bottom part
+                g.setColor(new Color(66, 40, 53)); // Dark gray
+                g.fillRect(0, 0, getWidth(), getHeight());
+            }
+        };
 
         // Previous Grid Button
         JButton prevGridButton = new JButton("Previous Grid");
@@ -109,6 +130,7 @@ public class BuildModePanel extends JPanel {
         };
         structurePanel.setLayout(null); // Use absolute positioning
         structurePanel.setPreferredSize(new Dimension(200, 700)); // Increased width to accommodate two columns
+
 
         // Define button positions in two columns
         HashMap<String, Point> buttonPositions = new HashMap<>();
@@ -164,6 +186,7 @@ public class BuildModePanel extends JPanel {
         currentGridIndex = (currentGridIndex + direction + halls.size()) % halls.size();
         gridPanel.setHall(halls.get(currentGridIndex)); // Update the grid panel's hall
         hallNameLabel.setText(halls.get(currentGridIndex).getName()); // Update the hall name
+
     }
 
     private void checkCurrentHall() {
