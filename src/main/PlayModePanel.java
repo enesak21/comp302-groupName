@@ -20,6 +20,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+
 public class PlayModePanel extends JPanel implements Runnable {
 
     // Screen settings
@@ -86,6 +90,50 @@ public class PlayModePanel extends JPanel implements Runnable {
         WizardMonster wizardMonster = new WizardMonster(10, 8, tileSize);
         wizardView = new MonsterView((Entity) wizardMonster);
         //End of the test
+
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int mouseX = e.getX();
+                int mouseY = e.getY();
+
+                System.out.println("Mouse Clicked at: (" + mouseX + ", " + mouseY + ")");
+
+                int sidebarWidth = 4 * tileSize + 20; // Sidebar width
+                int sidebarX = screenWidth - sidebarWidth - (tileSize + 10) + 20;
+
+                int buttonWidth = 48; // Button width
+                int buttonHeight = 48; // Button height
+                int buttonPadding = 10; // Spacing between buttons
+                int buttonX1 = sidebarX + 10; // Pause button position
+                int buttonX2 = buttonX1 + buttonWidth + buttonPadding; // Exit button position
+                int buttonY = offsetY * tileSize + 10; // Top margin for both buttons
+
+                System.out.println("Pause Button Bounds: (" + buttonX1 + ", " + buttonY + ") to (" + (buttonX1 + buttonWidth) + ", " + (buttonY + buttonHeight) + ")");
+                System.out.println("Exit Button Bounds: (" + buttonX2 + ", " + buttonY + ") to (" + (buttonX2 + buttonWidth) + ", " + (buttonY + buttonHeight) + ")");
+
+                // Check if Pause Button is clicked
+                if (mouseX >= buttonX1 && mouseX <= buttonX1 + buttonWidth &&
+                        mouseY >= buttonY && mouseY <= buttonY + buttonHeight) {
+                    System.out.println("Pause Button Clicked");
+                    isPaused = !isPaused; // Toggle pause state
+                    if (isPaused) {
+                        timeController.pauseTimer();
+                    } else {
+                        timeController.resumeTimer();
+                    }
+                    repaint();
+                }
+
+                // Check if Exit Button is clicked
+                if (mouseX >= buttonX2 && mouseX <= buttonX2 + buttonWidth &&
+                        mouseY >= buttonY && mouseY <= buttonY + buttonHeight) {
+                    System.out.println("Exit Button Clicked");
+                    System.exit(0); // Exit game
+                }
+            }
+        });
+
     }
 
     private void initializeGameComponents() {
@@ -211,42 +259,60 @@ public class PlayModePanel extends JPanel implements Runnable {
         g2.setFont(pressStart2PFont.deriveFont(15f));
         g2.setColor(Color.WHITE);
 
-        int textX = (offsetX + gridColumns) * tileSize + 10; // Gridin sağında konum
-        int textY = offsetY * tileSize + 20; // Gridin üst kısmıyla hizalı
+        int sidebarWidth = 4 * tileSize + 20; // Sidebar width
+        int sidebarX = screenWidth - sidebarWidth - (tileSize + 10) + 20;
+        int sidebarY = offsetY * tileSize;
+        int arcWidth = 30; // Rounded corner width
+        int arcHeight = 30; // Rounded corner height
 
         // Sidebar Background
-        int sidebarWidth = 4 * tileSize + 20; // Make the sidebar slightly wider by 12 pixels
-        int sidebarX = screenWidth - sidebarWidth - (tileSize + 10) + 20;
-        int sidebarY = offsetY * tileSize; // Set Y position to offsetY * tileSize
-        int arcWidth = 30; // Width of the arc for rounded corners
-        int arcHeight = 30; // Height of the arc for rounded corners
-
         g2.setColor(new Color(108, 85, 89));
-        g2.fillRoundRect(sidebarX, sidebarY, sidebarWidth, gridHeight, arcWidth, arcHeight); // Rounded corners
+        g2.fillRoundRect(sidebarX, sidebarY, sidebarWidth, gridHeight, arcWidth, arcHeight);
+
+        // Load custom button images
+        try {
+            Image pauseButtonImage = new ImageIcon("src/resources/buttons/pause.png").getImage();
+            Image exitButtonImage = new ImageIcon("src/resources/buttons/exit.png").getImage();
+
+            int buttonWidth = 48; // Smaller button width
+            int buttonHeight = 48; // Smaller button height
+            int buttonPadding = 10; // Spacing between buttons
+            int buttonX1 = sidebarX + 10; // First button position
+            int buttonX2 = buttonX1 + buttonWidth + buttonPadding; // Second button position
+            int buttonY = sidebarY + 10; // Top margin for both buttons
+
+            // Draw Pause Button
+            g2.drawImage(pauseButtonImage, buttonX1, buttonY, buttonWidth, buttonHeight, null);
+
+            // Draw Exit Button
+            g2.drawImage(exitButtonImage, buttonX2, buttonY, buttonWidth, buttonHeight, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Add Time section
         try {
             Image clockIcon = ImageIO.read(getClass().getResource("/resources/icons/clock.png"));
-            g2.drawImage(clockIcon, sidebarX + 10, sidebarY + 20, 24, 24, null); // Make the icon smaller
+            g2.drawImage(clockIcon, sidebarX + 10, sidebarY + 80, 24, 24, null); // Adjust icon position
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         g2.setFont(pressStart2PFont.deriveFont(13f));
         g2.setColor(Color.WHITE);
-        g2.drawString("Time:", sidebarX + 40, sidebarY + 45); // Move the time text 10 pixels to the left
-        g2.drawString(timeController.getTimeLeft() + " seconds", sidebarX + 5, sidebarY + 75); // Move the time left text 10 pixels to the left
+        g2.drawString("Time:", sidebarX + 40, sidebarY + 95);
+        g2.drawString(timeController.getTimeLeft() + " seconds", sidebarX + 5, sidebarY + 125);
 
         // Add health hearts
         try {
             Image heartIcon = ImageIO.read(getClass().getResource("/resources/player/heart.png"));
             for (int i = 0; i < game.getPlayer().getHealth(); i++) {
-                g2.drawImage(heartIcon, sidebarX + 5 + i * 32, sidebarY + 100, 32, 32, null);
+                g2.drawImage(heartIcon, sidebarX + 5 + i * 32, sidebarY + 150, 32, 32, null);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 
     private void drawGameOverMessage(Graphics2D g2) {
         // Draw a semi-transparent dark overlay
