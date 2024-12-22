@@ -55,7 +55,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     //WALL PART
     private Image leftWall, rightWall, topWall, bottomWall;
     private Image topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner;
-    private Image testPhoto;
+    private Image openedWall, closedWall;
     private boolean[][] wallGrid;
 
     //Cemal test. Bunlar sonradan otomatik oluşturulacak. Şimdilik dokunmayın
@@ -362,6 +362,9 @@ public class PlayModePanel extends JPanel implements Runnable {
             bottomLeftCorner = ImageIO.read(getClass().getResource("/resources/Walls/BottomLeftCorner.png"));
             bottomRightCorner = ImageIO.read(getClass().getResource("/resources/Walls/BottomRightCorner.png"));
 
+            openedWall = ImageIO.read(getClass().getResource("/resources/Walls/doorOpened.png"));
+            closedWall = ImageIO.read(getClass().getResource("/resources/Walls/doorClosed.png"));
+
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error loading wall images. Please check the file paths.");
@@ -394,9 +397,12 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         // Draw corners
         g2.drawImage(topLeftCorner, leftX, topY, null);                  // Top-left corner
+
         g2.drawImage(topRightCorner, rightX-11 , topY, null);     // Top-right corner (adjusted)
         g2.drawImage(bottomLeftCorner, leftX, bottomY, null);            // Bottom-left corner
         g2.drawImage(bottomRightCorner, rightX-11, bottomY, null); // Bottom-right corner (adjusted)
+        //DOOR OPENED OR CLOSED HERE
+        g2.drawImage(closedWall, rightX-150, bottomY-12, null);
     }
 
     private void initializeWalls() {
