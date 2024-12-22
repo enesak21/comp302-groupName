@@ -14,10 +14,16 @@ import domain.game.HallOfWater;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class BuildModePanel extends JPanel {
 
     private static final int GRID_SIZE = 16; // Grid size
-    private static final int CELL_SIZE = 32; // Original cell size restored
+    private static final int CELL_SIZE = 32; // Original cell size
 
     private final List<Hall> halls = new ArrayList<>();
     private int currentGridIndex = 0;
@@ -52,20 +58,20 @@ public class BuildModePanel extends JPanel {
     private void initializeHalls() {
         halls.add(new HallOfAir());
         halls.add(new HallOfEarth());
-        halls.add(new HallOfWater());
-        halls.add(new HallOfFire());// Added Hall of Water
+        halls.add(new HallOfFire());
+        halls.add(new HallOfWater()); // Added Hall of Water
     }
 
     private HashMap<String, String> initializeStructureMap() {
         HashMap<String, String> map = new HashMap<>();
-        map.put("bottle", "src/resources/structures/bottle.png");
         map.put("chest", "src/resources/structures/chest.png");
         map.put("column", "src/resources/structures/column.png");
-        map.put("doubleBox", "src/resources/structures/doubleBox.png");
         map.put("ladder", "src/resources/structures/ladder.png");
+        map.put("doubleBox", "src/resources/structures/doubleBox.png");
         map.put("singleBox", "src/resources/structures/singleBox.png");
         map.put("skull", "src/resources/structures/skull.png");
         map.put("tomb", "src/resources/structures/tomb.png");
+        map.put("bottle", "src/resources/structures/bottle.png");
         return map;
     }
 
@@ -92,25 +98,67 @@ public class BuildModePanel extends JPanel {
     }
 
     private JPanel createStructurePanel() {
-        JPanel structurePanel = new JPanel();
-        structurePanel.setLayout(new GridLayout(0, 1, 5, 5));
-        structurePanel.setPreferredSize(new Dimension(150, GRID_SIZE * CELL_SIZE));
+        JPanel structurePanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                // Draw the BuildMode background image
+                Image bgImage = new ImageIcon("src/resources/structures/Buildmodechest.png").getImage();
+                g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+        structurePanel.setLayout(null); // Use absolute positioning
+        structurePanel.setPreferredSize(new Dimension(200, 700)); // Increased width to accommodate two columns
 
+        // Define button positions in two columns
+        HashMap<String, Point> buttonPositions = new HashMap<>();
+        buttonPositions.put("chest", new Point(30, 60));   // Column 1
+        buttonPositions.put("column", new Point(110, 60)); // Column 2
+        buttonPositions.put("ladder", new Point(30, 140)); // Column 1
+        buttonPositions.put("doubleBox", new Point(110, 140)); // Column 2
+        buttonPositions.put("singleBox", new Point(30, 220)); // Column 1
+        buttonPositions.put("skull", new Point(110, 220)); // Column 2
+        buttonPositions.put("tomb", new Point(30, 300));   // Column 1
+        buttonPositions.put("bottle", new Point(110, 300)); // Column 2
+
+        // Create and position buttons based on the defined layout
         for (String key : structureMap.keySet()) {
             JButton button = new JButton(new ImageIcon(new ImageIcon(structureMap.get(key))
-                    .getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
+                    .getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH))); // Adjust button size
             button.setToolTipText(key);
             button.addActionListener(e -> setSelectedStructure(key));
+
+            // Make the button transparent
+            button.setOpaque(false);
+            button.setContentAreaFilled(false);
+            button.setBorderPainted(false);
+
+            // Set button position
+            Point position = buttonPositions.get(key);
+            button.setBounds(position.x, position.y, 40, 40); // Adjust button size and spacing
             structurePanel.add(button);
         }
 
-        JButton eraserButton = new JButton("Eraser");
-        eraserButton.setToolTipText("Erase structures from the grid");
+        // Add Eraser Button with an icon
+        JButton eraserButton = new JButton(new ImageIcon(new ImageIcon("src/resources/icons/eraser.png")
+                .getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH))); // Use eraser icon
+        eraserButton.setToolTipText("Eraser");
         eraserButton.addActionListener(e -> setSelectedStructure("eraser"));
+
+        // Make the eraser button transparent
+        eraserButton.setOpaque(false);
+        eraserButton.setContentAreaFilled(false);
+        eraserButton.setBorderPainted(false);
+
+        eraserButton.setBounds(70, 380, 40, 40); // Centered below the two columns
         structurePanel.add(eraserButton);
 
         return structurePanel;
     }
+
+
+
+
 
     private void switchGrid(int direction) {
         currentGridIndex = (currentGridIndex + direction + halls.size()) % halls.size();
@@ -138,3 +186,4 @@ public class BuildModePanel extends JPanel {
         return selectedStructure;
     }
 }
+
