@@ -21,7 +21,6 @@ public class Grid {
         this.tileSize = tileSize;
         this.tiles = new Tile[columns][rows];
         tileGenerator();
-        fillStructures(); //used for testing fill structures. can be removed later
     }
 
     public void tileGenerator() {
@@ -36,20 +35,6 @@ public class Grid {
             e.printStackTrace();
         }
     }
-
-
-    // used for testing. can be removed later.
-    public void fillStructures() {
-        for (int column = 0; column < columns; column++) {
-            for (int row = 0; row < rows; row++) {
-                if ( column == 9 && row == 9) {
-                    Structure skullStructure = new Structure("column", tiles[column][row]);
-                    tiles[column][row].addStructure(skullStructure);
-                }
-            }
-        }
-    }
-
 
     public void draw(Graphics2D g2, int offsetX, int offsetY) {
         for (int column = 0; column < columns; column++) {

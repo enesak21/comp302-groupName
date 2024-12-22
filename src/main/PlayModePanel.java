@@ -8,10 +8,7 @@ import domain.entity.monsters.ArcherMonster;
 import domain.entity.monsters.FighterMonster;
 import domain.entity.monsters.WizardMonster;
 import domain.entity.playerObjects.Player;
-import domain.game.Game;
-import domain.game.CollisionChecker;
-import domain.game.Grid;
-import domain.game.TimeController;
+import domain.game.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -21,6 +18,7 @@ import java.awt.event.KeyEvent;
 import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class PlayModePanel extends JPanel implements Runnable {
 
@@ -65,7 +63,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     Game game;
 
     // Constructor
-    public PlayModePanel() {
+    public PlayModePanel(List<Hall> halls) {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(new Color(66, 40, 53));
         this.setDoubleBuffered(true);
@@ -92,7 +90,8 @@ public class PlayModePanel extends JPanel implements Runnable {
     private void initializeGameComponents() {
         Player player = new Player("Osimhen", 0, 0, tileSize, this, new PlayerController());
         playerView = new PlayerView(player);
-        grid = new Grid(tileSize);
+         // Initialize the grid
+        grid = halls.get(0).toGrid(tileSize);
         game = new Game(player, tileSize, this, grid);
         this.addKeyListener(player.getPlayerController());
         gridView = new GridView(grid);

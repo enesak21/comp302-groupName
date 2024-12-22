@@ -45,9 +45,9 @@ public class Game {
         return calculateDistance(gridx1,gridy1,gridx2,gridy2) <= range;
     }
 
-    public boolean validateHall(Hall hall) {
-        return hall != null && hall.getLength() > 0;
-    }
+//    public boolean validateHall(Hall hall) {
+//        return hall != null && hall.getLength() > 0;
+//    }
 
     public void update() {
         if (!isPaused) {
