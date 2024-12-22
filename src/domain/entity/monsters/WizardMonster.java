@@ -34,6 +34,12 @@ public class WizardMonster extends BaseMonster{
 
     @Override
     public void attack(Player player) {
+
+    }
+
+    /*
+    @Override
+    public void attack(Player player) {
         long currentTime = System.currentTimeMillis();
         if ((currentTime - lastTeleportTime) > TELEPORT_FREQUENCY) {
             switchRune();
@@ -49,6 +55,8 @@ public class WizardMonster extends BaseMonster{
             game.getRune().setStoredStructure(selectedStructure);
         }
     }
+
+     */
 
     @Override
     public void move(){
