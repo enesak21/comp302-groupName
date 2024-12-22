@@ -64,7 +64,17 @@ public class Tile {
 
     public Structure getStructure() { return structure; }
 
-    public void setStructure(Structure structure) { this.structure= structure; }
+    private void setStructure(Structure structure) { 
+        this.structure= structure;
+        structure.loadImage();
+    }
+
+    public void addStructure(Structure structure) {
+        setStructure(structure);
+        if (structure != null) {
+            setSolid(true);
+        }
+    }
 
     public boolean containsStructure() { return structure != null; }
 }

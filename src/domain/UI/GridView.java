@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 
 public class GridView {
     private Grid grid;
+    final int SCALE = 2;
 
     public GridView(Grid grid) {
         this.grid = grid;
@@ -50,9 +51,23 @@ public class GridView {
         int x = offsetX + column * tileSize;
         int y = offsetY + row * tileSize;
 
-        g2.drawImage(image, x, y, tileSize, tileSize, null);
+        int width = structure.getWidth();
+        int height = structure.getHeight();
+        g2.drawImage(image, x, y - height * SCALE + tileSize, width * SCALE, height * SCALE, null);
     }
 
+    public void drawStructures(Graphics2D g2, int offsetX, int offsetY) {
+        for (int column = 0; column < grid.getColumns(); column++) {
+            for (int row = 0; row < grid.getRows(); row++) {
+                Tile tile = grid.getTileAt(column, row);
+
+                if (tile != null && tile.getStructure() != null && tile.getStructure().getImage() != null) {
+                    drawStructure(g2, tile.getStructure(), column, row, offsetX, offsetY);
+                }
+            }
+        }
+    }
+    
     public int getColumns() {
         return grid.getColumns();
     }
