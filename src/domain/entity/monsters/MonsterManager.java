@@ -35,7 +35,7 @@ public class MonsterManager {
         switch (type) {
             case 0 -> monster = new ArcherMonster(gridX, gridY, tileSize);
             case 1 -> monster = new FighterMonster(gridX, gridY, tileSize);
-            default -> monster = new WizardMonster(gridX, gridY, tileSize);
+            default -> monster = new WizardMonster(gridX, gridY, tileSize,game);
         }
         monsters.add(monster);
     }

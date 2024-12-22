@@ -13,6 +13,9 @@ public class FighterMonster extends BaseMonster {
     private Random random;
     private int pixelCounter = 0;
     private final int SPEED = 4;
+    private final int ATTACK_FREQUENCY = 500;
+    private long lastAttackTime;
+
 
     public FighterMonster(int gridX, int gridY, int tileSize) {
         super(gridX, gridY, tileSize);
@@ -21,6 +24,7 @@ public class FighterMonster extends BaseMonster {
 
     @Override
     public void update() {
+
     }
 
 
@@ -67,7 +71,11 @@ public class FighterMonster extends BaseMonster {
     @Override
     public void attack(Player player) {
         if (isInRange(this.getGridX(),this.getGridX(),player.getGridX(),player.getGridY(), DAGGER_RANGE)) {
-
+            long currentTime = System.currentTimeMillis();
+            if ((currentTime - lastAttackTime) > ATTACK_FREQUENCY) {
+                player.reduceHealth();
+                lastAttackTime = currentTime;
+            }
         }
     }
 }

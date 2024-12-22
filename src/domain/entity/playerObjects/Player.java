@@ -86,6 +86,9 @@ public class Player extends Entity {
         return health;
     }
 
+    public void reduceHealth() {
+        health--;
+    }
 
 public void setCollisionChecker(CollisionChecker collisionChecker) {
         this.collisionChecker = collisionChecker;
