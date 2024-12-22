@@ -168,9 +168,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        // Grid and Player View Drawing
-        //drawGridAndPlayerView(g2); //Hatalı, merge'lerken silinecek
-
         // Draw Time (always display the sidebar)
         drawTime(g2);
 
