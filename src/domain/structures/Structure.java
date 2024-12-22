@@ -49,4 +49,8 @@ public class Structure {
     public boolean hasRune() {
         return hasRune;
     }
+
+    public void setHasRune(boolean hasRune) {
+        this.hasRune = hasRune;
+    }
 }
