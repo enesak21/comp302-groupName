@@ -169,7 +169,7 @@ public class PlayModePanel extends JPanel implements Runnable {
             // Draw Pause Overlay only if the game is not over
             drawPauseOverlay(g2);
         }
-        //drawWalls(g2);
+        drawWalls(g2);
 
         g2.dispose();
     }
