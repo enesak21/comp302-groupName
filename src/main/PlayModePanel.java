@@ -218,8 +218,11 @@ public class PlayModePanel extends JPanel implements Runnable {
         int sidebarWidth = 4 * tileSize + 20; // Make the sidebar slightly wider by 12 pixels
         int sidebarX = screenWidth - sidebarWidth - (tileSize + 10) + 20;
         int sidebarY = offsetY * tileSize; // Set Y position to offsetY * tileSize
-        g2.setColor(new Color(30, 30, 30));
-        g2.fillRect(sidebarX, sidebarY, sidebarWidth, gridHeight); // Set height to gridHeight
+        int arcWidth = 30; // Width of the arc for rounded corners
+        int arcHeight = 30; // Height of the arc for rounded corners
+
+        g2.setColor(new Color(108, 85, 89));
+        g2.fillRoundRect(sidebarX, sidebarY, sidebarWidth, gridHeight, arcWidth, arcHeight); // Rounded corners
 
         // Add Time section
         try {
@@ -243,6 +246,7 @@ public class PlayModePanel extends JPanel implements Runnable {
             e.printStackTrace();
         }
     }
+
 
     private void drawGameOverMessage(Graphics2D g2) {
         // Draw a semi-transparent dark overlay
