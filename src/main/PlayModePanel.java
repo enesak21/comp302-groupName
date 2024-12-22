@@ -63,47 +63,54 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.setFocusable(true);
 
-        // Initialize the player
-        Player player = new Player("Osimhen", 0, 0, tileSize, this, new PlayerController());
-
-        //Initialize the game
-        game = new Game(player, tileSize, this,grid); // Pass the required arguments
-        this.addKeyListener(player.getPlayerController());
+        initializeGameComponents();
+        addPauseKeyListener();
+        loadFont();
 
         //***TEST***
         //Initialize 3 monsters
-        ArcherMonster archerMonster = new ArcherMonster(2,5,tileSize);
+        ArcherMonster archerMonster = new ArcherMonster(2, 5, tileSize);
         archerView = new MonsterView((Entity) archerMonster);
 
-        FighterMonster fighterMonster = new FighterMonster(5,8,tileSize);
+        FighterMonster fighterMonster = new FighterMonster(5, 8, tileSize);
         fighterView = new MonsterView((Entity) fighterMonster);
 
-        WizardMonster wizardMonster = new WizardMonster(10,8,tileSize);
+        WizardMonster wizardMonster = new WizardMonster(10, 8, tileSize);
         wizardView = new MonsterView((Entity) wizardMonster);
         //End of the test
 
-        // Initialize the grid
-        grid = new Grid(tileSize);
-        gridView = new GridView(grid);
+    }
 
+    private void initializeGameComponents() {
+        Player player = new Player("Osimhen", 0, 0, tileSize, this, new PlayerController());
+        playerView = new PlayerView(player);
+        grid = new Grid(tileSize);
+        game = new Game(player, tileSize, this, grid);
+        this.addKeyListener(player.getPlayerController());
+        gridView = new GridView(grid);
         CollisionChecker collisionChecker = new CollisionChecker(grid);
         player.setCollisionChecker(collisionChecker);
-
-        // Initialize the TimeController
         timeController = new TimeController();
+    }
 
-        // Add a KeyListener to toggle pause
+    private void addPauseKeyListener() {
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_P || e.getKeyCode() == KeyEvent.VK_ESCAPE) { // Toggle with 'P' or 'Esc'
-                    game.togglePause();
-                    repaint(); // Refresh screen to display/hide menu
+                if (e.getKeyCode() == KeyEvent.VK_P || e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    isPaused = !isPaused;
+                    if (isPaused) {
+                        timeController.pauseTimer();
+                    } else {
+                        timeController.resumeTimer();
+                    }
+                    repaint();
                 }
             }
         });
+    }
 
-        // Load the PressStart2P font
+    private void loadFont() {
         try {
             pressStart2PFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/resources/fonts/PressStart2P-Regular.ttf")).deriveFont(20f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -274,5 +281,6 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public void setGame(Game game) {
         this.game = game;
+        this.playerView= new PlayerView(game.getPlayer());
     }
 }
