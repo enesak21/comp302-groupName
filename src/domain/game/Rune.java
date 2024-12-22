@@ -9,4 +9,11 @@ public class Rune {
         this.storedStructure = structure;
     }
 
+    public Structure getStoredStructure() {
+        return storedStructure;
+    }
+
+    public void setStoredStructure(Structure storedStructure) {
+        this.storedStructure = storedStructure;
+    }
 }

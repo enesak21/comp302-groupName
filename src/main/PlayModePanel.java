@@ -9,6 +9,7 @@ import domain.entity.monsters.FighterMonster;
 import domain.entity.monsters.WizardMonster;
 import domain.entity.playerObjects.Player;
 import domain.game.*;
+import domain.structures.Structure;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -19,6 +20,7 @@ import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 public class PlayModePanel extends JPanel implements Runnable {
 
@@ -62,6 +64,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     int FPS = 60;
     Thread gameThread;
     Game game;
+    Rune rune;
 
     // Constructor
     public PlayModePanel(List<Hall> halls) {
@@ -94,11 +97,23 @@ public class PlayModePanel extends JPanel implements Runnable {
         // Initialize the grid
         grid = halls.get(0).toGrid(tileSize);
         game = new Game(player, tileSize, this, grid);
+        placeRune();
+
         this.addKeyListener(player.getPlayerController());
         gridView = new GridView(grid);
         CollisionChecker collisionChecker = new CollisionChecker(grid);
         player.setCollisionChecker(collisionChecker);
         timeController = new TimeController();
+    }
+
+    public void placeRune() {
+        List <Structure> structures = grid.getStructures();
+        if (structures != null && !structures.isEmpty()) {
+            Random random = new Random();
+            int randomIndex = random.nextInt(structures.size());
+            Structure structure = structures.get(randomIndex);
+            rune = new Rune(structure);
+        }
     }
 
     private void addPauseKeyListener() {
