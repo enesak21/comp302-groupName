@@ -14,6 +14,9 @@ public class Rune {
     }
 
     public void setStoredStructure(Structure storedStructure) {
+        Structure oldStructure = this.storedStructure;
+        oldStructure.setHasRune(false);
         this.storedStructure = storedStructure;
+        storedStructure.setHasRune(true);
     }
 }
