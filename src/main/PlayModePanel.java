@@ -261,7 +261,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         try {
             leftWall = ImageIO.read(getClass().getResource("/resources/Walls/leftWall.png"));
             rightWall = ImageIO.read(getClass().getResource("/resources/Walls/rightWall2.png"));
-            topWall = ImageIO.read(getClass().getResource("/resources/Walls/rightWall.png"));
+            topWall = ImageIO.read(getClass().getResource("/resources/Walls/frontWall.png"));
             bottomWall = ImageIO.read(getClass().getResource("/resources/Walls/frontWall.png"));
             topLeftCorner = ImageIO.read(getClass().getResource("/resources/Walls/topLeftCorner.png"));
             topRightCorner = ImageIO.read(getClass().getResource("/resources/Walls/topRightCorner.png"));
@@ -278,11 +278,13 @@ public class PlayModePanel extends JPanel implements Runnable {
         int topY = offsetY * tileSize - topWall.getHeight(null); // Adjust Y for top wall
         int bottomY = (offsetY + gridRows) * tileSize;           // Adjust Y for bottom wall
 
+
         // Draw top and bottom walls
         for (int col = 0; col < gridColumns; col++) {
             int x = (offsetX + col) * tileSize;
             g2.drawImage(topWall, x, topY, null);
             g2.drawImage(bottomWall, x, bottomY, null);
+           // System.out.println("Top Wall Position: X = " + x + ", Y = " + topY);
         }
 
         // Draw left and right walls
@@ -294,9 +296,14 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         // Draw corners
         g2.drawImage(topLeftCorner, leftX, topY, null);
-        g2.drawImage(topRightCorner, rightX, topY, null);
+        g2.drawImage(topRightCorner, rightX-tileSize, topY, null);
         g2.drawImage(bottomLeftCorner, leftX, bottomY, null);
-        g2.drawImage(bottomRightCorner, rightX, bottomY, null);
+        g2.drawImage(bottomRightCorner, rightX-tileSize, bottomY, null);
+//        System.out.println("Top left corner: " + leftX+ topY);
+//        System.out.println("Top rignt corner: " + rightX + topY );
+//        System.out.println("bottom left corner: " + leftX+ bottomY);
+//        System.out.println("bottom right corner: " + rightX+ bottomY);
+
     }
 
     private void initializeWalls() {
