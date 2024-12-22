@@ -106,6 +106,9 @@ public class PlayModePanel extends JPanel implements Runnable {
         timeController = new TimeController();
     }
 
+    /**
+     * Place the rune in a random structure in the grid
+     */
     public void placeRune() {
         List <Structure> structures = grid.getStructures();
         if (structures != null && !structures.isEmpty()) {
