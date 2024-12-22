@@ -98,14 +98,17 @@ public class UI {
         return panel;
     }
 
-    private JPanel createBuildScreen() {  // BUİLD SCREEN İÇİN DE PLAYMODEPANEL GİBİ AYRI BİR
-                                          //CLASSINI OLUŞTURUP BURADA ÇAĞIRIRIZ
+    private JPanel createBuildScreen() {
+        // Create a JPanel as the main container for the Build Mode screen
+        JPanel buildScreen = new JPanel();
+        buildScreen.setLayout(new BorderLayout());
+
+        // Instantiate BuildModePanel, which includes the dynamic hall name
         BuildModePanel buildModePanel = new BuildModePanel();
-        JLabel title = new JLabel("Build Components Here", SwingConstants.CENTER);
-        title.setFont(new Font("Arial", Font.BOLD, 24));
+        buildScreen.add(buildModePanel, BorderLayout.CENTER);
 
+        // Complete button to transition back to the Game screen
         JButton completeButton = new JButton("Complete Build");
-
         completeButton.addActionListener(e -> {
             if (!isPanelAdded("Game")) {
                 mainPanel.add(createGameScreen(), "Game");
@@ -115,10 +118,15 @@ public class UI {
             mainPanel.repaint();
         });
 
-        buildModePanel.add(title);
-        buildModePanel.add(completeButton);
-        return buildModePanel;
+        // Add the button to the bottom of the screen
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(completeButton);
+        buildScreen.add(buttonPanel, BorderLayout.SOUTH);
+
+        return buildScreen;
     }
+
+
 
     private JPanel createGameScreen() {
         PlayModePanel playModePanel = new PlayModePanel();
