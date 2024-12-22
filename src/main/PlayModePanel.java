@@ -9,16 +9,20 @@ import domain.entity.monsters.FighterMonster;
 import domain.entity.monsters.WizardMonster;
 import domain.entity.playerObjects.Player;
 import domain.game.*;
+import domain.structures.Structure;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -66,6 +70,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     int FPS = 60;
     Thread gameThread;
     Game game;
+    Rune rune;
 
     // Constructor
     public PlayModePanel(List<Hall> halls) {
@@ -142,11 +147,70 @@ public class PlayModePanel extends JPanel implements Runnable {
         // Initialize the grid
         grid = halls.get(0).toGrid(tileSize);
         game = new Game(player, tileSize, this, grid);
+        placeRune();
+
         this.addKeyListener(player.getPlayerController());
+
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (!isPaused) {
+                    handleMouseClick(e);
+                }
+            }
+        });
+
         gridView = new GridView(grid);
         CollisionChecker collisionChecker = new CollisionChecker(grid);
         player.setCollisionChecker(collisionChecker);
         timeController = new TimeController();
+    }
+
+    /**
+     * Handles mouse click events on the game grid.
+     *
+     * @param e the MouseEvent triggered by the mouse click
+     *
+     * This method calculates the grid coordinates based on the mouse click position.
+     * If the click is within the bounds of the grid, it identifies the clicked tile
+     * and checks if it is near the player's current position. If the clicked tile
+     * contains a structure, it further checks if the structure has a rune and collects
+     * the rune if it does.
+     */
+    private void handleMouseClick(MouseEvent e) {
+        int mouseX = e.getX();
+        int mouseY = e.getY();
+
+        int gridX = (mouseX / tileSize) - offsetX;
+        int gridY = (mouseY / tileSize) - offsetY;
+
+        if (gridX >= 0 && gridX < gridColumns && gridY >= 0 && gridY < gridRows) {
+            System.out.println("Clicked on grid: " + gridX + ", " + gridY);
+            Tile clickedTile = grid.getTileAt(gridX, gridY);
+            Structure clickedStructure = clickedTile.getStructure();
+            Tile playerTile = grid.getTileAt(game.getPlayer().getGridX(), game.getPlayer().getGridY());
+            if (Game.isInRange(clickedTile, playerTile, 1)) {
+                if (clickedStructure != null) {
+                    if (clickedStructure.hasRune()) {
+                        System.out.println("Rune collected!");
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Place the rune in a random structure in the grid
+     */
+    public void placeRune() {
+        List <Structure> structures = grid.getStructures();
+        System.out.println(structures);
+        if (structures != null && !structures.isEmpty()) {
+            Random random = new Random();
+            int randomIndex = random.nextInt(structures.size());
+            Structure structure = structures.get(randomIndex);
+            rune = new Rune(structure);
+        }
     }
 
     private void addPauseKeyListener() {
@@ -393,7 +457,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         // Draw left and right walls
         for (int row = 0; row < gridRows; row++) {
             int y = (offsetY + row) * tileSize;
-            //System.out.println(tileSize);
+
             g2.drawImage(leftWall, leftX, y, leftWall.getWidth(null), tileSize, null); // Draw with fixed height
             g2.drawImage(rightWall, rightX, y, rightWall.getWidth(null), tileSize, null); // Draw with fixed height
         }

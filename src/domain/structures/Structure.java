@@ -11,12 +11,14 @@ public class Structure {
     String type;
     Tile position;
     BufferedImage image;
+    private boolean hasRune; // Whether this structure contains the rune
     private int width;
     private int height;
 
     public Structure(String type, Tile position) {
         this.type = type;
         this.position = position;
+        this.hasRune = false;
     }
 
     public BufferedImage loadImage(){
@@ -42,5 +44,13 @@ public class Structure {
 
     public int getWidth() {
         return width;
+    }
+
+    public boolean hasRune() {
+        return hasRune;
+    }
+
+    public void setHasRune(boolean hasRune) {
+        this.hasRune = hasRune;
     }
 }

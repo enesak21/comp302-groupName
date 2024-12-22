@@ -41,8 +41,16 @@ public class Game {
         return (float) Math.sqrt(Math.pow(gridx2 - gridx1, 2) + Math.pow(gridy2 - gridy1, 2));
     }
 
+    public static float calculateDistance(Tile tile1, Tile tile2) {
+        return calculateDistance(tile1.getGridX(), tile1.getGridY(), tile2.getGridX(), tile2.getGridY());
+    }
+
     public static boolean isInRange(int gridx1, int gridy1, int gridx2, int gridy2, float range) {
         return calculateDistance(gridx1,gridy1,gridx2,gridy2) <= range;
+    }
+
+    public static boolean isInRange(Tile tile1, Tile tile2, float range) {
+        return isInRange(tile1.getGridX(), tile1.getGridY(), tile2.getGridX(), tile2.getGridY(), range);
     }
 
 //    public boolean validateHall(Hall hall) {
