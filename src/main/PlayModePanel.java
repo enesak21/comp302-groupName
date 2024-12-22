@@ -45,7 +45,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     //WALL PART
     private Image leftWall, rightWall, topWall, bottomWall;
     private Image topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner;
-    private Image wallImage;
+    private Image testPhoto;
     private boolean[][] wallGrid;
 
     int FPS = 60;
@@ -260,13 +260,14 @@ public class PlayModePanel extends JPanel implements Runnable {
     private void loadWallImages() {
         try {
             leftWall = ImageIO.read(getClass().getResource("/resources/Walls/leftWall.png"));
-            rightWall = ImageIO.read(getClass().getResource("/resources/Walls/rightWall2.png"));
+            rightWall = ImageIO.read(getClass().getResource("/resources/Walls/rightWall.png"));
             topWall = ImageIO.read(getClass().getResource("/resources/Walls/frontWall.png"));
             bottomWall = ImageIO.read(getClass().getResource("/resources/Walls/frontWall.png"));
             topLeftCorner = ImageIO.read(getClass().getResource("/resources/Walls/topLeftCorner.png"));
             topRightCorner = ImageIO.read(getClass().getResource("/resources/Walls/topRightCorner.png"));
             bottomLeftCorner = ImageIO.read(getClass().getResource("/resources/Walls/BottomLeftCorner.png"));
             bottomRightCorner = ImageIO.read(getClass().getResource("/resources/Walls/BottomRightCorner.png"));
+            testPhoto = ImageIO.read(getClass().getResource("/resources/tiles/Walls.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -278,33 +279,27 @@ public class PlayModePanel extends JPanel implements Runnable {
         int topY = offsetY * tileSize - topWall.getHeight(null); // Adjust Y for top wall
         int bottomY = (offsetY + gridRows) * tileSize;           // Adjust Y for bottom wall
 
-
         // Draw top and bottom walls
         for (int col = 0; col < gridColumns; col++) {
             int x = (offsetX + col) * tileSize;
-            g2.drawImage(topWall, x, topY, null);
-            g2.drawImage(bottomWall, x, bottomY, null);
-           // System.out.println("Top Wall Position: X = " + x + ", Y = " + topY);
+            g2.drawImage(topWall, x, topY, tileSize, topWall.getHeight(null), null); // Draw with fixed width
+            g2.drawImage(bottomWall, x, bottomY, tileSize, bottomWall.getHeight(null), null); // Draw with fixed width
         }
 
         // Draw left and right walls
         for (int row = 0; row < gridRows; row++) {
             int y = (offsetY + row) * tileSize;
-            g2.drawImage(leftWall, leftX, y, null);
-            g2.drawImage(rightWall, rightX, y, null);
+            g2.drawImage(leftWall, leftX, y, leftWall.getWidth(null), tileSize, null); // Draw with fixed height
+            g2.drawImage(rightWall, rightX, y, rightWall.getWidth(null), tileSize, null); // Draw with fixed height
         }
 
         // Draw corners
-        g2.drawImage(topLeftCorner, leftX, topY, null);
-        g2.drawImage(topRightCorner, rightX-tileSize, topY, null);
-        g2.drawImage(bottomLeftCorner, leftX, bottomY, null);
-        g2.drawImage(bottomRightCorner, rightX-tileSize, bottomY, null);
-//        System.out.println("Top left corner: " + leftX+ topY);
-//        System.out.println("Top rignt corner: " + rightX + topY );
-//        System.out.println("bottom left corner: " + leftX+ bottomY);
-//        System.out.println("bottom right corner: " + rightX+ bottomY);
-
+        g2.drawImage(topLeftCorner, leftX, topY, null);                  // Top-left corner
+        g2.drawImage(topRightCorner, rightX , topY, null);     // Top-right corner (adjusted)
+        g2.drawImage(bottomLeftCorner, leftX, bottomY, null);            // Bottom-left corner
+        g2.drawImage(bottomRightCorner, rightX, bottomY, null); // Bottom-right corner (adjusted)
     }
+
 
     private void initializeWalls() {
         wallGrid = new boolean[gridColumns][gridRows];
