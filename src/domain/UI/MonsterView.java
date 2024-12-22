@@ -49,8 +49,6 @@ public class MonsterView extends EntityView{
             monsterImage = wizardMonster;
         }
 
-
-
         g2.drawImage(
                 monsterImage,
                 baseMonster.getPixelX(),
@@ -59,6 +57,5 @@ public class MonsterView extends EntityView{
                 baseMonster.getTileSize(),
                 null
         );
-
     }
 }
