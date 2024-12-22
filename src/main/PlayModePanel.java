@@ -196,7 +196,7 @@ public class PlayModePanel extends JPanel implements Runnable {
                         // Transition to the next hall
                         // Move to the next hall
                         if (hallNum < halls.size()) {
-                            moveToNextHall();
+                            ;
                         } else {
                             System.out.println("Game Completed!");
                             System.exit(0); // End the game if no more halls
@@ -207,15 +207,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         }
     }
 
-    private void moveToNextHall() {
-        hallNum++; // Move to the next hall
-        if (hallNum < halls.size()) {
-            initializeGameComponents(hallNum); // Initialize the next hall
-        } else {
-            System.out.println("Game Completed!");
-            System.exit(0); // End the game if no more halls
-        }
-    }
+
 
     /**
      * Place the rune in a random structure in the grid
