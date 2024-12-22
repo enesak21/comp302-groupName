@@ -23,7 +23,8 @@ public class MonsterManager {
         this.lastSpawnTime = System.currentTimeMillis();
     }
 
-
+    // bi tane fonksiyon yazılacak
+    //bu fonksyion rastegele bir grid bulup buralara spawnMonster fonksiyonu ile monster oluşturacak.
 
     public void spawnMonster(int gridWidth, int gridHeight) {
         int type = random.nextInt(3); // 0: Archer, 1: Fighter, 2: Wizard
@@ -42,11 +43,12 @@ public class MonsterManager {
     public void updateMonsters(){
         long currentTime = System.currentTimeMillis(); // Get the current time. An error might exist here.
         if (currentTime - lastSpawnTime > SPAWN_INTERVAL) { // If 8 seconds have passed since the last spawn
+            System.out.println("update monsters calisiyo");
             spawnMonster(game.getGrid().getColumns(), game.getGrid().getRows());
             lastSpawnTime = currentTime;
         }
         for (BaseMonster monster : monsters) {
-            monster.update();
+            monster.update(game.getPlayer());
         }
     }
 

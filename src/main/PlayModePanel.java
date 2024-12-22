@@ -4,9 +4,7 @@ import domain.UI.GridView;
 import domain.UI.MonsterView;
 import domain.UI.PlayerView;
 import domain.entity.Entity;
-import domain.entity.monsters.ArcherMonster;
-import domain.entity.monsters.FighterMonster;
-import domain.entity.monsters.WizardMonster;
+import domain.entity.monsters.*;
 import domain.entity.playerObjects.Player;
 import domain.game.Game;
 import domain.game.CollisionChecker;
@@ -21,6 +19,8 @@ import java.awt.event.KeyEvent;
 import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayModePanel extends JPanel implements Runnable {
 
@@ -52,9 +52,15 @@ public class PlayModePanel extends JPanel implements Runnable {
     private MonsterView fighterView;
     private MonsterView wizardView;
 
+    private MonsterManager monsterManager;
+    private List<MonsterView> monsterViewList = new ArrayList<>();
+    //End of Cemal Test
+
+
     int FPS = 60;
     Thread gameThread;
     Game game;
+
 
     // Constructor
     public PlayModePanel() {
@@ -67,6 +73,14 @@ public class PlayModePanel extends JPanel implements Runnable {
         addPauseKeyListener();
         loadFont();
 
+    }
+
+    private void initializeGameComponents() {
+        Player player = new Player("Osimhen", 0, 0, tileSize, this, new PlayerController());
+        playerView = new PlayerView(player);
+        grid = new Grid(tileSize);
+        game = new Game(player, tileSize, this, grid);
+        this.addKeyListener(player.getPlayerController());
         //***TEST***
         //Initialize 3 monsters
         ArcherMonster archerMonster = new ArcherMonster(2, 5, tileSize);
@@ -77,16 +91,23 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         WizardMonster wizardMonster = new WizardMonster(10, 8, tileSize);
         wizardView = new MonsterView((Entity) wizardMonster);
+
+        //new test//
+        ArcherMonster denemeMonster = new ArcherMonster(12, 12, tileSize);
+        MonsterView denemeView = new MonsterView((Entity) denemeMonster);
+        monsterViewList.add(denemeView);
+
+        FighterMonster deneme2Monster = new FighterMonster(11,11,tileSize);
+        MonsterView deneme2View = new MonsterView((Entity) deneme2Monster);
+        monsterViewList.add(deneme2View);
+        //end of new test
+
+        monsterManager = new MonsterManager(game, tileSize);
+
         //End of the test
 
-    }
 
-    private void initializeGameComponents() {
-        Player player = new Player("Osimhen", 0, 0, tileSize, this, new PlayerController());
-        playerView = new PlayerView(player);
-        grid = new Grid(tileSize);
-        game = new Game(player, tileSize, this, grid);
-        this.addKeyListener(player.getPlayerController());
+
         gridView = new GridView(grid);
         CollisionChecker collisionChecker = new CollisionChecker(grid);
         player.setCollisionChecker(collisionChecker);
@@ -153,6 +174,8 @@ public class PlayModePanel extends JPanel implements Runnable {
             // Update the player
             game.getPlayer().update();
 
+            //cemal test
+            monsterManager.updateMonsters();
             // Zaman bitti mi kontrol et
             if (timeController.getTimeLeft() <= 0) {
                 isPaused = true;
@@ -181,6 +204,12 @@ public class PlayModePanel extends JPanel implements Runnable {
         gridView.drawStructures(g2, offsetX * tileSize, offsetY * tileSize);
 
         //Draw monsters
+        //monsterManager'daki her monsterı çek ve onlar için bire View classı oluştur
+        for(MonsterView monsterView: monsterViewList){
+            System.out.println("view çalışıyor");
+            monsterView.draw(g2);
+        }
+
         archerView.draw(g2);
         fighterView.draw(g2);
         wizardView.draw(g2);
