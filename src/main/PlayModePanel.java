@@ -75,7 +75,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         FighterMonster fighterMonster = new FighterMonster(5, 8, tileSize);
         fighterView = new MonsterView((Entity) fighterMonster);
 
-        WizardMonster wizardMonster = new WizardMonster(10, 8, tileSize);
+        WizardMonster wizardMonster = new WizardMonster(10, 8, tileSize,game);
         wizardView = new MonsterView((Entity) wizardMonster);
         //End of the test
 
