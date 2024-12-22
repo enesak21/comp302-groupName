@@ -42,6 +42,9 @@ public class PlayModePanel extends JPanel implements Runnable {
     private PlayerView playerView;
     private GridView gridView;
 
+    private Image wallImage;
+    private boolean[][] wallGrid;
+
     int FPS = 60;
     Thread gameThread;
     Game game;
@@ -93,6 +96,9 @@ public class PlayModePanel extends JPanel implements Runnable {
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
         }
+
+        initializeWalls();
+        loadWallImage();
     }
 
     public void startGameThread() {
@@ -163,6 +169,7 @@ public class PlayModePanel extends JPanel implements Runnable {
             // Draw Pause Overlay only if the game is not over
             drawPauseOverlay(g2);
         }
+        //drawWalls(g2);
 
         g2.dispose();
     }
@@ -245,6 +252,45 @@ public class PlayModePanel extends JPanel implements Runnable {
         y += fm.getHeight() + 20;
         g2.drawString(resumeText, x, y);
     }
+
+
+    private void loadWallImage() {
+        try {
+            wallImage = ImageIO.read(getClass().getResource("/resources/tiles/walls.png")); // Adjust path
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    private void initializeWalls() {
+        wallGrid = new boolean[gridColumns][gridRows];
+
+        // Create a border of walls around the grid
+        for (int col = 0; col < gridColumns; col++) {
+            wallGrid[col][0] = true; // Top border
+            wallGrid[col][gridRows - 1] = true; // Bottom border
+        }
+        for (int row = 0; row < gridRows; row++) {
+            wallGrid[0][row] = true; // Left border
+            wallGrid[gridColumns - 1][row] = true; // Right border
+        }
+
+        // Add an internal wall
+        for (int col = 3; col < 10; col++) {
+            wallGrid[col][5] = true;
+        }
+    }
+
+
+
+
+
+
+
+
+
 
     // Getter functions for scale and tileSize
     public int getScale() {
