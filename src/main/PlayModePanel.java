@@ -295,7 +295,7 @@ public class PlayModePanel extends JPanel implements Runnable {
             topRightCorner = ImageIO.read(getClass().getResource("/resources/Walls/topRightCorner.png"));
             bottomLeftCorner = ImageIO.read(getClass().getResource("/resources/Walls/BottomLeftCorner.png"));
             bottomRightCorner = ImageIO.read(getClass().getResource("/resources/Walls/BottomRightCorner.png"));
-            testPhoto = ImageIO.read(getClass().getResource("/resources/tiles/Walls.png"));
+
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error loading wall images. Please check the file paths.");
