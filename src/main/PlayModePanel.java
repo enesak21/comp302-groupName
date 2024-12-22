@@ -230,12 +230,15 @@ public class PlayModePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
+
         // Draw Time (always display the sidebar)
         drawTime(g2);
 
         // Draw game grid and player
         gridView.draw(g2, offsetX * tileSize, offsetY * tileSize);
+
         playerView.draw(g2);
+        drawWallsAndCorners(g2);
         gridView.drawStructures(g2, offsetX * tileSize, offsetY * tileSize);
 
         //Draw monsters
@@ -250,7 +253,7 @@ public class PlayModePanel extends JPanel implements Runnable {
             // Draw Pause Overlay only if the game is not over
             drawPauseOverlay(g2);
         }
-        drawWallsAndCorners(g2);
+
 
         g2.dispose();
     }
