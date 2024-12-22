@@ -42,6 +42,9 @@ public class PlayModePanel extends JPanel implements Runnable {
     private PlayerView playerView;
     private GridView gridView;
 
+    //WALL PART
+    private Image leftWall, rightWall, topWall, bottomWall;
+    private Image topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner;
     private Image wallImage;
     private boolean[][] wallGrid;
 
@@ -98,7 +101,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         }
 
         initializeWalls();
-        loadWallImage();
+        loadWallImages();
     }
 
     public void startGameThread() {
@@ -169,7 +172,7 @@ public class PlayModePanel extends JPanel implements Runnable {
             // Draw Pause Overlay only if the game is not over
             drawPauseOverlay(g2);
         }
-        drawWalls(g2);
+        drawWallsAndCorners(g2);
 
         g2.dispose();
     }
@@ -254,26 +257,46 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
 
-    private void loadWallImage() {
+    private void loadWallImages() {
         try {
-            wallImage = ImageIO.read(getClass().getResource("/resources/tiles/walls.png")); // Adjust path
+            leftWall = ImageIO.read(getClass().getResource("/resources/Walls/leftWall.png"));
+            rightWall = ImageIO.read(getClass().getResource("/resources/Walls/rightWall2.png"));
+            topWall = ImageIO.read(getClass().getResource("/resources/Walls/rightWall.png"));
+            bottomWall = ImageIO.read(getClass().getResource("/resources/Walls/frontWall.png"));
+            topLeftCorner = ImageIO.read(getClass().getResource("/resources/Walls/topLeftCorner.png"));
+            topRightCorner = ImageIO.read(getClass().getResource("/resources/Walls/topRightCorner.png"));
+            bottomLeftCorner = ImageIO.read(getClass().getResource("/resources/Walls/BottomLeftCorner.png"));
+            bottomRightCorner = ImageIO.read(getClass().getResource("/resources/Walls/BottomRightCorner.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void drawWalls(Graphics2D g2) {
-        if (wallImage == null) return;
+    private void drawWallsAndCorners(Graphics2D g2) {
+        int leftX = offsetX * tileSize - leftWall.getWidth(null); // Adjust X for left wall
+        int rightX = (offsetX + gridColumns) * tileSize;         // Adjust X for right wall
+        int topY = offsetY * tileSize - topWall.getHeight(null); // Adjust Y for top wall
+        int bottomY = (offsetY + gridRows) * tileSize;           // Adjust Y for bottom wall
 
+        // Draw top and bottom walls
         for (int col = 0; col < gridColumns; col++) {
-            for (int row = 0; row < gridRows; row++) {
-                if (wallGrid[col][row]) {
-                    int screenX = (offsetX + col) * tileSize;
-                    int screenY = (offsetY + row) * tileSize;
-                    g2.drawImage(wallImage, screenX, screenY, tileSize, tileSize, null);
-                }
-            }
+            int x = (offsetX + col) * tileSize;
+            g2.drawImage(topWall, x, topY, null);
+            g2.drawImage(bottomWall, x, bottomY, null);
         }
+
+        // Draw left and right walls
+        for (int row = 0; row < gridRows; row++) {
+            int y = (offsetY + row) * tileSize;
+            g2.drawImage(leftWall, leftX, y, null);
+            g2.drawImage(rightWall, rightX, y, null);
+        }
+
+        // Draw corners
+        g2.drawImage(topLeftCorner, leftX, topY, null);
+        g2.drawImage(topRightCorner, rightX, topY, null);
+        g2.drawImage(bottomLeftCorner, leftX, bottomY, null);
+        g2.drawImage(bottomRightCorner, rightX, bottomY, null);
     }
 
     private void initializeWalls() {
@@ -289,10 +312,6 @@ public class PlayModePanel extends JPanel implements Runnable {
             wallGrid[gridColumns - 1][row] = true; // Right border
         }
 
-        // Add an internal wall
-        for (int col = 3; col < 10; col++) {
-            wallGrid[col][5] = true;
-        }
     }
 
 
