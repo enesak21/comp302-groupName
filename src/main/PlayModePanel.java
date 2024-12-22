@@ -56,6 +56,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     // Declare the halls variable
     private List<Hall> halls;
     private int hallNum = 0;
+    private boolean lastRunefound = false;
 
     //WALL PART
     private Image leftWall, rightWall, topWall, bottomWall;
@@ -192,15 +193,8 @@ public class PlayModePanel extends JPanel implements Runnable {
                 if (clickedStructure != null) {
                     if (clickedStructure.hasRune()) {
                         System.out.println("Rune collected!");
-
                         // Transition to the next hall
-                        // Move to the next hall
-                        if (hallNum < halls.size()) {
-                            moveToNextHall();
-                        } else {
-                            System.out.println("Game Completed!");
-                            System.exit(0); // End the game if no more halls
-                        }
+                        moveToNextHall();
                     }
                 }
             }
@@ -213,7 +207,7 @@ public class PlayModePanel extends JPanel implements Runnable {
             initializeGameComponents(hallNum); // Initialize the next hall
         } else {
             System.out.println("Game Completed!");
-            System.exit(0); // End the game if no more halls
+            lastRunefound = true;
         }
     }
 
@@ -298,6 +292,8 @@ public class PlayModePanel extends JPanel implements Runnable {
             if (timeController.getTimeLeft() <= 0) {
                 isPaused = true;
                 handleGameOver(); // Oyun bitişini işlemek için ayrı bir metot
+            } else if (lastRunefound) {
+                handleGameWon();
             }
         }
     }
@@ -305,6 +301,11 @@ public class PlayModePanel extends JPanel implements Runnable {
     private void handleGameOver() {
         System.out.println("Game Over! Time's up.");
         // Burada oyun bitiş ekranına geçebilir veya başka bir işlem yapabilirsiniz
+    }
+
+    private void handleGameWon() {
+        timeController.pauseTimer();
+        // here we can exit the game or go to main menu.
     }
 
     @Override
@@ -336,6 +337,10 @@ public class PlayModePanel extends JPanel implements Runnable {
             drawPauseOverlay(g2);
         }
 
+        if (lastRunefound) {
+
+
+        }
 
         g2.dispose();
     }
@@ -415,6 +420,25 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         g2.drawString(gameOverText, gameOverX, gameOverY);
     }
+
+
+    private void drawWinningMessage(Graphics2D g2) {
+        // Draw a semi-transparent dark overlay
+        g2.setColor(new Color(0, 0, 0, 150)); // Semi-transparent black
+        g2.fillRect(0, 0, screenWidth, screenHeight);
+
+        // Draw the game over message
+        g2.setFont(pressStart2PFont.deriveFont(40f));
+        g2.setColor(Color.GREEN); // Change the color to red
+
+        FontMetrics fm = g2.getFontMetrics();
+        String congratsText = "Congrats, You Won!";
+        int congratsX = (screenWidth - fm.stringWidth(congratsText)) / 2;
+        int congratsY = (screenHeight - fm.getHeight()) / 2 + fm.getAscent();
+
+        g2.drawString(congratsText, congratsX, congratsY);
+    }
+
 
     private void drawPauseOverlay(Graphics2D g2) {
         g2.setColor(new Color(0, 0, 0, 150)); // Semi-transparent background
