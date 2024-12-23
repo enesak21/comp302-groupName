@@ -1,5 +1,6 @@
 package domain.UI;
 
+import domain.audio.AudioManager;
 import domain.game.Hall;
 import main.BuildModePanel;
 import main.PlayModePanel;
@@ -13,6 +14,7 @@ public class UI {
     private CardLayout cardLayout;
     private JPanel mainPanel;
     private List<Hall> halls;
+    private AudioManager audioManager = new AudioManager();
 
     public UI() {
         initializeUI();
@@ -47,6 +49,8 @@ public class UI {
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(800, 600));
 
+        audioManager.playEnterMusic();
+
         // Background Image
         ImageIcon originalIcon = new ImageIcon("src/resources/Rokue-like logo 4.png");
         Image scaledImage = originalIcon.getImage().getScaledInstance(800, 600, Image.SCALE_SMOOTH);
@@ -66,6 +70,7 @@ public class UI {
 
         startButton.addActionListener(e -> {
             if (!isPanelAdded("Build")) {
+                audioManager.stopEnterMusic();
                 mainPanel.add(createBuildScreen(), "Build");
             }
             cardLayout.show(mainPanel, "Build");
