@@ -15,35 +15,37 @@ public class MonsterManager {
     private long lastSpawnTime;
     private final int SPAWN_INTERVAL = 8000;
 
+    private List<MonsterFactory> factories;
+
     public MonsterManager(Game game,int tileSize) {
         this.monsters = new ArrayList<>();
         this.random = new Random();
         this.tileSize = tileSize;
         this.game = game;
         this.lastSpawnTime = System.currentTimeMillis();
+
+        // Add factories for different monsters
+        factories = new ArrayList<>();
+        factories.add(new ArcherMonsterFactory());
+        factories.add(new FighterMonsterFactory());
+        factories.add(new WizardMonsterFactory(game));
     }
 
-    // bi tane fonksiyon yazılacak
-    //bu fonksyion rastegele bir grid bulup buralara spawnMonster fonksiyonu ile monster oluşturacak.
-
     public void spawnMonster(int gridWidth, int gridHeight) {
-        int type = random.nextInt(3); // 0: Archer, 1: Fighter, 2: Wizard
+
+        int factoryIndex = random.nextInt(factories.size()); // Randomly select a factory
+        MonsterFactory selectedFactory = factories.get(factoryIndex); // 0: Archer, 1: Fighter, 2: Wizard
+
         int gridX = random.nextInt(gridWidth);
         int gridY = random.nextInt(gridHeight);
 
-        BaseMonster monster;
-        switch (type) {
-            case 0 -> monster = new ArcherMonster(gridX, gridY, tileSize);
-            case 1 -> monster = new FighterMonster(gridX, gridY, tileSize);
-            default -> monster = new WizardMonster(gridX, gridY, tileSize,game);
-        }
+        BaseMonster monster = selectedFactory.createMonster(gridX, gridY, tileSize);
         monsters.add(monster);
     }
 
     public void updateMonsters(){
         long currentTime = System.currentTimeMillis(); // Get the current time. An error might exist here.
         if (currentTime - lastSpawnTime > SPAWN_INTERVAL) { // If 8 seconds have passed since the last spawn
-            System.out.println("update monsters calisiyo");
             spawnMonster(game.getGrid().getColumns(), game.getGrid().getRows());
             lastSpawnTime = currentTime;
         }
