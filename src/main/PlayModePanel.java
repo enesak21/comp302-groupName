@@ -64,11 +64,6 @@ public class PlayModePanel extends JPanel implements Runnable {
     private Image openedWall, closedWall;
     private boolean[][] wallGrid;
 
-    //Cemal test. Bunlar sonradan otomatik oluşturulacak. Şimdilik dokunmayın
-    private MonsterView archerView;
-    private MonsterView fighterView;
-    private MonsterView wizardView;
-
     int FPS = 60;
     Thread gameThread;
     Game game;
@@ -86,17 +81,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         addPauseKeyListener();
         loadFont();
 
-        //***TEST***
-        //Initialize 3 monsters
-        ArcherMonster archerMonster = new ArcherMonster(2, 5, tileSize);
-        archerView = new MonsterView((Entity) archerMonster);
-
-        FighterMonster fighterMonster = new FighterMonster(5, 8, tileSize);
-        fighterView = new MonsterView((Entity) fighterMonster);
-
-        WizardMonster wizardMonster = new WizardMonster(10, 8, tileSize);
-        wizardView = new MonsterView((Entity) wizardMonster);
-        //End of the test
 
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -323,11 +307,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         playerView.draw(g2);
         drawWallsAndCorners(g2);
         gridView.drawStructures(g2, offsetX * tileSize, offsetY * tileSize);
-
-        //Draw monsters
-        archerView.draw(g2);
-        fighterView.draw(g2);
-        wizardView.draw(g2);
 
         // Draw Game Over Message
         if (timeController.getTimeLeft() <= 0) {
