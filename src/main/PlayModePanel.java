@@ -16,16 +16,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 
 public class PlayModePanel extends JPanel implements Runnable {
@@ -45,6 +40,16 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public static final int offsetX = ((screenWidth - gridWidth) / (2 * tileSize)) - 2; // offset for gridi ortalama (tile-based)
     public static final int offsetY = (screenHeight - gridHeight) / (2 * tileSize);
+
+    private static final int gridTopLeftX = offsetX * tileSize;
+    private static final int gridTopLeftY = offsetY * tileSize;
+
+    int sidebarWidth = 4 * tileSize + 20; // Sidebar width
+    int sidebarX = screenWidth - sidebarWidth - (tileSize + 10) + 20;
+    int sidebarY = offsetY * tileSize;
+    int arcWidth = 30; // Rounded corner width
+    int arcHeight = 30; // Rounded corner height
+
 
     private TimeController timeController;
     private Grid grid;
@@ -81,45 +86,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         addPauseKeyListener();
         loadFont();
 
-
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int mouseX = e.getX();
-                int mouseY = e.getY();
-
-                int sidebarWidth = 4 * tileSize + 20; // Sidebar width
-                int sidebarX = screenWidth - sidebarWidth - (tileSize + 10) + 20;
-
-                int buttonWidth = 48; // Button width
-                int buttonHeight = 48; // Button height
-                int buttonPadding = 10; // Spacing between buttons
-                int buttonX1 = sidebarX + 10; // Pause button position
-                int buttonX2 = buttonX1 + buttonWidth + buttonPadding; // Exit button position
-                int buttonY = offsetY * tileSize + 10; // Top margin for both buttons
-
-                // Check if Pause Button is clicked
-                if (mouseX >= buttonX1 && mouseX <= buttonX1 + buttonWidth &&
-                        mouseY >= buttonY && mouseY <= buttonY + buttonHeight) {
-                    System.out.println("Pause Button Clicked");
-                    isPaused = !isPaused; // Toggle pause state
-                    if (isPaused) {
-                        timeController.pauseTimer();
-                    } else {
-                        timeController.resumeTimer();
-                    }
-                    repaint();
-                }
-
-                // Check if Exit Button is clicked
-                if (mouseX >= buttonX2 && mouseX <= buttonX2 + buttonWidth &&
-                        mouseY >= buttonY && mouseY <= buttonY + buttonHeight) {
-                    System.out.println("Exit Button Clicked");
-                    System.exit(0); // Exit game
-                }
-            }
-        });
-
     }
 
     private void initializeGameComponents(int hallNum) {
@@ -135,41 +101,13 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         this.addKeyListener(player.getPlayerController());
 
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (!isPaused) {
-                    handleMouseClick(e);
-                }
-            }
-        });
-
         gridView = new GridView(grid);
         CollisionChecker collisionChecker = new CollisionChecker(grid);
         player.setCollisionChecker(collisionChecker);
         timeController = new TimeController();
     }
 
-    /**
-     * Handles mouse click events on the game grid.
-     *
-     * @param e the MouseEvent triggered by the mouse click
-     *
-     * This method calculates the grid coordinates based on the mouse click position.
-     * If the click is within the bounds of the grid, it identifies the clicked tile
-     * and checks if it is near the player's current position. If the clicked tile
-     * contains a structure, it further checks if the structure has a rune and collects
-     * the rune if it does.
-     */
-    private void handleMouseClick(MouseEvent e) {
-        int mouseX = e.getX();
-        int mouseY = e.getY();
-
-        int gridX = (mouseX / tileSize) - offsetX;
-        int gridY = (mouseY / tileSize) - offsetY;
-
-        if (gridX >= 0 && gridX < gridColumns && gridY >= 0 && gridY < gridRows) {
-            System.out.println("Clicked on grid: " + gridX + ", " + gridY);
+    public void runeCollected(int gridX, int gridY){ {
             Tile clickedTile = grid.getTileAt(gridX, gridY);
             Structure clickedStructure = clickedTile.getStructure();
             Tile playerTile = grid.getTileAt(game.getPlayer().getGridX(), game.getPlayer().getGridY());
@@ -327,11 +265,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         g2.setFont(pressStart2PFont.deriveFont(15f));
         g2.setColor(Color.WHITE);
 
-        int sidebarWidth = 4 * tileSize + 20; // Sidebar width
-        int sidebarX = screenWidth - sidebarWidth - (tileSize + 10) + 20;
-        int sidebarY = offsetY * tileSize;
-        int arcWidth = 30; // Rounded corner width
-        int arcHeight = 30; // Rounded corner height
 
         // Sidebar Background
         g2.setColor(new Color(108, 85, 89));
@@ -506,7 +439,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         }
     }
 
-    // Getter functions for scale and tileSize
+    // Getters
     public int getScale() {
         return scale;
     }
@@ -518,5 +451,57 @@ public class PlayModePanel extends JPanel implements Runnable {
     public void setGame(Game game) {
         this.game = game;
         this.playerView= new PlayerView(game.getPlayer());
+    }
+
+    public int getTopLeftCornerX() {
+        return gridTopLeftX;
+    }
+
+    public int getTopLeftCornerY() {
+        return gridTopLeftY;
+    }
+
+    public int getGridWidth() {
+        return gridWidth;
+    }
+
+    public int getGridHeight() {
+        return gridHeight;
+    }
+
+    public int getSidebarWidth() {
+        return sidebarWidth;
+    }
+
+    public int getSidebarX() {
+        return sidebarX;
+    }
+
+    public int getSidebarY() {
+        return sidebarY;
+    }
+
+    public int getSidebarHeight() {
+        return gridHeight;
+    }
+
+    public int getOffsetX() {
+        return offsetX;
+    }
+
+    public int getOffsetY() {
+        return offsetY;
+    }
+
+    public int getScreenWidth() {
+        return screenWidth;
+    }
+
+    public int getGridColumns() {
+        return gridColumns;
+    }
+
+    public int getGridRows() {
+        return gridRows;
     }
 }

@@ -1,5 +1,6 @@
 package domain.UI;
 
+import domain.UI.mouseHandlers.PlayModeMouseListener;
 import domain.audio.AudioManager;
 import domain.game.Hall;
 import main.BuildModePanel;
@@ -7,7 +8,6 @@ import main.PlayModePanel;
 import java.util.List;
 import javax.swing.*;
 import java.awt.*;
-import domain.game.Hall;
 
 public class UI {
     private JFrame frame;
@@ -139,6 +139,11 @@ public class UI {
 
     private JPanel createGameScreen() {
         PlayModePanel playModePanel = new PlayModePanel(halls);
+
+        // Create a mouse listener for the Play Mode screen
+        PlayModeMouseListener playModeMouseListener = new PlayModeMouseListener(playModePanel);
+
+        playModePanel.addMouseListener(playModeMouseListener);
 
         playModePanel.startGameThread(); // Start the game loop
         SwingUtilities.invokeLater(playModePanel::requestFocusInWindow); // Ensure focus is set
