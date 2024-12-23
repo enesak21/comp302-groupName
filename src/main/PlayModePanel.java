@@ -338,8 +338,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         }
 
         if (lastRunefound) {
-
-
+            drawWinningMessage(g2);
         }
 
         g2.dispose();
