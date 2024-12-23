@@ -140,11 +140,6 @@ public class UI {
     private JPanel createGameScreen() {
         PlayModePanel playModePanel = new PlayModePanel(halls);
 
-        // Create a mouse listener for the Play Mode screen
-        PlayModeMouseListener playModeMouseListener = new PlayModeMouseListener(playModePanel);
-
-        playModePanel.addMouseListener(playModeMouseListener);
-
         playModePanel.startGameThread(); // Start the game loop
         SwingUtilities.invokeLater(playModePanel::requestFocusInWindow); // Ensure focus is set
         return playModePanel;

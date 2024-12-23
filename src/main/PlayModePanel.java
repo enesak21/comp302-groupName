@@ -3,6 +3,7 @@ package main;
 import domain.UI.GridView;
 import domain.UI.MonsterView;
 import domain.UI.PlayerView;
+import domain.UI.mouseHandlers.PlayModeMouseListener;
 import domain.entity.Entity;
 import domain.entity.monsters.ArcherMonster;
 import domain.entity.monsters.FighterMonster;
@@ -10,6 +11,7 @@ import domain.entity.monsters.WizardMonster;
 import domain.entity.playerObjects.Player;
 import domain.game.*;
 import domain.structures.Structure;
+import domain.game.SearchRuneController;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -21,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
+
 
 
 public class PlayModePanel extends JPanel implements Runnable {
@@ -68,6 +71,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     private Image topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner;
     private Image openedWall, closedWall;
     private boolean[][] wallGrid;
+    private SearchRuneController searchRuneController;
 
     int FPS = 60;
     Thread gameThread;
@@ -105,25 +109,13 @@ public class PlayModePanel extends JPanel implements Runnable {
         CollisionChecker collisionChecker = new CollisionChecker(grid);
         player.setCollisionChecker(collisionChecker);
         timeController = new TimeController();
+
+        // Create a mouse listener for the Play Mode screen
+        PlayModeMouseListener playModeMouseListener = new PlayModeMouseListener(this);
+        this.addMouseListener(playModeMouseListener);
     }
 
-    public void runeCollected(int gridX, int gridY){ {
-            Tile clickedTile = grid.getTileAt(gridX, gridY);
-            Structure clickedStructure = clickedTile.getStructure();
-            Tile playerTile = grid.getTileAt(game.getPlayer().getGridX(), game.getPlayer().getGridY());
-            if (Game.isInRange(clickedTile, playerTile, 1)) {
-                if (clickedStructure != null) {
-                    if (clickedStructure.hasRune()) {
-                        System.out.println("Rune collected!");
-                        // Transition to the next hall
-                        moveToNextHall();
-                    }
-                }
-            }
-        }
-    }
-
-    private void moveToNextHall() {
+    public void moveToNextHall() {
         hallNum++; // Move to the next hall
         if (hallNum < halls.size()) {
             initializeGameComponents(hallNum); // Initialize the next hall
@@ -504,4 +496,13 @@ public class PlayModePanel extends JPanel implements Runnable {
     public int getGridRows() {
         return gridRows;
     }
+
+    public Grid getGrid() {
+        return grid;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
 }
