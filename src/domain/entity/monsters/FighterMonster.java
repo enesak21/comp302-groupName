@@ -99,7 +99,7 @@ public class FighterMonster extends BaseMonster {
 
     @Override
     public void attack(Player player) {
-        if (isInRange(this.getGridX(),this.getGridX(),player.getGridX(),player.getGridY(), DAGGER_RANGE)) {
+        if (isInRange(this.getGridX(), this.getGridY(),player.getGridX() ,player.getGridY(), DAGGER_RANGE)) {
             long currentTime = System.currentTimeMillis();
             if ((currentTime - lastAttackTime) > ATTACK_FREQUENCY) {
                 player.reduceHealth();
