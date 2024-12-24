@@ -2,6 +2,7 @@ package main;
 
 import domain.UI.GridView;
 import domain.UI.PlayerView;
+import domain.UI.MonsterView;
 
 import domain.UI.mouseHandlers.PlayModeMouseListener;
 import domain.entity.Entity;
@@ -12,6 +13,7 @@ import domain.entity.playerObjects.Player;
 import domain.game.*;
 import domain.structures.Structure;
 import domain.game.SearchRuneController;
+
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -110,7 +112,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         grid = halls.get(hallNum).toGrid(tileSize);
         game = new Game(player, tileSize, this, grid);
 
-        this.addKeyListener(player.getPlayerController());
+        this.addKeyListener(player.getPlayerInputHandler());
 
         //initialize monsterManager
         monsterManager = new MonsterManager(game, tileSize);
