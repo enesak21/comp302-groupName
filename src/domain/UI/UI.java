@@ -2,8 +2,8 @@ package domain.UI;
 
 import domain.audio.AudioManager;
 import domain.game.Hall;
-import domain.handlers.BuildModeHandler;
 import domain.panels.BuildModePanel;
+import domain.handlers.BuildModeHandler;
 import domain.panels.PlayModePanel;
 import java.util.List;
 import javax.swing.*;

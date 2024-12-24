@@ -4,6 +4,7 @@ import domain.UI.GridView;
 import domain.UI.PlayerView;
 import domain.UI.MonsterView;
 
+
 import domain.handlers.*;
 import domain.entity.Entity;
 
@@ -28,10 +29,8 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
-
 public class PlayModePanel extends JPanel implements Runnable {
 
     // Screen settings
@@ -67,10 +66,10 @@ public class PlayModePanel extends JPanel implements Runnable {
     private PlayerView playerView;
     private GridView gridView;
 
-
     private MonsterManager monsterManager;
     private int countMonster = 0;
     private CopyOnWriteArrayList<MonsterView> monsterViewList = new CopyOnWriteArrayList<>();
+
 
     // Declare the halls variable
     private List<Hall> halls;
@@ -159,8 +158,8 @@ public class PlayModePanel extends JPanel implements Runnable {
         }
     }
 
-
     private void addPauseKeyListener() {
+
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -168,13 +167,37 @@ public class PlayModePanel extends JPanel implements Runnable {
                     isPaused = !isPaused;
                     if (isPaused) {
                         game.pauseGame();
+
+                        timeController.pauseTimer();
                     } else {
                         game.resumeGame();
+                        timeController.resumeTimer();
+
                     }
                     repaint();
                 }
             }
         });
+    }
+
+
+    public void pauseGame() {
+
+        isPaused = true; // Set the game state to paused
+        timeController.pauseTimer(); // Pause the game timer (if applicable)
+        System.out.println("Game paused via button");
+        repaint(); // Trigger a repaint to show the pause overlay
+    }
+
+    public void resumeGame(){
+        isPaused = false;
+        timeController.resumeTimer();
+        System.out.println("Game resumed via button");
+        repaint();
+    }
+
+    public void exitGame() {
+        System.exit(0);
     }
 
     private void loadFont() {
@@ -484,9 +507,16 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.playerView= new PlayerView(game.getPlayer());
     }
 
+    public void setPaused(Boolean b){
+        this.isPaused = b;
+    }
+
+
     public int getTopLeftCornerX() {
         return gridTopLeftX;
     }
+
+    public boolean getIsPaused(){return isPaused;}
 
     public int getTopLeftCornerY() {
         return gridTopLeftY;
