@@ -1,12 +1,7 @@
 package main;
 
 import domain.UI.GridView;
-import domain.UI.MonsterView;
 import domain.UI.PlayerView;
-import domain.entity.Entity;
-import domain.entity.monsters.ArcherMonster;
-import domain.entity.monsters.FighterMonster;
-import domain.entity.monsters.WizardMonster;
 import domain.entity.playerObjects.Player;
 import domain.game.*;
 import domain.structures.Structure;
@@ -73,6 +68,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     Thread gameThread;
     Game game;
     Rune rune;
+    Graphics2D g2;
 
     // Constructor
     public PlayModePanel(List<Hall> halls) {
@@ -233,7 +229,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
+        g2 = (Graphics2D) g;
 
 
         // Draw Time (always display the sidebar)
@@ -248,14 +244,14 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         // Draw Game Over Message
         if (timeController.getTimeLeft() <= 0) {
-            drawGameOverMessage(g2);
+            drawGameOverScreen(g2);
         } else if (isPaused) {
             // Draw Pause Overlay only if the game is not over
             drawPauseOverlay(g2);
         }
 
         if (lastRunefound) {
-            drawWinningMessage(g2);
+            drawWinningScreen(g2);
         }
 
         g2.dispose();
@@ -315,7 +311,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         }
     }
 
-    private void drawGameOverMessage(Graphics2D g2) {
+    private void drawGameOverScreen(Graphics2D g2) {
         // Draw a semi-transparent dark overlay
         g2.setColor(new Color(0, 0, 0, 150)); // Semi-transparent black
         g2.fillRect(0, 0, screenWidth, screenHeight);
@@ -333,7 +329,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
 
-    private void drawWinningMessage(Graphics2D g2) {
+    private void drawWinningScreen(Graphics2D g2) {
         // Draw a semi-transparent dark overlay
         g2.setColor(new Color(0, 0, 0, 150)); // Semi-transparent black
         g2.fillRect(0, 0, screenWidth, screenHeight);
@@ -497,6 +493,10 @@ public class PlayModePanel extends JPanel implements Runnable {
         return screenWidth;
     }
 
+    public int getScreenHeight() {
+        return screenHeight;
+    }
+
     public int getGridColumns() {
         return gridColumns;
     }
@@ -504,4 +504,17 @@ public class PlayModePanel extends JPanel implements Runnable {
     public int getGridRows() {
         return gridRows;
     }
+
+    public Font getFont() {
+        return pressStart2PFont;
+    }
+
+    public TimeController getTimeController() {
+        return timeController;
+    }
+
+    public Graphics2D getGraphics2() {
+        return g2;
+    }
+
 }
