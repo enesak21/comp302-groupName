@@ -206,17 +206,17 @@ public class PlayModePanel extends JPanel implements Runnable {
             // Update the player
             game.getPlayer().update();
 
-            // Zaman bitti mi kontrol et
-            if (timeController.getTimeLeft() <= 0) {
-                isPaused = true;
-                GameOverHandler gameOverHandler = new GameOverHandler(this);
-                gameOverHandler.handle(); // Oyun bitişini işlemek için ayrı bir metot
-            } else if (lastRunefound) {
-                GameWinningHandler gameWinningHandler = new GameWinningHandler(this);
-                gameWinningHandler.handle();
-            }
+
         }
     }
+
+    public void restartGame() {
+        // Reset to the first hall
+        hallNum = 0;
+        lastRunefound = false;
+        moveToNextHall();
+    }
+
 
     @Override
     public void paintComponent(Graphics g) {
@@ -239,6 +239,14 @@ public class PlayModePanel extends JPanel implements Runnable {
             drawPauseOverlay(g2);
         }
 
+        // Zaman bitti mi kontrol et
+        if (timeController.getTimeLeft() <= 0) {
+            GameOverHandler gameOverHandler = new GameOverHandler(this);
+            gameOverHandler.handle(); // Oyun bitişini işlemek için ayrı bir metot
+        } else if (lastRunefound) {
+            GameWinningHandler gameWinningHandler = new GameWinningHandler(this);
+            gameWinningHandler.handle();
+        }
 
 
         g2.dispose();
@@ -485,6 +493,10 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public Graphics2D getGraphics2() {
         return g2;
+    }
+
+    public List<Hall> getHalls() {
+        return halls;
     }
 
 }

@@ -54,7 +54,7 @@ public class GameWinningHandler {
         // Draw "Main Menu" button
         MainMenuButton mainMenuButton = new MainMenuButton(g2, startX + buttonWidth + buttonSpacing, buttonY, buttonWidth, buttonHeight, font);
 
-        tryAgainButton.drawTryAgainButton();
+        tryAgainButton.drawTryAgainButton(playModePanel);
         mainMenuButton.drawMainMenuButton();
 
     }
