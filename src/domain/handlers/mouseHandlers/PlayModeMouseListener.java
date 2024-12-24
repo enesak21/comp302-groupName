@@ -1,6 +1,6 @@
-package domain.UI.mouseHandlers;
+package domain.handlers.mouseHandlers;
 
-import main.PlayModePanel;
+import domain.panels.PlayModePanel;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;

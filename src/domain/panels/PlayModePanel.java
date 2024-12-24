@@ -1,18 +1,18 @@
-package main;
+package domain.panels;
 
 import domain.UI.GridView;
 import domain.UI.PlayerView;
 import domain.UI.MonsterView;
 
-import domain.UI.mouseHandlers.PlayModeMouseListener;
+import domain.handlers.mouseHandlers.PlayModeMouseListener;
 import domain.entity.Entity;
 
 import domain.entity.monsters.*;
 
 import domain.entity.playerObjects.Player;
 import domain.game.*;
-import domain.structures.Structure;
 import domain.game.SearchRuneController;
+import main.PlayerInputHandler;
 
 
 import javax.imageio.ImageIO;
@@ -26,8 +26,6 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import java.util.Random;
 
 public class PlayModePanel extends JPanel implements Runnable {
 
@@ -63,6 +61,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     private boolean isPaused = false; // Add a boolean to track game state
     private PlayerView playerView;
     private GridView gridView;
+
 
 
     private MonsterManager monsterManager;
@@ -157,7 +156,9 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
 
+
     private void addPauseKeyListener() {
+
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -177,15 +178,17 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
     public void pauseGame() {
+
         isPaused = true; // Set the game state to paused
         timeController.pauseTimer(); // Pause the game timer (if applicable)
-        System.out.println("Game paused");
+        System.out.println("Game paused via button");
         repaint(); // Trigger a repaint to show the pause overlay
     }
+
     public void resumeGame(){
         isPaused = false;
         timeController.resumeTimer();
-        System.out.println("Game resumed");
+        System.out.println("Game resumed via button");
         repaint();
     }
 

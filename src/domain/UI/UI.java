@@ -1,10 +1,9 @@
 package domain.UI;
 
-import domain.UI.mouseHandlers.PlayModeMouseListener;
 import domain.audio.AudioManager;
 import domain.game.Hall;
 import main.BuildModePanel;
-import main.PlayModePanel;
+import domain.panels.PlayModePanel;
 import java.util.List;
 import javax.swing.*;
 import java.awt.*;

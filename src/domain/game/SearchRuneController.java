@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import domain.structures.Structure;
-import main.PlayModePanel;
+import domain.panels.PlayModePanel;
 
 import domain.audio.AudioManager;
 

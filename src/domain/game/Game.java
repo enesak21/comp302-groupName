@@ -2,7 +2,7 @@
 package domain.game;
 
 import domain.entity.playerObjects.Player;
-import main.PlayModePanel;
+import domain.panels.PlayModePanel;
 
 public class Game {
     private boolean isRuneFound = false;

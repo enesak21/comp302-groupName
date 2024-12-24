@@ -1,8 +1,6 @@
 package domain.entity;
 
-import main.PlayModePanel;
-
-import java.awt.image.BufferedImage;
+import domain.panels.PlayModePanel;
 
 public abstract class Entity {
     protected int pixelX, pixelY; // Çizimler için bunlar
