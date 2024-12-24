@@ -13,7 +13,7 @@ public class MonsterManager {
     private int tileSize;
     private Game game;
     private long lastSpawnTime;
-    private final int SPAWN_INTERVAL = 8000;
+    private final int SPAWN_INTERVAL = 2000;
 
     private List<MonsterFactory> factories;
 
@@ -29,6 +29,8 @@ public class MonsterManager {
         factories.add(new ArcherMonsterFactory());
         factories.add(new FighterMonsterFactory());
         factories.add(new WizardMonsterFactory(game));
+
+        spawnMonster(game.getGrid().getColumns(), game.getGrid().getRows());
     }
 
     public void spawnMonster(int gridWidth, int gridHeight) {
