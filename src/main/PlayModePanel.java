@@ -101,7 +101,11 @@ public class PlayModePanel extends JPanel implements Runnable {
         // Initialize the grid
         grid = halls.get(hallNum).toGrid(tileSize);
         game = new Game(player, tileSize, this, grid);
-        placeRune();
+
+        // place The Rune
+
+        searchRuneController = new SearchRuneController(this);
+        rune = searchRuneController.placeRune();
 
         this.addKeyListener(player.getPlayerController());
 
@@ -111,6 +115,10 @@ public class PlayModePanel extends JPanel implements Runnable {
         timeController = new TimeController();
 
         // Create a mouse listener for the Play Mode screen
+
+        if (this.getMouseListeners().length > 0) {
+            this.removeMouseListener(this.getMouseListeners()[0]);
+        }
         PlayModeMouseListener playModeMouseListener = new PlayModeMouseListener(this);
         this.addMouseListener(playModeMouseListener);
     }
@@ -125,19 +133,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         }
     }
 
-    /**
-     * Place the rune in a random structure in the grid
-     */
-    public void placeRune() {
-        List <Structure> structures = grid.getStructures();
-        System.out.println(structures);
-        if (structures != null && !structures.isEmpty()) {
-            Random random = new Random();
-            int randomIndex = random.nextInt(structures.size());
-            Structure structure = structures.get(randomIndex);
-            rune = new Rune(structure);
-        }
-    }
 
     private void addPauseKeyListener() {
         this.addKeyListener(new KeyAdapter() {
@@ -504,5 +499,4 @@ public class PlayModePanel extends JPanel implements Runnable {
     public Game getGame() {
         return game;
     }
-
 }
