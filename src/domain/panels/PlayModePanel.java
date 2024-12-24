@@ -1,18 +1,18 @@
-package domain.panels;
+package main;
 
 import domain.UI.GridView;
 import domain.UI.PlayerView;
 import domain.UI.MonsterView;
 
-import domain.handlers.mouseHandlers.PlayModeMouseListener;
+import domain.UI.mouseHandlers.PlayModeMouseListener;
 import domain.entity.Entity;
 
 import domain.entity.monsters.*;
 
 import domain.entity.playerObjects.Player;
 import domain.game.*;
+import domain.structures.Structure;
 import domain.game.SearchRuneController;
-import main.PlayerInputHandler;
 
 
 import javax.imageio.ImageIO;
@@ -26,6 +26,9 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PlayModePanel extends JPanel implements Runnable {
 
@@ -65,7 +68,7 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     private MonsterManager monsterManager;
     private int countMonster = 0;
-    private List<MonsterView> monsterViewList = new ArrayList<>();
+    private CopyOnWriteArrayList<MonsterView> monsterViewList = new CopyOnWriteArrayList<>();
 
     // Declare the halls variable
     private List<Hall> halls;
