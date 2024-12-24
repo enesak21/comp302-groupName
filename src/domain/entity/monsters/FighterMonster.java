@@ -16,6 +16,7 @@ public class FighterMonster extends BaseMonster {
     private final int ATTACK_FREQUENCY = 500;
     private long lastAttackTime;
 
+    private int moveCounter = 0;
 
     public FighterMonster(int gridX, int gridY, int tileSize) {
         super(gridX, gridY, tileSize);
@@ -64,7 +65,11 @@ public class FighterMonster extends BaseMonster {
 
     @Override
     public void update(Player player) {
-        move();
+        moveCounter++;
+        if(moveCounter >= 16){
+            move();
+            moveCounter = 0;
+        }
         attack(player);
     }
 
