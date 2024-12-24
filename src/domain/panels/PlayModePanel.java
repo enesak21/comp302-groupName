@@ -131,13 +131,11 @@ public class PlayModePanel extends JPanel implements Runnable {
         //initialize monsterManager
         monsterManager = new MonsterManager(game, tileSize);
         countMonster += monsterManager.getMonsters().size();
+        monsterViewList = new CopyOnWriteArrayList<>();
         for (int i = 0; i < monsterManager.getMonsters().size(); i++) {
             MonsterView monsterView = new MonsterView((Entity) monsterManager.getMonsters().get(i));
             monsterViewList.add(monsterView);
         }
-
-
-
 
         this.addKeyListener(player.getPlayerInputHandler());
 
