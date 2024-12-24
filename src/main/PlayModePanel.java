@@ -1,12 +1,7 @@
 package main;
 
 import domain.UI.GridView;
-import domain.UI.MonsterView;
 import domain.UI.PlayerView;
-import domain.entity.Entity;
-import domain.entity.monsters.ArcherMonster;
-import domain.entity.monsters.FighterMonster;
-import domain.entity.monsters.WizardMonster;
 import domain.entity.playerObjects.Player;
 import domain.game.*;
 import domain.structures.Structure;
@@ -92,14 +87,14 @@ public class PlayModePanel extends JPanel implements Runnable {
         System.out.println("current hall num: " + hallNum);
         System.out.println("total halls: " + halls.size());
 
-        Player player = Player.getInstance("Osimhen", 0, 0, tileSize, this, new PlayerController());
+        Player player = Player.getInstance("Osimhen", 0, 0, tileSize, this, new PlayerInputHandler());
         playerView = new PlayerView(player);
         // Initialize the grid
         grid = halls.get(hallNum).toGrid(tileSize);
         game = new Game(player, tileSize, this, grid);
         placeRune();
 
-        this.addKeyListener(player.getPlayerController());
+        this.addKeyListener(player.getPlayerInputHandler());
 
         gridView = new GridView(grid);
         CollisionChecker collisionChecker = new CollisionChecker(grid);
