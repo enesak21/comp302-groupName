@@ -1,6 +1,7 @@
 package domain.entity.monsters;
 
 import domain.game.Game;
+import main.PlayModePanel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ public class MonsterManager {
     private int tileSize;
     private Game game;
     private long lastSpawnTime;
-    private final int SPAWN_INTERVAL = 1000;
+    private final int SPAWN_INTERVAL = 5000;
 
     private List<MonsterFactory> factories;
 
@@ -41,8 +42,22 @@ public class MonsterManager {
         int gridX = random.nextInt(gridWidth);
         int gridY = random.nextInt(gridHeight);
 
+
+        while (game.getGrid().getTileAt(gridX,gridY).isSolid()) {
+            gridX = random.nextInt(gridWidth);
+            gridY = random.nextInt(gridHeight);
+        }
+
         BaseMonster monster = selectedFactory.createMonster(gridX, gridY, tileSize);
-        monsters.add(monster);
+        System.out.println("gridX: " + monster.getGridX() + " " + "gridY: " + monster.getGridY());
+        if (monster.getGridX() - PlayModePanel.offsetX < 0 || monster.getGridY() - PlayModePanel.offsetY < 0) {
+            spawnMonster(gridWidth, gridHeight);
+        }else {
+            game.getGrid().getTileAt(monster.getGridX() - PlayModePanel.offsetX, monster.getGridY() - PlayModePanel.offsetY).setSolid(true);
+            monsters.add(monster);
+        }
+
+
     }
 
     public void updateMonsters(){

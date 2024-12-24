@@ -59,7 +59,6 @@ public class FighterMonster extends BaseMonster {
             pixelCounter = 0;
             updatePixelPosition();
         }
-
     }
 
 

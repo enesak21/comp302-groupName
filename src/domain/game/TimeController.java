@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TimeController {
-    private int timeLeft = 10; // Timer set for 60 seconds
+    private int timeLeft = 30; // Timer set for 60 seconds
     private Timer timer; // Timer instance
 
     public TimeController() {
