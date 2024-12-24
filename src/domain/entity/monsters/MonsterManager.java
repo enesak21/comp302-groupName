@@ -46,7 +46,6 @@ public class MonsterManager {
         int gridX = PlayModePanel.offsetX + random.nextInt(gridWidth - (2 * PlayModePanel.offsetX) - 1);
         int gridY = PlayModePanel.offsetY + random.nextInt(gridHeight - (2 *PlayModePanel.offsetY) - 1);
 
-        System.out.println("Test Printer: " + gridX + " " + gridY);
         while (game.getGrid().getTileAt(gridX - PlayModePanel.offsetX, gridY - PlayModePanel.offsetY).isSolid()) {
             gridX = PlayModePanel.offsetX + random.nextInt(gridWidth - (2 * PlayModePanel.offsetX) - 1);
             gridY = PlayModePanel.offsetY + random.nextInt(gridHeight - (2 *PlayModePanel.offsetY) - 1);
@@ -57,8 +56,6 @@ public class MonsterManager {
         monster.setCollisionChecker(collisionChecker);
 
 
-
-        System.out.println("gridX: " + monster.getGridX() + " " + "gridY: " + monster.getGridY());
         if (monster.getGridX() - PlayModePanel.offsetX < 0 || monster.getGridY() - PlayModePanel.offsetY < 0) {
             spawnMonster(gridWidth, gridHeight);
         }else {
