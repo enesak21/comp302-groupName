@@ -47,12 +47,9 @@ public class PlayModePanel extends JPanel implements Runnable {
     private PlayerView playerView;
     private GridView gridView;
 
-
     private MonsterManager monsterManager;
     private int countMonster = 0;
     private List<MonsterView> monsterViewList = new ArrayList<>();
-    //End of Cemal Test
-
 
     int FPS = 60;
     Thread gameThread;
@@ -153,8 +150,8 @@ public class PlayModePanel extends JPanel implements Runnable {
             // Update the player
             game.getPlayer().update();
 
+            //Update monsters
             monsterManager.updateMonsters();
-
             //Update monsters view list if there is a new monster
             if (countMonster < monsterManager.getMonsters().size()) {
                 for (int i = countMonster; i < monsterManager.getMonsters().size(); i++) {
@@ -163,7 +160,6 @@ public class PlayModePanel extends JPanel implements Runnable {
                 }
                 countMonster = monsterManager.getMonsters().size();
             }
-
 
             // Zaman bitti mi kontrol et
             if (timeController.getTimeLeft() <= 0) {
