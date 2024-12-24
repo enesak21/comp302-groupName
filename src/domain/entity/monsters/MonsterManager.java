@@ -15,7 +15,7 @@ public class MonsterManager {
     private int tileSize;
     private Game game;
     private long lastSpawnTime;
-    private final int SPAWN_INTERVAL = 1000;
+    private final int SPAWN_INTERVAL = 8000;
     private CollisionChecker collisionChecker;
 
     private List<MonsterFactory> factories;
@@ -43,13 +43,13 @@ public class MonsterManager {
 
 
 
-        int gridX = PlayModePanel.offsetX + random.nextInt(gridWidth - (2 * PlayModePanel.offsetX));
-        int gridY = PlayModePanel.offsetY + random.nextInt(gridHeight - (2 *PlayModePanel.offsetY));
+        int gridX = PlayModePanel.offsetX + random.nextInt(gridWidth - (2 * PlayModePanel.offsetX) - 1);
+        int gridY = PlayModePanel.offsetY + random.nextInt(gridHeight - (2 *PlayModePanel.offsetY) - 1);
 
-
+        System.out.println("Test Printer: " + gridX + " " + gridY);
         while (game.getGrid().getTileAt(gridX - PlayModePanel.offsetX, gridY - PlayModePanel.offsetY).isSolid()) {
-            gridX = random.nextInt(gridWidth);
-            gridY = random.nextInt(gridHeight);
+            gridX = PlayModePanel.offsetX + random.nextInt(gridWidth - (2 * PlayModePanel.offsetX) - 1);
+            gridY = PlayModePanel.offsetY + random.nextInt(gridHeight - (2 *PlayModePanel.offsetY) - 1);
         }
 
 
@@ -77,6 +77,7 @@ public class MonsterManager {
         }
         for (BaseMonster monster : monsters) {
             monster.update(game);
+            monster.setCollisionChecker(collisionChecker);
         }
     }
 

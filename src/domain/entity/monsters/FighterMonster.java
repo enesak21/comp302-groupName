@@ -59,10 +59,10 @@ public class FighterMonster extends BaseMonster {
 
         if(moving){
             switch (direction){
-                case UP -> pixelY -= speed;
-                case DOWN -> pixelY += speed;
-                case LEFT -> pixelX -= speed;
-                case RIGHT -> pixelX += speed;
+                case UP -> pixelY -= SPEED;
+                case DOWN -> pixelY += SPEED;
+                case LEFT -> pixelX -= SPEED;
+                case RIGHT -> pixelX += SPEED;
             }
             pixelCounter += SPEED;
 
@@ -72,7 +72,6 @@ public class FighterMonster extends BaseMonster {
                 game.getGrid().getTileAt(gridX - PlayModePanel.offsetX, gridY - PlayModePanel.offsetY).setSolid(false);
 
                 switch (direction) {
-
                     case UP -> gridY--;
                     case DOWN -> gridY++;
                     case LEFT -> gridX--;
@@ -87,17 +86,14 @@ public class FighterMonster extends BaseMonster {
                 updatePixelPosition();
             }
         }
-
-
-
-
     }
 
 
     @Override
     public void update(Game game) {
         moveCounter++;
-        if(moveCounter >= 16){
+        //Speed of the monster is controlled by this if statement. The higher the number, the slower the monster.
+        if(moveCounter >= SPEED * 2){
             move(game);
             moveCounter = 0;
         }
