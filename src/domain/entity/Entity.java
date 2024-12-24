@@ -12,8 +12,8 @@ public abstract class Entity {
     protected int tileSize; //public yapmak istemedim, burada tekrar tanımladım
 
     public Entity(int gridX, int gridY, int tileSize){
-        this.gridX = gridX + PlayModePanel.offsetX;
-        this.gridY = gridY + PlayModePanel.offsetY;
+        this.gridX = gridX;
+        this.gridY = gridY;
         this.tileSize = tileSize;
 
         this.pixelX = gridX * tileSize; //piksel konumlarını gride göre hesaplattık

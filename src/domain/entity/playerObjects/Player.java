@@ -21,7 +21,7 @@ public class Player extends Entity {
     private CollisionChecker collisionChecker;
 
     private Player(String name, int gridX, int gridY, int tileSize, PlayModePanel playModePanel, PlayerInputHandler playerInputHandler) {
-        super(gridX, gridY, tileSize);
+        super(gridX + 2, gridY + 2, tileSize); // +2 is for the offset
         this.name = name;
         this.playModePanel = playModePanel;
         this.playerInputHandler = playerInputHandler;

@@ -55,6 +55,8 @@ public class ArcherMonster extends BaseMonster{
 
     public void move(Game game) {
 
+        System.out.println("Archer: " + gridX + " " + gridY);
+
         if(!moving){
             if (!collisionChecker.checkCollision(this)) {
                 moving = true;
@@ -87,9 +89,9 @@ public class ArcherMonster extends BaseMonster{
                 //Update new grid isSolid(true)
                 game.getGrid().getTileAt(gridX - PlayModePanel.offsetX, gridY - PlayModePanel.offsetY).setSolid(true);
 
-
                 moving = false;
                 updatePixelPosition();
+
                 pixelCounter = 0;
             }
         }
@@ -133,7 +135,6 @@ public class ArcherMonster extends BaseMonster{
             moveCounter = 0;
         }
         attack(game.getPlayer());
-
     }
 
     @Override

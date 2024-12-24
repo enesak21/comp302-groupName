@@ -39,9 +39,8 @@ public class MonsterManager {
     public void spawnMonster(int gridWidth, int gridHeight) {
 
         int factoryIndex = random.nextInt(factories.size()); // Randomly select a factory
+
         MonsterFactory selectedFactory = factories.get(factoryIndex); // 0: Archer, 1: Fighter, 2: Wizard
-
-
 
         int gridX = PlayModePanel.offsetX + random.nextInt(gridWidth - (2 * PlayModePanel.offsetX) - 1);
         int gridY = PlayModePanel.offsetY + random.nextInt(gridHeight - (2 *PlayModePanel.offsetY) - 1);
@@ -52,6 +51,7 @@ public class MonsterManager {
         }
 
 
+        System.out.println("MonsterManager: spawnMonster: gridX: " + gridX + " gridY: " + gridY);
         BaseMonster monster = selectedFactory.createMonster(gridX, gridY, tileSize);
         monster.setCollisionChecker(collisionChecker);
 
