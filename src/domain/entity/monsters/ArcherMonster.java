@@ -45,9 +45,9 @@ public class ArcherMonster extends BaseMonster{
     public void move() {}
 
     @Override
-    public void update(Player player)
+    public void update(Game game)
     {
-         attack(player);
+         attack(game.getPlayer());
          move();
     }
 

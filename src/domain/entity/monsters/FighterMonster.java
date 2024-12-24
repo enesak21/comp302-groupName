@@ -3,6 +3,7 @@ package domain.entity.monsters;
 import domain.entity.Direction;
 import domain.entity.Entity;
 import domain.entity.playerObjects.Player;
+import domain.game.Game;
 
 import java.util.Random;
 
@@ -63,13 +64,13 @@ public class FighterMonster extends BaseMonster {
 
 
     @Override
-    public void update(Player player) {
+    public void update(Game game) {
         moveCounter++;
         if(moveCounter >= 16){
             move();
             moveCounter = 0;
         }
-        attack(player);
+        attack(game.getPlayer());
     }
 
     @Override

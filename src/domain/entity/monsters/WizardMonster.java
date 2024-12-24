@@ -27,8 +27,8 @@ public class WizardMonster extends BaseMonster{
     }
 
     @Override
-    public void update(Player player) {
-        attack(player);
+    public void update(Game game) {
+        attack(game.getPlayer());
         move();
     }
 

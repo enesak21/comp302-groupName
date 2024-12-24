@@ -68,7 +68,7 @@ public class MonsterManager {
             lastSpawnTime = currentTime;
         }
         for (BaseMonster monster : monsters) {
-            monster.update(game.getPlayer());
+            monster.update(game);
         }
     }
 
