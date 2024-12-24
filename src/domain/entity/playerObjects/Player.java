@@ -44,6 +44,20 @@ public class Player extends Entity {
         return instance;
     }
 
+    public void restart(String name, int gridX, int gridY, int tileSize, PlayModePanel playModePanel, PlayerController playerController) {
+        this.name = name; //if user wants to restart the game, this method will be called
+        this.gridX = gridX;
+        this.gridY = gridY;
+        this.tileSize = tileSize;
+        this.playModePanel = playModePanel;
+        this.playerController = playerController;
+        this.speed = 4;
+        this.health = 4;
+        this.direction = Direction.DOWN;
+        this.moving = false;
+        this.pixelCounter = 0;
+        updatePixelPosition();
+    }
 
     @Override
     public void update() {
