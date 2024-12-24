@@ -181,6 +181,9 @@ public class PlayModePanel extends JPanel implements Runnable {
         repaint(); // Trigger a repaint to show the pause overlay
     }
 
+    public void exitGame() {
+        System.exit(0);
+    }
 
 
 
