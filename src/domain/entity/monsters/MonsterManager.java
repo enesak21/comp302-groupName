@@ -15,7 +15,7 @@ public class MonsterManager {
     private int tileSize;
     private Game game;
     private long lastSpawnTime;
-    private final int SPAWN_INTERVAL = 8000;
+    private final int SPAWN_INTERVAL = 500;
     private CollisionChecker collisionChecker;
 
     private List<MonsterFactory> factories;
