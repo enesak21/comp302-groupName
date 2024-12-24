@@ -73,8 +73,8 @@ public class MonsterManager {
             lastSpawnTime = currentTime;
         }
         for (BaseMonster monster : monsters) {
-            monster.update(game);
             monster.setCollisionChecker(collisionChecker);
+            monster.update(game);
         }
     }
 
