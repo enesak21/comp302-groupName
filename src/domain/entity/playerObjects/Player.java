@@ -27,7 +27,7 @@ public class Player extends Entity {
         this.playerInputHandler = playerInputHandler;
         this.speed = 4;
         this.health = 4;
-        this.direction = Direction.DOWN;
+        this.direction = Direction.RIGHT;
         updatePixelPosition();
     }
 
@@ -48,7 +48,7 @@ public class Player extends Entity {
         this.playerInputHandler = playerInputHandler;
         this.speed = 4;
         this.health = 4;
-        this.direction = Direction.DOWN;
+        this.direction = Direction.RIGHT;
         this.moving = false;
         this.pixelCounter = 0;
         updatePixelPosition();
