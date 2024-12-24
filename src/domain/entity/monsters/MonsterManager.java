@@ -14,7 +14,7 @@ public class MonsterManager {
     private int tileSize;
     private Game game;
     private long lastSpawnTime;
-    private final int SPAWN_INTERVAL = 5000;
+    private final int SPAWN_INTERVAL = 4000;
 
     private List<MonsterFactory> factories;
 
@@ -39,14 +39,15 @@ public class MonsterManager {
         int factoryIndex = random.nextInt(factories.size()); // Randomly select a factory
         MonsterFactory selectedFactory = factories.get(factoryIndex); // 0: Archer, 1: Fighter, 2: Wizard
 
-        int gridX = random.nextInt(gridWidth);
-        int gridY = random.nextInt(gridHeight);
+        int gridX = PlayModePanel.offsetX + random.nextInt(gridWidth - PlayModePanel.offsetX);
+        int gridY = PlayModePanel.offsetY + random.nextInt(gridHeight - PlayModePanel.offsetY);
 
 
-        while (game.getGrid().getTileAt(gridX,gridY).isSolid()) {
+        while (game.getGrid().getTileAt(gridX - PlayModePanel.offsetX, gridY - PlayModePanel.offsetY).isSolid()) {
             gridX = random.nextInt(gridWidth);
             gridY = random.nextInt(gridHeight);
         }
+
 
         BaseMonster monster = selectedFactory.createMonster(gridX, gridY, tileSize);
         System.out.println("gridX: " + monster.getGridX() + " " + "gridY: " + monster.getGridY());
