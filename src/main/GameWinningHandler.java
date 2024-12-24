@@ -1,16 +1,24 @@
 package main;
 
+import domain.UI.MainMenuButton;
+import domain.UI.TryAgainButton;
+
 import java.awt.*;
 
 public class GameWinningHandler {
     int screenWidth, screenHeight;
     Font font;
+    PlayModePanel playModePanel;
+
     public GameWinningHandler(PlayModePanel playModePanel) {
+        this.playModePanel = playModePanel;
         this.screenWidth = playModePanel.getScreenWidth();
         this.screenHeight = playModePanel.getScreenHeight();
         this.font = playModePanel.getFont();
+    }
 
-
+    public void handle() {
+        playModePanel.getTimeController().pauseTimer();
         drawWinningScreen(playModePanel.getGraphics2());
     }
 
@@ -21,7 +29,7 @@ public class GameWinningHandler {
 
         // Draw the game over message
         g2.setFont(font.deriveFont(40f));
-        g2.setColor(Color.GREEN); // Change the color to red
+        g2.setColor(Color.GREEN); // Change the color to green
 
         FontMetrics fm = g2.getFontMetrics();
         String congratsText = "Congrats, You Won!";
@@ -29,12 +37,25 @@ public class GameWinningHandler {
         int congratsY = (screenHeight - fm.getHeight()) / 2 + fm.getAscent();
 
         g2.drawString(congratsText, congratsX, congratsY);
+
+        // Define button dimensions
+        int buttonWidth = 150;
+        int buttonHeight = 50;
+        int buttonSpacing = 20; // Space between buttons
+
+        // Calculate button positions
+        int totalButtonWidth = (2 * buttonWidth) + buttonSpacing;
+        int startX = (screenWidth - totalButtonWidth) / 2;
+        int buttonY = congratsY + fm.getHeight() + 40; // Position below the text
+
+        // Draw "Try Again" button
+        TryAgainButton tryAgainButton = new TryAgainButton(g2, startX, buttonY, buttonWidth, buttonHeight, font);
+
+        // Draw "Main Menu" button
+        MainMenuButton mainMenuButton = new MainMenuButton(g2, startX + buttonWidth + buttonSpacing, buttonY, buttonWidth, buttonHeight, font);
+
+        tryAgainButton.drawTryAgainButton();
+        mainMenuButton.drawMainMenuButton();
+
     }
-
-
-
-
-
-
-
 }
