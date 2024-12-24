@@ -334,13 +334,25 @@ public class PlayModePanel extends JPanel implements Runnable {
         g2.setFont(pressStart2PFont.deriveFont(20f));
         g2.setColor(Color.WHITE);
 
-        String transitionText = "Moving to the Next Hall...";
-        FontMetrics fm = g2.getFontMetrics();
-        int textX = (screenWidth - fm.stringWidth(transitionText)) / 2;
-        int textY = (screenHeight - fm.getHeight()) / 2 + fm.getAscent();
+        // Split text into two lines
+        String line1 = "You Found the Rune...";
+        String line2 = "Moving to the Next Hall...";
 
-        g2.drawString(transitionText, textX, textY);
+        FontMetrics fm = g2.getFontMetrics();
+
+        // Calculate positions for the first line
+        int textX1 = (screenWidth - fm.stringWidth(line1)) / 2;
+        int textY1 = (screenHeight - fm.getHeight()) / 2;
+
+        // Calculate positions for the second line
+        int textX2 = (screenWidth - fm.stringWidth(line2)) / 2;
+        int textY2 = textY1 + fm.getHeight() + 20; // Add spacing between lines
+
+        // Draw the two lines
+        g2.drawString(line1, textX1, textY1);
+        g2.drawString(line2, textX2, textY2);
     }
+
 
 
 
