@@ -6,12 +6,15 @@ import java.util.Random;
 import domain.structures.Structure;
 import main.PlayModePanel;
 
+import domain.audio.AudioManager;
+
 
 public class SearchRuneController {
 
     private PlayModePanel playModePanel;
     private Game game;
     private Rune rune;
+    private AudioManager audioManager = new AudioManager();
 
     public SearchRuneController(PlayModePanel playModePanel) {
         this.playModePanel = playModePanel;
@@ -27,6 +30,9 @@ public class SearchRuneController {
                     System.out.println("Rune collected!");
                     // Transition to the next hall
                     playModePanel.moveToNextHall();
+                }
+                else {
+                    audioManager.playNoRuneSound();
                 }
             }
         }
