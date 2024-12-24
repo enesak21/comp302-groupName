@@ -2,6 +2,7 @@ package domain.entity.monsters;
 
 import domain.entity.Entity;
 import domain.entity.playerObjects.Player;
+import domain.game.CollisionChecker;
 import domain.game.Game;
 
 
@@ -11,6 +12,7 @@ public class ArcherMonster extends BaseMonster{
     private long lastAttackTime;
     private int lastPlayerX;
     private int lastPlayerY;
+    private CollisionChecker collisionChecker;
 
     public ArcherMonster(int gridX, int gridY, int tileSize) {
         super(gridX, gridY, tileSize);
@@ -43,6 +45,11 @@ public class ArcherMonster extends BaseMonster{
     }
 
     public void move() {}
+
+    @Override
+    public void setCollisionChecker(CollisionChecker collisionChecker) {
+        this.collisionChecker = collisionChecker;
+    }
 
     @Override
     public void update(Game game)

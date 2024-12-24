@@ -87,6 +87,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         gridView = new GridView(grid);
         CollisionChecker collisionChecker = new CollisionChecker(grid);
         player.setCollisionChecker(collisionChecker);
+        monsterManager.setCollisionChecker(collisionChecker);
         timeController = new TimeController();
     }
 

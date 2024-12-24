@@ -2,6 +2,7 @@ package domain.entity.monsters;
 
 import domain.entity.Entity;
 import domain.entity.playerObjects.Player;
+import domain.game.CollisionChecker;
 import domain.game.Game;
 import domain.game.Tile;
 import domain.structures.Structure;
@@ -14,6 +15,7 @@ public class WizardMonster extends BaseMonster{
     private long lastTeleportTime;
     private Random random;
     private Game game;
+    private CollisionChecker collisionChecker;
 
     public WizardMonster(int gridX, int gridY, int tileSize, Game game) {
         super(gridX, gridY, tileSize);
@@ -61,5 +63,10 @@ public class WizardMonster extends BaseMonster{
     @Override
     public void move(){
 
+    }
+
+    @Override
+    public void setCollisionChecker(CollisionChecker collisionChecker) {
+        this.collisionChecker = collisionChecker;
     }
 }
