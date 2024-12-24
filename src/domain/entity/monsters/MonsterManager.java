@@ -2,7 +2,7 @@ package domain.entity.monsters;
 
 import domain.game.CollisionChecker;
 import domain.game.Game;
-import main.PlayModePanel;
+import domain.panels.PlayModePanel;
 
 import java.util.ArrayList;
 import java.util.List;

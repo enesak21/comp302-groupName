@@ -1,10 +1,10 @@
 package domain.UI;
 
-import domain.UI.mouseHandlers.PlayModeMouseListener;
 import domain.audio.AudioManager;
 import domain.game.Hall;
-import main.BuildModePanel;
-import main.PlayModePanel;
+import domain.handlers.BuildModeHandler;
+import domain.panels.BuildModePanel;
+import domain.panels.PlayModePanel;
 import java.util.List;
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +15,7 @@ public class UI {
     private JPanel mainPanel;
     private List<Hall> halls;
     private AudioManager audioManager = new AudioManager();
+
 
     public UI() {
         initializeUI();
@@ -33,6 +34,11 @@ public class UI {
         frame.setSize(768, 640);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false); // Change if needed
+
+        // Set custom colors for message dialogs
+        UIManager.put("OptionPane.background", new Color(50, 56, 66)); // Dark gray
+        UIManager.put("Panel.background", new Color(50, 56, 66));      // Match background
+        UIManager.put("OptionPane.messageForeground", Color.WHITE);
     }
 
     public void show() {
@@ -111,23 +117,35 @@ public class UI {
         JPanel buildScreen = new JPanel();
         buildScreen.setLayout(new BorderLayout());
 
+
+
         // Instantiate BuildModePanel, which includes the dynamic hall name
         BuildModePanel buildModePanel = new BuildModePanel();
+        BuildModeHandler buildModeHandler = buildModePanel.getBuildModeHandler();
         buildScreen.add(buildModePanel, BorderLayout.CENTER);
 
-        // Complete button to transition back to the Game screen
         JButton completeButton = new JButton("Complete Build");
         completeButton.addActionListener(e -> {
-            if (!isPanelAdded("Game")) {
-                mainPanel.add(createGameScreen(), "Game");
+            if (buildModeHandler.checkBuildMode()) { // Check if the build mode is valid
+                if (!isPanelAdded("Game")) {
+                    mainPanel.add(createGameScreen(), "Game");
+                }
+                cardLayout.show(mainPanel, "Game");
+                mainPanel.revalidate();
+                mainPanel.repaint();
             }
-            cardLayout.show(mainPanel, "Game");
-            mainPanel.revalidate();
-            mainPanel.repaint();
+            else {
+                ImageIcon warningIcon = new ImageIcon(new ImageIcon("src/resources/structures/skull.png")
+                        .getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH));
+                JOptionPane.showMessageDialog(null, "Please complete all halls before proceeding.", "Warning",
+                        JOptionPane.WARNING_MESSAGE, warningIcon);
+            }
         });
+
 
         // Add the button to the bottom of the screen
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(66, 40, 53));
         buttonPanel.add(completeButton);
         buildScreen.add(buttonPanel, BorderLayout.SOUTH);
         halls = buildModePanel.getHalls(); // Retrieve the halls from BuildModePanel

@@ -1,4 +1,4 @@
-package main;
+package domain.panels;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +12,7 @@ import domain.game.HallOfAir;
 import domain.game.HallOfEarth;
 import domain.game.HallOfFire;
 import domain.game.HallOfWater;
+import domain.handlers.BuildModeHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,7 @@ public class BuildModePanel extends JPanel {
     private String selectedStructure = null;
     private final JLabel hallNameLabel;
     private Font pressStart2PFont;
+    private BuildModeHandler buildModeHandler;
 
 
     public BuildModePanel() {
@@ -61,13 +63,17 @@ public class BuildModePanel extends JPanel {
 
         JPanel structurePanel = createStructurePanel();
         add(structurePanel, BorderLayout.EAST);
+
+
     }
 
     private void initializeHalls() {
         halls.add(new HallOfEarth());
         halls.add(new HallOfAir());
         halls.add(new HallOfWater());
-        halls.add(new HallOfFire());; // Added Hall of Wa
+        halls.add(new HallOfFire());
+
+        buildModeHandler = new BuildModeHandler(halls);
     }
 
     private HashMap<String, String> initializeStructureMap() {
@@ -102,9 +108,29 @@ public class BuildModePanel extends JPanel {
         JButton nextGridButton = new JButton("Next Grid");
         nextGridButton.addActionListener(e -> switchGrid(1));
 
+
+
         // Check Button
         JButton checkButton = new JButton("Check");
-        checkButton.addActionListener(e -> checkCurrentHall());
+        checkButton.addActionListener(e -> {
+            int remainingStructures = buildModeHandler.checkHall(halls.get(currentGridIndex));
+            if (remainingStructures != 0) {
+                ImageIcon warningIcon = new ImageIcon(new ImageIcon("src/resources/structures/chest.png")
+                        .getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+                JOptionPane.showMessageDialog(this,
+                        "You need to place " + remainingStructures + " more structures to complete this hall.",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE, warningIcon);
+            }
+            else {
+                ImageIcon successIcon = new ImageIcon(new ImageIcon("src/resources/structures/key.png")
+                        .getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+                JOptionPane.showMessageDialog(this,
+                        "You have successfully completed this hall.",
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE, successIcon);
+            }
+        });
 
         navigationPanel.add(prevGridButton);
         navigationPanel.add(nextGridButton);
@@ -173,27 +199,11 @@ public class BuildModePanel extends JPanel {
         return structurePanel;
     }
 
-
-
-
-
     private void switchGrid(int direction) {
         currentGridIndex = (currentGridIndex + direction + halls.size()) % halls.size();
         gridPanel.setHall(halls.get(currentGridIndex)); // Update the grid panel's hall
         hallNameLabel.setText(halls.get(currentGridIndex).getName()); // Update the hall name
 
-    }
-
-    private void checkCurrentHall() {
-        Hall currentHall = halls.get(currentGridIndex);
-
-        if (currentHall.isRequirementMet()) {
-            JOptionPane.showMessageDialog(this, "The current hall has enough structures! Confirmed.", "Success", JOptionPane.INFORMATION_MESSAGE);
-            currentHall.setGrid(currentHall.getGrid()); // Confirm and store the grid
-        } else {
-            int remainingStructures = currentHall.getMinStructures() - currentHall.getPlacedStructuresCount();
-            JOptionPane.showMessageDialog(this, "You need " + remainingStructures + " more structures.", "Requirement Not Met", JOptionPane.WARNING_MESSAGE);
-        }
     }
 
     public void setSelectedStructure(String structureKey) {
@@ -206,6 +216,10 @@ public class BuildModePanel extends JPanel {
 
     public List<Hall> getHalls() {
         return halls;
+    }
+
+    public BuildModeHandler getBuildModeHandler() {
+        return buildModeHandler;
     }
 }
 
