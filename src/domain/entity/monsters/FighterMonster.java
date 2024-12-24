@@ -5,6 +5,7 @@ import domain.entity.Entity;
 import domain.entity.playerObjects.Player;
 import domain.game.CollisionChecker;
 import domain.game.Game;
+import main.PlayModePanel;
 
 import java.util.Random;
 
@@ -33,7 +34,7 @@ public class FighterMonster extends BaseMonster {
     }
 
 
-    public void move() {
+    public void move(Game game) {
         //simple random movement code
 
         int random_direction = random.nextInt(4);//0: UP, 1: DOWN, 2: LEFT, 3:RIGHT
@@ -56,14 +57,6 @@ public class FighterMonster extends BaseMonster {
 
         }
 
-
-        /*switch (random_direction){
-            case 0 -> direction = Direction.UP;
-            case 1 -> direction = Direction.DOWN;
-            case 2 -> direction = Direction.LEFT;
-            case 3 -> direction = Direction.RIGHT;
-        }*/
-
         if(moving){
             switch (direction){
                 case UP -> pixelY -= speed;
@@ -74,12 +67,21 @@ public class FighterMonster extends BaseMonster {
             pixelCounter += SPEED;
 
             if (pixelCounter >= tileSize) {
+
+                //Update old grid isSolid(false)
+                game.getGrid().getTileAt(gridX - PlayModePanel.offsetX, gridY - PlayModePanel.offsetY).setSolid(false);
+
                 switch (direction) {
+
                     case UP -> gridY--;
                     case DOWN -> gridY++;
                     case LEFT -> gridX--;
                     case RIGHT -> gridX++;
                 }
+
+                //Update new grid isSolid(true)
+                game.getGrid().getTileAt(gridX - PlayModePanel.offsetX, gridY - PlayModePanel.offsetY).setSolid(true);
+
                 pixelCounter = 0;
                 moving = false;
                 updatePixelPosition();
@@ -96,7 +98,7 @@ public class FighterMonster extends BaseMonster {
     public void update(Game game) {
         moveCounter++;
         if(moveCounter >= 16){
-            move();
+            move(game);
             moveCounter = 0;
         }
         attack(game.getPlayer());

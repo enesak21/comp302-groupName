@@ -31,7 +31,6 @@ public class WizardMonster extends BaseMonster{
     @Override
     public void update(Game game) {
         attack(game.getPlayer());
-        move();
     }
 
     @Override
@@ -60,10 +59,6 @@ public class WizardMonster extends BaseMonster{
 
      */
 
-    @Override
-    public void move(){
-
-    }
 
     @Override
     public void setCollisionChecker(CollisionChecker collisionChecker) {

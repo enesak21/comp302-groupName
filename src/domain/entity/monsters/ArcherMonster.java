@@ -22,6 +22,8 @@ public class ArcherMonster extends BaseMonster{
     public void update() {
 
     }
+
+
     /* This method includes a dodge mechanic for throwArrow method DO NOT DELETE YET.
     public void throwArrow(Player player) {
         lastPlayerX = player.getGridX();
@@ -44,8 +46,6 @@ public class ArcherMonster extends BaseMonster{
         player.reduceHealth();
     }
 
-    public void move() {}
-
     @Override
     public void setCollisionChecker(CollisionChecker collisionChecker) {
         this.collisionChecker = collisionChecker;
@@ -55,7 +55,6 @@ public class ArcherMonster extends BaseMonster{
     public void update(Game game)
     {
          attack(game.getPlayer());
-         move();
     }
 
     @Override

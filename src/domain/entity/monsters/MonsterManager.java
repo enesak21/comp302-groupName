@@ -43,8 +43,8 @@ public class MonsterManager {
 
 
 
-        int gridX = PlayModePanel.offsetX + random.nextInt(gridWidth - PlayModePanel.offsetX);
-        int gridY = PlayModePanel.offsetY + random.nextInt(gridHeight - PlayModePanel.offsetY);
+        int gridX = PlayModePanel.offsetX + random.nextInt(gridWidth - (2 * PlayModePanel.offsetX));
+        int gridY = PlayModePanel.offsetY + random.nextInt(gridHeight - (2 *PlayModePanel.offsetY));
 
 
         while (game.getGrid().getTileAt(gridX - PlayModePanel.offsetX, gridY - PlayModePanel.offsetY).isSolid()) {
