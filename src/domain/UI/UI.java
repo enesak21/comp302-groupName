@@ -1,8 +1,11 @@
 package domain.UI;
 
+import domain.UI.mouseHandlers.PlayModeMouseListener;
+import domain.audio.AudioManager;
+import domain.game.Hall;
 import main.BuildModePanel;
 import main.PlayModePanel;
-
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,6 +13,8 @@ public class UI {
     private JFrame frame;
     private CardLayout cardLayout;
     private JPanel mainPanel;
+    private List<Hall> halls;
+    private AudioManager audioManager = new AudioManager();
 
     public UI() {
         initializeUI();
@@ -44,6 +49,8 @@ public class UI {
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(800, 600));
 
+        audioManager.playEnterMusic();
+
         // Background Image
         ImageIcon originalIcon = new ImageIcon("src/resources/Rokue-like logo 4.png");
         Image scaledImage = originalIcon.getImage().getScaledInstance(800, 600, Image.SCALE_SMOOTH);
@@ -63,6 +70,7 @@ public class UI {
 
         startButton.addActionListener(e -> {
             if (!isPanelAdded("Build")) {
+                audioManager.stopEnterMusic();
                 mainPanel.add(createBuildScreen(), "Build");
             }
             cardLayout.show(mainPanel, "Build");
@@ -98,14 +106,17 @@ public class UI {
         return panel;
     }
 
-    private JPanel createBuildScreen() {  // BUİLD SCREEN İÇİN DE PLAYMODEPANEL GİBİ AYRI BİR
-                                          //CLASSINI OLUŞTURUP BURADA ÇAĞIRIRIZ
+    private JPanel createBuildScreen() {
+        // Create a JPanel as the main container for the Build Mode screen
+        JPanel buildScreen = new JPanel();
+        buildScreen.setLayout(new BorderLayout());
+
+        // Instantiate BuildModePanel, which includes the dynamic hall name
         BuildModePanel buildModePanel = new BuildModePanel();
-        JLabel title = new JLabel("Build Components Here", SwingConstants.CENTER);
-        title.setFont(new Font("Arial", Font.BOLD, 24));
+        buildScreen.add(buildModePanel, BorderLayout.CENTER);
 
+        // Complete button to transition back to the Game screen
         JButton completeButton = new JButton("Complete Build");
-
         completeButton.addActionListener(e -> {
             if (!isPanelAdded("Game")) {
                 mainPanel.add(createGameScreen(), "Game");
@@ -115,13 +126,19 @@ public class UI {
             mainPanel.repaint();
         });
 
-        buildModePanel.add(title);
-        buildModePanel.add(completeButton);
-        return buildModePanel;
+        // Add the button to the bottom of the screen
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(completeButton);
+        buildScreen.add(buttonPanel, BorderLayout.SOUTH);
+        halls = buildModePanel.getHalls(); // Retrieve the halls from BuildModePanel
+
+        return buildScreen;
     }
 
+
+
     private JPanel createGameScreen() {
-        PlayModePanel playModePanel = new PlayModePanel();
+        PlayModePanel playModePanel = new PlayModePanel(halls);
 
         playModePanel.startGameThread(); // Start the game loop
         SwingUtilities.invokeLater(playModePanel::requestFocusInWindow); // Ensure focus is set
