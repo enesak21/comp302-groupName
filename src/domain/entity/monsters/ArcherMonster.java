@@ -1,9 +1,13 @@
 package domain.entity.monsters;
 
+import domain.entity.Direction;
 import domain.entity.Entity;
 import domain.entity.playerObjects.Player;
 import domain.game.CollisionChecker;
 import domain.game.Game;
+import main.PlayModePanel;
+
+import java.util.Random;
 
 
 public class ArcherMonster extends BaseMonster{
@@ -11,19 +15,86 @@ public class ArcherMonster extends BaseMonster{
     private final long SHOOT_FREQUENCY = 1000;
     private final long INITIAL_DELAY = 2000;
     private long lastAttackTime;
+    private int pixelCounter = 0;
+    private final int SPEED = 4;
     private int lastPlayerX;
     private int lastPlayerY;
+    private Random random = new Random();
+    private boolean moving = false;
     private CollisionChecker collisionChecker;
+    private int moveCounter = 0;
+
 
     public ArcherMonster(int gridX, int gridY, int tileSize) {
         super(gridX, gridY, tileSize);
         this.lastAttackTime = System.currentTimeMillis() + INITIAL_DELAY; // Initial delay for the first attack
+        this.direction = getPatrolDirection(); //It initializes the direction of the monster rando
     }
 
     @Override
     public void update() {
 
     }
+
+
+    public Direction getPatrolDirection(){
+        int random_direction = random.nextInt(4);//0: UP, 1: DOWN, 2: LEFT, 3:RIGHT
+
+        if(random_direction == 0){
+             return Direction.UP;
+        }else if(random_direction == 1){
+            return Direction.DOWN;
+        }else if(random_direction == 2){
+            return Direction.LEFT;
+        }
+        else if(random_direction == 3){
+            return Direction.RIGHT;
+        }
+        return Direction.UP;
+    }
+
+    public void move(Game game) {
+
+        if(!moving){
+            if (!collisionChecker.checkCollision(this)) {
+                moving = true;
+            }else {
+                direction = getPatrolDirection(); //If there is a collision, change the direction randomly.
+            }
+        }
+
+        if(moving){
+            switch (direction){
+                case UP -> pixelY -= SPEED;
+                case DOWN -> pixelY += SPEED;
+                case LEFT -> pixelX -= SPEED;
+                case RIGHT -> pixelX += SPEED;
+            }
+            pixelCounter += SPEED;
+
+            if (pixelCounter >= tileSize) {
+
+                //Update old grid isSolid(false)
+                game.getGrid().getTileAt(gridX - PlayModePanel.offsetX, gridY - PlayModePanel.offsetY).setSolid(false);
+
+                switch (direction) {
+                    case UP -> gridY--;
+                    case DOWN -> gridY++;
+                    case LEFT -> gridX--;
+                    case RIGHT -> gridX++;
+                }
+
+                //Update new grid isSolid(true)
+                game.getGrid().getTileAt(gridX - PlayModePanel.offsetX, gridY - PlayModePanel.offsetY).setSolid(true);
+
+
+                moving = false;
+                updatePixelPosition();
+                pixelCounter = 0;
+            }
+        }
+    }
+
 
 
     /* This method includes a dodge mechanic for throwArrow method DO NOT DELETE YET.
@@ -56,7 +127,13 @@ public class ArcherMonster extends BaseMonster{
     @Override
     public void update(Game game)
     {
-         attack(game.getPlayer());
+        moveCounter++;
+        if(moveCounter >= SPEED * 2){
+            move(game);
+            moveCounter = 0;
+        }
+        attack(game.getPlayer());
+
     }
 
     @Override
