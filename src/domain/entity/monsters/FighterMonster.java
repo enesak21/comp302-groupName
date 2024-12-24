@@ -78,9 +78,10 @@ public class FighterMonster extends BaseMonster {
                 //Update new grid isSolid(true)
                 game.getGrid().getTileAt(gridX - PlayModePanel.offsetX, gridY - PlayModePanel.offsetY).setSolid(true);
 
-                pixelCounter = 0;
+
                 moving = false;
                 updatePixelPosition();
+                pixelCounter = 0;
             }
         }
     }

@@ -54,9 +54,12 @@ public class ArcherMonster extends BaseMonster{
     }
 
     public void move(Game game) {
+
         if(!moving){
             if (!collisionChecker.checkCollision(this)) {
                 moving = true;
+            }else {
+                direction = getPatrolDirection(); //If there is a collision, change the direction randomly.
             }
         }
 
@@ -84,9 +87,10 @@ public class ArcherMonster extends BaseMonster{
                 //Update new grid isSolid(true)
                 game.getGrid().getTileAt(gridX - PlayModePanel.offsetX, gridY - PlayModePanel.offsetY).setSolid(true);
 
-                pixelCounter = 0;
+
                 moving = false;
                 updatePixelPosition();
+                pixelCounter = 0;
             }
         }
     }
