@@ -5,9 +5,8 @@ import domain.UI.PlayerView;
 
 import domain.UI.mouseHandlers.PlayModeMouseListener;
 import domain.entity.Entity;
-import domain.entity.monsters.ArcherMonster;
-import domain.entity.monsters.FighterMonster;
-import domain.entity.monsters.WizardMonster;
+
+import domain.entity.monsters.*;
 
 import domain.entity.playerObjects.Player;
 import domain.game.*;
@@ -22,10 +21,11 @@ import java.awt.event.KeyEvent;
 import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
+
+import java.util.ArrayList;
 import java.util.List;
+
 import java.util.Random;
-
-
 
 public class PlayModePanel extends JPanel implements Runnable {
 
@@ -62,6 +62,11 @@ public class PlayModePanel extends JPanel implements Runnable {
     private PlayerView playerView;
     private GridView gridView;
 
+
+    private MonsterManager monsterManager;
+    private int countMonster = 0;
+    private List<MonsterView> monsterViewList = new ArrayList<>();
+
     // Declare the halls variable
     private List<Hall> halls;
     private int hallNum = 0;
@@ -74,10 +79,12 @@ public class PlayModePanel extends JPanel implements Runnable {
     private boolean[][] wallGrid;
     private SearchRuneController searchRuneController;
 
+
     int FPS = 60;
     Thread gameThread;
     Game game;
     Rune rune;
+
 
     // Constructor
     public PlayModePanel(List<Hall> halls) {
@@ -103,6 +110,17 @@ public class PlayModePanel extends JPanel implements Runnable {
         grid = halls.get(hallNum).toGrid(tileSize);
         game = new Game(player, tileSize, this, grid);
 
+        this.addKeyListener(player.getPlayerController());
+
+        //initialize monsterManager
+        monsterManager = new MonsterManager(game, tileSize);
+        countMonster += monsterManager.getMonsters().size();
+        for (int i = 0; i < monsterManager.getMonsters().size(); i++) {
+            MonsterView monsterView = new MonsterView((Entity) monsterManager.getMonsters().get(i));
+            monsterViewList.add(monsterView);
+        }
+
+
         // place The Rune
 
         searchRuneController = new SearchRuneController(this);
@@ -110,9 +128,11 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         this.addKeyListener(player.getPlayerInputHandler());
 
+
         gridView = new GridView(grid);
         CollisionChecker collisionChecker = new CollisionChecker(grid);
         player.setCollisionChecker(collisionChecker);
+        monsterManager.setCollisionChecker(collisionChecker);
         timeController = new TimeController();
 
         // Create a mouse listener for the Play Mode screen
@@ -142,9 +162,9 @@ public class PlayModePanel extends JPanel implements Runnable {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     isPaused = !isPaused;
                     if (isPaused) {
-                        timeController.pauseTimer();
+                        game.pauseGame();
                     } else {
-                        timeController.resumeTimer();
+                        game.resumeGame();
                     }
                     repaint();
                 }
@@ -198,6 +218,17 @@ public class PlayModePanel extends JPanel implements Runnable {
             // Update the player
             game.getPlayer().update();
 
+            //Update monsters
+            monsterManager.updateMonsters();
+            //Update monsters view list if there is a new monster
+            if (countMonster < monsterManager.getMonsters().size()) {
+                for (int i = countMonster; i < monsterManager.getMonsters().size(); i++) {
+                    MonsterView monsterView = new MonsterView((Entity) monsterManager.getMonsters().get(i));
+                    monsterViewList.add(monsterView);
+                }
+                countMonster = monsterManager.getMonsters().size();
+            }
+
             // Zaman bitti mi kontrol et
             if (timeController.getTimeLeft() <= 0) {
                 isPaused = true;
@@ -233,6 +264,13 @@ public class PlayModePanel extends JPanel implements Runnable {
         playerView.draw(g2);
         drawWallsAndCorners(g2);
         gridView.drawStructures(g2, offsetX * tileSize, offsetY * tileSize);
+
+
+        //Draw monsters
+        //monsterManager'daki her monsterı çek ve onlar için bire View classı oluştur
+        for(MonsterView monsterView: monsterViewList){
+            monsterView.draw(g2);
+        }
 
         // Draw Game Over Message
         if (timeController.getTimeLeft() <= 0) {

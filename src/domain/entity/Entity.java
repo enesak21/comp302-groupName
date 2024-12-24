@@ -9,7 +9,7 @@ public abstract class Entity {
     protected int gridX, gridY; // Grid üzerindeki konumları için bunlar
     protected int speed; //pixel türünde hareket için
 
-    protected Direction direction;
+    protected Direction direction = Direction.DOWN; //başlangıç yönü
 
     protected int tileSize; //public yapmak istemedim, burada tekrar tanımladım
 
