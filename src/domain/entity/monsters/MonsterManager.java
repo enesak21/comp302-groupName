@@ -51,7 +51,6 @@ public class MonsterManager {
         }
 
 
-        System.out.println("MonsterManager: spawnMonster: gridX: " + gridX + " gridY: " + gridY);
         BaseMonster monster = selectedFactory.createMonster(gridX, gridY, tileSize);
         monster.setCollisionChecker(collisionChecker);
 
