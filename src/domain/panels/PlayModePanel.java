@@ -83,6 +83,9 @@ public class PlayModePanel extends JPanel implements Runnable {
     private boolean[][] wallGrid;
     private SearchRuneController searchRuneController;
 
+    //FLAG IMAGES
+    private Image hallOfAirFlag, hallOfWaterFlag, hallOfEarthFlag, hallOfFireFlag;
+
 
     int FPS = 60;
     Thread gameThread;
@@ -425,6 +428,19 @@ public class PlayModePanel extends JPanel implements Runnable {
         g2.drawString(resumeText, x, y);
     }
 
+    private void loadFlagImages(){
+        try{
+            hallOfAirFlag = ImageIO.read(getClass().getResource("/resources/flags/hallOfAir flag.png"));
+            hallOfEarthFlag = ImageIO.read(getClass().getResource("/resources/flags/hallOfEarth flag.png"));
+            hallOfWaterFlag = ImageIO.read(getClass().getResource("/resources/flags/hallOfFire flag.png"));
+            hallOfFireFlag = ImageIO.read(getClass().getResource("/resources/flags/hallofWater flag.png"));
+
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            System.err.println("Error loading wall images. Please check the file paths.");
+        }
+    }
     private void loadWallImages() {
         try {
             leftWall = ImageIO.read(getClass().getResource("/resources/Walls/leftWall.png"));
@@ -447,6 +463,38 @@ public class PlayModePanel extends JPanel implements Runnable {
             System.err.println("Image file not found. Please ensure the file exists at the specified path.");
         }
     }
+
+    private void drawHallFlagNearDoor(Graphics2D g2, int doorX, int doorY) {
+        Image flag = null;
+        loadFlagImages();
+        // Determine the flag based on the current hall
+        switch (hallNum) {
+            case 0:
+                flag = hallOfAirFlag;
+                break;
+            case 1:
+                flag = hallOfWaterFlag;
+                break;
+            case 2:
+                flag = hallOfEarthFlag;
+                break;
+            case 3:
+                flag = hallOfFireFlag;
+                break;
+            default:
+                break;
+        }
+
+        // Draw the flag near the door
+        if (flag != null) {
+            int flagX = doorX-250; // Position the flag to the right of the door
+            int flagY = doorY+17 ; // Position the flag above the door
+            g2.drawImage(flag, flagX, flagY,20,16, null); // Adjust size as needed
+        }
+    }
+
+
+
 
     private void drawWallsAndCorners(Graphics2D g2) {
         int leftX = offsetX * tileSize - leftWall.getWidth(null); // Adjust X for left wall
@@ -477,6 +525,15 @@ public class PlayModePanel extends JPanel implements Runnable {
         g2.drawImage(bottomRightCorner, rightX-11, bottomY, null); // Bottom-right corner (adjusted)
         //DOOR OPENED OR CLOSED HERE
         g2.drawImage(closedWall, rightX-150, bottomY-12, null);
+
+        int doorX = rightX - 150;
+        int doorY = bottomY - 12;
+
+
+        // Draw the flag near the door
+        drawHallFlagNearDoor(g2, doorX, doorY);
+        //g2.setColor(Color.RED);
+        //g2.drawRect(doorX, doorY, closedWall.getWidth(null), closedWall.getHeight(null)); //CAN BE RECTANGLE DRAWER FOR REVEAL
     }
 
     private void initializeWalls() {
