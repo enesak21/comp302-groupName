@@ -16,7 +16,9 @@ public class Rune {
         loadImage();
     }
 
-        private void loadImage() {
+    public Rune() {}
+
+    private void loadImage() {
         try {
             image = ImageIO.read(getClass().getResourceAsStream("/resources/structures/key.png"));
         } catch (IOException e) {

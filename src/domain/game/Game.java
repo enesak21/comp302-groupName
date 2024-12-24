@@ -11,12 +11,14 @@ public class Game {
     private Grid grid;
     private int remainingTime; // Add this field
     private TimeController timeController;
+    private SearchRuneController searchRuneController;
 
-    public Game(Player player, int tileSize, PlayModePanel playModePanel, Grid grid) {
+    public Game(Player player, int tileSize, PlayModePanel playModePanel, Grid grid, SearchRuneController searchRuneController) {
         this.player = player;
         this.grid = grid;
         this.remainingTime = 60; // Initialize with a default value
         this.timeController = new TimeController();
+        this.searchRuneController = searchRuneController;
     }
 
     public boolean isRuneFound() {
@@ -89,4 +91,10 @@ public class Game {
     public TimeController getTimeController() {
         return timeController;
     }
+
+    public SearchRuneController getSearchRuneController() {
+        return searchRuneController;
+    }
+
+
 }

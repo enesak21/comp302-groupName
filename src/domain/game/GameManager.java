@@ -20,7 +20,7 @@ public class GameManager {
         Player player = Player.getInstance("Osimhen", 0, 0, playModePanel.getTileSize(), playModePanel, new PlayerInputHandler());
 
         // Yeni bir Game yarat
-        currentGame = new Game(player, playModePanel.getTileSize(), playModePanel, grid);
+        // currentGame = new Game(player, playModePanel.getTileSize(), playModePanel, grid, searc);
 
         // PlayModePanel'i yeni Game ile güncelle
         playModePanel.setGame(currentGame);

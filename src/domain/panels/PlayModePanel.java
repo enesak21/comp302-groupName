@@ -97,6 +97,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.setBackground(new Color(66, 40, 53));
         this.setDoubleBuffered(true);
         this.setFocusable(true);
+        this.rune = new Rune();
 
         initializeGameComponents(0);
         addPauseKeyListener();
@@ -108,11 +109,19 @@ public class PlayModePanel extends JPanel implements Runnable {
         System.out.println("current hall num: " + hallNum);
         System.out.println("total halls: " + halls.size());
 
+
+
         Player player = Player.getInstance("Osimhen", 0, 0, tileSize, this, new PlayerInputHandler());
         playerView = new PlayerView(player);
         // Initialize the grid
         grid = halls.get(hallNum).toGrid(tileSize);
-        game = new Game(player, tileSize, this, grid);
+
+        // place The Rune
+
+        searchRuneController = new SearchRuneController(this);
+        searchRuneController.placeRune();
+
+        game = new Game(player, tileSize, this, grid, searchRuneController);
 
         this.addKeyListener(player.getPlayerInputHandler());
 
@@ -125,10 +134,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         }
 
 
-        // place The Rune
 
-        searchRuneController = new SearchRuneController(this);
-        rune = searchRuneController.placeRune();
 
         this.addKeyListener(player.getPlayerInputHandler());
 
@@ -239,6 +245,7 @@ public class PlayModePanel extends JPanel implements Runnable {
                 delta--;
             }
         }
+
     }
 
     public void update() {
@@ -572,5 +579,9 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public Game getGame() {
         return game;
+    }
+
+    public Rune getRune() {
+        return rune;
     }
 }

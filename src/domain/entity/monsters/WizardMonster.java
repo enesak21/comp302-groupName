@@ -35,29 +35,18 @@ public class WizardMonster extends BaseMonster{
 
     @Override
     public void attack(Player player) {
-
+        switchRune();
     }
 
-    /*
-    @Override
-    public void attack(Player player) {
-        long currentTime = System.currentTimeMillis();
-        if ((currentTime - lastTeleportTime) > TELEPORT_FREQUENCY) {
-            switchRune();
-            lastTeleportTime = currentTime;
-        }
-    }
 
     private void switchRune() {
         List<Structure> structures = game.getGrid().getStructures();
         if (!structures.isEmpty()) {
-            int selectedIndex = random.nextInt(structures.size());
-            Structure selectedStructure = structures.get(selectedIndex);
-            game.getRune().setStoredStructure(selectedStructure);
+            game.getSearchRuneController().placeRune();
         }
     }
 
-     */
+
 
 
     @Override

@@ -18,10 +18,11 @@ public class SearchRuneController {
 
     public SearchRuneController(PlayModePanel playModePanel) {
         this.playModePanel = playModePanel;
-        this.game = playModePanel.getGame();
+
     }
 
     public void runeCollected(Tile clickedTile) {
+        game = playModePanel.getGame();
         Structure clickedStructure = clickedTile.getStructure();
         Tile playerTile = playModePanel.getGrid().getTileAt(game.getPlayer().getGridX(), game.getPlayer().getGridY());
         if (Game.isInRange(clickedTile, playerTile, 1)) {
@@ -38,17 +39,17 @@ public class SearchRuneController {
         }
     }
 
-    public Rune placeRune() {
+    public void placeRune() {
         List<Structure> structureList = playModePanel.getGrid().getStructures();
+        rune = playModePanel.getRune();
 
         if (structureList != null && !structureList.isEmpty()) {
             Random random = new Random();
             int randomIndex = random.nextInt(structureList.size());
             Structure randomStructure = structureList.get(randomIndex);
-            rune = new Rune(randomStructure);
+            rune.setStoredStructure(randomStructure);
         }
 
-        return rune;
     }
 
 }

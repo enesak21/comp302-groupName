@@ -39,6 +39,7 @@ public class MonsterManager {
     public void spawnMonster(int gridWidth, int gridHeight) {
 
         int factoryIndex = random.nextInt(factories.size()); // Randomly select a factory
+        // int factoryIndex = 2; // Wizard
 
         MonsterFactory selectedFactory = factories.get(factoryIndex); // 0: Archer, 1: Fighter, 2: Wizard
 
