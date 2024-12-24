@@ -38,7 +38,7 @@ public class GameOverHandler {
         g2.drawString(gameOverText, gameOverX, gameOverY);
 
         // Define button dimensions
-        int buttonWidth = 150;
+        int buttonWidth = 200;
         int buttonHeight = 50;
         int buttonSpacing = 20; // Space between buttons
 
@@ -54,6 +54,6 @@ public class GameOverHandler {
         MainMenuButton mainMenuButton = new MainMenuButton(g2, startX + buttonWidth + buttonSpacing, buttonY, buttonWidth, buttonHeight, font);
 
         tryAgainButton.drawTryAgainButton(playModePanel);
-        mainMenuButton.drawMainMenuButton();
+        mainMenuButton.drawMainMenuButton(playModePanel);
     }
 }

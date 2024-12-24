@@ -12,6 +12,8 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.FontFormatException;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -57,6 +59,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     private List<Hall> halls;
     private int hallNum = 0;
     private boolean lastRunefound = false;
+    private boolean inTransition = false;
 
     //WALL PART
     private Image leftWall, rightWall, topWall, bottomWall;
@@ -69,9 +72,11 @@ public class PlayModePanel extends JPanel implements Runnable {
     Game game;
     Rune rune;
     Graphics2D g2;
+    JFrame frame;
 
     // Constructor
-    public PlayModePanel(List<Hall> halls) {
+    public PlayModePanel(JFrame frame, List<Hall> halls) {
+        this.frame = frame;
         this.halls = halls; // Initialize the halls variable
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(new Color(66, 40, 53));
@@ -85,9 +90,6 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
     private void initializeGameComponents(int hallNum) {
-        System.out.println("current hall num: " + hallNum);
-        System.out.println("total halls: " + halls.size());
-
         Player player = new Player("Osimhen", 0, 0, tileSize, this, new PlayerController());
         playerView = new PlayerView(player);
         // Initialize the grid
@@ -101,6 +103,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         CollisionChecker collisionChecker = new CollisionChecker(grid);
         player.setCollisionChecker(collisionChecker);
         timeController = new TimeController();
+
     }
 
     public void runeCollected(int gridX, int gridY){ {
@@ -111,7 +114,6 @@ public class PlayModePanel extends JPanel implements Runnable {
                 if (clickedStructure != null) {
                     if (clickedStructure.hasRune()) {
                         System.out.println("Rune collected!");
-                        // Transition to the next hall
                         moveToNextHall();
                     }
                 }
@@ -122,11 +124,26 @@ public class PlayModePanel extends JPanel implements Runnable {
     private void moveToNextHall() {
         hallNum++; // Move to the next hall
         if (hallNum < halls.size()) {
-            initializeGameComponents(hallNum); // Initialize the next hall
+            transitionToNextHall();
         } else {
             System.out.println("Game Completed!");
             lastRunefound = true;
         }
+    }
+
+    private void transitionToNextHall() {
+        if (hallNum > 0 ) {
+            inTransition = true; // Set the transition flag
+            repaint(); // Trigger the transition screen to render
+        }
+        // Pause briefly to show the transition screen
+        Timer timer = new Timer(2000, e -> {
+            inTransition = false; // Exit transition mode
+            initializeGameComponents(hallNum); // Initialize the next hall // Move to the next hall
+            repaint(); // Refresh the UI to show the new hall
+        });
+        timer.setRepeats(false); // Ensure the timer runs only once
+        timer.start();
     }
 
     /**
@@ -212,7 +229,7 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public void restartGame() {
         // Reset to the first hall
-        hallNum = 0;
+        hallNum = -1;
         lastRunefound = false;
         moveToNextHall();
     }
@@ -234,21 +251,23 @@ public class PlayModePanel extends JPanel implements Runnable {
         drawWallsAndCorners(g2);
         gridView.drawStructures(g2, offsetX * tileSize, offsetY * tileSize);
 
-        if (isPaused) {
-            // Draw Pause Overlay only if the game is not over
-            drawPauseOverlay(g2);
+        if (inTransition) {
+            drawTransitionScreen(g2);
+        } else {
+            if (isPaused) {
+                // Draw Pause Overlay only if the game is not over
+                drawPauseOverlay(g2);
+            }
+
+            // Zaman bitti mi kontrol et
+            if (timeController.getTimeLeft() <= 0) {
+                GameOverHandler gameOverHandler = new GameOverHandler(this);
+                gameOverHandler.handle(); // Oyun bitişini işlemek için ayrı bir metot
+            } else if (lastRunefound) {
+                GameWinningHandler gameWinningHandler = new GameWinningHandler(this);
+                gameWinningHandler.handle();
+            }
         }
-
-        // Zaman bitti mi kontrol et
-        if (timeController.getTimeLeft() <= 0) {
-            GameOverHandler gameOverHandler = new GameOverHandler(this);
-            gameOverHandler.handle(); // Oyun bitişini işlemek için ayrı bir metot
-        } else if (lastRunefound) {
-            GameWinningHandler gameWinningHandler = new GameWinningHandler(this);
-            gameWinningHandler.handle();
-        }
-
-
         g2.dispose();
     }
 
@@ -306,21 +325,21 @@ public class PlayModePanel extends JPanel implements Runnable {
         }
     }
 
-    private void drawGameOverScreen(Graphics2D g2) {
+    private void drawTransitionScreen(Graphics2D g2) {
         // Draw a semi-transparent dark overlay
-        g2.setColor(new Color(0, 0, 0, 150)); // Semi-transparent black
+        g2.setColor(new Color(0, 0, 0, 150));
         g2.fillRect(0, 0, screenWidth, screenHeight);
 
-        // Draw the game over message
-        g2.setFont(pressStart2PFont.deriveFont(40f));
-        g2.setColor(Color.RED); // Change the color to red
+        // Draw transition message
+        g2.setFont(pressStart2PFont.deriveFont(20f));
+        g2.setColor(Color.WHITE);
 
+        String transitionText = "Moving to the Next Hall...";
         FontMetrics fm = g2.getFontMetrics();
-        String gameOverText = "Game Over!";
-        int gameOverX = (screenWidth - fm.stringWidth(gameOverText)) / 2;
-        int gameOverY = (screenHeight - fm.getHeight()) / 2 + fm.getAscent();
+        int textX = (screenWidth - fm.stringWidth(transitionText)) / 2;
+        int textY = (screenHeight - fm.getHeight()) / 2 + fm.getAscent();
 
-        g2.drawString(gameOverText, gameOverX, gameOverY);
+        g2.drawString(transitionText, textX, textY);
     }
 
 
@@ -499,4 +518,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         return halls;
     }
 
+    public JFrame getFrame() {
+        return frame;
+    }
 }
