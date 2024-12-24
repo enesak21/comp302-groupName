@@ -174,6 +174,17 @@ public class PlayModePanel extends JPanel implements Runnable {
         });
     }
 
+    public void pauseGame() {
+        isPaused = true; // Set the game state to paused
+        timeController.pauseTimer(); // Pause the game timer (if applicable)
+        System.out.println("Game paused");
+        repaint(); // Trigger a repaint to show the pause overlay
+    }
+
+
+
+
+
     private void loadFont() {
         try {
             pressStart2PFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/resources/fonts/PressStart2P-Regular.ttf")).deriveFont(20f);
@@ -480,10 +491,15 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.game = game;
         this.playerView= new PlayerView(game.getPlayer());
     }
+    public void setPaused(Boolean b){
+        this.isPaused = b;
+    }
 
     public int getTopLeftCornerX() {
         return gridTopLeftX;
     }
+
+    public boolean getIsPaused(){return isPaused;}
 
     public int getTopLeftCornerY() {
         return gridTopLeftY;
