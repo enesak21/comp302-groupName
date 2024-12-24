@@ -2,6 +2,7 @@ package domain.UI;
 
 import domain.audio.AudioManager;
 import domain.game.Hall;
+import main.BuildModePanel;
 import domain.handlers.BuildModeHandler;
 import domain.panels.BuildModePanel;
 import domain.panels.PlayModePanel;
