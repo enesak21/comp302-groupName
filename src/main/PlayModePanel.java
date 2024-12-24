@@ -165,8 +165,10 @@ public class PlayModePanel extends JPanel implements Runnable {
                     isPaused = !isPaused;
                     if (isPaused) {
                         game.pauseGame();
+                        timeController.pauseTimer();
                     } else {
                         game.resumeGame();
+                        timeController.resumeTimer();
                     }
                     repaint();
                 }
