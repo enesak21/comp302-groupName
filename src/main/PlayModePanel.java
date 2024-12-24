@@ -180,6 +180,12 @@ public class PlayModePanel extends JPanel implements Runnable {
         System.out.println("Game paused");
         repaint(); // Trigger a repaint to show the pause overlay
     }
+    public void resumeGame(){
+        isPaused = false;
+        timeController.resumeTimer();
+        System.out.println("Game resumed");
+        repaint();
+    }
 
     public void exitGame() {
         System.exit(0);
