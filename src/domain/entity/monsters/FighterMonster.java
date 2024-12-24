@@ -32,12 +32,9 @@ public class FighterMonster extends BaseMonster {
 
     }
 
-
     public void move(Game game) {
         //simple random movement code
-
         int random_direction = random.nextInt(4);//0: UP, 1: DOWN, 2: LEFT, 3:RIGHT
-
 
         if(!moving){
             if(random_direction == 0){
@@ -80,9 +77,10 @@ public class FighterMonster extends BaseMonster {
                 //Update new grid isSolid(true)
                 game.getGrid().getTileAt(gridX - PlayModePanel.offsetX, gridY - PlayModePanel.offsetY).setSolid(true);
 
-                pixelCounter = 0;
+
                 moving = false;
                 updatePixelPosition();
+                pixelCounter = 0;
             }
         }
     }

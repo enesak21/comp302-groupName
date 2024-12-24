@@ -4,13 +4,16 @@ import domain.UI.GridView;
 import domain.UI.PlayerView;
 import domain.UI.MonsterView;
 
-import domain.handlers.mouseHandlers.PlayModeMouseListener;
+
+import domain.handlers.*;
 import domain.entity.Entity;
 
 import domain.entity.monsters.*;
 
 import domain.entity.playerObjects.Player;
 import domain.game.*;
+import domain.handlers.mouseHandlers.PlayModeMouseListener;
+import domain.structures.Structure;
 import domain.game.SearchRuneController;
 import main.PlayerInputHandler;
 
@@ -26,7 +29,8 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 public class PlayModePanel extends JPanel implements Runnable {
 
     // Screen settings
@@ -62,11 +66,10 @@ public class PlayModePanel extends JPanel implements Runnable {
     private PlayerView playerView;
     private GridView gridView;
 
-
-
     private MonsterManager monsterManager;
     private int countMonster = 0;
-    private List<MonsterView> monsterViewList = new ArrayList<>();
+    private CopyOnWriteArrayList<MonsterView> monsterViewList = new CopyOnWriteArrayList<>();
+
 
     // Declare the halls variable
     private List<Hall> halls;
@@ -155,8 +158,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         }
     }
 
-
-
     private void addPauseKeyListener() {
 
         this.addKeyListener(new KeyAdapter() {
@@ -166,16 +167,19 @@ public class PlayModePanel extends JPanel implements Runnable {
                     isPaused = !isPaused;
                     if (isPaused) {
                         game.pauseGame();
+
                         timeController.pauseTimer();
                     } else {
                         game.resumeGame();
                         timeController.resumeTimer();
+
                     }
                     repaint();
                 }
             }
         });
     }
+
 
     public void pauseGame() {
 
@@ -195,9 +199,6 @@ public class PlayModePanel extends JPanel implements Runnable {
     public void exitGame() {
         System.exit(0);
     }
-
-
-
 
     private void loadFont() {
         try {
@@ -505,9 +506,11 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.game = game;
         this.playerView= new PlayerView(game.getPlayer());
     }
+
     public void setPaused(Boolean b){
         this.isPaused = b;
     }
+
 
     public int getTopLeftCornerX() {
         return gridTopLeftX;
