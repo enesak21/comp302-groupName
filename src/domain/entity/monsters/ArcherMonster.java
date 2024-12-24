@@ -5,7 +5,7 @@ import domain.entity.Entity;
 import domain.entity.playerObjects.Player;
 import domain.game.CollisionChecker;
 import domain.game.Game;
-import main.PlayModePanel;
+import domain.panels.PlayModePanel;
 
 import java.util.Random;
 
