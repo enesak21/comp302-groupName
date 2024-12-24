@@ -83,6 +83,9 @@ public class PlayModePanel extends JPanel implements Runnable {
     private boolean[][] wallGrid;
     private SearchRuneController searchRuneController;
 
+    //FLAG IMAGES
+    private Image hallOfAirFlag, hallOfWaterFlag, hallOfEarthFlag, hallOfFireFlag;
+
 
     int FPS = 60;
     Thread gameThread;
@@ -425,6 +428,18 @@ public class PlayModePanel extends JPanel implements Runnable {
         g2.drawString(resumeText, x, y);
     }
 
+    private void loadFlagImages(){
+        try{
+            hallOfAirFlag = ImageIO.read(getClass().getResource("/resources/flags/hallOfAir flag.png"));
+            hallOfEarthFlag = ImageIO.read(getClass().getResource("/resources/flags/hallOfEarth flag.png"));
+            hallOfWaterFlag = ImageIO.read(getClass().getResource("/resources/flags/hallOfFire flag.png"));
+            hallOfFireFlag = ImageIO.read(getClass().getResource("/resources/flags/hallofWater flag.png"));
+
+        }catch (IOException e){
+            e.printStackTrace();
+            System.err.println("Error loading wall images. Please check the file paths.");
+        }
+    }
     private void loadWallImages() {
         try {
             leftWall = ImageIO.read(getClass().getResource("/resources/Walls/leftWall.png"));
