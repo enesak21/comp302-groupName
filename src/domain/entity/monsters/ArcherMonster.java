@@ -9,6 +9,7 @@ import domain.game.Game;
 public class ArcherMonster extends BaseMonster{
     private float arrowRange = 4;
     private final long SHOOT_FREQUENCY = 1000;
+    private final long INITIAL_DELAY = 2000;
     private long lastAttackTime;
     private int lastPlayerX;
     private int lastPlayerY;
@@ -16,6 +17,7 @@ public class ArcherMonster extends BaseMonster{
 
     public ArcherMonster(int gridX, int gridY, int tileSize) {
         super(gridX, gridY, tileSize);
+        this.lastAttackTime = System.currentTimeMillis() + INITIAL_DELAY; // Initial delay for the first attack
     }
 
     @Override
