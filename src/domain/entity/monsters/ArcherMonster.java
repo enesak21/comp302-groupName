@@ -128,7 +128,7 @@ public class ArcherMonster extends BaseMonster{
     public void update(Game game)
     {
         moveCounter++;
-        if(moveCounter >= SPEED * 2){
+        if(moveCounter >= SPEED * 3){
             move(game);
             moveCounter = 0;
         }
