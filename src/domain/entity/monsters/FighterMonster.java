@@ -90,7 +90,7 @@ public class FighterMonster extends BaseMonster {
     public void update(Game game) {
         moveCounter++;
         //Speed of the monster is controlled by this if statement. The higher the number, the slower the monster.
-        if(moveCounter >= SPEED * 2){
+        if(moveCounter >= SPEED * 3){
             move(game);
             moveCounter = 0;
         }
