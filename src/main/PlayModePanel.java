@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PlayModePanel extends JPanel implements Runnable {
 
@@ -67,7 +68,7 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     private MonsterManager monsterManager;
     private int countMonster = 0;
-    private List<MonsterView> monsterViewList = new ArrayList<>();
+    private CopyOnWriteArrayList<MonsterView> monsterViewList = new CopyOnWriteArrayList<>();
 
     // Declare the halls variable
     private List<Hall> halls;
