@@ -5,12 +5,7 @@ import domain.game.CollisionChecker;
 import domain.game.Tile;
 import domain.entity.Entity;
 import main.PlayModePanel;
-import main.PlayerController;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+import main.PlayerInputHandler;
 
 public class Player extends Entity {
     private String name;
@@ -19,35 +14,59 @@ public class Player extends Entity {
     private Tile location;
     boolean moving = false;
     int pixelCounter = 0;
+    private static Player instance;
 
     PlayModePanel playModePanel;
-    PlayerController playerController;
+    PlayerInputHandler playerInputHandler;
     private CollisionChecker collisionChecker;
 
-    public Player(String name, int gridX, int gridY, int tileSize, PlayModePanel playModePanel, PlayerController playerController) {
+    private Player(String name, int gridX, int gridY, int tileSize, PlayModePanel playModePanel, PlayerInputHandler playerInputHandler) {
         super(gridX, gridY, tileSize);
         this.name = name;
         this.playModePanel = playModePanel;
-        this.playerController = playerController;
+        this.playerInputHandler = playerInputHandler;
         this.speed = 4;
         this.health = 4;
         this.direction = Direction.DOWN;
         updatePixelPosition();
     }
 
+
+    public static Player getInstance(String name, int gridX, int gridY, int tileSize, PlayModePanel playModePanel, PlayerInputHandler playerInputHandler) {
+        if (instance==null) {
+            return new Player(name, gridX, gridY, tileSize, playModePanel, playerInputHandler);
+        }
+        return instance;
+    }
+
+    public void restart(String name, int gridX, int gridY, int tileSize, PlayModePanel playModePanel, PlayerInputHandler playerInputHandler) {
+        this.name = name; //if user wants to restart the game, this method will be called
+        this.gridX = gridX;
+        this.gridY = gridY;
+        this.tileSize = tileSize;
+        this.playModePanel = playModePanel;
+        this.playerInputHandler = playerInputHandler;
+        this.speed = 4;
+        this.health = 4;
+        this.direction = Direction.DOWN;
+        this.moving = false;
+        this.pixelCounter = 0;
+        updatePixelPosition();
+    }
+
     @Override
     public void update() {
         if (!moving) {
-            if (playerController.upPressed) {
+            if (playerInputHandler.upPressed) {
                 direction = Direction.UP;
-            } else if (playerController.downPressed) {
+            } else if (playerInputHandler.downPressed) {
                 direction = Direction.DOWN;
-            } else if (playerController.leftPressed) {
+            } else if (playerInputHandler.leftPressed) {
                 direction = Direction.LEFT;
-            } else if (playerController.rightPressed) {
+            } else if (playerInputHandler.rightPressed) {
                 direction = Direction.RIGHT;
             }
-            if (playerController.movePressed() && !collisionChecker.checkCollision(this)) {
+            if (playerInputHandler.movePressed() && !collisionChecker.checkCollision(this)) {
                 moving = true;
             }
         }
@@ -74,8 +93,8 @@ public class Player extends Entity {
         }
     }
 
-    public PlayerController getPlayerController() {
-        return playerController;
+    public PlayerInputHandler getPlayerInputHandler() {
+        return playerInputHandler;
     }
 
     public boolean isMoving() {
