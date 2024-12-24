@@ -19,12 +19,13 @@ public class Player extends Entity {
     private Tile location;
     boolean moving = false;
     int pixelCounter = 0;
+    private static Player instance;
 
     PlayModePanel playModePanel;
     PlayerController playerController;
     private CollisionChecker collisionChecker;
 
-    public Player(String name, int gridX, int gridY, int tileSize, PlayModePanel playModePanel, PlayerController playerController) {
+    private Player(String name, int gridX, int gridY, int tileSize, PlayModePanel playModePanel, PlayerController playerController) {
         super(gridX, gridY, tileSize);
         this.name = name;
         this.playModePanel = playModePanel;
@@ -34,6 +35,15 @@ public class Player extends Entity {
         this.direction = Direction.DOWN;
         updatePixelPosition();
     }
+
+
+    public static Player getInstance(String name, int gridX, int gridY, int tileSize, PlayModePanel playModePanel, PlayerController playerController) {
+        if (instance==null) {
+            return new Player(name, gridX, gridY, tileSize, playModePanel, playerController);
+        }
+        return instance;
+    }
+
 
     @Override
     public void update() {

@@ -92,7 +92,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         System.out.println("current hall num: " + hallNum);
         System.out.println("total halls: " + halls.size());
 
-        Player player = new Player("Osimhen", 0, 0, tileSize, this, new PlayerController());
+        Player player = Player.getInstance("Osimhen", 0, 0, tileSize, this, new PlayerController());
         playerView = new PlayerView(player);
         // Initialize the grid
         grid = halls.get(hallNum).toGrid(tileSize);
