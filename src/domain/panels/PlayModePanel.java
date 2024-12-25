@@ -185,6 +185,7 @@ public class PlayModePanel extends JPanel implements Runnable {
             inTransition = true; // Set the transition flag
             repaint(); // Trigger the transition screen to render
         }
+
         // Pause briefly to show the transition screen
         if (!this.state.equals("TryAgain")) {
             Timer timer = new Timer(2000, e -> {
