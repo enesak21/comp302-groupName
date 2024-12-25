@@ -26,8 +26,7 @@ public class SearchRuneController {
         if (Game.isInRange(clickedTile, playerTile, 1)) {
             if (clickedStructure != null) {
                 if (clickedStructure.hasRune()) {
-                    System.out.println("Rune collected!");
-                    // Transition to the next hall
+
                     playModePanel.moveToNextHall();
                 }
                 else {

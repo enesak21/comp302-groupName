@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TimeController {
-    private int timeLeft = 60; // Timer set for 60 seconds
+    private int timeLeft; // Timer set for 60 seconds
     private Timer timer; // Timer instance
 
     public TimeController() {
@@ -26,7 +26,6 @@ public class TimeController {
     public void pauseTimer() {
         if (timer.isRunning()) {
             timer.stop();
-            System.out.println("Timer paused.");
         }
     }
 
@@ -34,7 +33,6 @@ public class TimeController {
     public void resumeTimer() {
         if (!timer.isRunning()) {
             timer.start();
-            System.out.println("Timer resumed.");
         }
     }
 

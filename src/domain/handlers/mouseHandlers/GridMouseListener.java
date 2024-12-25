@@ -37,7 +37,6 @@ public class GridMouseListener {
 
         Point gridClickPoint = transformToGridCoordinates(rawClickPoint);
 
-        //System.out.println("Grid click at: " + gridClickPoint);
 
         // Possibly do something with the grid click point
 
