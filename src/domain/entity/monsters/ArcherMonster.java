@@ -6,6 +6,7 @@ import domain.entity.playerObjects.Player;
 import domain.game.CollisionChecker;
 import domain.game.Game;
 import domain.panels.PlayModePanel;
+import domain.audio.AudioManager;
 
 import java.util.Random;
 
@@ -23,6 +24,8 @@ public class ArcherMonster extends BaseMonster{
     private boolean moving = false;
     private CollisionChecker collisionChecker;
     private int moveCounter = 0;
+    private AudioManager audioManager = new AudioManager();
+
 
 
     public ArcherMonster(int gridX, int gridY, int tileSize) {
@@ -143,6 +146,7 @@ public class ArcherMonster extends BaseMonster{
             if ((currentTime - lastAttackTime) > SHOOT_FREQUENCY) {
                 throwArrow(player);
                 lastAttackTime = currentTime;
+                audioManager.playArcherSound();
             }
         }
     }

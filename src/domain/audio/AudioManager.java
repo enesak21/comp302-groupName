@@ -12,6 +12,7 @@ public class AudioManager {
     private Clip backgroundClip;
     private Clip enterMusic;
     private Clip[] noRuneSounds;
+    private Clip archerSound;
 
     public AudioManager() {
         this.enterMusic = loadClip("music/enter.wav");
@@ -20,6 +21,8 @@ public class AudioManager {
         Clip noRuneSound2 = loadClip("sound/structureSound2.wav");
         Clip noRuneSound3 = loadClip("sound/structureSound3.wav");
         this.noRuneSounds = new Clip[]{noRuneSound1, noRuneSound2, noRuneSound3};
+
+        this.archerSound = loadClip("sound/archerSound.wav");
     }
 
     private Clip loadClip(String resourcePath) {
@@ -75,5 +78,13 @@ public class AudioManager {
         noRuneSounds[randomIndex].stop();
         noRuneSounds[randomIndex].setFramePosition(0);
         noRuneSounds[randomIndex].start();
+    }
+
+    public void playArcherSound() {
+        if (archerSound != null) {
+            archerSound.stop();
+            archerSound.setFramePosition(0);
+            archerSound.start();
+        }
     }
 }

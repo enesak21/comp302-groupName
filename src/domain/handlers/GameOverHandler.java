@@ -24,6 +24,7 @@ public class GameOverHandler {
     }
 
     public void handle() {
+        playModePanel.setPaused(true);
         playModePanel.getGame().getTimeController().pauseTimer();
         drawGameOverScreen(playModePanel.getGraphics2());
     }
