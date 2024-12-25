@@ -75,7 +75,7 @@ public class GameOverHandler {
                 // Check if the click is within the button bounds
                 if (mouseX >= mainMenuButton.getX() && mouseX <= mainMenuButton.getX() + mainMenuButton.getWidth() &&
                         mouseY >= mainMenuButton.getY() && mouseY <= mainMenuButton.getY() + mainMenuButton.getHeight()) {
-                    playModePanel.getFrame().dispose();
+                    playModePanel.setVisible(false); // Not correct implementation, Let's try
                     UI ui = new UI();
                     ui.show();
                 }

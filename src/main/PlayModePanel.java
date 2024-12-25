@@ -75,11 +75,9 @@ public class PlayModePanel extends JPanel implements Runnable {
     Game game;
     Rune rune;
     Graphics2D g2;
-    JFrame frame;
 
     // Constructor
-    public PlayModePanel(JFrame frame, List<Hall> halls) {
-        this.frame = frame;
+    public PlayModePanel(List<Hall> halls) {
         this.halls = halls; // Initialize the halls variable
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(new Color(66, 40, 53));
@@ -537,9 +535,5 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public List<Hall> getHalls() {
         return halls;
-    }
-
-    public JFrame getFrame() {
-        return frame;
     }
 }

@@ -76,7 +76,7 @@ public class GameWinningHandler {
                 // Check if the click is within the button bounds
                 if (mouseX >= mainMenuButton.getX() && mouseX <= mainMenuButton.getX() + mainMenuButton.getWidth() &&
                         mouseY >= mainMenuButton.getY() && mouseY <= mainMenuButton.getY() + mainMenuButton.getHeight()) {
-                    playModePanel.getFrame().dispose();
+                    playModePanel.setVisible(false); // Not a correct implementation, but let's try
                     UI ui = new UI();
                     ui.show();
                 }

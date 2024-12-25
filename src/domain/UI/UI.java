@@ -138,7 +138,7 @@ public class UI {
 
 
     private JPanel createGameScreen() {
-        PlayModePanel playModePanel = new PlayModePanel(frame, halls);
+        PlayModePanel playModePanel = new PlayModePanel(halls);
 
         // Create a mouse listener for the Play Mode screen
         PlayModeMouseListener playModeMouseListener = new PlayModeMouseListener(playModePanel);
