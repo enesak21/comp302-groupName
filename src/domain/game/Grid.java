@@ -3,7 +3,6 @@ package domain.game;
 import javax.imageio.ImageIO;
 
 import domain.structures.Structure;
-
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;

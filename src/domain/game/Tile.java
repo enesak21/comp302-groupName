@@ -1,7 +1,6 @@
 package domain.game;
 
 import java.awt.image.BufferedImage;
-
 import domain.structures.Structure;
 
 public class Tile {
@@ -10,7 +9,6 @@ public class Tile {
     private boolean solid; // The tile is solid (e.g., walls)
     private BufferedImage image;
     private Structure structure;
-
 
     // Constructor with parameters
     public Tile(int gridX, int gridY, boolean solid, BufferedImage image) {

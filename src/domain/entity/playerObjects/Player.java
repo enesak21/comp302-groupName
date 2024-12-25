@@ -80,12 +80,19 @@ public class Player extends Entity {
             pixelCounter += speed;
 
             if (pixelCounter >= tileSize) {
+                //Update old grid isSolid(false)
+                playModePanel.getGame().getGrid().getTileAt(gridX - 2, gridY - 2).setSolid(false);
+
                 switch (direction) {
                     case UP -> gridY--;
                     case DOWN -> gridY++;
                     case LEFT -> gridX--;
                     case RIGHT -> gridX++;
                 }
+
+                //Update new grid isSolid(true)
+                playModePanel.getGame().getGrid().getTileAt(gridX - 2, gridY - 2).setSolid(true);
+
                 pixelCounter = 0;
                 moving = false;
                 updatePixelPosition();
@@ -107,6 +114,10 @@ public class Player extends Entity {
 
     public void reduceHealth() {
         health--;
+        if (health == 0) {
+            playModePanel.getGame().getTimeController().setTimeLeft(0);
+            playModePanel.getGameOverHandler().handle();
+        }
     }
 
 public void setCollisionChecker(CollisionChecker collisionChecker) {

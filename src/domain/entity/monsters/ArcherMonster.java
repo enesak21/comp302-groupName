@@ -1,12 +1,10 @@
 package domain.entity.monsters;
 
 import domain.entity.Direction;
-import domain.entity.Entity;
 import domain.entity.playerObjects.Player;
 import domain.game.CollisionChecker;
 import domain.game.Game;
-import domain.panels.PlayModePanel;
-
+import domain.audio.AudioManager;
 import java.util.Random;
 
 
@@ -16,13 +14,12 @@ public class ArcherMonster extends BaseMonster{
     private final long INITIAL_DELAY = 2000;
     private long lastAttackTime;
     private int pixelCounter = 0;
-    private final int SPEED = 4;
-    private int lastPlayerX;
-    private int lastPlayerY;
+    private final int SPEED = 1;
     private Random random = new Random();
     private boolean moving = false;
     private CollisionChecker collisionChecker;
     private int moveCounter = 0;
+    private AudioManager audioManager = new AudioManager();
 
 
     public ArcherMonster(int gridX, int gridY, int tileSize) {
@@ -76,6 +73,7 @@ public class ArcherMonster extends BaseMonster{
 
                 //Update old grid isSolid(false)
                 game.getGrid().getTileAt(gridX - 2, gridY - 2).setSolid(false);
+
                 switch (direction) {
                     case UP -> gridY--;
                     case DOWN -> gridY++;
@@ -85,6 +83,7 @@ public class ArcherMonster extends BaseMonster{
 
                 //Update new grid isSolid(true)
                 game.getGrid().getTileAt(gridX - 2, gridY - 2).setSolid(true);
+
                 moving = false;
                 updatePixelPosition();
 
@@ -92,8 +91,6 @@ public class ArcherMonster extends BaseMonster{
             }
         }
     }
-
-
 
     /* This method includes a dodge mechanic for throwArrow method DO NOT DELETE YET.
     public void throwArrow(Player player) {
@@ -110,7 +107,6 @@ public class ArcherMonster extends BaseMonster{
             }
         }).start();
     }
-
      */
 
     public void throwArrow(Player player){
@@ -126,7 +122,7 @@ public class ArcherMonster extends BaseMonster{
     public void update(Game game)
     {
         moveCounter++;
-        if(moveCounter >= SPEED * 3){
+        if(moveCounter >= SPEED * 2){
             move(game);
             moveCounter = 0;
         }
@@ -140,6 +136,7 @@ public class ArcherMonster extends BaseMonster{
             if ((currentTime - lastAttackTime) > SHOOT_FREQUENCY) {
                 throwArrow(player);
                 lastAttackTime = currentTime;
+                audioManager.playArcherSound();
             }
         }
     }
