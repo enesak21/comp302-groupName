@@ -1,4 +1,4 @@
-package domain.UI.mouseHandlers;
+package domain.handlers.mouseHandlers;
 
 import domain.panels.PlayModePanel;
 

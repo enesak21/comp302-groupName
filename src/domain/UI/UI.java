@@ -1,6 +1,6 @@
 package domain.UI;
 
-import domain.UI.mouseHandlers.PlayModeMouseListener;
+import domain.handlers.mouseHandlers.PlayModeMouseListener;
 import domain.audio.AudioManager;
 import domain.game.Hall;
 import domain.panels.BuildModePanel;
