@@ -1,10 +1,8 @@
 package domain.entity.monsters;
 
-import domain.entity.Entity;
 import domain.entity.playerObjects.Player;
 import domain.game.CollisionChecker;
 import domain.game.Game;
-import domain.game.Tile;
 import domain.structures.Structure;
 
 import java.util.List;

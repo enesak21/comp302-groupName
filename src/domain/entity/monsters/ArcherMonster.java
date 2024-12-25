@@ -1,13 +1,10 @@
 package domain.entity.monsters;
 
 import domain.entity.Direction;
-import domain.entity.Entity;
 import domain.entity.playerObjects.Player;
 import domain.game.CollisionChecker;
 import domain.game.Game;
-import domain.panels.PlayModePanel;
 import domain.audio.AudioManager;
-
 import java.util.Random;
 
 
