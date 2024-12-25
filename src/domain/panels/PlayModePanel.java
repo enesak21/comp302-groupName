@@ -154,7 +154,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         CollisionChecker collisionChecker = new CollisionChecker(grid);
         player.setCollisionChecker(collisionChecker);
         monsterManager.setCollisionChecker(collisionChecker);
-        timeController = new TimeController();
+        timeController = game.getTimeController();
 
         // Create a mouse listener for the Play Mode screen
 
@@ -680,5 +680,9 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public String getState() {
         return state;
+    }
+
+    public GameOverHandler getGameOverHandler() {
+        return gameOverHandler;
     }
 }
