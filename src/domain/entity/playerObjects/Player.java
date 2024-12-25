@@ -4,13 +4,8 @@ import domain.entity.Direction;
 import domain.game.CollisionChecker;
 import domain.game.Tile;
 import domain.entity.Entity;
-import main.PlayModePanel;
+import domain.panels.PlayModePanel;
 import main.PlayerController;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public class Player extends Entity {
     private String name;

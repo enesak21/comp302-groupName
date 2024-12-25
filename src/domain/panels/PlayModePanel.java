@@ -1,10 +1,13 @@
-package main;
+package domain.panels;
 
 import domain.UI.GridView;
 import domain.UI.PlayerView;
 import domain.entity.playerObjects.Player;
 import domain.game.*;
 import domain.structures.Structure;
+import main.GameOverHandler;
+import main.GameWinningHandler;
+import main.PlayerController;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -12,8 +15,6 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.FontFormatException;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;

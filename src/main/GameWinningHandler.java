@@ -3,6 +3,7 @@ package main;
 import domain.UI.MainMenuButton;
 import domain.UI.TryAgainButton;
 import domain.UI.UI;
+import domain.panels.PlayModePanel;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;

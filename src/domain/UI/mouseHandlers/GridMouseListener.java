@@ -1,12 +1,8 @@
 package domain.UI.mouseHandlers;
 
-import domain.game.Game;
-import domain.game.Tile;
-import domain.structures.Structure;
-import main.PlayModePanel;
+import domain.panels.PlayModePanel;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
 
 public class GridMouseListener {
 

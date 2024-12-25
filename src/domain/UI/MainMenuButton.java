@@ -1,11 +1,9 @@
 package domain.UI;
 
-import main.PlayModePanel;
+import domain.panels.PlayModePanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class MainMenuButton extends JButton {
     Graphics2D g2;

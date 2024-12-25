@@ -1,10 +1,8 @@
-package main;
+package domain.panels;
 
 import javax.swing.*;
 import java.awt.*;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.HashMap;
 
 public class StructurePanel extends JPanel {

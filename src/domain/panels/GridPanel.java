@@ -1,4 +1,4 @@
-package main;
+package domain.panels;
 
 import javax.swing.*;
 import java.awt.*;
