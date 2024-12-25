@@ -14,6 +14,7 @@ import domain.game.HallOfFire;
 import domain.game.HallOfWater;
 import domain.handlers.BuildModeHandler;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class BuildModePanel extends JPanel {
     private final JLabel hallNameLabel;
     private Font pressStart2PFont;
     private BuildModeHandler buildModeHandler;
+
 
 
     public BuildModePanel() {
@@ -63,7 +65,6 @@ public class BuildModePanel extends JPanel {
 
         JPanel structurePanel = createStructurePanel();
         add(structurePanel, BorderLayout.EAST);
-
 
     }
 
@@ -108,8 +109,6 @@ public class BuildModePanel extends JPanel {
         JButton nextGridButton = new JButton("Next Grid");
         nextGridButton.addActionListener(e -> switchGrid(1));
 
-
-
         // Check Button
         JButton checkButton = new JButton("Check");
         checkButton.addActionListener(e -> {
@@ -131,6 +130,7 @@ public class BuildModePanel extends JPanel {
                         JOptionPane.INFORMATION_MESSAGE, successIcon);
             }
         });
+
 
         navigationPanel.add(prevGridButton);
         navigationPanel.add(nextGridButton);
@@ -206,6 +206,18 @@ public class BuildModePanel extends JPanel {
 
     }
 
+    private void checkCurrentHall() {
+        Hall currentHall = halls.get(currentGridIndex);
+
+        if (currentHall.isRequirementMet()) {
+            JOptionPane.showMessageDialog(this, "The current hall has enough structures! Confirmed.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            currentHall.setGrid(currentHall.getGrid()); // Confirm and store the grid
+        } else {
+            int remainingStructures = currentHall.getMinStructures() - currentHall.getPlacedStructuresCount();
+            JOptionPane.showMessageDialog(this, "You need " + remainingStructures + " more structures.", "Requirement Not Met", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
     public void setSelectedStructure(String structureKey) {
         this.selectedStructure = structureKey;
     }
@@ -221,5 +233,6 @@ public class BuildModePanel extends JPanel {
     public BuildModeHandler getBuildModeHandler() {
         return buildModeHandler;
     }
+
 }
 

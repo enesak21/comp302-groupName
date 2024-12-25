@@ -5,7 +5,9 @@ import domain.game.CollisionChecker;
 import domain.game.Tile;
 import domain.entity.Entity;
 import domain.panels.PlayModePanel;
+import main.PlayerController;
 import main.PlayerInputHandler;
+
 
 public class Player extends Entity {
     private String name;

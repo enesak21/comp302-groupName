@@ -43,9 +43,7 @@ public class SidebarMouseListener {
 
 
         // Possibly do something with the sidebar click point
-
         System.out.println("Sidebar click at: " + rawClickPoint);
-
 
         int mouseX = (int) rawClickPoint.getX();
         int mouseY = (int) rawClickPoint.getY();
@@ -53,14 +51,7 @@ public class SidebarMouseListener {
         int sidebarWidth = 4 * tileSize + 20; // Sidebar width
         int sidebarX = screenWidth - sidebarWidth - (tileSize + 10) + 20;
 
-//        if (mouseX >= sidebarX && mouseX <= sidebarX + sidebarWidth) {
 
-//            if (mouseX >= buttonX1 && mouseX <= buttonX1 + buttonWidth && mouseY >= buttonY && mouseY <= buttonY + buttonHeight) {
-//                playModePanel.pauseGame();
-//            } else if ((mouseX >= buttonX2 && mouseX <= buttonX2 + buttonWidth && mouseY >= buttonY && mouseY <= buttonY + buttonHeight)&&(!playModePanel.getIsPaused())) {
-//                playModePanel.exitGame();
-//            }
-//        }
         if (mouseX >= buttonX1 && mouseX <= buttonX1 + buttonWidth && mouseY >= buttonY && mouseY <= buttonY + buttonHeight) {
             // Pause/Resume button clicked
             if (playModePanel.getIsPaused()) {
@@ -74,7 +65,6 @@ public class SidebarMouseListener {
             // Exit button clicked
             playModePanel.exitGame(); // Exit the game
         }
-
 
     }
 }
