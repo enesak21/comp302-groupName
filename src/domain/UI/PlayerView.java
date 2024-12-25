@@ -6,16 +6,25 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
+/**
+ * PlayerView is a class that extends EntityView and is responsible for drawing the player on the screen.
+ * It contains the player images and the draw method that draws the player on the screen.
+ */
 public class PlayerView extends EntityView {
-    private BufferedImage upImage, downImage, leftImage, rightImage;
+    private BufferedImage upImage, downImage, leftImage, rightImage; // Player images
     private BufferedImage prevImage;
-
+    /**
+     * Constructor for PlayerView.
+     * @param player Player object
+     */
     public PlayerView(Player player) {
         super(player);
-        loadEntityImages();
+        loadEntityImages(); // Load the player images
     }
 
+    /**
+     * Load the player images.
+     */
     @Override
     public void loadEntityImages() {
 
@@ -27,6 +36,11 @@ public class PlayerView extends EntityView {
             throw new RuntimeException("Failed to load player images.", e);
         }
     }
+
+    /**
+     * Draw the player on the screen.
+     * @param g2 Graphics2D object
+     */
     @Override
     public void draw(Graphics2D g2) {
         Player player = (Player) entity; // Cast Entity to Player
@@ -39,7 +53,7 @@ public class PlayerView extends EntityView {
 
         prevImage = currentImage;
 
-        g2.drawImage(
+        g2.drawImage( // Draw the player image
                 currentImage,
                 player.getPixelX(),
                 player.getPixelY(),

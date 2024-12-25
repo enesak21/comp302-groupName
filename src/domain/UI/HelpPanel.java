@@ -4,15 +4,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
+/**
+ * Panel for displaying help and instructions
+ */
 public class HelpPanel extends JPanel {
 
-
+    /**
+     * Constructor for HelpPanel
+     * @param ui UI object
+     */
     public HelpPanel(UI ui) {
         this.setLayout(new BorderLayout());
         JLabel title = new JLabel("Help & Instructions", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 24));
-        this.add(title, BorderLayout.NORTH);
+        this.add(title, BorderLayout.NORTH); // Add title to the top of the panel
 
         JTextArea instructions = new JTextArea("""
         Controls:

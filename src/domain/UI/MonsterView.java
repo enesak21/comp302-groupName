@@ -5,22 +5,26 @@ import domain.entity.monsters.ArcherMonster;
 import domain.entity.monsters.BaseMonster;
 import domain.entity.monsters.FighterMonster;
 import domain.entity.monsters.WizardMonster;
-import domain.entity.playerObjects.Player;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
+// MonsterView class is responsible for drawing the monsters on the screen
 public class MonsterView extends EntityView{
 
-    private BufferedImage archerMonster, fighterMonster, wizardMonster;
-
+    private BufferedImage archerMonster, fighterMonster, wizardMonster; // Images for the monsters
+    /**
+     * Constructor for MonsterView
+     * @param entity The entity to be drawn
+     */
     public MonsterView(Entity entity) {
         super(entity);
         loadEntityImages();
     }
-
+    /**
+     * Loads the images for the monsters
+     */
     @Override
     public void loadEntityImages() {
 
@@ -34,7 +38,10 @@ public class MonsterView extends EntityView{
         }
 
     }
-
+    /**
+     * Draws the monsters on the screen
+     * @param g2 The graphics object
+     */
     @Override
     public void draw(Graphics2D g2) {
 
@@ -49,7 +56,7 @@ public class MonsterView extends EntityView{
             monsterImage = wizardMonster;
         }
 
-        g2.drawImage(
+        g2.drawImage( // Draw the monster image
                 monsterImage,
                 baseMonster.getPixelX(),
                 baseMonster.getPixelY(),
