@@ -127,10 +127,13 @@ public class PlayModePanel extends JPanel implements Runnable {
         searchRuneController = new SearchRuneController(this);
         searchRuneController.placeRune();
 
+
+
         game = new Game(player, tileSize, this, grid, searchRuneController);
 
-        this.addKeyListener(player.getPlayerInputHandler());
+        timeController = game.getTimeController();
 
+        this.addKeyListener(player.getPlayerInputHandler());
         //initialize monsterManager
         monsterManager = new MonsterManager(game, tileSize);
         countMonster = 0;
@@ -148,7 +151,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         CollisionChecker collisionChecker = new CollisionChecker(grid);
         player.setCollisionChecker(collisionChecker);
         monsterManager.setCollisionChecker(collisionChecker);
-        timeController = new TimeController();
+
 
         // Create a mouse listener for the Play Mode screen
 

@@ -127,6 +127,7 @@ public class ArcherMonster extends BaseMonster{
     @Override
     public void update(Game game)
     {
+        //System.out.println("monster'ın update devam ediyor");
         moveCounter++;
         if(moveCounter >= SPEED * 2){
             move(game);

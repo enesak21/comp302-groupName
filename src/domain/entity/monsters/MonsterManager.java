@@ -15,8 +15,9 @@ public class MonsterManager {
     private int tileSize;
     private Game game;
     private long lastSpawnTime;
-    private final int SPAWN_INTERVAL = 8000;
+    private final int SPAWN_INTERVAL = 8; //Write it in seconds
     private CollisionChecker collisionChecker;
+    private long lastSpawnLeftTime;
 
     private List<MonsterFactory> factories;
 
@@ -25,8 +26,8 @@ public class MonsterManager {
         this.random = new Random();
         this.tileSize = tileSize;
         this.game = game;
-        this.lastSpawnTime = System.currentTimeMillis();
-
+        //this.lastSpawnTime = System.currentTimeMillis();
+        this.lastSpawnLeftTime = game.getTimeController().getTimeLeft(); // 60
         // Add factories for different monsters
         factories = new ArrayList<>();
         factories.add(new ArcherMonsterFactory());
@@ -71,11 +72,18 @@ public class MonsterManager {
     }
 
     public void updateMonsters(){
-        long currentTime = System.currentTimeMillis(); // Get the current time. An error might exist here.
-        if (currentTime - lastSpawnTime > SPAWN_INTERVAL) { // If 8 seconds have passed since the last spawn
+
+        long timeLeft = game.getTimeController().getTimeLeft(); //52
+        if (lastSpawnLeftTime - timeLeft > SPAWN_INTERVAL) { // If 8 seconds have passed since the last spawn
             spawnMonster(game.getGrid().getColumns(), game.getGrid().getRows());
-            lastSpawnTime = currentTime;
+            lastSpawnLeftTime = timeLeft;
         }
+
+//        if (currentTime - lastSpawnTime > SPAWN_INTERVAL) { // If 8 seconds have passed since the last spawn
+//            spawnMonster(game.getGrid().getColumns(), game.getGrid().getRows());
+//            lastSpawnTime = currentTime;
+//        }
+        //System.out.println("Monster update");
         for (BaseMonster monster : monsters) {
             monster.setCollisionChecker(collisionChecker);
             monster.update(game);
