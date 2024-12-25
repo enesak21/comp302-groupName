@@ -2,6 +2,11 @@ package domain.entity;
 
 import domain.panels.PlayModePanel;
 
+/**
+ * The Entity class represents an abstract entity in a grid-based game.
+ * It provides basic properties and methods for handling the entity's position,
+ * movement, and direction.
+ */
 public abstract class Entity {
     protected int pixelX, pixelY; // for the drawing
     protected int gridX, gridY; // for the location on grid

@@ -39,8 +39,19 @@ public class Player extends Entity {
         return instance;
     }
 
+    /**
+     * Restarts the player with the specified parameters.
+     * This method is called when the user wants to restart the game.
+     *
+     * @param name the name of the player
+     * @param gridX the x-coordinate of the player's position on the grid
+     * @param gridY the y-coordinate of the player's position on the grid
+     * @param tileSize the size of each tile in the game
+     * @param playModePanel the panel used for play mode
+     * @param playerInputHandler the handler for player input
+     */
     public void restart(String name, int gridX, int gridY, int tileSize, PlayModePanel playModePanel, PlayerInputHandler playerInputHandler) {
-        this.name = name; //if user wants to restart the game, this method will be called
+        this.name = name;
         this.gridX = gridX;
         this.gridY = gridY;
         this.tileSize = tileSize;
@@ -112,6 +123,10 @@ public class Player extends Entity {
         return health;
     }
 
+    /**
+     * Reduces the player's health by one. If the player's health reaches zero,
+     * it sets the remaining game time to zero and triggers the game over handler.
+     */
     public void reduceHealth() {
         health--;
         if (health == 0) {
