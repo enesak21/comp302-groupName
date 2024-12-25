@@ -4,16 +4,12 @@ package domain.handlers;
 import domain.UI.UI;
 import domain.handlers.buttonHandlers.TryAgainButton;
 import domain.panels.PlayModePanel;
-
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class GameWinningHandler {
     int screenWidth, screenHeight;
     Font font;
     PlayModePanel playModePanel;
-
     TryAgainButton tryAgainButton;
 
     public GameWinningHandler(PlayModePanel playModePanel) {
