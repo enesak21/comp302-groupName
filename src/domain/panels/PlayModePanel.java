@@ -121,6 +121,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
     private void initializeGameComponents(int hallNum) {
+        isPaused = false;
         System.out.println("Initializing game components for hall " + hallNum);
         System.out.println(halls);
         Player player = Player.getInstance("Osimhen", 0, 0, tileSize, this, new PlayerInputHandler());
@@ -328,6 +329,7 @@ public class PlayModePanel extends JPanel implements Runnable {
 
             // Check if Time is over
             if (timeController.getTimeLeft() <= 0) {
+                isPaused = true;
                 gameOverHandler.handle();
             } else if (lastRunefound) {
                 gameWinningHandler.handle();
@@ -420,23 +422,25 @@ public class PlayModePanel extends JPanel implements Runnable {
 
 
     private void drawPauseOverlay(Graphics2D g2) {
-        g2.setColor(new Color(0, 0, 0, 150)); // Semi-transparent background
-        g2.fillRect(0, 0, screenWidth, screenHeight);
+        if (timeController.getTimeLeft() > 0) {
+            g2.setColor(new Color(0, 0, 0, 150)); // Semi-transparent background
+            g2.fillRect(0, 0, screenWidth, screenHeight);
 
-        g2.setColor(Color.WHITE);
-        g2.setFont(pressStart2PFont.deriveFont(15f));
+            g2.setColor(Color.WHITE);
+            g2.setFont(pressStart2PFont.deriveFont(15f));
 
-        // Draw pause message in the middle
-        String pauseText = "Game Paused";
-        FontMetrics fm = g2.getFontMetrics();
-        int x = (screenWidth - fm.stringWidth(pauseText)) / 2;
-        int y = (screenHeight - fm.getHeight()) / 2;
-        g2.drawString(pauseText, x, y);
+            // Draw pause message in the middle
+            String pauseText = "Game Paused";
+            FontMetrics fm = g2.getFontMetrics();
+            int x = (screenWidth - fm.stringWidth(pauseText)) / 2;
+            int y = (screenHeight - fm.getHeight()) / 2;
+            g2.drawString(pauseText, x, y);
 
-        String resumeText = "Press 'ESC' to Resume";
-        x = (screenWidth - fm.stringWidth(resumeText)) / 2;
-        y += fm.getHeight() + 20;
-        g2.drawString(resumeText, x, y);
+            String resumeText = "Press 'ESC' to Resume";
+            x = (screenWidth - fm.stringWidth(resumeText)) / 2;
+            y += fm.getHeight() + 20;
+            g2.drawString(resumeText, x, y);
+        }
     }
 
     private void loadFlagImages(){
