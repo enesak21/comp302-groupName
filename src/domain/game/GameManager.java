@@ -2,6 +2,7 @@ package domain.game;
 
 import domain.entity.playerObjects.Player;
 import domain.panels.PlayModePanel;
+import main.PlayerController;
 import main.PlayerInputHandler;
 
 public class GameManager {
