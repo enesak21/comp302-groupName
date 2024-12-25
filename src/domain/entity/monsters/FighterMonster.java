@@ -14,7 +14,7 @@ public class FighterMonster extends BaseMonster {
     private final int DAGGER_RANGE = 1;
     private Random random;
     private int pixelCounter = 0;
-    private final int SPEED = 4;
+    private final int SPEED = 1;
     private final int ATTACK_FREQUENCY = 500;
     private long lastAttackTime;
     private boolean moving = false;
@@ -89,7 +89,7 @@ public class FighterMonster extends BaseMonster {
     public void update(Game game) {
         moveCounter++;
         //Speed of the monster is controlled by this if statement. The higher the number, the slower the monster.
-        if(moveCounter >= SPEED * 3){
+        if(moveCounter >= SPEED * 2){
             move(game);
             moveCounter = 0;
         }

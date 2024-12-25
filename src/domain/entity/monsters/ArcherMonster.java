@@ -16,7 +16,7 @@ public class ArcherMonster extends BaseMonster{
     private final long INITIAL_DELAY = 2000;
     private long lastAttackTime;
     private int pixelCounter = 0;
-    private final int SPEED = 4;
+    private final int SPEED = 1;
     private int lastPlayerX;
     private int lastPlayerY;
     private Random random = new Random();
@@ -128,7 +128,7 @@ public class ArcherMonster extends BaseMonster{
     public void update(Game game)
     {
         moveCounter++;
-        if(moveCounter >= SPEED * 3){
+        if(moveCounter >= SPEED * 2){
             move(game);
             moveCounter = 0;
         }
