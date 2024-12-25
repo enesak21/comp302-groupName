@@ -28,7 +28,7 @@ public class PlayModeMouseListener extends MouseAdapter {
         if (playModePanel.getState().equals("TryAgain")) {
             // Possibly do something with the click in the game over state
 
-            if (isWithinBounds(clickPoint, 174, 420, 200, 50)) {
+            if (isWithinBounds(clickPoint, 284, 410, 200, 50)) {
                 playModePanel.setState("Default");
                 playModePanel.restartGame();
             }
