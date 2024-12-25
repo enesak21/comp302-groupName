@@ -46,9 +46,6 @@ public class WizardMonster extends BaseMonster{
         }
     }
 
-
-
-
     @Override
     public void setCollisionChecker(CollisionChecker collisionChecker) {
         this.collisionChecker = collisionChecker;
