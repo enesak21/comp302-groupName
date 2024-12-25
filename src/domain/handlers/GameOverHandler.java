@@ -6,6 +6,10 @@ import domain.panels.PlayModePanel;
 import java.awt.*;
 
 
+/**
+ * The GameOverHandler class is responsible for handling the game over state in the game.
+ * It displays a game over screen with a "Try Again" button and pauses the game.
+ */
 public class GameOverHandler {
     int screenWidth, screenHeight;
     Font font;

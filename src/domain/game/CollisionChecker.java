@@ -2,6 +2,10 @@ package domain.game;
 
 import domain.entity.Entity;
 
+/**
+ * The CollisionChecker class is responsible for checking collisions between entities and tiles within a grid.
+ * It determines if an entity can move to a specified tile based on its current position and direction.
+ */
 public class CollisionChecker {
 
     private Grid grid;

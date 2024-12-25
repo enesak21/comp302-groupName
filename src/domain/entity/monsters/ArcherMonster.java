@@ -50,6 +50,14 @@ public class ArcherMonster extends BaseMonster{
         return Direction.UP;
     }
 
+    /**
+     * Moves the ArcherMonster within the game world.
+     * 
+     * The movement is determined by the current direction and speed of the monster.
+     * If a collision is detected, the monster changes its direction randomly.
+     * 
+     * @param game The game instance
+     */
     public void move(Game game) {
 
         if(!moving){
@@ -129,6 +137,10 @@ public class ArcherMonster extends BaseMonster{
         attack(game.getPlayer());
     }
 
+    /**
+     * Attacks the specified player if they are within range, in the given shoot frequency.
+     * @param player the player to be attacked
+     */
     @Override
     public void attack(Player player) {
         if (Game.isInRange(this.getGridX(), this.getGridY(), player.getGridX(), player.getGridY(), arrowRange)) {
