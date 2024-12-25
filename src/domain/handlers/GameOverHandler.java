@@ -3,13 +3,12 @@ package domain.handlers;
 import domain.UI.MainMenuButton;
 import domain.UI.TryAgainButton;
 import domain.UI.UI;
-import domain.panels.PlayModePanel;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class GameWinningHandler {
+public class GameOverHandler {
     int screenWidth, screenHeight;
     Font font;
     PlayModePanel playModePanel;
@@ -17,7 +16,7 @@ public class GameWinningHandler {
     TryAgainButton tryAgainButton;
     MainMenuButton mainMenuButton;
 
-    public GameWinningHandler(PlayModePanel playModePanel) {
+    public GameOverHandler(PlayModePanel playModePanel) {
         this.playModePanel = playModePanel;
         this.screenWidth = playModePanel.getScreenWidth();
         this.screenHeight = playModePanel.getScreenHeight();
@@ -26,24 +25,24 @@ public class GameWinningHandler {
 
     public void handle() {
         playModePanel.getTimeController().pauseTimer();
-        drawWinningScreen(playModePanel.getGraphics2());
+        drawGameOverScreen(playModePanel.getGraphics2());
     }
 
-    private void drawWinningScreen(Graphics2D g2) {
+    private void drawGameOverScreen(Graphics2D g2) {
         // Draw a semi-transparent dark overlay
         g2.setColor(new Color(0, 0, 0, 150)); // Semi-transparent black
         g2.fillRect(0, 0, screenWidth, screenHeight);
 
         // Draw the game over message
         g2.setFont(font.deriveFont(40f));
-        g2.setColor(Color.GREEN); // Change the color to green
+        g2.setColor(Color.RED); // Change the color to red
 
         FontMetrics fm = g2.getFontMetrics();
-        String congratsText = "Congrats, You Won!";
-        int congratsX = (screenWidth - fm.stringWidth(congratsText)) / 2;
-        int congratsY = (screenHeight - fm.getHeight()) / 2 + fm.getAscent();
+        String gameOverText = "Game Over!";
+        int gameOverX = (screenWidth - fm.stringWidth(gameOverText)) / 2;
+        int gameOverY = (screenHeight - fm.getHeight()) / 2 + fm.getAscent();
 
-        g2.drawString(congratsText, congratsX, congratsY);
+        g2.drawString(gameOverText, gameOverX, gameOverY);
 
         // Define button dimensions
         int buttonWidth = 200;
@@ -53,7 +52,7 @@ public class GameWinningHandler {
         // Calculate button positions
         int totalButtonWidth = (2 * buttonWidth) + buttonSpacing;
         int startX = (screenWidth - totalButtonWidth) / 2;
-        int buttonY = congratsY + fm.getHeight() + 40; // Position below the text
+        int buttonY = gameOverY + fm.getHeight() + 40; // Position below the text
 
         // Draw "Try Again" button
         tryAgainButton = new TryAgainButton(g2, startX, buttonY, buttonWidth, buttonHeight, font);
@@ -63,7 +62,6 @@ public class GameWinningHandler {
 
         tryAgainButton.drawTryAgainButton(playModePanel);
         mainMenuButton.drawMainMenuButton(playModePanel);
-
     }
 
     public void addMainMenuKeyListener() {
@@ -77,7 +75,7 @@ public class GameWinningHandler {
                 // Check if the click is within the button bounds
                 if (mouseX >= mainMenuButton.getX() && mouseX <= mainMenuButton.getX() + mainMenuButton.getWidth() &&
                         mouseY >= mainMenuButton.getY() && mouseY <= mainMenuButton.getY() + mainMenuButton.getHeight()) {
-                    playModePanel.setVisible(false); // Not a correct implementation, but let's try
+                    playModePanel.setVisible(false); // Not correct implementation, Let's try
                     UI ui = new UI();
                     ui.show();
                 }
