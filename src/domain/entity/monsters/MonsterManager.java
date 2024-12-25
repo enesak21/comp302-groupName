@@ -53,16 +53,18 @@ public class MonsterManager {
 
 
         BaseMonster monster = selectedFactory.createMonster(gridX, gridY, tileSize);
-        //After we create the monster, we need to set isSolid to true for the tiles that the monster is on
-        game.getGrid().getTileAt(gridX - 2, gridY - 2).setSolid(true);
+        //game.getGrid().getTileAt(gridX - 2, gridY - 2).setSolid(true);
         monster.setCollisionChecker(collisionChecker);
 
 
         if (monster.getGridX() - PlayModePanel.offsetX < 0 || monster.getGridY() - PlayModePanel.offsetY < 0) {
             spawnMonster(gridWidth, gridHeight);
         }else {
-//            game.getGrid().getTileAt(monster.getGridX() - PlayModePanel.offsetX, monster.getGridY() - PlayModePanel.offsetY).setSolid(true);
+
+            //After we create the monster, we need to set isSolid to true for the tiles that the monster is on
+            game.getGrid().getTileAt(gridX - 2, gridY - 2).setSolid(true);
             monsters.add(monster);
+
         }
 
 
