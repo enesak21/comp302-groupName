@@ -3,29 +3,29 @@ package domain.entity;
 import domain.panels.PlayModePanel;
 
 public abstract class Entity {
-    protected int pixelX, pixelY; // Çizimler için bunlar
-    protected int gridX, gridY; // Grid üzerindeki konumları için bunlar
-    protected int speed; //pixel türünde hareket için
+    protected int pixelX, pixelY; // for the drawing
+    protected int gridX, gridY; // for the location on grid
+    protected int speed; //for the pixel-based movement
 
-    protected Direction direction = Direction.DOWN; //başlangıç yönü
+    protected Direction direction = Direction.DOWN; //starting direction
 
-    protected int tileSize; //public yapmak istemedim, burada tekrar tanımladım
+    protected int tileSize; //size of the tile
 
     public Entity(int gridX, int gridY, int tileSize){
         this.gridX = gridX;
         this.gridY = gridY;
         this.tileSize = tileSize;
 
-        this.pixelX = gridX * tileSize; //piksel konumlarını gride göre hesaplattık
-        this.pixelY = gridY * tileSize;
+        this.pixelX = gridX * tileSize; //we calculated the pixel positions according to the grid
+        this.pixelY = gridY * tileSize; //we calculated the pixel positions according to the grid
     }
 
-    protected void updatePixelPosition() { //Single responsibility principle onemli hocam her seyi update'e verme
+    protected void updatePixelPosition() {
         this.pixelX = gridX * tileSize;
         this.pixelY = gridY * tileSize;
     }
 
-    public abstract void update(); //bunu player ve monsterlar icin ayri yazacagiz
+    public abstract void update(); // we will implement this method in the subclasses
 
     public int getGridX() {
         return gridX-PlayModePanel.offsetX;

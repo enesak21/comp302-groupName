@@ -1,13 +1,10 @@
 package domain.entity.monsters;
 
 import domain.entity.Direction;
-import domain.entity.Entity;
 import domain.entity.playerObjects.Player;
 import domain.game.CollisionChecker;
 import domain.game.Game;
-import domain.panels.PlayModePanel;
 import domain.audio.AudioManager;
-
 import java.util.Random;
 
 
@@ -18,14 +15,11 @@ public class ArcherMonster extends BaseMonster{
     private long lastAttackTime;
     private int pixelCounter = 0;
     private final int SPEED = 1;
-    private int lastPlayerX;
-    private int lastPlayerY;
     private Random random = new Random();
     private boolean moving = false;
     private CollisionChecker collisionChecker;
     private int moveCounter = 0;
     private AudioManager audioManager = new AudioManager();
-
 
 
     public ArcherMonster(int gridX, int gridY, int tileSize) {
@@ -98,8 +92,6 @@ public class ArcherMonster extends BaseMonster{
         }
     }
 
-
-
     /* This method includes a dodge mechanic for throwArrow method DO NOT DELETE YET.
     public void throwArrow(Player player) {
         lastPlayerX = player.getGridX();
@@ -115,7 +107,6 @@ public class ArcherMonster extends BaseMonster{
             }
         }).start();
     }
-
      */
 
     public void throwArrow(Player player){
@@ -130,7 +121,6 @@ public class ArcherMonster extends BaseMonster{
     @Override
     public void update(Game game)
     {
-        //System.out.println("monster'ın update devam ediyor");
         moveCounter++;
         if(moveCounter >= SPEED * 2){
             move(game);

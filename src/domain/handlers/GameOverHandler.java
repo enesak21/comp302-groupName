@@ -1,21 +1,16 @@
 package domain.handlers;
 
 
-import domain.UI.UI;
 import domain.handlers.buttonHandlers.TryAgainButton;
 import domain.panels.PlayModePanel;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.SQLOutput;
+
 
 public class GameOverHandler {
     int screenWidth, screenHeight;
     Font font;
     PlayModePanel playModePanel;
-
     TryAgainButton tryAgainButton;
-
 
     public GameOverHandler(PlayModePanel playModePanel) {
         this.playModePanel = playModePanel;

@@ -15,14 +15,13 @@ public class GameManager {
     }
 
     public void startNewGame() {
-        // Yeni bir Hall ve Grid yarat
+        //Create a new Hall and Grid
         Grid grid = new Grid(playModePanel.getTileSize());
         Player player = Player.getInstance("Osimhen", 0, 0, playModePanel.getTileSize(), playModePanel, new PlayerInputHandler());
 
-        // Yeni bir Game yarat
         // currentGame = new Game(player, playModePanel.getTileSize(), playModePanel, grid, searc);
 
-        // PlayModePanel'i yeni Game ile güncelle
+        // update PlayModePanel with the new Game
         playModePanel.setGame(currentGame);
 
         System.out.println("New Game Started!");

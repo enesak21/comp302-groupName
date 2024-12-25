@@ -5,7 +5,6 @@ import domain.panels.PlayModePanel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.security.interfaces.RSAPrivateCrtKey;
 
 public class PlayModeMouseListener extends MouseAdapter {
     // This class is used to handle mouse events in the play mode
@@ -34,7 +33,6 @@ public class PlayModeMouseListener extends MouseAdapter {
                 playModePanel.restartGame();
             }
 
-            return;
         } else {
             // Check if click is in the “grid region” or “sidebar region”
             if (isInGridRegion(clickPoint)) {
