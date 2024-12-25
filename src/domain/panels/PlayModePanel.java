@@ -296,7 +296,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
+        g2 = (Graphics2D) g;
 
 
         // Draw Time (always display the sidebar)
@@ -327,7 +327,6 @@ public class PlayModePanel extends JPanel implements Runnable {
             // Check if Time is over
             if (timeController.getTimeLeft() <= 0) {
                 gameOverHandler.handle();
-                gameOverHandler.addMainMenuKeyListener();
             } else if (lastRunefound) {
                 gameWinningHandler.handle();
             }
@@ -659,5 +658,9 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public List<Hall> getHalls() {
         return halls;
+    }
+
+    public int getScreenHeight() {
+        return screenHeight;
     }
 }

@@ -1,8 +1,8 @@
 package domain.handlers;
 
-import domain.UI.MainMenuButton;
-import domain.UI.TryAgainButton;
+
 import domain.UI.UI;
+import domain.handlers.buttonHandlers.TryAgainButton;
 import domain.panels.PlayModePanel;
 
 import java.awt.*;
@@ -15,7 +15,6 @@ public class GameWinningHandler {
     PlayModePanel playModePanel;
 
     TryAgainButton tryAgainButton;
-    MainMenuButton mainMenuButton;
 
     public GameWinningHandler(PlayModePanel playModePanel) {
         this.playModePanel = playModePanel;
@@ -57,31 +56,6 @@ public class GameWinningHandler {
 
         // Draw "Try Again" button
         tryAgainButton = new TryAgainButton(g2, startX, buttonY, buttonWidth, buttonHeight, font);
-
-        // Draw "Main Menu" button
-        mainMenuButton = new MainMenuButton(g2, startX + buttonWidth + buttonSpacing, buttonY, buttonWidth, buttonHeight, font);
-
         tryAgainButton.drawTryAgainButton(playModePanel);
-        mainMenuButton.drawMainMenuButton(playModePanel);
-
-    }
-
-    public void addMainMenuKeyListener() {
-        // Add MouseListener to handle clicks
-        playModePanel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int mouseX = e.getX();
-                int mouseY = e.getY();
-
-                // Check if the click is within the button bounds
-                if (mouseX >= mainMenuButton.getX() && mouseX <= mainMenuButton.getX() + mainMenuButton.getWidth() &&
-                        mouseY >= mainMenuButton.getY() && mouseY <= mainMenuButton.getY() + mainMenuButton.getHeight()) {
-                    playModePanel.setVisible(false); // Not a correct implementation, but let's try
-                    UI ui = new UI();
-                    ui.show();
-                }
-            }
-        });
     }
 }
