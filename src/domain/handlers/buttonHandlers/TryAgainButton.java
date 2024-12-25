@@ -3,8 +3,6 @@ package domain.handlers.buttonHandlers;
 import domain.panels.PlayModePanel;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class TryAgainButton {
     Graphics2D g2;

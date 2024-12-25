@@ -3,7 +3,6 @@ package domain.entity.monsters;
 import domain.game.CollisionChecker;
 import domain.game.Game;
 import domain.panels.PlayModePanel;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -14,7 +13,6 @@ public class MonsterManager {
     private Random random;
     private int tileSize;
     private Game game;
-    private long lastSpawnTime;
     private final int SPAWN_INTERVAL = 8; //Write it in seconds
     private CollisionChecker collisionChecker;
     private long lastSpawnLeftTime;
@@ -26,7 +24,6 @@ public class MonsterManager {
         this.random = new Random();
         this.tileSize = tileSize;
         this.game = game;
-        //this.lastSpawnTime = System.currentTimeMillis();
         this.lastSpawnLeftTime = game.getTimeController().getTimeLeft(); // 60
         // Add factories for different monsters
         factories = new ArrayList<>();
@@ -40,7 +37,6 @@ public class MonsterManager {
     public void spawnMonster(int gridWidth, int gridHeight) {
 
         int factoryIndex = random.nextInt(factories.size()); // Randomly select a factory
-        // int factoryIndex = 2; // Wizard
 
         MonsterFactory selectedFactory = factories.get(factoryIndex); // 0: Archer, 1: Fighter, 2: Wizard
 
@@ -52,11 +48,8 @@ public class MonsterManager {
             gridY = PlayModePanel.offsetY + random.nextInt(gridHeight - (2 *PlayModePanel.offsetY) - 1);
         }
 
-
         BaseMonster monster = selectedFactory.createMonster(gridX, gridY, tileSize);
-        //game.getGrid().getTileAt(gridX - 2, gridY - 2).setSolid(true);
         monster.setCollisionChecker(collisionChecker);
-
 
         if (monster.getGridX() - PlayModePanel.offsetX < 0 || monster.getGridY() - PlayModePanel.offsetY < 0) {
             spawnMonster(gridWidth, gridHeight);
@@ -67,8 +60,6 @@ public class MonsterManager {
             monsters.add(monster);
 
         }
-
-
     }
 
     public void updateMonsters(){
@@ -79,11 +70,6 @@ public class MonsterManager {
             lastSpawnLeftTime = timeLeft;
         }
 
-//        if (currentTime - lastSpawnTime > SPAWN_INTERVAL) { // If 8 seconds have passed since the last spawn
-//            spawnMonster(game.getGrid().getColumns(), game.getGrid().getRows());
-//            lastSpawnTime = currentTime;
-//        }
-        //System.out.println("Monster update");
         for (BaseMonster monster : monsters) {
             monster.setCollisionChecker(collisionChecker);
             monster.update(game);

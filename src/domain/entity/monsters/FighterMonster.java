@@ -4,8 +4,6 @@ import domain.entity.Direction;
 import domain.entity.playerObjects.Player;
 import domain.game.CollisionChecker;
 import domain.game.Game;
-import domain.panels.PlayModePanel;
-
 import java.util.Random;
 
 import static domain.game.Game.isInRange;

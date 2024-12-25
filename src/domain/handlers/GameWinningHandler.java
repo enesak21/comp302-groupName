@@ -4,16 +4,12 @@ package domain.handlers;
 import domain.UI.UI;
 import domain.handlers.buttonHandlers.TryAgainButton;
 import domain.panels.PlayModePanel;
-
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class GameWinningHandler {
     int screenWidth, screenHeight;
     Font font;
     PlayModePanel playModePanel;
-
     TryAgainButton tryAgainButton;
 
     public GameWinningHandler(PlayModePanel playModePanel) {
@@ -48,11 +44,9 @@ public class GameWinningHandler {
         // Define button dimensions
         int buttonWidth = 200;
         int buttonHeight = 50;
-        int buttonSpacing = 20; // Space between buttons
 
         // Calculate button positions
-        int totalButtonWidth = (2 * buttonWidth) + buttonSpacing;
-        int startX = (screenWidth - totalButtonWidth) / 2;
+        int startX = (screenWidth - buttonWidth) / 2;
         int buttonY = congratsY + fm.getHeight() + 40; // Position below the text
 
         // Draw "Try Again" button
