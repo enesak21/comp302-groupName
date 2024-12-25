@@ -3,6 +3,7 @@ package domain.game;
 import domain.entity.playerObjects.Player;
 import domain.panels.PlayModePanel;
 import main.PlayerController;
+import main.PlayerInputHandler;
 
 public class GameManager {
     private PlayModePanel playModePanel;
@@ -17,10 +18,10 @@ public class GameManager {
     public void startNewGame() {
         // Yeni bir Hall ve Grid yarat
         Grid grid = new Grid(playModePanel.getTileSize());
-        Player player = new Player("Osimhen", 0, 0, playModePanel.getTileSize(), playModePanel, new PlayerController());
+        Player player = Player.getInstance("Osimhen", 0, 0, playModePanel.getTileSize(), playModePanel, new PlayerInputHandler());
 
         // Yeni bir Game yarat
-        currentGame = new Game(player, playModePanel.getTileSize(), playModePanel, grid);
+        // currentGame = new Game(player, playModePanel.getTileSize(), playModePanel, grid, searc);
 
         // PlayModePanel'i yeni Game ile güncelle
         playModePanel.setGame(currentGame);

@@ -11,15 +11,22 @@ public class AudioManager {
     private Clip loseClip;
     private Clip backgroundClip;
     private Clip enterMusic;
+    private Clip[] noRuneSounds;
 
     public AudioManager() {
-        enterMusic = loadClip("music/deneme.wav");
+        this.enterMusic = loadClip("music/enter.wav");
+
+        Clip noRuneSound1 = loadClip("sound/structureSound1.wav");
+        Clip noRuneSound2 = loadClip("sound/structureSound2.wav");
+        Clip noRuneSound3 = loadClip("sound/structureSound3.wav");
+        this.noRuneSounds = new Clip[]{noRuneSound1, noRuneSound2, noRuneSound3};
     }
 
     private Clip loadClip(String resourcePath) {
         Clip clip = null;
         try {
             URL url = getClass().getResource(resourcePath);
+            assert url != null;
             AudioInputStream ais = AudioSystem.getAudioInputStream(url);
             clip = AudioSystem.getClip();
             clip.open(ais);
@@ -61,5 +68,12 @@ public class AudioManager {
             enterMusic.stop();
             enterMusic.setFramePosition(0);
         }
+    }
+
+    public void playNoRuneSound() {
+        int randomIndex = (int) (Math.random() * noRuneSounds.length);
+        noRuneSounds[randomIndex].stop();
+        noRuneSounds[randomIndex].setFramePosition(0);
+        noRuneSounds[randomIndex].start();
     }
 }

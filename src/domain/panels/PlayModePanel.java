@@ -8,7 +8,16 @@ import domain.structures.Structure;
 import main.GameOverHandler;
 import main.GameWinningHandler;
 import main.PlayerController;
-
+import domain.UI.MonsterView;
+import domain.handlers.*;
+import domain.entity.Entity;
+import domain.entity.monsters.*;
+import domain.entity.playerObjects.Player;
+import domain.game.*;
+import domain.handlers.mouseHandlers.PlayModeMouseListener;
+import domain.structures.Structure;
+import domain.game.SearchRuneController;
+import main.PlayerInputHandler;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -19,8 +28,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
-
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 public class PlayModePanel extends JPanel implements Runnable {
 
     // Screen settings
@@ -55,21 +66,31 @@ public class PlayModePanel extends JPanel implements Runnable {
     private boolean isPaused = false; // Add a boolean to track game state
     private PlayerView playerView;
     private GridView gridView;
-
+    private MonsterManager monsterManager;
+    private int countMonster = 0;
+    private CopyOnWriteArrayList<MonsterView> monsterViewList = new CopyOnWriteArrayList<>();
+  
     // Declare the halls variable
     private List<Hall> halls;
     private int hallNum = 0;
     private boolean lastRunefound = false;
+
     private boolean inTransition = false;
 
     private GameOverHandler gameOverHandler;
     private GameWinningHandler gameWinningHandler;
+
 
     //WALL PART
     private Image leftWall, rightWall, topWall, bottomWall;
     private Image topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner;
     private Image openedWall, closedWall;
     private boolean[][] wallGrid;
+
+    private SearchRuneController searchRuneController;
+
+    //FLAG IMAGES
+    private Image hallOfAirFlag, hallOfWaterFlag, hallOfEarthFlag, hallOfFireFlag;
 
     int FPS = 60;
     Thread gameThread;
@@ -105,6 +126,45 @@ public class PlayModePanel extends JPanel implements Runnable {
         placeRune();
 
         this.addKeyListener(player.getPlayerController());
+
+        this.rune = new Rune();
+
+        initializeGameComponents(0);
+        addPauseKeyListener();
+        loadFont();
+
+    }
+
+    private void initializeGameComponents(int hallNum) {
+        System.out.println("current hall num: " + hallNum);
+        System.out.println("total halls: " + halls.size());
+
+
+
+        Player player = Player.getInstance("Osimhen", 0, 0, tileSize, this, new PlayerInputHandler());
+        playerView = new PlayerView(player);
+        // Initialize the grid
+        grid = halls.get(hallNum).toGrid(tileSize);
+
+        // place The Rune
+
+        searchRuneController = new SearchRuneController(this);
+        searchRuneController.placeRune();
+
+        game = new Game(player, tileSize, this, grid, searchRuneController);
+
+        this.addKeyListener(player.getPlayerInputHandler());
+
+        //initialize monsterManager
+        monsterManager = new MonsterManager(game, tileSize);
+        countMonster += monsterManager.getMonsters().size();
+        monsterViewList = new CopyOnWriteArrayList<>();
+        for (int i = 0; i < monsterManager.getMonsters().size(); i++) {
+            MonsterView monsterView = new MonsterView((Entity) monsterManager.getMonsters().get(i));
+            monsterViewList.add(monsterView);
+        }
+
+        this.addKeyListener(player.getPlayerInputHandler());
 
         gridView = new GridView(grid);
         CollisionChecker collisionChecker = new CollisionChecker(grid);
@@ -165,10 +225,31 @@ public class PlayModePanel extends JPanel implements Runnable {
             int randomIndex = random.nextInt(structures.size());
             Structure structure = structures.get(randomIndex);
             rune = new Rune(structure);
+        monsterManager.setCollisionChecker(collisionChecker);
+        timeController = new TimeController();
+
+        // Create a mouse listener for the Play Mode screen
+
+        if (this.getMouseListeners().length > 0) {
+            this.removeMouseListener(this.getMouseListeners()[0]);
+        }
+        PlayModeMouseListener playModeMouseListener = new PlayModeMouseListener(this);
+        this.addMouseListener(playModeMouseListener);
+    }
+
+    public void moveToNextHall() {
+        hallNum++; // Move to the next hall
+        if (hallNum < halls.size()) {
+            initializeGameComponents(hallNum); // Initialize the next hall
+        } else {
+            System.out.println("Game Completed!");
+            lastRunefound = true;
+
         }
     }
 
     private void addPauseKeyListener() {
+
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -178,6 +259,13 @@ public class PlayModePanel extends JPanel implements Runnable {
                         timeController.pauseTimer();
                     } else {
                         timeController.resumeTimer();
+                        game.pauseGame();
+
+                        timeController.pauseTimer();
+                    } else {
+                        game.resumeGame();
+                        timeController.resumeTimer();
+
                     }
                     repaint();
                 }
@@ -185,6 +273,24 @@ public class PlayModePanel extends JPanel implements Runnable {
         });
     }
 
+    public void pauseGame() {
+
+        isPaused = true; // Set the game state to paused
+        timeController.pauseTimer(); // Pause the game timer (if applicable)
+        System.out.println("Game paused via button");
+        repaint(); // Trigger a repaint to show the pause overlay
+    }
+
+    public void resumeGame(){
+        isPaused = false;
+        timeController.resumeTimer();
+        System.out.println("Game resumed via button");
+        repaint();
+    }
+
+    public void exitGame() {
+        System.exit(0);
+    }
 
     private void loadFont() {
         try {
@@ -232,7 +338,6 @@ public class PlayModePanel extends JPanel implements Runnable {
             // Update the player
             game.getPlayer().update();
 
-
         }
     }
 
@@ -243,11 +348,44 @@ public class PlayModePanel extends JPanel implements Runnable {
         moveToNextHall();
     }
 
+            //Update monsters
+            monsterManager.updateMonsters();
+            //Update monsters view list if there is a new monster
+            if (countMonster < monsterManager.getMonsters().size()) {
+                for (int i = countMonster; i < monsterManager.getMonsters().size(); i++) {
+                    MonsterView monsterView = new MonsterView((Entity) monsterManager.getMonsters().get(i));
+                    monsterViewList.add(monsterView);
+                }
+                countMonster = monsterManager.getMonsters().size();
+            }
+
+            // Zaman bitti mi kontrol et
+            if (timeController.getTimeLeft() <= 0) {
+                isPaused = true;
+                handleGameOver(); // Oyun bitişini işlemek için ayrı bir metot
+            } else if (lastRunefound) {
+                handleGameWon();
+            }
+        }
+    }
+
+    private void handleGameOver() {
+        System.out.println("Game Over! Time's up.");
+        // Burada oyun bitiş ekranına geçebilir veya başka bir işlem yapabilirsiniz
+    }
+
+    private void handleGameWon() {
+        timeController.pauseTimer();
+        // here we can exit the game or go to main menu.
+    }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g2 = (Graphics2D) g;
+
+        Graphics2D g2 = (Graphics2D) g;
+
 
 
         // Draw Time (always display the sidebar)
@@ -259,6 +397,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         playerView.draw(g2);
         drawWallsAndCorners(g2);
         gridView.drawStructures(g2, offsetX * tileSize, offsetY * tileSize);
+
 
         if (inTransition) {
             drawTransitionScreen(g2);
@@ -276,6 +415,25 @@ public class PlayModePanel extends JPanel implements Runnable {
                 gameWinningHandler.handle();
             }
         }
+
+        //Draw monsters
+        //monsterManager'daki her monsterı çek ve onlar için bire View classı oluştur
+        for(MonsterView monsterView: monsterViewList){
+            monsterView.draw(g2);
+        }
+
+        // Draw Game Over Message
+        if (timeController.getTimeLeft() <= 0) {
+            drawGameOverMessage(g2);
+        } else if (isPaused) {
+            // Draw Pause Overlay only if the game is not over
+            drawPauseOverlay(g2);
+        }
+
+        if (lastRunefound) {
+            drawWinningMessage(g2);
+        }
+
         g2.dispose();
     }
 
@@ -361,8 +519,40 @@ public class PlayModePanel extends JPanel implements Runnable {
         g2.drawString(line2, textX2, textY2);
     }
 
+    private void drawGameOverMessage(Graphics2D g2) {
+        // Draw a semi-transparent dark overlay
+        g2.setColor(new Color(0, 0, 0, 150)); // Semi-transparent black
+        g2.fillRect(0, 0, screenWidth, screenHeight);
+
+        // Draw the game over message
+        g2.setFont(pressStart2PFont.deriveFont(40f));
+        g2.setColor(Color.RED); // Change the color to red
+
+        FontMetrics fm = g2.getFontMetrics();
+        String gameOverText = "Game Over!";
+        int gameOverX = (screenWidth - fm.stringWidth(gameOverText)) / 2;
+        int gameOverY = (screenHeight - fm.getHeight()) / 2 + fm.getAscent();
+
+        g2.drawString(gameOverText, gameOverX, gameOverY);
+    }
 
 
+    private void drawWinningMessage(Graphics2D g2) {
+        // Draw a semi-transparent dark overlay
+        g2.setColor(new Color(0, 0, 0, 150)); // Semi-transparent black
+        g2.fillRect(0, 0, screenWidth, screenHeight);
+
+        // Draw the game over message
+        g2.setFont(pressStart2PFont.deriveFont(40f));
+        g2.setColor(Color.GREEN); // Change the color to red
+
+        FontMetrics fm = g2.getFontMetrics();
+        String congratsText = "Congrats, You Won!";
+        int congratsX = (screenWidth - fm.stringWidth(congratsText)) / 2;
+        int congratsY = (screenHeight - fm.getHeight()) / 2 + fm.getAscent();
+
+        g2.drawString(congratsText, congratsX, congratsY);
+    }
 
     private void drawPauseOverlay(Graphics2D g2) {
         g2.setColor(new Color(0, 0, 0, 150)); // Semi-transparent background
@@ -382,6 +572,20 @@ public class PlayModePanel extends JPanel implements Runnable {
         x = (screenWidth - fm.stringWidth(resumeText)) / 2;
         y += fm.getHeight() + 20;
         g2.drawString(resumeText, x, y);
+    }
+
+    private void loadFlagImages(){
+        try{
+            hallOfAirFlag = ImageIO.read(getClass().getResource("/resources/flags/hallOfAir flag.png"));
+            hallOfEarthFlag = ImageIO.read(getClass().getResource("/resources/flags/hallOfEarth flag.png"));
+            hallOfWaterFlag = ImageIO.read(getClass().getResource("/resources/flags/hallOfFire flag.png"));
+            hallOfFireFlag = ImageIO.read(getClass().getResource("/resources/flags/hallofWater flag.png"));
+
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            System.err.println("Error loading wall images. Please check the file paths.");
+        }
     }
 
     private void loadWallImages() {
@@ -404,6 +608,35 @@ public class PlayModePanel extends JPanel implements Runnable {
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
             System.err.println("Image file not found. Please ensure the file exists at the specified path.");
+        }
+    }
+
+    private void drawHallFlagNearDoor(Graphics2D g2, int doorX, int doorY) {
+        Image flag = null;
+        loadFlagImages();
+        // Determine the flag based on the current hall
+        switch (hallNum) {
+            case 0:
+                flag = hallOfAirFlag;
+                break;
+            case 1:
+                flag = hallOfWaterFlag;
+                break;
+            case 2:
+                flag = hallOfEarthFlag;
+                break;
+            case 3:
+                flag = hallOfFireFlag;
+                break;
+            default:
+                break;
+        }
+
+        // Draw the flag near the door
+        if (flag != null) {
+            int flagX = doorX-250; // Position the flag to the right of the door
+            int flagY = doorY+17 ; // Position the flag above the door
+            g2.drawImage(flag, flagX, flagY,20,16, null); // Adjust size as needed
         }
     }
 
@@ -436,6 +669,15 @@ public class PlayModePanel extends JPanel implements Runnable {
         g2.drawImage(bottomRightCorner, rightX-11, bottomY, null); // Bottom-right corner (adjusted)
         //DOOR OPENED OR CLOSED HERE
         g2.drawImage(closedWall, rightX-150, bottomY-12, null);
+
+        int doorX = rightX - 150;
+        int doorY = bottomY - 12;
+
+
+        // Draw the flag near the door
+        drawHallFlagNearDoor(g2, doorX, doorY);
+        //g2.setColor(Color.RED);
+        //g2.drawRect(doorX, doorY, closedWall.getWidth(null), closedWall.getHeight(null)); //CAN BE RECTANGLE DRAWER FOR REVEAL
     }
 
     private void initializeWalls() {
@@ -466,9 +708,15 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.playerView= new PlayerView(game.getPlayer());
     }
 
+    public void setPaused(Boolean b){
+        this.isPaused = b;
+    }
+
     public int getTopLeftCornerX() {
         return gridTopLeftX;
     }
+
+    public boolean getIsPaused(){return isPaused;}
 
     public int getTopLeftCornerY() {
         return gridTopLeftY;
@@ -522,6 +770,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         return gridRows;
     }
 
+
     public Font getFont() {
         return pressStart2PFont;
     }
@@ -536,5 +785,17 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public List<Hall> getHalls() {
         return halls;
+    }
+
+    public Grid getGrid() {
+        return grid;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public Rune getRune() {
+        return rune;
     }
 }

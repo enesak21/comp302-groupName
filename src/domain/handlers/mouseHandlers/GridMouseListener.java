@@ -1,5 +1,8 @@
 package domain.handlers.mouseHandlers;
 
+import domain.game.Grid;
+import domain.game.SearchRuneController;
+import domain.game.Tile;
 import domain.panels.PlayModePanel;
 
 import java.awt.*;
@@ -13,7 +16,8 @@ public class GridMouseListener {
     private final int tileSize;
     private final int offsetX;
     private final int offsetY;
-
+    private final Grid grid;
+    private SearchRuneController searchRuneController;
 
     public GridMouseListener(PlayModePanel playModePanel) {
         this.playModePanel = playModePanel;
@@ -23,6 +27,12 @@ public class GridMouseListener {
         this.tileSize = playModePanel.getTileSize();
         this.offsetX = playModePanel.getOffsetX();
         this.offsetY = playModePanel.getOffsetY();
+    }
+
+
+        this.grid = playModePanel.getGrid();
+        this.searchRuneController = new SearchRuneController(playModePanel);
+
     }
 
     public void handleGridClick(Point rawClickPoint) {
@@ -38,6 +48,9 @@ public class GridMouseListener {
         int gridY = gridClickPoint.y;
 
         playModePanel.runeCollected(gridX, gridY);
+        Tile clickedTile = grid.getTileAt(gridX, gridY);
+
+        searchRuneController.runeCollected(clickedTile);
 
     }
 

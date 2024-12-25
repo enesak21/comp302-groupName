@@ -1,6 +1,5 @@
 package domain.UI;
 
-import domain.UI.EntityView;
 import domain.entity.playerObjects.Player;
 
 import javax.imageio.ImageIO;
@@ -10,6 +9,7 @@ import java.io.IOException;
 
 public class PlayerView extends EntityView {
     private BufferedImage upImage, downImage, leftImage, rightImage;
+    private BufferedImage prevImage;
 
     public PlayerView(Player player) {
         super(player);
@@ -20,10 +20,8 @@ public class PlayerView extends EntityView {
     public void loadEntityImages() {
 
         try {
-            downImage = ImageIO.read(getClass().getResourceAsStream("/resources/player/player.png"));
-            upImage = ImageIO.read(getClass().getResourceAsStream("/resources/player/player.png"));
-            leftImage = ImageIO.read(getClass().getResourceAsStream("/resources/player/player.png"));
-            rightImage = ImageIO.read(getClass().getResourceAsStream("/resources/player/player.png"));
+            leftImage = ImageIO.read(getClass().getResourceAsStream("/resources/player/playerLeft.png"));
+            rightImage = ImageIO.read(getClass().getResourceAsStream("/resources/player/playerRight.png"));
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to load player images.", e);
@@ -33,11 +31,13 @@ public class PlayerView extends EntityView {
     public void draw(Graphics2D g2) {
         Player player = (Player) entity; // Cast Entity to Player
         BufferedImage currentImage = switch (player.getDirection()) {
-            case UP -> upImage;
-            case DOWN -> upImage;
-            case LEFT -> upImage;
-            case RIGHT -> upImage;
+            case UP -> prevImage;
+            case DOWN -> prevImage;
+            case LEFT -> leftImage;
+            case RIGHT -> rightImage;
         };
+
+        prevImage = currentImage;
 
         g2.drawImage(
                 currentImage,
