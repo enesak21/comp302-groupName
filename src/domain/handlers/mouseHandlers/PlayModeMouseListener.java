@@ -26,15 +26,15 @@ public class PlayModeMouseListener extends MouseAdapter {
     public void mouseClicked(MouseEvent e) {
         Point clickPoint = e.getPoint();
 
+        System.out.println("State" + playModePanel.getState());
+
         if (playModePanel.getState().equals("TryAgain")) {
             // Possibly do something with the click in the game over state
 
             if (isWithinBounds(clickPoint, 284, 410, 200, 50)) {
-                playModePanel.setState("Default");
                 playModePanel.restartGame();
             }
 
-            return;
         } else {
             // Check if click is in the “grid region” or “sidebar region”
             if (isInGridRegion(clickPoint)) {

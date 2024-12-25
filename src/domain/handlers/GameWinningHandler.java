@@ -24,6 +24,7 @@ public class GameWinningHandler {
     }
 
     public void handle() {
+        playModePanel.setState("TryAgain");
         playModePanel.getTimeController().pauseTimer();
         drawWinningScreen(playModePanel.getGraphics2());
     }
@@ -57,6 +58,6 @@ public class GameWinningHandler {
         // Draw "Try Again" button
         tryAgainButton = new TryAgainButton(g2, startX, buttonY, buttonWidth, buttonHeight, font);
         tryAgainButton.drawTryAgainButton(playModePanel);
-        playModePanel.setState("TryAgain");
+
     }
 }
