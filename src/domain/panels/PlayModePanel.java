@@ -259,23 +259,15 @@ public class PlayModePanel extends JPanel implements Runnable {
     // This will be our main method which is running the Play mode screen
     @Override
     public void run() {
-        double drawInterval = 1000000000 / FPS;
-        double delta = 0;
-        long lastTime = System.nanoTime();
-        long currentTime;
-
+        long startTime = System.currentTimeMillis();
         while (gameThread != null) {
-            currentTime = System.nanoTime();
-            delta += (currentTime - lastTime) / drawInterval;
-            lastTime = currentTime;
-
-            if (!isPaused && delta >= 1) { // Skip updates when paused
+            double drawInterval = 1000000000 / FPS;
+            if (System.nanoTime() - startTime > drawInterval) {
                 update();
                 repaint();
-                delta--;
+                startTime = System.nanoTime();
             }
         }
-
     }
 
     public void update() {
