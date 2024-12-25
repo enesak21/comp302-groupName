@@ -114,6 +114,10 @@ public class Player extends Entity {
 
     public void reduceHealth() {
         health--;
+        if (health == 0) {
+            playModePanel.getGame().getTimeController().setTimeLeft(0);
+            playModePanel.getGameOverHandler().handle();
+        }
     }
 
 public void setCollisionChecker(CollisionChecker collisionChecker) {
