@@ -61,6 +61,9 @@ public class PlayModePanel extends JPanel implements Runnable {
     private boolean lastRunefound = false;
     private boolean inTransition = false;
 
+    private GameOverHandler gameOverHandler;
+    private GameWinningHandler gameWinningHandler;
+
     //WALL PART
     private Image leftWall, rightWall, topWall, bottomWall;
     private Image topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner;
@@ -84,8 +87,13 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.setFocusable(true);
 
         initializeGameComponents(0);
-        addPauseKeyListener();
         loadFont();
+        addPauseKeyListener();
+
+        gameWinningHandler = new GameWinningHandler(this);
+        gameOverHandler = new GameOverHandler(this);
+
+
 
     }
 
@@ -128,6 +136,8 @@ public class PlayModePanel extends JPanel implements Runnable {
         } else {
             System.out.println("Game Completed!");
             lastRunefound = true;
+            gameWinningHandler.addMainMenuKeyListener();
+
         }
     }
 
@@ -151,7 +161,6 @@ public class PlayModePanel extends JPanel implements Runnable {
      */
     public void placeRune() {
         List <Structure> structures = grid.getStructures();
-        System.out.println(structures);
         if (structures != null && !structures.isEmpty()) {
             Random random = new Random();
             int randomIndex = random.nextInt(structures.size());
@@ -176,6 +185,7 @@ public class PlayModePanel extends JPanel implements Runnable {
             }
         });
     }
+
 
     private void loadFont() {
         try {
@@ -259,12 +269,11 @@ public class PlayModePanel extends JPanel implements Runnable {
                 drawPauseOverlay(g2);
             }
 
-            // Zaman bitti mi kontrol et
+            // Check if Time is over
             if (timeController.getTimeLeft() <= 0) {
-                GameOverHandler gameOverHandler = new GameOverHandler(this);
-                gameOverHandler.handle(); // Oyun bitişini işlemek için ayrı bir metot
+                gameOverHandler.handle();
+                gameOverHandler.addMainMenuKeyListener();
             } else if (lastRunefound) {
-                GameWinningHandler gameWinningHandler = new GameWinningHandler(this);
                 gameWinningHandler.handle();
             }
         }

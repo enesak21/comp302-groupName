@@ -37,7 +37,6 @@ public class TryAgainButton {
 
                 // Check if the click is within the button bounds
                 if (mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height) {
-                    System.out.println("Try Again button clicked");
                     // Create a new game instance and run it
                     playModePanel.restartGame();
                 }

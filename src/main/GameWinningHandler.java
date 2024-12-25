@@ -2,13 +2,19 @@ package main;
 
 import domain.UI.MainMenuButton;
 import domain.UI.TryAgainButton;
+import domain.UI.UI;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class GameWinningHandler {
     int screenWidth, screenHeight;
     Font font;
     PlayModePanel playModePanel;
+
+    TryAgainButton tryAgainButton;
+    MainMenuButton mainMenuButton;
 
     public GameWinningHandler(PlayModePanel playModePanel) {
         this.playModePanel = playModePanel;
@@ -49,13 +55,32 @@ public class GameWinningHandler {
         int buttonY = congratsY + fm.getHeight() + 40; // Position below the text
 
         // Draw "Try Again" button
-        TryAgainButton tryAgainButton = new TryAgainButton(g2, startX, buttonY, buttonWidth, buttonHeight, font);
+        tryAgainButton = new TryAgainButton(g2, startX, buttonY, buttonWidth, buttonHeight, font);
 
         // Draw "Main Menu" button
-        MainMenuButton mainMenuButton = new MainMenuButton(g2, startX + buttonWidth + buttonSpacing, buttonY, buttonWidth, buttonHeight, font);
+        mainMenuButton = new MainMenuButton(g2, startX + buttonWidth + buttonSpacing, buttonY, buttonWidth, buttonHeight, font);
 
         tryAgainButton.drawTryAgainButton(playModePanel);
         mainMenuButton.drawMainMenuButton(playModePanel);
 
+    }
+
+    public void addMainMenuKeyListener() {
+        // Add MouseListener to handle clicks
+        playModePanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int mouseX = e.getX();
+                int mouseY = e.getY();
+
+                // Check if the click is within the button bounds
+                if (mouseX >= mainMenuButton.getX() && mouseX <= mainMenuButton.getX() + mainMenuButton.getWidth() &&
+                        mouseY >= mainMenuButton.getY() && mouseY <= mainMenuButton.getY() + mainMenuButton.getHeight()) {
+                    playModePanel.getFrame().dispose();
+                    UI ui = new UI();
+                    ui.show();
+                }
+            }
+        });
     }
 }
