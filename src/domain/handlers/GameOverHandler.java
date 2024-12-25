@@ -20,6 +20,7 @@ public class GameOverHandler {
     }
 
     public void handle() {
+        playModePanel.setState("TryAgain");
         playModePanel.setPaused(true);
         playModePanel.getGame().getTimeController().pauseTimer();
         drawGameOverScreen(playModePanel.getGraphics2());
@@ -52,6 +53,5 @@ public class GameOverHandler {
         // Draw "Try Again" button
         tryAgainButton = new TryAgainButton(g2, startX, buttonY, buttonWidth, buttonHeight, font);
         tryAgainButton.drawTryAgainButton(playModePanel);
-        playModePanel.setState("TryAgain");
     }
 }

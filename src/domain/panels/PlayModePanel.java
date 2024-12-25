@@ -121,6 +121,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
     private void initializeGameComponents(int hallNum) {
+        this.setState("Default");
         isPaused = false;
         System.out.println("Initializing game components for hall " + hallNum);
         System.out.println(halls);
@@ -185,13 +186,20 @@ public class PlayModePanel extends JPanel implements Runnable {
             repaint(); // Trigger the transition screen to render
         }
         // Pause briefly to show the transition screen
-        Timer timer = new Timer(2000, e -> {
-            inTransition = false; // Exit transition mode
-            initializeGameComponents(hallNum); // Initialize the next hall // Move to the next hall
-            repaint(); // Refresh the UI to show the new hall
-        });
-        timer.setRepeats(false); // Ensure the timer runs only once
-        timer.start();
+        if (!this.state.equals("TryAgain")) {
+            Timer timer = new Timer(2000, e -> {
+                inTransition = false; // Exit transition mode
+                initializeGameComponents(hallNum); // Initialize the next hall // Move to the next hall
+                repaint(); // Refresh the UI to show the new hall
+            });
+
+            timer.setRepeats(false); // Ensure the timer runs only once
+            timer.start();
+        } else {
+            inTransition = false;
+            initializeGameComponents(hallNum);
+            repaint();
+        }
     }
 
     private void addPauseKeyListener() {
