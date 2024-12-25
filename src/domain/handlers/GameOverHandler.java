@@ -47,12 +47,10 @@ public class GameOverHandler {
         // Define button dimensions
         int buttonWidth = 200;
         int buttonHeight = 50;
-        int buttonSpacing = 20; // Space between buttons
 
         // Calculate button positions
-        int totalButtonWidth = (2 * buttonWidth) + buttonSpacing;
-        int startX = (screenWidth - totalButtonWidth) / 2;
-        int buttonY = gameOverY + fm.getHeight() + 40; // Position below the text
+        int startX = (screenWidth - buttonWidth) / 2;
+        int buttonY = gameOverY + fm.getHeight() + 30; // Position below the text
 
         // Draw "Try Again" button
         tryAgainButton = new TryAgainButton(g2, startX, buttonY, buttonWidth, buttonHeight, font);
