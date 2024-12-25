@@ -61,7 +61,7 @@ public class MonsterManager {
         if (monster.getGridX() - PlayModePanel.offsetX < 0 || monster.getGridY() - PlayModePanel.offsetY < 0) {
             spawnMonster(gridWidth, gridHeight);
         }else {
-            game.getGrid().getTileAt(monster.getGridX() - PlayModePanel.offsetX, monster.getGridY() - PlayModePanel.offsetY).setSolid(true);
+//            game.getGrid().getTileAt(monster.getGridX() - PlayModePanel.offsetX, monster.getGridY() - PlayModePanel.offsetY).setSolid(true);
             monsters.add(monster);
         }
 
