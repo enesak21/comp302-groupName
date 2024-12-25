@@ -65,7 +65,7 @@ public class FighterMonster extends BaseMonster {
             if (pixelCounter >= tileSize) {
 
                 //Update old grid isSolid(false)
-                game.getGrid().getTileAt(gridX - PlayModePanel.offsetX, gridY - PlayModePanel.offsetY).setSolid(false);
+                game.getGrid().getTileAt(gridX - 2, gridY - 2).setSolid(false);
 
                 switch (direction) {
                     case UP -> gridY--;
@@ -75,8 +75,7 @@ public class FighterMonster extends BaseMonster {
                 }
 
                 //Update new grid isSolid(true)
-                game.getGrid().getTileAt(gridX - PlayModePanel.offsetX, gridY - PlayModePanel.offsetY).setSolid(true);
-
+                game.getGrid().getTileAt(gridX - 2, gridY - 2).setSolid(true);
 
                 moving = false;
                 updatePixelPosition();
