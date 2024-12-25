@@ -90,6 +90,10 @@ public class PlayModePanel extends JPanel implements Runnable {
     //FLAG IMAGES
     private Image hallOfAirFlag, hallOfWaterFlag, hallOfEarthFlag, hallOfFireFlag;
 
+    private PlayModeMouseListener playModeMouseListener;
+
+    private String state = "Default";
+
 
     int FPS = 60;
     Thread gameThread;
@@ -117,6 +121,8 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
     private void initializeGameComponents(int hallNum) {
+        System.out.println("Initializing game components for hall " + hallNum);
+        System.out.println(halls);
         Player player = Player.getInstance("Osimhen", 0, 0, tileSize, this, new PlayerInputHandler());
         playerView = new PlayerView(player);
         // Initialize the grid
@@ -155,7 +161,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         if (this.getMouseListeners().length > 0) {
             this.removeMouseListener(this.getMouseListeners()[0]);
         }
-        PlayModeMouseListener playModeMouseListener = new PlayModeMouseListener(this);
+        playModeMouseListener = new PlayModeMouseListener(this);
         this.addMouseListener(playModeMouseListener);
     }
 
@@ -662,5 +668,17 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public int getScreenHeight() {
         return screenHeight;
+    }
+
+    public PlayModeMouseListener getPlayModeMouseListener() {
+        return playModeMouseListener;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getState() {
+        return state;
     }
 }

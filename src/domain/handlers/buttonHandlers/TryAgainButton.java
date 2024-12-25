@@ -28,21 +28,6 @@ public class TryAgainButton {
         g2.drawString("Try Again", x + (width - fm.stringWidth("Try Again")) / 2,
                 y + (height + fm.getAscent()) / 2);
 
-        // Add MouseListener to handle clicks
-        playModePanel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int mouseX = e.getX();
-                int mouseY = e.getY();
-
-                // Check if the click is within the button bounds
-                if (mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height) {
-                    // Create a new game instance and run it
-                    playModePanel.restartGame();
-                }
-            }
-        });
-
-
     }
+
 }

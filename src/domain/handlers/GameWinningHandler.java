@@ -57,5 +57,6 @@ public class GameWinningHandler {
         // Draw "Try Again" button
         tryAgainButton = new TryAgainButton(g2, startX, buttonY, buttonWidth, buttonHeight, font);
         tryAgainButton.drawTryAgainButton(playModePanel);
+        playModePanel.setState("TryAgain");
     }
 }

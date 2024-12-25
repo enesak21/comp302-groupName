@@ -5,6 +5,7 @@ import domain.panels.PlayModePanel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.security.interfaces.RSAPrivateCrtKey;
 
 public class PlayModeMouseListener extends MouseAdapter {
     // This class is used to handle mouse events in the play mode
@@ -25,13 +26,24 @@ public class PlayModeMouseListener extends MouseAdapter {
     public void mouseClicked(MouseEvent e) {
         Point clickPoint = e.getPoint();
 
-        // Check if click is in the “grid region” or “sidebar region”
-        if (isInGridRegion(clickPoint)) {
-            // Possibly transform the click to grid coordinates if needed
-            gridMouseListener.handleGridClick(clickPoint);
-        } else if (isInSidebarRegion(clickPoint)) {
-            // Possibly transform or just send it as-is
-            sidebarMouseListener.handleSidebarClick(clickPoint);
+        if (playModePanel.getState().equals("TryAgain")) {
+            // Possibly do something with the click in the game over state
+
+            if (isWithinBounds(clickPoint, 174, 420, 200, 50)) {
+                playModePanel.setState("Default");
+                playModePanel.restartGame();
+            }
+
+            return;
+        } else {
+            // Check if click is in the “grid region” or “sidebar region”
+            if (isInGridRegion(clickPoint)) {
+                // Possibly transform the click to grid coordinates if needed
+                gridMouseListener.handleGridClick(clickPoint);
+            } else if (isInSidebarRegion(clickPoint)) {
+                // Possibly transform or just send it as-is
+                sidebarMouseListener.handleSidebarClick(clickPoint);
+            }
         }
     }
 
