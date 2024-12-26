@@ -313,14 +313,15 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         playerView.draw(g2);
         drawWallsAndCorners(g2);
-        gridView.drawStructures(g2, offsetX * tileSize, offsetY * tileSize);
-
 
         //Draw monsters
         //monsterManager'daki her monsterı çek ve onlar için bire View classı oluştur
         for(MonsterView monsterView: monsterViewList){
             monsterView.draw(g2);
         }
+
+	//Structures are drawn after entities
+        gridView.drawStructures(g2, offsetX * tileSize, offsetY * tileSize);
 
         if (inTransition) {
             drawTransitionScreen(g2);
