@@ -10,10 +10,13 @@ import java.util.Random;
 
 public class WizardMonster extends BaseMonster{
     private final long TELEPORT_FREQUENCY = 5000; //It teleports the rune in every 5 sec.
+    private final long INITIAL_DELAY = 2000;
     private long lastTeleportTime;
     private Random random;
     private Game game;
     private CollisionChecker collisionChecker;
+    private long lastAttackTime = System.currentTimeMillis() + INITIAL_DELAY;
+
 
     public WizardMonster(int gridX, int gridY, int tileSize, Game game) {
         super(gridX, gridY, tileSize);
@@ -33,7 +36,11 @@ public class WizardMonster extends BaseMonster{
 
     @Override
     public void attack(Player player) {
-        switchRune();
+        long currentTime = System.currentTimeMillis();
+        if ((currentTime - lastAttackTime) > TELEPORT_FREQUENCY) {
+            lastAttackTime = currentTime;
+            switchRune();
+        }
     }
 
 

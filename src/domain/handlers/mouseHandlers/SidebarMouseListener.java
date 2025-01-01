@@ -44,8 +44,6 @@ public class SidebarMouseListener {
 
         // Possibly do something with the sidebar click point
 
-        //System.out.println("Sidebar click at: " + rawClickPoint);
-
         int mouseX = (int) rawClickPoint.getX();
         int mouseY = (int) rawClickPoint.getY();
 

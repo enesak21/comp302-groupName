@@ -23,13 +23,10 @@ public class GameManager {
 
         // update PlayModePanel with the new Game
         playModePanel.setGame(currentGame);
-
-        System.out.println("New Game Started!");
     }
 
     public void onRuneFound() {
         totalRunesFound++;
-        System.out.println("Rune Found! Starting new game...");
         startNewGame();
     }
 

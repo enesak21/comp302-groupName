@@ -123,8 +123,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     private void initializeGameComponents(int hallNum) {
         this.setState("Default");
         isPaused = false;
-        System.out.println("Initializing game components for hall " + hallNum);
-        System.out.println(halls);
+
         Player player = Player.getInstance("Osimhen", 0, 0, tileSize, this, new PlayerInputHandler());
         playerView = new PlayerView(player);
         // Initialize the grid
@@ -140,6 +139,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         game = new Game(player, tileSize, this, grid, searchRuneController);
 
         timeController = game.getTimeController();
+        timeController.setTimeLeft(halls.get(hallNum).getPlacedStructuresCount() * 5);
 
         this.addKeyListener(player.getPlayerInputHandler());
         //initialize monsterManager
@@ -175,7 +175,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         if (hallNum < halls.size()) {
             transitionToNextHall();
         } else {
-            System.out.println("Game Completed!");
             lastRunefound = true;
         }
     }
@@ -230,14 +229,12 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         isPaused = true; // Set the game state to paused
         timeController.pauseTimer(); // Pause the game timer (if applicable)
-        System.out.println("Game paused via button");
         repaint(); // Trigger a repaint to show the pause overlay
     }
 
     public void resumeGame(){
         isPaused = false;
         timeController.resumeTimer();
-        System.out.println("Game resumed via button");
         repaint();
     }
 
@@ -259,8 +256,6 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
     public void startGameThread() {
-        System.out.println("Starting game thread");
-
         gameThread = new Thread(this);
         gameThread.start();
     }
@@ -318,14 +313,15 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         playerView.draw(g2);
         drawWallsAndCorners(g2);
-        gridView.drawStructures(g2, offsetX * tileSize, offsetY * tileSize);
-
 
         //Draw monsters
         //monsterManager'daki her monsterı çek ve onlar için bire View classı oluştur
         for(MonsterView monsterView: monsterViewList){
             monsterView.draw(g2);
         }
+
+	//Structures are drawn after entities
+        gridView.drawStructures(g2, offsetX * tileSize, offsetY * tileSize);
 
         if (inTransition) {
             drawTransitionScreen(g2);

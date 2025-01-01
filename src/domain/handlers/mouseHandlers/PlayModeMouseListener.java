@@ -25,8 +25,6 @@ public class PlayModeMouseListener extends MouseAdapter {
     public void mouseClicked(MouseEvent e) {
         Point clickPoint = e.getPoint();
 
-        System.out.println("State" + playModePanel.getState());
-
         if (playModePanel.getState().equals("TryAgain")) {
             // Possibly do something with the click in the game over state
 

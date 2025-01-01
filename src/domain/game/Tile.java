@@ -3,6 +3,10 @@ package domain.game;
 import java.awt.image.BufferedImage;
 import domain.structures.Structure;
 
+/**
+ * The Tile class represents a tile in a grid-based game.
+ * Each tile has coordinates, an image, and can be solid or contain a structure.
+ */
 public class Tile {
     private int gridX;
     private int gridY;
