@@ -13,6 +13,7 @@ public class GameManager {
     private int currentHallIndex = 0; // Hangi hall'da olduğumuzu takip eder
     private final Player player;
     private GameOverHandler gameOverHandler;
+    PlayModePanel playModePanel;
 
     public GameManager(List<Hall> halls, Player player) {
         this.player=player;
@@ -26,8 +27,8 @@ public class GameManager {
             Grid grid = currentHall.toGrid(playModePanel.getTileSize());
 
             // Yeni bir Game başlat
-            currentGame = new Game(grid, currentHall.getRune());
-            playModePanel.setGame(currentGame); // PlayModePanel'i yeni oyunla güncelle
+            currentGame = new Game(grid,player);
+            playModePanel.setGameManager(currentGame); // PlayModePanel'i yeni oyunla güncelle
 
             currentHallIndex++;
         } else {
@@ -52,12 +53,10 @@ public class GameManager {
     public void startNewGame() {
         //Create a new Hall and Grid
         Grid grid = new Grid(playModePanel.getTileSize());
-        Player player = Player.getInstance("Osimhen", 0, 0, playModePanel.getTileSize(), playModePanel, new PlayerInputHandler());
-
-        // currentGame = new Game(player, playModePanel.getTileSize(), playModePanel, grid, searc);
+        Player player = Player.getInstance("Osimhen", 0, 0, grid.getTileSize(), new PlayerInputHandler());
 
         // update PlayModePanel with the new Game
-        playModePanel.setGame(currentGame);
+        playModePanel.setGameManager(currentGame);
     }
 
     public void onRuneFound() {

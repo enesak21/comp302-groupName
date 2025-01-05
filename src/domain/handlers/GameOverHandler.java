@@ -26,7 +26,7 @@ public class GameOverHandler {
     public void handle() {
         playModePanel.setState("TryAgain");
         playModePanel.setPaused(true);
-        playModePanel.getGame().getTimeController().pauseTimer();
+        playModePanel.getGameManager().getTimeController().pauseTimer();
         drawGameOverScreen(playModePanel.getGraphics2());
     }
 

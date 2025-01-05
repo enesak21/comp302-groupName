@@ -1,9 +1,11 @@
 // src/domain/game/Game.java
 package domain.game;
 
+import domain.entity.monsters.MonsterManager;
 import domain.entity.playerObjects.Player;
 import domain.panels.PlayModePanel;
 import domain.structures.Structure;
+import main.PlayerInputHandler;
 
 public class Game {
     private boolean isRuneFound = false;
@@ -13,15 +15,40 @@ public class Game {
     private int remainingTime; // Add this field
     private TimeController timeController;
     private SearchRuneController searchRuneController;
+    private MonsterManager monsterManager;
     private Rune rune;
 
-    public Game(Grid grid, Player player, SearchRuneController searchRuneController) {
+    public Game(Grid grid, Player player) {
         this.player = player;
         this.grid = grid;
         this.remainingTime = 60; // Initialize with a default value
         this.timeController = new TimeController();
-        this.searchRuneController = searchRuneController;
+        searchRuneController = new SearchRuneController(this);
         this.rune= createRune();
+    }
+
+    public void initializePlayer(String name, int gridX, int gridY, int tileSize, PlayerInputHandler inputHandler) {
+        player = Player.getInstance(name, gridX, gridY, tileSize, inputHandler);
+    }
+
+    public void initializeGridAndRune() {
+        searchRuneController = new SearchRuneController(this);
+        searchRuneController.placeRune();
+    }
+
+    public void initializeTimeController() {
+        timeController = new TimeController();
+        timeController.setTimeLeft(grid.getStructures().size() * 5);
+    }
+
+    public void initializeMonsters(int tileSize) {
+        monsterManager = new MonsterManager(this, tileSize);
+    }
+
+    public void initializeCollisionChecker() {
+        CollisionChecker collisionChecker = new CollisionChecker(grid);
+        player.setCollisionChecker(collisionChecker);
+        monsterManager.setCollisionChecker(collisionChecker);
     }
 
     private Rune createRune() {
@@ -106,4 +133,11 @@ public class Game {
         return searchRuneController;
     }
 
+    public Rune getRune() {
+        return rune;
+    }
+
+    public MonsterManager getMonsterManager() {
+        return monsterManager;
+    }
 }

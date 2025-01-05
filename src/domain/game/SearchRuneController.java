@@ -14,13 +14,12 @@ import domain.audio.AudioManager;
  */
 public class SearchRuneController {
 
-    private PlayModePanel playModePanel;
     private Game game;
     private Rune rune;
     private AudioManager audioManager = new AudioManager();
 
-    public SearchRuneController(PlayModePanel playModePanel) {
-        this.playModePanel = playModePanel;
+    public SearchRuneController(Game game) {
+        this.game = game;
 
     }
 
@@ -31,14 +30,12 @@ public class SearchRuneController {
      * 
      */
     public void runeCollected(Tile clickedTile) {
-        game = playModePanel.getGame();
         Structure clickedStructure = clickedTile.getStructure();
-        Tile playerTile = playModePanel.getGrid().getTileAt(game.getPlayer().getGridX(), game.getPlayer().getGridY());
+        Tile playerTile = game.getGrid().getTileAt(game.getPlayer().getGridX(), game.getPlayer().getGridY());
         if (Game.isInRange(clickedTile, playerTile, 1)) {
             if (clickedStructure != null) {
                 if (clickedStructure.hasRune()) {
-
-                    playModePanel.moveToNextHall();
+                    game.setRuneFound(true);
                 }
                 else {
                     audioManager.playNoRuneSound();
@@ -52,8 +49,8 @@ public class SearchRuneController {
      * in the play mode panel's grid.
      */
     public void placeRune() {
-        List<Structure> structureList = playModePanel.getGrid().getStructures();
-        rune = playModePanel.getRune();
+        List<Structure> structureList = game.getGrid().getStructures();
+        rune = game.getRune();
 
         if (structureList != null && !structureList.isEmpty()) {
             Random random = new Random();
