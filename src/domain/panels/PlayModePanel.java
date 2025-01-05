@@ -89,10 +89,11 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     //FLAG IMAGES
     private Image hallOfAirFlag, hallOfWaterFlag, hallOfEarthFlag, hallOfFireFlag;
-
     private PlayModeMouseListener playModeMouseListener;
-
     private String state = "Default";
+
+    //Inventory image
+    private Image inventoryImage;
 
 
     int FPS = 60;
@@ -313,6 +314,7 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         playerView.draw(g2);
         drawWallsAndCorners(g2);
+        drawInventory(g2);  //check the location
 
         //Draw monsters
         //monsterManager'daki her monsterı çek ve onlar için bire View classı oluştur
@@ -568,6 +570,53 @@ public class PlayModePanel extends JPanel implements Runnable {
             wallGrid[gridColumns - 1][row] = true; // Right border
         }
     }
+
+    private void initializeInventoryImages(){
+        try {
+            inventoryImage = ImageIO.read(getClass().getResource("/resources/inventory/Inventory.png")); // Update the path
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    private void drawInventory(Graphics2D g2) {
+        // Ensure the inventory image is loaded
+        initializeInventoryImages();
+        if (inventoryImage != null) {
+            // Define inventory position and size
+            int inventoryX = sidebarX +20; // Adjust X position
+            int inventoryY = sidebarY + gridHeight -300; // Adjust Y position
+            //INVENTORY IMAGE CAN BE RESIZED
+            int inventoryWidth = 100; // Width of the inventory
+            int inventoryHeight = 150; // Height of the inventory
+
+
+            // Draw the inventory background
+            g2.drawImage(inventoryImage, inventoryX, inventoryY,inventoryWidth,inventoryHeight, null);
+
+            // Example: Draw items in the inventory
+            // Ensure you have a list of items (or a similar structure)
+           // List<Item> inventoryItems = game.getPlayer().getInventoryItems(); // Replace with your actual method
+
+//            if (inventoryItems != null) {
+//                int itemSize = 30; // Size of each item in the inventory
+//                int padding = 5; // Space between items
+//                for (int i = 0; i < inventoryItems.size(); i++) {
+//                    Item item = inventoryItems.get(i);
+//                    Image itemImage = item.getImage(); // Ensure each item has an image
+//                    int itemX = inventoryX + padding + (i % 5) * (itemSize + padding); // Adjust X position per item
+//                    int itemY = inventoryY + padding + (i / 5) * (itemSize + padding); // Adjust Y position per item
+//                    g2.drawImage(itemImage, itemX, itemY, itemSize, itemSize, null); // Draw the item
+//                }
+//            }
+        }
+    }
+
+
+
+
 
     // Getters
     public int getScale() {
