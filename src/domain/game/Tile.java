@@ -13,6 +13,7 @@ public class Tile {
     private boolean solid; // The tile is solid (e.g., walls)
     private BufferedImage image;
     private Structure structure;
+    private boolean isHighlighted;
 
     // Constructor with parameters
     public Tile(int gridX, int gridY, boolean solid, BufferedImage image) {
@@ -79,5 +80,16 @@ public class Tile {
     }
 
     public boolean containsStructure() { return structure != null; }
+
+    public boolean isHighlighted() {
+
+        return isHighlighted;
+    }
+
+    public void setHighlighted(boolean highlighted) {
+        this.isHighlighted = highlighted;
+    }
+
+
 }
 

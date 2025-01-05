@@ -145,5 +145,7 @@ public class EnchantmentManager {
     }
 
 
-
+    public List<BaseEnchantment> getEnchantments() {
+        return enchantments;
+    }
 }

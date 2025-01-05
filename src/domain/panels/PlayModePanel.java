@@ -5,7 +5,9 @@ import domain.UI.PlayerView;
 import domain.UI.MonsterView;
 
 
+import domain.enchantments.BaseEnchantment;
 import domain.enchantments.EnchantmentManager;
+import domain.enchantments.Reveal;
 import domain.handlers.*;
 import domain.entity.Entity;
 
@@ -29,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -97,7 +100,8 @@ public class PlayModePanel extends JPanel implements Runnable {
     private String state = "Default";
 
     //Inventory image
-    private Image inventoryImage;
+    private Image inventoryMainImage;
+    private Image revealSmallIcon;
 
 
     int FPS = 60;
@@ -120,6 +124,8 @@ public class PlayModePanel extends JPanel implements Runnable {
         initializeGameComponents(0);
         loadFont();
         addPauseKeyListener();
+        //KEYLISTENER FOR REVEAL WILL BE REMOVED
+        addKeyListenerForReveal();
 
         gameWinningHandler = new GameWinningHandler(this);
         gameOverHandler = new GameOverHandler(this);
@@ -176,6 +182,27 @@ public class PlayModePanel extends JPanel implements Runnable {
         playModeMouseListener = new PlayModeMouseListener(this);
         this.addMouseListener(playModeMouseListener);
     }
+
+    //REVEAL KEY HANDLER WILL BE OUT LATER
+    private void addKeyListenerForReveal() {
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_R) {
+
+                    if (game.getPlayer().getInventory().isInInventory("Reveal")) {
+                        BaseEnchantment revealEnchantment = new Reveal(0, 0, tileSize);
+                        revealEnchantment.applyEffect(game);
+                        game.getPlayer().getInventory().removeItem("Reveal");
+                        System.out.println("Reveal enchantment used. Highlighting region.");
+                    } else {
+                        System.out.println("No Reveal enchantment in inventory.");
+                    }
+                }
+            }
+        });
+    }
+
 
     public void moveToNextHall() {
         hallNum++; // Move to the next hall
@@ -298,6 +325,14 @@ public class PlayModePanel extends JPanel implements Runnable {
                 }
                 countMonster = monsterManager.getMonsters().size();
             }
+
+//            ///HERE WE STOP HERE CORRECT THIS METHOD AND CONTINUE
+//            if ((game.getPlayer().getInventory().getContent()).size() != 0) {
+//                //System.out.println("inventory contentim bu abe"+game.getPlayer().getInventory().getContent());
+//                enchantmentManager.getEnchantments().getFirst().update(game);
+//            }
+
+
         }
     }
 
@@ -335,6 +370,8 @@ public class PlayModePanel extends JPanel implements Runnable {
 
 	//Structures are drawn after entities
         gridView.drawStructures(g2, offsetX * tileSize, offsetY * tileSize);
+        //FOR HIGHLETED REGION
+        drawHighlightedRegion(g2);
 
         if (inTransition) {
             drawTransitionScreen(g2);
@@ -457,6 +494,15 @@ public class PlayModePanel extends JPanel implements Runnable {
             x = (screenWidth - fm.stringWidth(resumeText)) / 2;
             y += fm.getHeight() + 20;
             g2.drawString(resumeText, x, y);
+        }
+    }
+    private void loadSmallInventoryImages(){
+        try{
+            revealSmallIcon =  ImageIO.read(getClass().getResource("/resources/enchantments/reveal.png"));
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            System.err.println("Error loading wall images. Please check the file paths.");
         }
     }
 
@@ -584,7 +630,7 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     private void initializeInventoryImages(){
         try {
-            inventoryImage = ImageIO.read(getClass().getResource("/resources/inventory/Inventory.png")); // Update the path
+            inventoryMainImage = ImageIO.read(getClass().getResource("/resources/inventory/Inventory.png")); // Update the path
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -595,7 +641,8 @@ public class PlayModePanel extends JPanel implements Runnable {
     private void drawInventory(Graphics2D g2) {
         // Ensure the inventory image is loaded
         initializeInventoryImages();
-        if (inventoryImage != null) {
+        loadSmallInventoryImages();
+        if (inventoryMainImage != null) {
             // Define inventory position and size
             int inventoryX = sidebarX +20; // Adjust X position
             int inventoryY = sidebarY + gridHeight -300; // Adjust Y position
@@ -603,25 +650,37 @@ public class PlayModePanel extends JPanel implements Runnable {
             int inventoryWidth = 100; // Width of the inventory
             int inventoryHeight = 150; // Height of the inventory
 
+            g2.drawImage(inventoryMainImage, inventoryX, inventoryY,inventoryWidth,inventoryHeight, null);
 
-            // Draw the inventory background
-            g2.drawImage(inventoryImage, inventoryX, inventoryY,inventoryWidth,inventoryHeight, null);
 
-            // Example: Draw items in the inventory
-            // Ensure you have a list of items (or a similar structure)
-           // List<Item> inventoryItems = game.getPlayer().getInventoryItems(); // Replace with your actual method
+            HashMap<String, Integer> inventoryContent = game.getPlayer().getInventory().getContent();
 
-//            if (inventoryItems != null) {
-//                int itemSize = 30; // Size of each item in the inventory
-//                int padding = 5; // Space between items
-//                for (int i = 0; i < inventoryItems.size(); i++) {
-//                    Item item = inventoryItems.get(i);
-//                    Image itemImage = item.getImage(); // Ensure each item has an image
-//                    int itemX = inventoryX + padding + (i % 5) * (itemSize + padding); // Adjust X position per item
-//                    int itemY = inventoryY + padding + (i / 5) * (itemSize + padding); // Adjust Y position per item
-//                    g2.drawImage(itemImage, itemX, itemY, itemSize, itemSize, null); // Draw the item
-//                }
-//            }
+            for (String enchantmentType : inventoryContent.keySet()) {
+                //CHECK FOR EACH
+                if(enchantmentType.equals("Reveal")){
+                    g2.drawImage(revealSmallIcon, inventoryX+22, inventoryY+60,18,18, null);
+                }
+            }
+        }
+    }
+
+    private void drawHighlightedRegion(Graphics2D g2) {
+        for (int x = 0; x < grid.getColumns(); x++) {
+            for (int y = 0; y < grid.getRows(); y++) {
+                Tile tile = grid.getTileAt(x, y);
+                if (tile.isHighlighted()) {
+                    int drawX = (offsetX + x) * tileSize;
+                    int drawY = (offsetY + y) * tileSize;
+
+                    // Draw a semi-transparent rectangle for highlighting
+                    g2.setColor(new Color(255, 255, 0, 128)); // Yellow with transparency
+                    g2.fillRect(drawX, drawY, tileSize, tileSize);
+
+                    // Optional: Draw a border for better visibility
+                    g2.setColor(Color.YELLOW);
+                    g2.drawRect(drawX, drawY, tileSize, tileSize);
+                }
+            }
         }
     }
 

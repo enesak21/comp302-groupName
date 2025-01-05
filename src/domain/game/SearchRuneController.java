@@ -63,4 +63,11 @@ public class SearchRuneController {
         }
     }
 
+    public Tile getRuneTile() {
+        if (rune != null && rune.getStoredStructure() != null) {
+            return rune.getStoredStructure().getTile();
+        }
+        return null;
+    }
+
 }

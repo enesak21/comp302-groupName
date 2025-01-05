@@ -43,7 +43,11 @@
 
 package domain.entity.playerObjects;
 
+import domain.enchantments.BaseEnchantment;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Inventory {
     private HashMap<String, Integer> content; // Holds the counts of enchantments
@@ -95,5 +99,9 @@ public class Inventory {
     public void displayInventory() {
         System.out.println("Inventory Contents:");
         content.forEach((key, value) -> System.out.println(key + ": " + value));
+    }
+
+    public HashMap<String, Integer> getContent() {
+        return content;
     }
 }
