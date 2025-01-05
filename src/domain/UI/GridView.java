@@ -53,8 +53,11 @@ public class GridView {
         * @param offsetY The y-coordinate offset
      */
     private void drawTile(Graphics2D g2, Tile tile, int column, int row, int offsetX, int offsetY) {
-        int tileSize = grid.getTileSize();
         BufferedImage image = tile.getImage();
+        if(image == null) {
+            return;
+        }
+        int tileSize = grid.getTileSize();
         int x = offsetX + column * tileSize;
         int y = offsetY + row * tileSize;
 
@@ -79,6 +82,9 @@ public class GridView {
     private void drawStructure(Graphics2D g2, Structure structure, int column, int row, int offsetX, int offsetY) {
         int tileSize = grid.getTileSize();
         BufferedImage image = structure.getImage();
+        if(image == null) {
+            return;
+        }
         int x = offsetX + column * tileSize; // Calculate the x-coordinate
         int y = offsetY + row * tileSize; // Calculate the y-coordinate
 
@@ -92,6 +98,8 @@ public class GridView {
         * @param g2 The graphics object to draw on
         * @param offsetX The x-coordinate offset
         * @param offsetY The y-coordinate offset
+        * Structure is drawn on the grid. This method provides structures drawing after the monster
+        * which is for view bug between monster and structure.
      */
     public void drawStructures(Graphics2D g2, int offsetX, int offsetY) {
         for (int column = 0; column < grid.getColumns(); column++) { // Iterate through the columns

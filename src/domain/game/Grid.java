@@ -3,7 +3,7 @@ package domain.game;
 import javax.imageio.ImageIO;
 
 import domain.structures.Structure;
-import java.awt.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
@@ -18,10 +18,10 @@ public class Grid {
     public Grid(int tileSize) {
         this.tileSize = tileSize;
         this.tiles = new Tile[columns][rows];
-        tileGenerator();
+        initializeTiles();
     }
 
-    public void tileGenerator() {
+    public void initializeTiles() {
         try {
             BufferedImage defaultImage = ImageIO.read(getClass().getResourceAsStream("/resources/tiles/background.png"));
             for (int column = 0; column < columns; column++) {
@@ -31,25 +31,6 @@ public class Grid {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    public void draw(Graphics2D g2, int offsetX, int offsetY) {
-        for (int column = 0; column < columns; column++) {
-            for (int row = 0; row < rows; row++) {
-                Tile tile = tiles[column][row];
-
-                if (tile != null && tile.getImage() != null) {
-                    g2.drawImage(
-                            tile.getImage(),
-                            offsetX + column * tileSize,
-                            offsetY + row * tileSize,
-                            tileSize, tileSize,
-                            null
-                    );
-                }
-
-            }
         }
     }
 
