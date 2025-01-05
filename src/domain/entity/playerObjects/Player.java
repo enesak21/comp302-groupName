@@ -12,18 +12,16 @@ public class Player extends Entity {
     private int health;
     private Inventory inventory;
     private Tile location;
-    boolean moving = false;
-    int pixelCounter = 0;
+    private boolean moving = false;
+    private int pixelCounter = 0;
     private static Player instance;
 
-    PlayModePanel playModePanel;
     PlayerInputHandler playerInputHandler;
     private CollisionChecker collisionChecker;
 
-    private Player(String name, int gridX, int gridY, int tileSize, PlayModePanel playModePanel, PlayerInputHandler playerInputHandler) {
+    private Player(String name, int gridX, int gridY, int tileSize, PlayerInputHandler playerInputHandler) {
         super(gridX + 2, gridY + 2, tileSize); // +2 is for the offset
         this.name = name;
-        this.playModePanel = playModePanel;
         this.playerInputHandler = playerInputHandler;
         this.speed = 4;
         this.health = 4;
@@ -32,9 +30,9 @@ public class Player extends Entity {
     }
 
 
-    public static Player getInstance(String name, int gridX, int gridY, int tileSize, PlayModePanel playModePanel, PlayerInputHandler playerInputHandler) {
+    public static Player getInstance(String name, int gridX, int gridY, int tileSize, PlayerInputHandler playerInputHandler) {
         if (instance==null) {
-            return new Player(name, gridX, gridY, tileSize, playModePanel, playerInputHandler);
+            return new Player(name, gridX, gridY, tileSize, playerInputHandler);
         }
         return instance;
     }
@@ -55,7 +53,6 @@ public class Player extends Entity {
         this.gridX = gridX;
         this.gridY = gridY;
         this.tileSize = tileSize;
-        this.playModePanel = playModePanel;
         this.playerInputHandler = playerInputHandler;
         this.speed = 4;
         this.health = 4;
@@ -91,6 +88,8 @@ public class Player extends Entity {
             pixelCounter += speed;
 
             if (pixelCounter >= tileSize) {
+                // eski kod burada sorun çıkarsa belki döneriz.
+                /*
                 //Update old grid isSolid(false)
                 playModePanel.getGame().getGrid().getTileAt(gridX - 2, gridY - 2).setSolid(false);
 
@@ -104,6 +103,12 @@ public class Player extends Entity {
                 //Update new grid isSolid(true)
                 playModePanel.getGame().getGrid().getTileAt(gridX - 2, gridY - 2).setSolid(true);
 
+                pixelCounter = 0;
+                moving = false;
+                updatePixelPosition();
+
+                 */
+                collisionChecker.updateGridSolidState(gridX, gridY, direction); //bu kısım yazılması gerekiyor solid muhabbeti
                 pixelCounter = 0;
                 moving = false;
                 updatePixelPosition();
@@ -129,10 +134,13 @@ public class Player extends Entity {
      */
     public void reduceHealth() {
         health--;
-        if (health == 0) {
-            playModePanel.getGame().getTimeController().setTimeLeft(0);
-            playModePanel.getGameOverHandler().handle();
+        if(health<0){
+            health=0; //health can't be negative
         }
+    }
+
+    public boolean isDead() {
+        return health == 0;
     }
 
 public void setCollisionChecker(CollisionChecker collisionChecker) {

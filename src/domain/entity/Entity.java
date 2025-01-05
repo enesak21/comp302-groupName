@@ -33,19 +33,23 @@ public abstract class Entity {
     public abstract void update(); // we will implement this method in the subclasses
 
     public int getGridX() {
-        return gridX-PlayModePanel.offsetX;
+        //return gridX-PlayModePanel.offsetX;
+        return gridX;
     }
 
     public void setGridX(int gridX) {
         this.gridX = gridX;
+        updatePixelPosition();
     }
 
     public int getGridY() {
-        return gridY-PlayModePanel.offsetY;
+       // return gridY-PlayModePanel.offsetY;
+        return gridY;
     }
 
     public void setGridY(int gridY) {
         this.gridY = gridY;
+        updatePixelPosition();
     }
 
     public Direction getDirection() {
