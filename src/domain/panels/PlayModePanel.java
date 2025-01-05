@@ -586,13 +586,15 @@ public class PlayModePanel extends JPanel implements Runnable {
         initializeInventoryImages();
         if (inventoryImage != null) {
             // Define inventory position and size
-            int inventoryX = sidebarX + 10; // Adjust X position
-            int inventoryY = sidebarY + gridHeight - 150; // Adjust Y position
-            int inventoryWidth = 150; // Width of the inventory
-            int inventoryHeight = 100; // Height of the inventory
+            int inventoryX = sidebarX +20; // Adjust X position
+            int inventoryY = sidebarY + gridHeight -300; // Adjust Y position
+            //INVENTORY IMAGE CAN BE RESIZED
+            int inventoryWidth = 100; // Width of the inventory
+            int inventoryHeight = 150; // Height of the inventory
+
 
             // Draw the inventory background
-            g2.drawImage(inventoryImage, inventoryX, inventoryY, inventoryWidth, inventoryHeight, null);
+            g2.drawImage(inventoryImage, inventoryX, inventoryY,inventoryWidth,inventoryHeight, null);
 
             // Example: Draw items in the inventory
             // Ensure you have a list of items (or a similar structure)
