@@ -1,5 +1,6 @@
 package domain.handlers.mouseHandlers;
 
+import domain.enchantments.EnchantmentManager;
 import domain.game.Grid;
 import domain.game.SearchRuneController;
 import domain.game.Tile;
@@ -18,6 +19,7 @@ public class GridMouseListener {
     private final int offsetY;
     private final Grid grid;
     private SearchRuneController searchRuneController;
+    private EnchantmentManager enchantmentManager;
 
 
     public GridMouseListener(PlayModePanel playModePanel) {
@@ -29,7 +31,10 @@ public class GridMouseListener {
         this.offsetX = playModePanel.getOffsetX();
         this.offsetY = playModePanel.getOffsetY();
         this.grid = playModePanel.getGrid();
+
         this.searchRuneController = new SearchRuneController(playModePanel);
+        this.enchantmentManager = playModePanel.getEnchantmentManager();
+
 
     }
     public void handleGridClick(Point rawClickPoint) {
@@ -46,12 +51,15 @@ public class GridMouseListener {
         Tile clickedTile = grid.getTileAt(gridX, gridY);
 
         searchRuneController.runeCollected(clickedTile);
+        if (enchantmentManager != null) {
+
+            enchantmentManager.enchantmentCollected(clickedTile);
+        }
 
     }
 
     private Point transformToGridCoordinates(Point rawClickPoint) {
-        // This method is used to transform the raw click point to grid coordinates
-
+        // Transform the raw click point to grid coordinates
         int x = (rawClickPoint.x / tileSize) - offsetX;
         int y = (rawClickPoint.y / tileSize) - offsetY;
 

@@ -140,15 +140,13 @@ public class PlayModePanel extends JPanel implements Runnable {
         searchRuneController.placeRune();
 
 
-
-
-
-
         game = new Game(player, tileSize, this, grid, searchRuneController);
         enchantmentManager = new EnchantmentManager(game, tileSize);
 
         timeController = game.getTimeController();
-        timeController.setTimeLeft(halls.get(hallNum).getPlacedStructuresCount() * 5);
+        //FOR TESTING PURPOSES
+        timeController.setTimeLeft(60);
+        //timeController.setTimeLeft(halls.get(hallNum).getPlacedStructuresCount() * 5);
 
         this.addKeyListener(player.getPlayerInputHandler());
         //initialize monsterManager
@@ -750,5 +748,9 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public GameOverHandler getGameOverHandler() {
         return gameOverHandler;
+    }
+
+    public EnchantmentManager getEnchantmentManager() {
+        return enchantmentManager;
     }
 }

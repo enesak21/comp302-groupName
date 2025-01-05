@@ -61,7 +61,6 @@ public class SearchRuneController {
             Structure randomStructure = structureList.get(randomIndex);
             rune.setStoredStructure(randomStructure);
         }
-
     }
 
 }

@@ -4,6 +4,7 @@ import domain.UI.EnchantmentView;
 import domain.enchantments.EnchantmentFactory;
 import domain.game.CollisionChecker;
 import domain.game.Game;
+import domain.game.Tile;
 import domain.panels.PlayModePanel;
 
 import java.awt.*;
@@ -21,6 +22,7 @@ public class EnchantmentManager {
     private final int SPAWN_INTERVAL = 12 * 1000; // Write it in milliseconds
     private CollisionChecker collisionChecker;
     private long lastSpawnTime; // Track spawn time in milliseconds
+    private PlayModePanel playModePanel;
 
     private List<EnchantmentFactory> factories;
 
@@ -31,6 +33,7 @@ public class EnchantmentManager {
         this.tileSize = tileSize;
         this.game = game;
         this.lastSpawnTime = System.currentTimeMillis(); // Set initial spawn time
+
 
         // Add factories for different enchantments
         factories = new ArrayList<>();
@@ -53,7 +56,8 @@ public class EnchantmentManager {
         BaseEnchantment enchantment = selectedFactory.createEnchantment(gridX, gridY, tileSize);
         game.getGrid().getTileAt(gridX - PlayModePanel.offsetX, gridY - PlayModePanel.offsetY).setSolid(true);
         enchantments.add(enchantment);
-        System.out.println("Enchantment is created" + enchantment.getName());
+        System.out.println("Enchantment is created at: "+ gridX + ", " + gridY);
+
 
         // Create a view for the enchantment
         int drawX = gridX * tileSize;
@@ -64,7 +68,6 @@ public class EnchantmentManager {
 
     public void updateEnchantments() {
         long currentTime = System.currentTimeMillis();
-
         // Spawn a new enchantment if the spawn interval has passed
         if (currentTime - lastSpawnTime >= SPAWN_INTERVAL) {
             spawnEnchantment(game.getGrid().getColumns(), game.getGrid().getRows());
@@ -100,4 +103,41 @@ public class EnchantmentManager {
             view.draw(g2);
         }
     }
+
+    public void enchantmentCollected(Tile clickedTile) {
+        // Check if there is an enchantment at the clicked tile
+         Tile playerTile = game.getGrid().getTileAt(game.getPlayer().getGridX(), game.getPlayer().getGridY());
+         //System.out.println("player tile :"+playerTile.getGridX()+" "+playerTile.getGridY());
+
+        for (int i = 0; i < enchantments.size(); i++) {
+            BaseEnchantment enchantment = enchantments.get(i);
+            //System.out.println("ENCHANTMENTCOLLECTED IS CLICKED: " + clickedTile);
+            //System.out.println(enchantment.getName()+" is on the screen");
+            if (Game.isInRange(clickedTile, playerTile,1)){
+                //System.out.println("YES IN RANGE SİR!!!");
+                if ((enchantment.getGridX() - 2 ) == clickedTile.getGridX() && (enchantment.getGridY() - 2 ) == clickedTile.getGridY()) {
+                    // Apply the effect of the enchantment
+                    enchantment.applyEffect(game);
+                    //System.out.println("Enchantment "+ enchantment.getName()+" is located at: "+enchantment.getGridX()+", "+enchantment.getGridY());
+                    //System.out.println("Clicked tile :" +clickedTile.getGridX() + ", " + clickedTile.getGridY());
+
+                    // Remove the enchantment from the grid
+                    game.getGrid().getTileAt(enchantment.getGridX(), enchantment.getGridY()).setSolid(false);
+                    enchantments.remove(i);
+                    enchantmentViews.remove(i);
+
+                    System.out.println("Enchantment collected: " + enchantment.getName());
+                    return; // Exit after finding the clicked enchantment
+                }
+                //System.out.println("No enchantment at clicked tile.");
+            }
+
+
+        }
+
+
+    }
+
+
+
 }
