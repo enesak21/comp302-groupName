@@ -1,6 +1,7 @@
 package domain.UI;
 
 import domain.audio.AudioManager;
+import domain.entity.playerObjects.Player;
 import domain.game.GameManager;
 import domain.game.Hall;
 import domain.panels.BuildModePanel;
@@ -148,7 +149,11 @@ public class UI {
         JButton completeButton = new JButton("Complete Build");
         completeButton.addActionListener(e -> {
             if (buildModeHandler.checkBuildMode()) { // Check if the build mode is valid
-                if (!isPanelAdded("Game")) {
+                List<Hall> halls = buildModePanel.getHalls();
+                Player player = Player.getInstance("Osimhen", 0, 0, 32, 32, buildModePanel.getTileSize());
+                gameManager = new GameManager(halls, player);
+
+                if (!isPanelAdded("Game")) { //
                     mainPanel.add(createGameScreen(), "Game");
                 }
                 cardLayout.show(mainPanel, "Game");
@@ -179,7 +184,7 @@ public class UI {
         * Create the game screen with the PlayModePanel
      */
     private JPanel createGameScreen() {
-        PlayModePanel playModePanel = new PlayModePanel(halls);
+        PlayModePanel playModePanel = new PlayModePanel(gameManager);
 
         playModePanel.startGameThread(); // Start the game loop
         SwingUtilities.invokeLater(playModePanel::requestFocusInWindow); // Request focus for key events
