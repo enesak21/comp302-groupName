@@ -1,6 +1,7 @@
 package domain.game;
 
 import domain.entity.playerObjects.Player;
+import domain.handlers.GameOverHandler;
 import domain.panels.PlayModePanel;
 import main.PlayerInputHandler;
 
@@ -11,6 +12,7 @@ public class GameManager {
     private final List<Hall> halls;
     private int currentHallIndex = 0; // Hangi hall'da olduğumuzu takip eder
     private final Player player;
+    private GameOverHandler gameOverHandler;
 
     public GameManager(List<Hall> halls, Player player) {
         this.player=player;
@@ -76,8 +78,15 @@ public class GameManager {
 
     private void endGame() {
         // Oyunu sonlandır veya ana menüye dön
+        currentGame.getTimeController().pauseTimer(); // Zamanlayıcıyı durdur
+        gameOverHandler.handle(); // GameOver ekranını göster
     }
 
+    public void checkPlayerHealth() {
+        if (player.isDead()) {
+            endGame();
+        }
+    }
 
     public Game getCurrentGame() {
         return currentGame;
