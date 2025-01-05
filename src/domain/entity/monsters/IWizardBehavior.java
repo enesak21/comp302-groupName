@@ -1,10 +1,10 @@
 package domain.entity.monsters;
 
-import domain.entity.playerObjects.Player;
+import domain.game.Game;
 
 /**
  * Interface for implementing the Strategy Pattern for the WizardMonster class.
  */
 public interface IWizardBehavior {
-    void execute(WizardMonster wizardMonster, Player player);
+    void execute(WizardMonster wizardMonster, Game game);
 }

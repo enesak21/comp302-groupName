@@ -80,6 +80,16 @@ public class Game {
         return remainingTime;
     }
 
+    /**
+     * Returns the remaining time as a percentage of the total time.
+     * 
+     * TODO: Total time cannot be accessed, will fix later
+     * @return float
+     */
+    public float getRemainingTimePercentage() {
+        return (float) 100 * timeController.getTimeLeft() / 60;
+    }
+    
     public void setRemainingTime(int remainingTime) {
         this.remainingTime = remainingTime;
     }

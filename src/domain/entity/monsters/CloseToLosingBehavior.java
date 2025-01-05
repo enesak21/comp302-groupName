@@ -1,11 +1,15 @@
 package domain.entity.monsters;
 
-import domain.entity.playerObjects.Player;
+import domain.game.Game;
 
-public class CloseToLosingBehavior implements IWizardBehavior{
+/**
+ * The wizard will change the location of the player to a random empty location
+ * once and disappear.
+ */
+public class CloseToLosingBehavior implements IWizardBehavior {
 
     @Override
-    public void execute(WizardMonster wizardMonster, Player player) {
-
+    public void execute(WizardMonster wizardMonster, Game game) {
+        wizardMonster.disappear();
     }
 }

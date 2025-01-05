@@ -1,14 +1,15 @@
 package domain.entity.monsters;
 
-import domain.entity.playerObjects.Player;
+import domain.game.Game;
 
-/*
- * Behavior for the WizardMonster when it remaining time is > 70%.
+/**
+ * The wizard will make the situation challenging by changing the location of
+ * the rune every 3 seconds.
  */
-public class ChallengingBehavior implements IWizardBehavior{
+public class ChallengingBehavior implements IWizardBehavior {
     @Override
-    public void execute(WizardMonster wizardMonster, Player player) {
+    public void execute(WizardMonster wizardMonster, Game game) {
         wizardMonster.setTeleportFrequecy(3000);
-        wizardMonster.attack(player);
+        wizardMonster.attack(game.getPlayer());
     }
 }

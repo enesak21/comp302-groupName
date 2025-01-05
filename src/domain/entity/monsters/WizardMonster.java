@@ -8,8 +8,8 @@ import domain.structures.Structure;
 import java.util.List;
 import java.util.Random;
 
-public class WizardMonster extends BaseMonster{
-    private long teleport_frequecy = 5000; //It teleports the rune in every 5 sec.
+public class WizardMonster extends BaseMonster {
+    private long teleport_frequecy = 5000; // It teleports the rune in every 5 sec.
     private final long INITIAL_DELAY = 2000;
     private long lastTeleportTime;
     private Random random;
@@ -18,12 +18,11 @@ public class WizardMonster extends BaseMonster{
     private long lastAttackTime = System.currentTimeMillis() + INITIAL_DELAY;
     private IWizardBehavior behavior;
 
-
     public WizardMonster(int gridX, int gridY, int tileSize, Game game) {
         super(gridX, gridY, tileSize);
-        this.lastTeleportTime= System.currentTimeMillis();
+        this.lastTeleportTime = System.currentTimeMillis();
         this.random = new Random();
-        this.game=game;
+        this.game = game;
     }
 
     @Override
@@ -32,7 +31,17 @@ public class WizardMonster extends BaseMonster{
 
     @Override
     public void update(Game game) {
-        behavior.execute(this, game.getPlayer());
+        float remainingTimePercentage = game.getRemainingTimePercentage();
+
+        if (remainingTimePercentage < 30) {
+            setBehavior(new CloseToLosingBehavior());
+        } else if (remainingTimePercentage > 70) {
+            setBehavior(new ChallengingBehavior());
+        } else {
+            setBehavior(new IndecisiveBehavior());
+        }
+
+        behavior.execute(this, game);
     }
 
     @Override
@@ -43,7 +52,6 @@ public class WizardMonster extends BaseMonster{
             switchRune();
         }
     }
-
 
     private void switchRune() {
         List<Structure> structures = game.getGrid().getStructures();
@@ -65,7 +73,16 @@ public class WizardMonster extends BaseMonster{
         return teleport_frequecy;
     }
 
-    public void getLastTeleportTime(long lastTeleportTime) {
-        this.lastTeleportTime = lastTeleportTime;
+    public long getLastTeleportTime() {
+        return lastTeleportTime;
+    }
+
+    public void setBehavior(IWizardBehavior behavior) {
+        this.behavior = behavior;
+    }
+
+    // TODO: Implement this method
+    public void disappear() {
+        System.out.println("poof");
     }
 }
