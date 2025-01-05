@@ -21,6 +21,15 @@ public class Grid {
         initializeTiles();
     }
 
+    public Structure getRandomStructure() {
+        ArrayList<Structure> structures = getStructures();
+        if (structures.size() == 0) {
+            return null;
+        }
+        int randomIndex = (int) (Math.random() * structures.size());
+        return structures.get(randomIndex);
+    }
+
     public void initializeTiles() {
         try {
             BufferedImage defaultImage = ImageIO.read(getClass().getResourceAsStream("/resources/tiles/background.png"));

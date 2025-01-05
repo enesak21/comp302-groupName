@@ -60,7 +60,6 @@ public class PlayModePanel extends JPanel implements Runnable {
 
 
     private TimeController timeController;
-    private Grid grid;
     private Font pressStart2PFont;
     private boolean isPaused = false; // Add a boolean to track game state
     private PlayerView playerView;
@@ -72,8 +71,6 @@ public class PlayModePanel extends JPanel implements Runnable {
 
 
     // Declare the halls variable
-    private List<Hall> halls;
-    private int hallNum = 0;
     private boolean lastRunefound = false;
     private boolean inTransition = false;
 
@@ -102,16 +99,15 @@ public class PlayModePanel extends JPanel implements Runnable {
     Rune rune;
     Graphics2D g2;
 
-
+    GameManager gameManager;
 
     // Constructor
-    public PlayModePanel(List<Hall> halls) {
-        this.halls = halls; // Initialize the halls variable
+    public PlayModePanel(GameManager gameManager) {
+        this.gameManager = gameManager; // Initialize the halls variable
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(new Color(66, 40, 53));
         this.setDoubleBuffered(true);
         this.setFocusable(true);
-        this.rune = new Rune();
 
         initializeGameComponents(0);
         loadFont();

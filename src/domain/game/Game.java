@@ -3,6 +3,7 @@ package domain.game;
 
 import domain.entity.playerObjects.Player;
 import domain.panels.PlayModePanel;
+import domain.structures.Structure;
 
 public class Game {
     private boolean isRuneFound = false;
@@ -12,13 +13,20 @@ public class Game {
     private int remainingTime; // Add this field
     private TimeController timeController;
     private SearchRuneController searchRuneController;
+    private Rune rune;
 
-    public Game(Player player, int tileSize, PlayModePanel playModePanel, Grid grid, SearchRuneController searchRuneController) {
+    public Game(Grid grid, Player player, SearchRuneController searchRuneController) {
         this.player = player;
         this.grid = grid;
         this.remainingTime = 60; // Initialize with a default value
         this.timeController = new TimeController();
         this.searchRuneController = searchRuneController;
+        this.rune= createRune();
+    }
+
+    private Rune createRune() {
+        Structure randomStructure = grid.getRandomStructure();
+        return new Rune(randomStructure);
     }
 
     public boolean isRuneFound() {

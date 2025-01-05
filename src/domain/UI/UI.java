@@ -1,6 +1,7 @@
 package domain.UI;
 
 import domain.audio.AudioManager;
+import domain.game.GameManager;
 import domain.game.Hall;
 import domain.panels.BuildModePanel;
 import domain.handlers.BuildModeHandler;
@@ -20,6 +21,7 @@ public class UI {
     private JPanel mainPanel; // Main container for the different panels
     private List<Hall> halls; // List of halls created in Build Mode
     private AudioManager audioManager = new AudioManager(); // Audio manager for playing music
+    private GameManager gameManager; // Game manager for handling game logic
 
     // Constructor
     public UI() {

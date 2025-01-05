@@ -7,13 +7,13 @@ import main.PlayerInputHandler;
 import java.util.List;
 
 public class GameManager {
-    private PlayModePanel playModePanel;
     private Game currentGame;
-    private List<Hall> halls;
+    private final List<Hall> halls;
     private int currentHallIndex = 0; // Hangi hall'da olduğumuzu takip eder
+    private final Player player;
 
-    public GameManager(PlayModePanel playModePanel, List<Hall> halls) {
-        this.playModePanel = playModePanel;
+    public GameManager(List<Hall> halls, Player player) {
+        this.player=player;
         this.halls = halls;
         startNewHall();
     }
@@ -22,14 +22,6 @@ public class GameManager {
         if (currentHallIndex < halls.size()) {
             Hall currentHall = halls.get(currentHallIndex);
             Grid grid = currentHall.toGrid(playModePanel.getTileSize());
-            Player player = Player.getInstance(
-                    "Osimhen",
-                    0,
-                    0,
-                    playModePanel.getTileSize(),
-                    playModePanel,
-                    new PlayerInputHandler()
-            );
 
             // Yeni bir Game başlat
             currentGame = new Game(grid, currentHall.getRune());
@@ -39,6 +31,20 @@ public class GameManager {
         } else {
             endGame();
         }
+    }
+
+    public void moveToNextHall() {
+        if (currentHallIndex < halls.size() - 1) { // if not the last hall
+            currentHallIndex++;
+            startNewHall();
+        } else {
+            onAllHallsCompleted();
+        }
+    }
+
+    private void onAllHallsCompleted() {
+        System.out.println("All halls completed. Game Over!");
+        // Oyunu kazanma ekranı veya başka bir aksiyon tetiklenebilir
     }
 
     public void startNewGame() {
