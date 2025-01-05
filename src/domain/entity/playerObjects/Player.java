@@ -29,6 +29,8 @@ public class Player extends Entity {
         this.health = 4;
         this.direction = Direction.RIGHT;
         updatePixelPosition();
+        //Inventory is initialized here
+        this.inventory = new Inventory();
     }
 
 
@@ -147,5 +149,8 @@ public void setCollisionChecker(CollisionChecker collisionChecker) {
      */
     public boolean useEnchantment(String enchantmentType) {
         return false;
+    }
+    public Inventory getInventory() {
+        return inventory;
     }
 }

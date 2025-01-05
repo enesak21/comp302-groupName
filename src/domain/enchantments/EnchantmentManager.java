@@ -117,7 +117,13 @@ public class EnchantmentManager {
                 //System.out.println("YES IN RANGE SİR!!!");
                 if ((enchantment.getGridX() - 2 ) == clickedTile.getGridX() && (enchantment.getGridY() - 2 ) == clickedTile.getGridY()) {
                     // Apply the effect of the enchantment
-                    enchantment.applyEffect(game);
+
+                    String enchantmentType = enchantment.getName();
+                    if (enchantmentType.equals("Reveal")) {
+                        game.getPlayer().getInventory().addItem(enchantmentType); // Add to inventory
+                    } else {
+                        enchantment.applyEffect(game); // Apply effect for other enchantments
+                    }
                     //System.out.println("Enchantment "+ enchantment.getName()+" is located at: "+enchantment.getGridX()+", "+enchantment.getGridY());
                     //System.out.println("Clicked tile :" +clickedTile.getGridX() + ", " + clickedTile.getGridY());
 
