@@ -1,5 +1,6 @@
 package domain.game;
 
+import domain.entity.Direction;
 import domain.entity.Entity;
 
 /**
@@ -39,5 +40,30 @@ public class CollisionChecker {
             return true;
         }
         return nexTile.isSolid(); // Return true if the tile is solid
+    }
+
+    public void updateGridSolidState(int gridX, int gridY, Direction direction) {
+        // Önce eski pozisyonun solid durumunu kaldır
+        Tile currentTile = grid.getTileAt(gridX, gridY);
+        if (currentTile != null) {
+            currentTile.setSolid(false);
+        }
+
+        // Yeni pozisyonu direction'a göre hesapla
+        int nextX = gridX;
+        int nextY = gridY;
+
+        switch (direction) {
+            case UP -> nextY--;
+            case DOWN -> nextY++;
+            case LEFT -> nextX--;
+            case RIGHT -> nextX++;
+        }
+
+        // Yeni pozisyonu solid olarak ayarla
+        Tile nextTile = grid.getTileAt(nextX, nextY);
+        if (nextTile != null) {
+            nextTile.setSolid(true);
+        }
     }
 }

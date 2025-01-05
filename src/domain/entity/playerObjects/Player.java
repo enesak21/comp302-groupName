@@ -45,10 +45,9 @@ public class Player extends Entity {
      * @param gridX the x-coordinate of the player's position on the grid
      * @param gridY the y-coordinate of the player's position on the grid
      * @param tileSize the size of each tile in the game
-     * @param playModePanel the panel used for play mode
      * @param playerInputHandler the handler for player input
      */
-    public void restart(String name, int gridX, int gridY, int tileSize, PlayModePanel playModePanel, PlayerInputHandler playerInputHandler) {
+    public void restart(String name, int gridX, int gridY, int tileSize, PlayerInputHandler playerInputHandler) {
         this.name = name;
         this.gridX = gridX;
         this.gridY = gridY;
@@ -118,6 +117,10 @@ public class Player extends Entity {
 
     public PlayerInputHandler getPlayerInputHandler() {
         return playerInputHandler;
+    }
+
+    public void setPlayerInputHandler(PlayerInputHandler playerInputHandler) {
+        this.playerInputHandler = playerInputHandler;
     }
 
     public boolean isMoving() {

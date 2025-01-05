@@ -28,7 +28,7 @@ public class GameManager {
 
             // Yeni bir Game başlat
             currentGame = new Game(grid,player);
-            playModePanel.setGameManager(currentGame); // PlayModePanel'i yeni oyunla güncelle
+            playModePanel.setGameManager(this); // PlayModePanel'i yeni oyunla güncelle
 
             currentHallIndex++;
         } else {
@@ -56,7 +56,21 @@ public class GameManager {
         Player player = Player.getInstance("Osimhen", 0, 0, grid.getTileSize(), new PlayerInputHandler());
 
         // update PlayModePanel with the new Game
-        playModePanel.setGameManager(currentGame);
+        playModePanel.setGameManager(this);
+    }
+
+    public void restartGame() {
+        // Oyuncu ve oyun durumlarını sıfırla
+        currentHallIndex = 0; // İlk hall'e dön
+        player.restart("Osimhen"); // Oyuncunun durumunu sıfırla
+        startNewHall(); // İlk hall'i başlat
+    }
+
+    public void updateGameState() {
+        if (!currentGame.isPaused()) {
+            currentGame.getPlayer().update(); // Oyuncunun güncellenmesi
+            currentGame.getMonsterManager().updateMonsters(); // Canavarların güncellenmesi
+        }
     }
 
     public void onRuneFound() {
@@ -89,5 +103,9 @@ public class GameManager {
 
     public Game getCurrentGame() {
         return currentGame;
+    }
+
+    public int getCurrentHallIndex() {
+        return currentHallIndex;
     }
 }

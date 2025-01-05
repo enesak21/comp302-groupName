@@ -122,14 +122,8 @@ public class PlayModePanel extends JPanel implements Runnable {
         initializeGridView();
         initializeMonsterViews();
         initializeMouseListeners();
+        initializeKeyListeners();
 
-
-        countMonster = 0;
-        monsterViewList = new CopyOnWriteArrayList<>();
-        for (int i = 0; i < monsterManager.getMonsters().size(); i++) {
-            MonsterView monsterView = new MonsterView((Entity) monsterManager.getMonsters().get(i));
-            monsterViewList.add(monsterView);
-        }
 
 
         // Create a mouse listener for the Play Mode screen
@@ -150,27 +144,28 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
     private void initializePlayerView() {
-        playerView = new PlayerView(gameManager.getPlayer());
-        this.addKeyListener(gameManager.getPlayer().getPlayerInputHandler());
+        playerView = new PlayerView(gameManager.getCurrentGame().getPlayer());
+        this.addKeyListener(gameManager.getCurrentGame().getPlayer().getPlayerInputHandler());
     }
 
     private void initializeGridView() {
-        gridView = new GridView(gameManager.getGrid());
+        gridView = new GridView(gameManager.getCurrentGame().getGrid());
     }
 
     private void initializeMonsterViews() {
         monsterViewList = new CopyOnWriteArrayList<>();
-        for (BaseMonster monster : gameManager.getMonsterManager().getMonsters()) {
+        for (BaseMonster monster : gameManager.getCurrentGame().getMonsterManager().getMonsters()) {
             monsterViewList.add(new MonsterView(monster));
         }
     }
+
 
     private void initializeKeyListeners() {
         PlayerInputHandler playerInputHandler = new PlayerInputHandler();
         this.addKeyListener(playerInputHandler);
 
         // Player'a input handler'ı bağla
-        gameManager.getPlayer().setPlayerInputHandler(playerInputHandler);
+        gameManager.getCurrentGame().getPlayer().setPlayerInputHandler(playerInputHandler);
     }
 
     private void initializeMouseListeners() {
@@ -262,53 +257,28 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public void update() {
         if (!isPaused) {
-            // Update the player
-            gameManager.getPlayer().update();
+            // GameManager'dan domain güncellemelerini çağır
+            gameManager.updateGameState();
 
-            //Update monsters
-            monsterManager.updateMonsters();
-            //Update monsters view list if there is a new monster
-            if (countMonster < monsterManager.getMonsters().size()) {
-                for (int i = countMonster; i < monsterManager.getMonsters().size(); i++) {
-                    MonsterView monsterView = new MonsterView((Entity) monsterManager.getMonsters().get(i));
-                    monsterViewList.add(monsterView);
-                }
-                countMonster = monsterManager.getMonsters().size();
-            }
+            // MonsterView'leri güncelle
+            refreshMonsterViews();
         }
     }
 
-    public void restartGame() {
-        // Reset to the first hall
-        hallNum = -1;
-        lastRunefound = false;
-        moveToNextHall();
+    private void refreshMonsterViews() {
+        monsterViewList = new CopyOnWriteArrayList<>();
+        for (BaseMonster monster : gameManager.getCurrentGame().getMonsterManager().getMonsters()) {
+            monsterViewList.add(new MonsterView(monster));
+        }
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g2 = (Graphics2D) g;
+        drawUIComponents(g2);
+        drawGameComponents(g2);
 
-
-        // Draw Time (always display the sidebar)
-        drawTime(g2);
-
-        // Draw game grid and player
-        gridView.draw(g2, offsetX * tileSize, offsetY * tileSize);
-
-        playerView.draw(g2);
-        drawWallsAndCorners(g2);
-        drawInventory(g2);  //check the location
-
-        //Draw monsters
-        //monsterManager'daki her monsterı çek ve onlar için bire View classı oluştur
-        for(MonsterView monsterView: monsterViewList){
-            monsterView.draw(g2);
-        }
-
-	//Structures are drawn after entities
-        gridView.drawStructures(g2, offsetX * tileSize, offsetY * tileSize);
 
         if (inTransition) {
             drawTransitionScreen(g2);
@@ -327,6 +297,26 @@ public class PlayModePanel extends JPanel implements Runnable {
             }
         }
         g2.dispose();
+    }
+
+    private void drawUIComponents(Graphics2D g2) {
+        // Sidebar, zaman ve envanter gibi UI bileşenlerini çiz
+        drawTime(g2);
+        drawInventory(g2);
+        drawWallsAndCorners(g2);
+    }
+
+    private void drawGameComponents(Graphics2D g2) {
+        // Oyun bileşenlerini (grid, duvarlar, player, canavarlar) çiz
+        gridView.draw(g2, offsetX * tileSize, offsetY * tileSize);
+        playerView.draw(g2);
+        drawWallsAndCorners(g2);
+
+        for (MonsterView monsterView : monsterViewList) {
+            monsterView.draw(g2);
+        }
+
+        gridView.drawStructures(g2, offsetX * tileSize, offsetY * tileSize);
     }
 
     private void drawTransitionScreen(Graphics2D g2) {
@@ -403,7 +393,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         // Add health hearts
         try {
             Image heartIcon = ImageIO.read(getClass().getResource("/resources/player/heart.png"));
-            for (int i = 0; i < gameManager.getPlayer().getHealth(); i++) {
+            for (int i = 0; i < gameManager.getCurrentGame().getPlayer().getHealth(); i++) {
                 g2.drawImage(heartIcon, sidebarX + 5 + i * 32, sidebarY + 150, 32, 32, null);
             }
         } catch (IOException e) {
@@ -474,7 +464,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         Image flag = null;
         loadFlagImages();
         // Determine the flag based on the current hall
-        switch (hallNum) {
+        switch (gameManager.getCurrentHallIndex()) {
             case 0:
                 flag = hallOfAirFlag;
                 break;
@@ -612,9 +602,8 @@ public class PlayModePanel extends JPanel implements Runnable {
         return tileSize;
     }
 
-    public void setGameManager(Game gameManager) {
+    public void setGameManager(GameManager gameManager) {
         this.gameManager = gameManager;
-        this.playerView= new PlayerView(gameManager.getPlayer());
     }
 
     public void setPaused(Boolean b){
@@ -676,11 +665,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         return gridRows;
     }
 
-    public Grid getGrid() {
-        return grid;
-    }
-
-    public Game getGameManager() {
+    public GameManager getGameManager() {
         return gameManager;
     }
 
@@ -698,10 +683,6 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public Graphics2D getGraphics2() {
         return g2;
-    }
-
-    public List<Hall> getHalls() {
-        return halls;
     }
 
     public int getScreenHeight() {
