@@ -5,6 +5,7 @@ import domain.UI.PlayerView;
 import domain.UI.MonsterView;
 
 
+import domain.enchantments.EnchantmentManager;
 import domain.handlers.*;
 import domain.entity.Entity;
 
@@ -65,6 +66,9 @@ public class PlayModePanel extends JPanel implements Runnable {
     private boolean isPaused = false; // Add a boolean to track game state
     private PlayerView playerView;
     private GridView gridView;
+
+    //ENCHANTMENT MANAGER
+    public EnchantmentManager enchantmentManager;
 
     private MonsterManager monsterManager;
     private int countMonster = 0;
@@ -137,7 +141,11 @@ public class PlayModePanel extends JPanel implements Runnable {
 
 
 
+
+
+
         game = new Game(player, tileSize, this, grid, searchRuneController);
+        enchantmentManager = new EnchantmentManager(game, tileSize);
 
         timeController = game.getTimeController();
         timeController.setTimeLeft(halls.get(hallNum).getPlacedStructuresCount() * 5);
@@ -281,7 +289,9 @@ public class PlayModePanel extends JPanel implements Runnable {
             game.getPlayer().update();
 
             //Update monsters
+
             monsterManager.updateMonsters();
+            enchantmentManager.updateEnchantments();
             //Update monsters view list if there is a new monster
             if (countMonster < monsterManager.getMonsters().size()) {
                 for (int i = countMonster; i < monsterManager.getMonsters().size(); i++) {
@@ -321,6 +331,9 @@ public class PlayModePanel extends JPanel implements Runnable {
         for(MonsterView monsterView: monsterViewList){
             monsterView.draw(g2);
         }
+
+        //ENCHANTMENT IS PAINTED HERE
+        enchantmentManager.drawEnchantments(g2);
 
 	//Structures are drawn after entities
         gridView.drawStructures(g2, offsetX * tileSize, offsetY * tileSize);

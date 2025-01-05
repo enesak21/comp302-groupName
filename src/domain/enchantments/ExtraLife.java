@@ -8,4 +8,9 @@ public class ExtraLife extends Enchantment{
     public ExtraLife(String type, float visibilityDuration) {
         super(type, visibilityDuration);
     }
+
+    @Override
+    public void applyEffect(Game game) {
+
+    }
 }

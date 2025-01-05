@@ -1,5 +1,7 @@
 package domain.enchantments;
 
+import domain.game.Game;
+
 /**
  * This enchantment provides invisibility for given duration time against monsters
  */
@@ -24,5 +26,10 @@ public class CloakOfProtection extends Enchantment{
      */
     public void setEffectDuration(int effectDuration) {
         this.effectDuration = effectDuration;
+    }
+
+    @Override
+    public void applyEffect(Game game) {
+
     }
 }
