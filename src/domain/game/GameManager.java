@@ -63,6 +63,11 @@ public class GameManager {
         currentGame.resumeGame();
     }
 
+    public void exitGame() {
+        System.exit(0); // Uygulamayı kapat
+    }
+
+
     private void endGame() {
         // Oyunu sonlandır veya ana menüye dön
     }

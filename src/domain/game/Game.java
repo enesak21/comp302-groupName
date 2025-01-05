@@ -31,10 +31,12 @@ public class Game {
 
     public void pauseGame() {
         timeController.pauseTimer();
+        isPaused = true;
     }
 
     public void resumeGame() {
         timeController.resumeTimer();
+        isPaused = false;
     }
 
     public boolean isPaused() {

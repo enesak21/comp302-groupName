@@ -225,24 +225,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         });
     }
 
-
-    public void pauseGame() {
-
-        isPaused = true; // Set the game state to paused
-        timeController.pauseTimer(); // Pause the game timer (if applicable)
-        repaint(); // Trigger a repaint to show the pause overlay
-    }
-
-    public void resumeGame(){
-        isPaused = false;
-        timeController.resumeTimer();
-        repaint();
-    }
-
-    public void exitGame() {
-        System.exit(0);
-    }
-
+    // BURADA KALACAK
     private void loadFont() {
         try {
             pressStart2PFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/resources/fonts/PressStart2P-Regular.ttf")).deriveFont(20f);
