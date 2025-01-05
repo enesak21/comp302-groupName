@@ -1,17 +1,37 @@
 package domain.enchantments;
 
+import domain.enchantments.Enchantment;
+import domain.game.Game;
+
+import java.awt.*;
+
 public class ExtraTime extends Enchantment {
-    private float duration;
+    private int timeToAdd;
+    private Image icon;
 
-    public ExtraTime(String type, float visibilityDuration) {
-        super(type, visibilityDuration);
+    public ExtraTime(int timeToAdd, Image icon) {
+        super();
+        this.timeToAdd = timeToAdd;
+        this.icon = icon;
     }
 
-    public float getDuration() {
-        return duration;
+
+//    public void applyEffect(Game game) {
+//        game.getTimeController().addTime(timeToAdd);
+//    }
+
+
+    public String getName() {
+        return "Extra Time";
     }
 
-    public void setDuration(float duration) {
-        this.duration = duration;
+
+    public Image getIcon() {
+        return icon;
+    }
+
+
+    public void applyEffect(Game game) {
+        System.out.println("EXTRA TIME WILL BE ADDED");
     }
 }

@@ -1,5 +1,7 @@
 package domain.enchantments;
 
+import domain.game.Game;
+
 /**
  * Parent class for enchantments
  */
@@ -11,4 +13,10 @@ public class Enchantment {
         this.type = type;
         this.visibilityDuration = visibilityDuration;
     }
+
+    public Enchantment() {
+
+    }
+
+
 }
