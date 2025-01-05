@@ -9,13 +9,14 @@ import java.util.List;
 import java.util.Random;
 
 public class WizardMonster extends BaseMonster{
-    private final long TELEPORT_FREQUENCY = 5000; //It teleports the rune in every 5 sec.
+    private long teleport_frequecy = 5000; //It teleports the rune in every 5 sec.
     private final long INITIAL_DELAY = 2000;
     private long lastTeleportTime;
     private Random random;
     private Game game;
     private CollisionChecker collisionChecker;
     private long lastAttackTime = System.currentTimeMillis() + INITIAL_DELAY;
+    private IWizardBehavior behavior;
 
 
     public WizardMonster(int gridX, int gridY, int tileSize, Game game) {
@@ -31,13 +32,13 @@ public class WizardMonster extends BaseMonster{
 
     @Override
     public void update(Game game) {
-        attack(game.getPlayer());
+        behavior.execute(this, game.getPlayer());
     }
 
     @Override
     public void attack(Player player) {
         long currentTime = System.currentTimeMillis();
-        if ((currentTime - lastAttackTime) > TELEPORT_FREQUENCY) {
+        if ((currentTime - lastAttackTime) > teleport_frequecy) {
             lastAttackTime = currentTime;
             switchRune();
         }
@@ -54,5 +55,17 @@ public class WizardMonster extends BaseMonster{
     @Override
     public void setCollisionChecker(CollisionChecker collisionChecker) {
         this.collisionChecker = collisionChecker;
+    }
+
+    public void setTeleportFrequecy(long teleport_frequecy) {
+        this.teleport_frequecy = teleport_frequecy;
+    }
+
+    public long getTeleportFrequecy() {
+        return teleport_frequecy;
+    }
+
+    public void getLastTeleportTime(long lastTeleportTime) {
+        this.lastTeleportTime = lastTeleportTime;
     }
 }
