@@ -6,6 +6,7 @@ import domain.UI.MonsterView;
 
 
 import domain.enchantments.BaseEnchantment;
+import domain.enchantments.CloakOfProtection;
 import domain.enchantments.EnchantmentManager;
 import domain.enchantments.Reveal;
 import domain.handlers.*;
@@ -93,6 +94,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     private Image openedWall, closedWall;
     private boolean[][] wallGrid;
     private SearchRuneController searchRuneController;
+    private Image cloakSmallIcon;
 
     //FLAG IMAGES
     private Image hallOfAirFlag, hallOfWaterFlag, hallOfEarthFlag, hallOfFireFlag;
@@ -189,14 +191,26 @@ public class PlayModePanel extends JPanel implements Runnable {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_R) {
-
                     if (game.getPlayer().getInventory().isInInventory("Reveal")) {
-                        BaseEnchantment revealEnchantment = new Reveal(0, 0, tileSize);
+                        BaseEnchantment revealEnchantment =
+                                new Reveal(0, 0, tileSize);  //MUST BE CHANGED
                         revealEnchantment.applyEffect(game);
                         game.getPlayer().getInventory().removeItem("Reveal");
                         System.out.println("Reveal enchantment used. Highlighting region.");
                     } else {
                         System.out.println("No Reveal enchantment in inventory.");
+                    }
+                }
+                if (e.getKeyCode() == KeyEvent.VK_P) {
+                    if (game.getPlayer().getInventory().isInInventory("Cloak of Protection")) {
+                        BaseEnchantment cloak =
+                                new CloakOfProtection(0, 0, tileSize);  //MUST BE CHANGED
+                                                                                    //there should not be created a new object
+                        cloak.applyEffect(game);
+                        game.getPlayer().getInventory().removeItem("Cloak of Protection");
+                        System.out.println("CLOAK OF PROTECTION enchantment used.");
+                    } else {
+                        System.out.println("No Cloak of Protection available in inventory.");
                     }
                 }
             }
@@ -499,6 +513,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     private void loadSmallInventoryImages(){
         try{
             revealSmallIcon =  ImageIO.read(getClass().getResource("/resources/enchantments/reveal.png"));
+            cloakSmallIcon =  ImageIO.read(getClass().getResource("/resources/enchantments/cloakOfProtection.png"));
         }
         catch (IOException e){
             e.printStackTrace();
@@ -659,6 +674,9 @@ public class PlayModePanel extends JPanel implements Runnable {
                 //CHECK FOR EACH
                 if(enchantmentType.equals("Reveal")){
                     g2.drawImage(revealSmallIcon, inventoryX+22, inventoryY+60,18,18, null);
+                }
+                if(enchantmentType.equals("Cloak of Protection")){
+                    g2.drawImage(cloakSmallIcon, inventoryX+42, inventoryY+60,18,18, null);
                 }
             }
         }

@@ -26,6 +26,7 @@ public class EnchantmentView {
             enchantmentIcons.put("Extra Time", ImageIO.read(getClass().getResource("/resources/icons/clock.png")));
             enchantmentIcons.put("Reveal", ImageIO.read(getClass().getResource("/resources/enchantments/reveal.png")));
             enchantmentIcons.put("Extra Life", ImageIO.read(getClass().getResource("/resources/player/heart.png")));
+            enchantmentIcons.put("Cloak of Protection", ImageIO.read(getClass().getResource("/resources/enchantments/cloakOfProtection.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }

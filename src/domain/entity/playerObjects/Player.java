@@ -15,6 +15,7 @@ public class Player extends Entity {
     boolean moving = false;
     int pixelCounter = 0;
     private static Player instance;
+    private boolean invisibleToArchers = false;
 
     PlayModePanel playModePanel;
     PlayerInputHandler playerInputHandler;
@@ -158,5 +159,12 @@ public void setCollisionChecker(CollisionChecker collisionChecker) {
     }
     public Inventory getInventory() {
         return inventory;
+    }
+    public boolean getIsInvisibleToArchers() {
+        return invisibleToArchers;
+    }
+
+    public void setInvisibleToArchers(boolean invisibleToArchers) {
+        this.invisibleToArchers = invisibleToArchers;
     }
 }

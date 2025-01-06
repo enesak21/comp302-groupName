@@ -40,6 +40,7 @@ public class EnchantmentManager {
         factories.add(new ExtraTimeEnchantmentFactory());
         factories.add(new RevealEnchantmentFactory());
         factories.add(new ExtraLifeEnchantmentFactory());
+        factories.add(new CloakOfProtectionEnchantmentFactory());
     }
 
     public void spawnEnchantment(int gridWidth, int gridHeight) {
@@ -105,6 +106,7 @@ public class EnchantmentManager {
         }
     }
 
+    //COMMON FOR ALL ENCHANTMENTS TO COLLECT THEM
     public void enchantmentCollected(Tile clickedTile) {
         // Check if there is an enchantment at the clicked tile
          Tile playerTile = game.getGrid().getTileAt(game.getPlayer().getGridX(), game.getPlayer().getGridY());
@@ -122,8 +124,13 @@ public class EnchantmentManager {
                     String enchantmentType = enchantment.getName();
                     if (enchantmentType.equals("Reveal")) {
                         game.getPlayer().getInventory().addItem(enchantmentType); // Add to inventory
-                    } else {
-                        enchantment.applyEffect(game); // Apply effect for other enchantments when collected
+                    }
+                    else if(enchantmentType.equals("Cloak of Protection")) {
+                        System.out.println("cloak added to the inventory by encmanager");
+                        game.getPlayer().getInventory().addItem(enchantmentType);
+                    }
+                    else {
+                        enchantment.applyEffect(game); // Apply effect for extralife and extratime directly
                     }
                     //System.out.println("Enchantment "+ enchantment.getName()+" is located at: "+enchantment.getGridX()+", "+enchantment.getGridY());
                     //System.out.println("Clicked tile :" +clickedTile.getGridX() + ", " + clickedTile.getGridY());
@@ -148,5 +155,8 @@ public class EnchantmentManager {
 
     public List<BaseEnchantment> getEnchantments() {
         return enchantments;
+    }
+    public BaseEnchantment getSelectedEnchantment(String type) {
+        return enchantments.getFirst();
     }
 }
