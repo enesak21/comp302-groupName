@@ -39,6 +39,7 @@ public class EnchantmentManager {
         factories = new ArrayList<>();
         factories.add(new ExtraTimeEnchantmentFactory());
         factories.add(new RevealEnchantmentFactory());
+        factories.add(new ExtraLifeEnchantmentFactory());
     }
 
     public void spawnEnchantment(int gridWidth, int gridHeight) {
@@ -122,7 +123,7 @@ public class EnchantmentManager {
                     if (enchantmentType.equals("Reveal")) {
                         game.getPlayer().getInventory().addItem(enchantmentType); // Add to inventory
                     } else {
-                        enchantment.applyEffect(game); // Apply effect for other enchantments
+                        enchantment.applyEffect(game); // Apply effect for other enchantments when collected
                     }
                     //System.out.println("Enchantment "+ enchantment.getName()+" is located at: "+enchantment.getGridX()+", "+enchantment.getGridY());
                     //System.out.println("Clicked tile :" +clickedTile.getGridX() + ", " + clickedTile.getGridY());

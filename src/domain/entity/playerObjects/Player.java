@@ -125,6 +125,12 @@ public class Player extends Entity {
         return health;
     }
 
+    public void setHealth(int health){
+        if (this.health < 4) {
+            this.health = health;
+        }
+    }
+
     /**
      * Reduces the player's health by one. If the player's health reaches zero,
      * it sets the remaining game time to zero and triggers the game over handler.
