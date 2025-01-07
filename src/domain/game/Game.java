@@ -106,4 +106,11 @@ public class Game {
         return searchRuneController;
     }
 
+    /**
+     * Teleports the player to a random empty location.
+     * This method is called by wizard in CloseToLosingBehavior.
+     */
+    public void teleportPlayer() {
+        //TODO: Implement this method
+    }
 }

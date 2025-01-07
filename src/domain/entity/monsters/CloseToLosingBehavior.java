@@ -10,6 +10,7 @@ public class CloseToLosingBehavior implements IWizardBehavior {
 
     @Override
     public void execute(WizardMonster wizardMonster, Game game) {
+        game.teleportPlayer();
         wizardMonster.disappear();
     }
 }
