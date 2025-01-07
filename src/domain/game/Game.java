@@ -22,7 +22,6 @@ public class Game {
         this.player = player;
         this.grid = grid;
         this.remainingTime = 60; // Initialize with a default value
-        this.timeController = new TimeController();
         searchRuneController = new SearchRuneController(this);
         this.rune= createRune();
     }
@@ -105,6 +104,7 @@ public class Game {
     public void update() {
         if (!isPaused) {
             player.update();
+            monsterManager.updateMonsters();
         }
     }
 

@@ -26,9 +26,14 @@ public class GameManager {
             Grid grid = currentHall.toGrid(playModePanel.getTileSize());
 
             // Yeni bir Game başlat
+
             currentGame = new Game(grid,player);
             playModePanel.setGameManager(this); // PlayModePanel'i yeni oyunla güncelle
+            currentGame.initializeTimeController();
+            currentGame.initializeGridAndRune();
+            currentGame.initializePlayer("Osimhen", 0, 0, playModePanel.getTileSize(), new PlayerInputHandler());
             currentGame.initializeMonsters(playModePanel.getTileSize());
+            currentGame.initializeCollisionChecker();
             currentHallIndex++;
         } else {
             endGame();
@@ -66,8 +71,7 @@ public class GameManager {
 
     public void updateGameState() {
         if (!currentGame.isPaused()) {
-            currentGame.getPlayer().update(); // Oyuncunun güncellenmesi
-            currentGame.getMonsterManager().updateMonsters(); // Canavarların güncellenmesi
+            currentGame.update();
         }
     }
 

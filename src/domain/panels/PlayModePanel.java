@@ -60,13 +60,10 @@ public class PlayModePanel extends JPanel implements Runnable {
     private PlayerView playerView;
     private GridView gridView;
 
-    private MonsterManager monsterManager;
-    private int countMonster = 0;
     private CopyOnWriteArrayList<MonsterView> monsterViewList = new CopyOnWriteArrayList<>();
 
 
     // Declare the halls variable
-    private boolean lastRunefound = false;
     private boolean inTransition = false;
 
     private GameOverHandler gameOverHandler;
@@ -246,19 +243,18 @@ public class PlayModePanel extends JPanel implements Runnable {
         while (gameThread != null) {
             double drawInterval = 1000000000 / FPS;
             if (System.nanoTime() - startTime > drawInterval) {
-                update();
+                gameManager.updateGameState();
+                updateUI();
                 repaint();
                 startTime = System.nanoTime();
             }
         }
     }
 
-    public void update() {
+    public void updateUI() {
         if (!isPaused) {
-            // GameManager'dan domain güncellemelerini çağır
-            gameManager.updateGameState();
-
             // MonsterView'leri güncelle
+            playerView.draw(g2);
             refreshMonsterViews();
         }
     }
@@ -306,7 +302,6 @@ public class PlayModePanel extends JPanel implements Runnable {
     private void drawGameComponents(Graphics2D g2) {
         // Oyun bileşenlerini (grid, duvarlar, player, canavarlar) çiz
         gridView.draw(g2, offsetX * tileSize, offsetY * tileSize);
-        playerView.draw(g2);
         drawWallsAndCorners(g2);
 
         for (MonsterView monsterView : monsterViewList) {
