@@ -55,7 +55,6 @@ public class PlayModePanel extends JPanel implements Runnable {
     int arcHeight = 30; // Rounded corner height
 
 
-    private TimeController timeController;
     private Font pressStart2PFont;
     private boolean isPaused = false; // Add a boolean to track game state
     private PlayerView playerView;
@@ -211,10 +210,8 @@ public class PlayModePanel extends JPanel implements Runnable {
                     if (isPaused) {
                         gameManager.pauseGame();
 
-                        timeController.pauseTimer();
                     } else {
                         gameManager.resumeGame();
-                        timeController.resumeTimer();
 
                     }
                     repaint();
@@ -676,10 +673,6 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public Font getFont() {
         return pressStart2PFont;
-    }
-
-    public TimeController getTimeController() {
-        return timeController;
     }
 
     public Graphics2D getGraphics2() {
