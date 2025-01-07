@@ -2,6 +2,7 @@ package domain.handlers;
 
 
 import domain.UI.UI;
+import domain.game.GameManager;
 import domain.handlers.buttonHandlers.TryAgainButton;
 import domain.panels.PlayModePanel;
 import java.awt.*;
@@ -11,6 +12,7 @@ public class GameWinningHandler {
     Font font;
     PlayModePanel playModePanel;
     TryAgainButton tryAgainButton;
+    GameManager gameManager;
 
     public GameWinningHandler(PlayModePanel playModePanel) {
         this.playModePanel = playModePanel;
@@ -21,7 +23,6 @@ public class GameWinningHandler {
 
     public void handle() {
         playModePanel.setState("TryAgain");
-        playModePanel.getTimeController().pauseTimer();
         drawWinningScreen(playModePanel.getGraphics2());
     }
 

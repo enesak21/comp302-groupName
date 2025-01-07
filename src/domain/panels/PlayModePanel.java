@@ -287,10 +287,9 @@ public class PlayModePanel extends JPanel implements Runnable {
             }
 
             // Check if Time is over
-            if (gameManager.getCurrentGame().getTimeController().getTimeLeft() <= 0) {
-                isPaused = true;
+            if (gameManager.getCurrentGame().isTimeUp()) {
                 gameOverHandler.handle();
-            } else if (lastRunefound) {
+            } else if (gameManager.getCurrentGame().isRuneFound()) {
                 gameWinningHandler.handle();
             }
         }

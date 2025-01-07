@@ -78,6 +78,10 @@ public class Game {
         return isPaused;
     }
 
+    public boolean isTimeUp() {
+        return timeController.getTimeLeft() <= 0;
+    }
+
     public static float calculateDistance(int gridx1, int gridy1, int gridx2, int gridy2) {
         return (float) Math.sqrt(Math.pow(gridx2 - gridx1, 2) + Math.pow(gridy2 - gridy1, 2));
     }
