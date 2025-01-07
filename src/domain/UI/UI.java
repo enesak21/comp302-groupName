@@ -150,7 +150,7 @@ public class UI {
         completeButton.addActionListener(e -> {
             if (buildModeHandler.checkBuildMode()) { // Check if the build mode is valid
                 List<Hall> halls = buildModePanel.getHalls();
-                Player player = Player.getInstance("Osimhen", 0, 0, 32, 32, buildModePanel.getTileSize());
+                Player player = Player.getInstance();
                 gameManager = new GameManager(halls, player);
 
                 if (!isPanelAdded("Game")) { //
@@ -185,7 +185,6 @@ public class UI {
      */
     private JPanel createGameScreen() {
         PlayModePanel playModePanel = new PlayModePanel(gameManager);
-
         playModePanel.startGameThread(); // Start the game loop
         SwingUtilities.invokeLater(playModePanel::requestFocusInWindow); // Request focus for key events
         return playModePanel;

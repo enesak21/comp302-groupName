@@ -99,6 +99,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     // Constructor
     public PlayModePanel(GameManager gameManager) {
         this.gameManager = gameManager; // Initialize the halls variable
+        gameManager.setPlayModePanel(this);
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(new Color(66, 40, 53));
         this.setDoubleBuffered(true);

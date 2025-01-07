@@ -30,9 +30,9 @@ public class Player extends Entity {
     }
 
 
-    public static Player getInstance(String name, int gridX, int gridY, int tileSize, PlayerInputHandler playerInputHandler) {
+    public static Player getInstance() {
         if (instance==null) {
-            return new Player(name, gridX, gridY, tileSize, playerInputHandler);
+            return new Player("Osimhen", 0, 0, 32, new PlayerInputHandler());
         }
         return instance;
     }
@@ -59,6 +59,10 @@ public class Player extends Entity {
         this.moving = false;
         this.pixelCounter = 0;
         updatePixelPosition();
+    }
+
+    public void restart() {
+        restart(name, 0, 0, 32, playerInputHandler);
     }
 
     @Override

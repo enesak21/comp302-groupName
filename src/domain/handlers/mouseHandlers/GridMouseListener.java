@@ -28,8 +28,8 @@ public class GridMouseListener {
         this.tileSize = playModePanel.getTileSize();
         this.offsetX = playModePanel.getOffsetX();
         this.offsetY = playModePanel.getOffsetY();
-        this.grid = playModePanel.getGrid();
-        this.searchRuneController = new SearchRuneController(playModePanel);
+        this.grid = playModePanel.getGameManager().getCurrentGame().getGrid();
+        this.searchRuneController = new SearchRuneController(playModePanel.getGameManager().getCurrentGame());
 
     }
     public void handleGridClick(Point rawClickPoint) {

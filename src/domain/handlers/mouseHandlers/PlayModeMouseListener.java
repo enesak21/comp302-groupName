@@ -29,7 +29,7 @@ public class PlayModeMouseListener extends MouseAdapter {
             // Possibly do something with the click in the game over state
 
             if (isWithinBounds(clickPoint, 284, 410, 200, 50)) {
-                playModePanel.restartGame();
+                playModePanel.getGameManager().restartGame();
             }
 
         } else {

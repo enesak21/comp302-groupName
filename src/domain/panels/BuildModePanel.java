@@ -221,5 +221,9 @@ public class BuildModePanel extends JPanel {
     public BuildModeHandler getBuildModeHandler() {
         return buildModeHandler;
     }
+
+    public int getTileSize() {
+        return CELL_SIZE;
+    }
 }
 

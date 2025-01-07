@@ -28,7 +28,7 @@ public class Game {
     }
 
     public void initializePlayer(String name, int gridX, int gridY, int tileSize, PlayerInputHandler inputHandler) {
-        player = Player.getInstance(name, gridX, gridY, tileSize, inputHandler);
+        player = Player.getInstance();
     }
 
     public void initializeGridAndRune() {

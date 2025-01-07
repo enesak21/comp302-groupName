@@ -18,7 +18,6 @@ public class GameManager {
     public GameManager(List<Hall> halls, Player player) {
         this.player=player;
         this.halls = halls;
-        startNewHall();
     }
 
     public void startNewHall() {
@@ -29,7 +28,7 @@ public class GameManager {
             // Yeni bir Game başlat
             currentGame = new Game(grid,player);
             playModePanel.setGameManager(this); // PlayModePanel'i yeni oyunla güncelle
-
+            currentGame.initializeMonsters(playModePanel.getTileSize());
             currentHallIndex++;
         } else {
             endGame();
@@ -53,8 +52,7 @@ public class GameManager {
     public void startNewGame() {
         //Create a new Hall and Grid
         Grid grid = new Grid(playModePanel.getTileSize());
-        Player player = Player.getInstance("Osimhen", 0, 0, grid.getTileSize(), new PlayerInputHandler());
-
+        Player player = Player.getInstance();
         // update PlayModePanel with the new Game
         playModePanel.setGameManager(this);
     }
@@ -62,7 +60,7 @@ public class GameManager {
     public void restartGame() {
         // Oyuncu ve oyun durumlarını sıfırla
         currentHallIndex = 0; // İlk hall'e dön
-        player.restart("Osimhen"); // Oyuncunun durumunu sıfırla
+        player.restart(); // Oyuncunun durumunu sıfırla
         startNewHall(); // İlk hall'i başlat
     }
 
@@ -107,5 +105,9 @@ public class GameManager {
 
     public int getCurrentHallIndex() {
         return currentHallIndex;
+    }
+
+    public void setPlayModePanel(PlayModePanel playModePanel) {
+        this.playModePanel = playModePanel;
     }
 }

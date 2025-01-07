@@ -52,15 +52,15 @@ public class SidebarMouseListener {
         if (mouseX >= buttonX1 && mouseX <= buttonX1 + buttonWidth && mouseY >= buttonY && mouseY <= buttonY + buttonHeight) {
             // Pause/Resume button clicked
             if (playModePanel.getIsPaused()) {
-                playModePanel.resumeGame();
+                playModePanel.getGameManager().resumeGame();
                 playModePanel.setPaused(false);
             } else {
-                playModePanel.pauseGame();
+                playModePanel.getGameManager().pauseGame();
                 playModePanel.setPaused(true);
             }
         } else if (mouseX >= buttonX2 && mouseX <= buttonX2 + buttonWidth && mouseY >= buttonY && mouseY <= buttonY + buttonHeight) {
             // Exit button clicked
-            playModePanel.exitGame(); // Exit the game
+            playModePanel.getGameManager().exitGame(); // Exit the game
         }
 
 
