@@ -290,7 +290,7 @@ public class PlayModePanel extends JPanel implements Runnable {
             }
 
             // Check if Time is over
-            if (timeController.getTimeLeft() <= 0) {
+            if (gameManager.getCurrentGame().getTimeController().getTimeLeft() <= 0) {
                 isPaused = true;
                 gameOverHandler.handle();
             } else if (lastRunefound) {
@@ -389,7 +389,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         g2.setFont(pressStart2PFont.deriveFont(13f));
         g2.setColor(Color.WHITE);
         g2.drawString("Time:", sidebarX + 40, sidebarY + 95);
-        g2.drawString(timeController.getTimeLeft() + " seconds", sidebarX + 5, sidebarY + 125);
+        g2.drawString(gameManager.getCurrentGame().getTimeController().getTimeLeft() + " seconds", sidebarX + 5, sidebarY + 125);
 
         // Add health hearts
         try {
@@ -404,7 +404,7 @@ public class PlayModePanel extends JPanel implements Runnable {
 
 
     private void drawPauseOverlay(Graphics2D g2) {
-        if (timeController.getTimeLeft() > 0) {
+        if (gameManager.getCurrentGame().getTimeController().getTimeLeft() > 0) {
             g2.setColor(new Color(0, 0, 0, 150)); // Semi-transparent background
             g2.fillRect(0, 0, screenWidth, screenHeight);
 

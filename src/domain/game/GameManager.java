@@ -110,4 +110,8 @@ public class GameManager {
     public void setPlayModePanel(PlayModePanel playModePanel) {
         this.playModePanel = playModePanel;
     }
+
+    public String getCurrentHallName() {
+        return halls.get(currentHallIndex).getName();
+    }
 }
