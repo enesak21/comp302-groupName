@@ -102,7 +102,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.setFocusable(true);
 
         initializeGameComponents();
-        initializeUI();
         loadFont();
         addPauseKeyListener();
 
@@ -130,14 +129,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         }
         playModeMouseListener = new PlayModeMouseListener(this);
         this.addMouseListener(playModeMouseListener);
-    }
-
-    private void initializeUI() {
-        // UI bileşenlerini başlat
-        initializePlayerView();
-        initializeGridView();
-        initializeMonsterViews();
-        initializeMouseListeners();
     }
 
     private void initializePlayerView() {

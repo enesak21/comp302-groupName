@@ -156,6 +156,7 @@ public class UI {
                 if (!isPanelAdded("Game")) { //
                     mainPanel.add(createGameScreen(), "Game");
                 }
+
                 cardLayout.show(mainPanel, "Game");
                 mainPanel.revalidate();
                 mainPanel.repaint();
