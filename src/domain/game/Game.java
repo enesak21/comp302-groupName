@@ -1,6 +1,8 @@
 // src/domain/game/Game.java
 package domain.game;
 
+import java.util.Random;
+
 import domain.entity.playerObjects.Player;
 import domain.panels.PlayModePanel;
 
@@ -112,5 +114,17 @@ public class Game {
      */
     public void teleportPlayer() {
         //TODO: Implement this method
+        Random random = new Random();
+        int gridWidth = grid.getColumns();
+        int gridHeight = grid.getRows();
+        int newX, newY;
+
+        do {
+            newX = random.nextInt(gridWidth);
+            newY = random.nextInt(gridHeight);
+        } while (grid.getTileAt(newX - 2, newY - 2).isSolid());
+
+        player.setGridX(newX);
+        player.setGridY(newY);
     }
 }

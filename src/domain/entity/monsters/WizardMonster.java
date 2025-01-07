@@ -83,6 +83,7 @@ public class WizardMonster extends BaseMonster {
 
     // TODO: Implement this method
     public void disappear() {
-        System.out.println("poof");
+        // System.out.println("poof");
+        game.getMonsterManager().removeMonster(this);
     }
 }

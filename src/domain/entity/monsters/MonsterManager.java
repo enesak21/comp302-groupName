@@ -85,4 +85,9 @@ public class MonsterManager {
     public void setCollisionChecker(CollisionChecker collisionChecker) {
         this.collisionChecker = collisionChecker;
     }
+
+    public void removeMonster(BaseMonster monster) {
+        monsters.remove(monster);
+        game.getGrid().getTileAt(monster.getGridX() - 2, monster.getGridY() - 2).setSolid(false); // Update the grid to mark the tile as not solid
+    }
 }
