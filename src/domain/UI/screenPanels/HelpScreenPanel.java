@@ -10,26 +10,27 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Panel for displaying help and instructions with a LOTR-themed font.
+ * Panel for displaying help and instructions with a LOTR-themed font,
+ * now using an HTML-based JTextPane for colorized bullet points and headings.
  */
 public class HelpScreenPanel extends JPanel {
 
     private final UI ui;
     private JLabel titleLabel;
-    private JTextArea instructionsArea;
+    private JTextPane instructionsPane;
     private JButton backButton;
 
     // Path to a background image (optional, for a fancier look)
     private static final String BACKGROUND_IMG_PATH = "src/resources/backgrounds/help_bg.png";
 
-    // LOTR-like font
+    // LOTR-like font reference
     private Font lotrFont;
 
     public HelpScreenPanel(UI ui) {
         this.ui = ui;
-        loadLOTRFont();    // 1. Load the custom TTF/OTF font
-        initComponents();  // 2. Build UI
-        addListeners();    // 3. Wire up events
+        loadLOTRFont();    // Load the custom TTF/OTF font
+        initComponents();  // Build UI
+        addListeners();    // Wire up events
     }
 
     /**
@@ -66,29 +67,54 @@ public class HelpScreenPanel extends JPanel {
         titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
         add(titleLabel, BorderLayout.NORTH);
 
-        // -- Instructions TextArea --
-        instructionsArea = new JTextArea("""
-        Controls:
-        † Arrow Keys: Move the hero
-        † Mouse Left Click: Interact with objects
-        † R Key: Use Reveal Enchantment
-        † P Key: Use Cloak of Protection
-        † B Key + Direction: Throw Luring Gem
-        
-        Gameplay:
-        † Collect runes to unlock new halls.
-        † Avoid monsters and use enchantments to help your journey.
-        † Design the halls during build mode.
-        """);
-        instructionsArea.setFont(lotrFont.deriveFont(Font.PLAIN, 18f));
-        instructionsArea.setForeground(new Color(245, 222, 179)); // Wheat color
-        instructionsArea.setOpaque(false);
-        instructionsArea.setEditable(false);
-        instructionsArea.setLineWrap(true);
-        instructionsArea.setWrapStyleWord(true);
+        // -- Instructions as an HTML-based JTextPane --
+        instructionsPane = new JTextPane();
+        instructionsPane.setContentType("text/html");
+        instructionsPane.setEditable(false);
+        instructionsPane.setOpaque(false); // Let background image show through
 
-        // -- Scroll Pane for instructions --
-        JScrollPane scrollPane = new JScrollPane(instructionsArea);
+        /*
+         * We use a multi-line HTML string:
+         * - <h1> for bigger headings, in gold (#FFD700)
+         * - Body text at font-size:16px, in paler yellow (#FFFFCC)
+         * - Bullets (†) in #FFD700
+         * - Key commands (Arrow Keys, Mouse Left Click, R Key, etc.) in a different color (#FFC30B)
+         */
+        String htmlText = """
+            <html>
+              <body style="font-family: 'Ringbearer', Serif; font-size:16px; color:#FFFFCC; margin:10px;">
+                <h1 style="text-align:center; color:#FFD700; font-size:24px;">Controls</h1>
+                <p>
+                  <span style="color:#FFD700;">†</span>
+                  <span style="color:#FFC30B; font-weight:bold;">Arrow Keys</span>: Move the hero<br>
+
+                  <span style="color:#FFD700;">†</span>
+                  <span style="color:#FFC30B; font-weight:bold;">Mouse Left Click</span>: Interact with objects<br>
+
+                  <span style="color:#FFD700;">†</span> Press
+                  <span style="color:#FFC30B; font-weight:bold;">R</span> for Reveal Enchantment<br>
+
+                  <span style="color:#FFD700;">†</span> Press
+                  <span style="color:#FFC30B; font-weight:bold;">P</span> for Cloak of Protection<br>
+
+                  <span style="color:#FFD700;">†</span> Press
+                  <span style="color:#FFC30B; font-weight:bold;">B Key + Direction</span> to throw a Luring Gem
+                </p>
+
+                <h1 style="text-align:center; color:#FFD700; font-size:24px;">Gameplay</h1>
+                <p>
+                  <span style="color:#FFD700;">†</span> Collect runes to unlock new halls<br>
+                  <span style="color:#FFD700;">†</span> Avoid monsters and use enchantments to help your journey<br>
+                  <span style="color:#FFD700;">†</span> Design the halls during build mode
+                </p>
+              </body>
+            </html>
+            """;
+
+        instructionsPane.setText(htmlText);
+
+        // Scroll Pane for instructions
+        JScrollPane scrollPane = new JScrollPane(instructionsPane);
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
         scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
