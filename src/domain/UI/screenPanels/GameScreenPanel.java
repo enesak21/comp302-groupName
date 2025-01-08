@@ -28,7 +28,7 @@ public class GameScreenPanel extends JPanel {
 
         // Optional: if you want to fix a certain width for the sidebar,
         // you can set a preferred size on the sidebar panel
-        sidebarPanel.setPreferredSize(new Dimension(180, 640));
+        sidebarPanel.setPreferredSize(new Dimension(playModePanel.getScreenWidth() * 23 / 100, playModePanel.getScreenHeight() * 99 / 100));
 
         // Start the game thread
         playModePanel.startGameThread(); // Start the game loop
