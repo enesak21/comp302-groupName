@@ -1,6 +1,7 @@
 package domain.panels;
 
 import domain.panels.sideBarComponents.HeartsLeftPanel;
+import domain.panels.sideBarComponents.InventoryPanel;
 import domain.panels.sideBarComponents.TimeLeftPanel;
 import domain.panels.sideBarComponents.TopButtonPanel;
 
@@ -73,16 +74,7 @@ public class SidebarPanel extends JPanel {
 
 
         // ============== INVENTORY PANEL ==============
-        inventoryPanel = new JPanel();
-        inventoryPanel.setOpaque(false); // matches parent background
-        inventoryPanel.setBorder(BorderFactory.createTitledBorder("Inventory"));
-        inventoryPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
-        // Add example items in the inventory
-        for (int i = 1; i <= 3; i++) {
-            JLabel itemLabel = new JLabel("Item " + i);
-            inventoryPanel.add(itemLabel);
-        }
+        inventoryPanel = new InventoryPanel();
 
         add(inventoryPanel);
     }

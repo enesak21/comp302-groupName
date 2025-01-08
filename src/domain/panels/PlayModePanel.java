@@ -14,6 +14,7 @@ import domain.entity.playerObjects.Player;
 import domain.game.*;
 import domain.handlers.mouseHandlers.PlayModeMouseListener;
 import domain.panels.sideBarComponents.HeartsLeftPanel;
+import domain.panels.sideBarComponents.InventoryPanel;
 import domain.panels.sideBarComponents.TimeLeftPanel;
 import domain.game.SearchRuneController;
 import main.PlayerInputHandler;
@@ -178,6 +179,10 @@ public class PlayModePanel extends JPanel implements Runnable {
         ((HeartsLeftPanel) sidebarPanel.getHeartsLeftPanel()).updateHeartsLeft(game.getPlayer().getHealth());
         ((HeartsLeftPanel) sidebarPanel.getHeartsLeftPanel()).initHearts();
         ((TimeLeftPanel) sidebarPanel.getTimeLeftPanel()).updateTimeLeft(timeController.getTimeLeft());
+
+        // for testing purposes
+        ((InventoryPanel) sidebarPanel.getInventoryPanel()).addItem("Cloak of Protection", 1);
+        ((InventoryPanel) sidebarPanel.getInventoryPanel()).addItem("Luring Gem", 9);
     }
 
     public void moveToNextHall() {
