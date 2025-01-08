@@ -13,16 +13,18 @@ public class WizardMonster extends BaseMonster {
     private final long INITIAL_DELAY = 2000;
     private long lastTeleportTime;
     private Random random;
+    private MonsterManager monsterManager;
     private Game game;
     private CollisionChecker collisionChecker;
     private long lastAttackTime = System.currentTimeMillis() + INITIAL_DELAY;
     private IWizardBehavior behavior;
 
-    public WizardMonster(int gridX, int gridY, int tileSize, Game game) {
+    public WizardMonster(int gridX, int gridY, int tileSize, MonsterManager monsterManager) {
         super(gridX, gridY, tileSize);
         this.lastTeleportTime = System.currentTimeMillis();
         this.random = new Random();
-        this.game = game;
+        this.monsterManager = monsterManager;
+        this.game = monsterManager.getGame();
     }
 
     @Override
@@ -83,6 +85,6 @@ public class WizardMonster extends BaseMonster {
 
     public void disappear() {
         // System.out.println("poof");
-        game.getMonsterManager().removeMonster(this);
+        monsterManager.removeMonster(this);
     }
 }
