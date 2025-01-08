@@ -13,6 +13,7 @@ import domain.entity.monsters.*;
 import domain.entity.playerObjects.Player;
 import domain.game.*;
 import domain.handlers.mouseHandlers.PlayModeMouseListener;
+import domain.panels.sideBarComponents.TimeLeftPanel;
 import domain.structures.Structure;
 import domain.game.SearchRuneController;
 import main.PlayerInputHandler;
@@ -102,6 +103,8 @@ public class PlayModePanel extends JPanel implements Runnable {
     Rune rune;
     Graphics2D g2;
 
+    private SidebarPanel sidebarPanel;
+
 
 
     // Constructor
@@ -140,7 +143,10 @@ public class PlayModePanel extends JPanel implements Runnable {
         game = new Game(player, tileSize, this, grid, searchRuneController);
 
         timeController = game.getTimeController();
-        timeController.setTimeLeft(halls.get(hallNum).getPlacedStructuresCount() * 5);
+        // Set the time based on the number of structures placed
+        // timeController.setTimeLeft(halls.get(hallNum).getPlacedStructuresCount() * 5);
+
+        timeController.setTimeLeft(60); // Set the time to 60 seconds for testing purposes
 
         this.addKeyListener(player.getPlayerInputHandler());
         //initialize monsterManager
@@ -305,9 +311,8 @@ public class PlayModePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         g2 = (Graphics2D) g;
 
-
         // Draw Time (always display the sidebar)
-        drawTime(g2);
+        ((TimeLeftPanel) sidebarPanel.getTimeLeftPanel()).updateTimeLeft(timeController.getTimeLeft());
 
         // Draw game grid and player
         gridView.draw(g2, offsetX * tileSize, offsetY * tileSize);
@@ -715,17 +720,11 @@ public class PlayModePanel extends JPanel implements Runnable {
         return g2;
     }
 
-    public List<Hall> getHalls() {
-        return halls;
-    }
 
     public int getScreenHeight() {
         return screenHeight;
     }
 
-    public PlayModeMouseListener getPlayModeMouseListener() {
-        return playModeMouseListener;
-    }
 
     public void setState(String state) {
         this.state = state;
@@ -737,5 +736,9 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public GameOverHandler getGameOverHandler() {
         return gameOverHandler;
+    }
+
+    public void setSidebarPanel(SidebarPanel sidebarPanel) {
+        this.sidebarPanel = sidebarPanel;
     }
 }
