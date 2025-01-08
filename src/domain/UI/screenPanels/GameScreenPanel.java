@@ -16,6 +16,7 @@ public class GameScreenPanel extends JPanel {
         this.playModePanel = new PlayModePanel(ui.getBuildScreen().getBuildModePanel().getHalls());
         this.sidebarPanel = new SidebarPanel(playModePanel);
         this.playModePanel.setSidebarPanel(sidebarPanel);
+        playModePanel.initializeGameComponents(0);
 
         // Use a BorderLayout
         setLayout(new BorderLayout());

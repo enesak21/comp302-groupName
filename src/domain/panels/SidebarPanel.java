@@ -1,18 +1,18 @@
 package domain.panels;
 
+import domain.panels.sideBarComponents.HeartsLeftPanel;
 import domain.panels.sideBarComponents.TimeLeftPanel;
 import domain.panels.sideBarComponents.TopButtonPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Time;
 
 public class SidebarPanel extends JPanel {
 
     // Fields for UI components
     private TopButtonPanel topButtonPanel;
     private JPanel timeLeftPanel;
-    private JLabel heartsLeftLabel;
+    private JPanel heartsPanel;
     private JPanel inventoryPanel;
 
     // Reference to the PlayModePanel
@@ -59,9 +59,12 @@ public class SidebarPanel extends JPanel {
 
 
         // ============== HEARTS LEFT LABEL ==============
-        heartsLeftLabel = new JLabel("Hearts: ♥♥♥");
-        heartsLeftLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        add(heartsLeftLabel);
+        heartsPanel = new HeartsLeftPanel(0); // Start with 3 hearts
+
+        // Add it to the sidebar
+        add(heartsPanel);
+
+
 
         // If we want the inventory to truly sit at the bottom,
         // we can insert a "vertical glue" here. This pushes subsequent components downward.
@@ -85,7 +88,7 @@ public class SidebarPanel extends JPanel {
     }
 
     // Getters for UI components
-    public TopButtonPanel getTopButtonPanel() {
+    public JPanel getTopButtonPanel() {
         return topButtonPanel;
     }
 
@@ -93,8 +96,8 @@ public class SidebarPanel extends JPanel {
         return timeLeftPanel;
     }
 
-    public JLabel getHeartsLeftLabel() {
-        return heartsLeftLabel;
+    public JPanel getHeartsLeftPanel() {
+        return heartsPanel;
     }
 
     public JPanel getInventoryPanel() {
