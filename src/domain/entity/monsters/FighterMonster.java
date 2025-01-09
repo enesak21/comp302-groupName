@@ -13,7 +13,7 @@ public class FighterMonster extends BaseMonster {
     private Random random;
     private int pixelCounter = 0;
     private final int SPEED = 1;
-    private final int ATTACK_FREQUENCY = 500;
+    private final int ATTACK_FREQUENCY = 1000;
     private long lastAttackTime;
     private boolean moving = false;
     private CollisionChecker collisionChecker;
@@ -96,6 +96,7 @@ public class FighterMonster extends BaseMonster {
 
     @Override
     public void attack(Player player) {
+
         if (isInRange(this.getGridX(), this.getGridY(),player.getGridX() ,player.getGridY(), DAGGER_RANGE)) {
             long currentTime = System.currentTimeMillis();
             if ((currentTime - lastAttackTime) > ATTACK_FREQUENCY) {
