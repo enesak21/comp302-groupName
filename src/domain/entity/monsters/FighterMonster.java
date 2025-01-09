@@ -1,6 +1,7 @@
 package domain.entity.monsters;
 
 import domain.enchantments.BaseEnchantment;
+import domain.enchantments.LuringGem;
 import domain.entity.Direction;
 import domain.entity.playerObjects.Player;
 import domain.game.CollisionChecker;
@@ -96,13 +97,19 @@ public class FighterMonster extends BaseMonster {
         }
         // Speed of the monster is controlled by this if statement. The higher the number, the slower the monster.
         if (moveCounter >= SPEED * 2) {
+            // the direction is random by default. if there is an active luring gem it is specified.
+            int direction = random.nextInt(4);
             if (game.isLuringGemActive()) {
                 // Use the direction from the luring gem logic (1..4)
-                move(game, 3); // DIRECTION MUST BE TAKEN FROM KEY LISTENER. THIS IS ONLY FOR TEST
+                for (BaseEnchantment enchantment : game.getActiveEnchantments()) {
+                    if (enchantment.getName().equals("Luring Gem")) {
+                        direction = ((LuringGem) enchantment).getDirection();
+                    }
+                }
+                move(game, direction);
             } else {
                 // Simple random movement
-                int random_direction = random.nextInt(4); // 0: UP, 1: DOWN, 2: LEFT, 3: RIGHT
-                move(game, random_direction);
+                move(game, direction);
             }
             moveCounter = 0;
         }
