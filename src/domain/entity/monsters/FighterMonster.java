@@ -88,16 +88,15 @@ public class FighterMonster extends BaseMonster {
     @Override
     public void update(Game game) {
         moveCounter++;
-        boolean luringGemActive = false;
         for (BaseEnchantment enchantment : game.getActiveEnchantments()) {
             if (enchantment.getName().equals("Luring Gem")) {
-                luringGemActive = true;
+                game.setLuringGemActive(true);
                 break;
             }
         }
         // Speed of the monster is controlled by this if statement. The higher the number, the slower the monster.
         if (moveCounter >= SPEED * 2) {
-            if (luringGemActive) {
+            if (game.isLuringGemActive()) {
                 // Use the direction from the luring gem logic (1..4)
                 move(game, 3); // DIRECTION MUST BE TAKEN FROM KEY LISTENER. THIS IS ONLY FOR TEST
             } else {

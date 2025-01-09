@@ -21,6 +21,7 @@ public class Game {
     private ArrayList<BaseEnchantment> activeEnchantments = new ArrayList<>();
     private int tileSize;
     private MonsterManager monsterManager;
+    private boolean isLuringGemActive = false;
 
     public Game(Player player, int tileSize, Grid grid, SearchRuneController searchRuneController) {
         this.player = player;
@@ -145,5 +146,13 @@ public class Game {
         player.setGridX(newX);
         player.setGridY(newY);
 
+    }
+
+    public boolean isLuringGemActive() {
+        return isLuringGemActive;
+    }
+
+    public void setLuringGemActive(boolean luringGemActive) {
+        isLuringGemActive = luringGemActive;
     }
 }

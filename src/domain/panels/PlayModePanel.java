@@ -240,27 +240,26 @@ public class PlayModePanel extends JPanel implements Runnable {
                             System.out.println("No Luring enchantment in inventory.");
                         }
                         break;
-                    case KeyEvent.VK_A:
-                        if (bPressed) {
-                            game.getPlayer().useLuringGemEnchantment();
-                            bPressed = false;
-                        }
-                    case KeyEvent.VK_D:
-                        if (bPressed) {
-                            game.getPlayer().useLuringGemEnchantment();
-                            bPressed = false;
-                        }
                     case KeyEvent.VK_W:
                         if (bPressed) {
-                            game.getPlayer().useLuringGemEnchantment();
+                            game.getPlayer().useLuringGemEnchantment(0);
                             bPressed = false;
                         }
                     case KeyEvent.VK_S:
                         if (bPressed) {
-                            game.getPlayer().useLuringGemEnchantment();
+                            game.getPlayer().useLuringGemEnchantment(1);
                             bPressed = false;
                         }
-
+                    case KeyEvent.VK_A:
+                        if (bPressed) {
+                            game.getPlayer().useLuringGemEnchantment(2);
+                            bPressed = false;
+                        }
+                    case KeyEvent.VK_D:
+                        if (bPressed) {
+                            game.getPlayer().useLuringGemEnchantment(3);
+                            bPressed = false;
+                        }
                 }
             }
         });

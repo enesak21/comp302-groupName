@@ -186,8 +186,8 @@ public void setCollisionChecker(CollisionChecker collisionChecker) {
         System.out.println("CLOAK OF PROTECTION enchantment used.");
     }
 
-    public void useLuringGemEnchantment() {
-        BaseEnchantment gem = new LuringGem(0, 0, tileSize);
+    public void useLuringGemEnchantment(int direction) {
+        BaseEnchantment gem = new LuringGem(0, 0, tileSize, direction);
         gem.applyEffect(playModePanel.getGame());
         this.getInventory().removeItem("Luring Gem");
         System.out.println("Luring Gem enchantment used.");
