@@ -6,6 +6,7 @@ import domain.panels.SidebarPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.*;
 
 public class GameScreenPanel extends JPanel {
 
@@ -18,19 +19,14 @@ public class GameScreenPanel extends JPanel {
         this.playModePanel.setSidebarPanel(sidebarPanel);
         playModePanel.initializeGameComponents(0);
 
-        // Use a BorderLayout
+        // Use a BorderLayout for flexibility
         setLayout(new BorderLayout());
 
-        // Add the PlayModePanel to the center (main game area)
-        add(playModePanel, BorderLayout.CENTER);
+        // Add components
+        add(playModePanel, BorderLayout.CENTER); // Play area in the center
+        add(sidebarPanel, BorderLayout.EAST);   // Sidebar on the right
 
-        // Add the SidebarPanel to the east (right side)
-        add(sidebarPanel, BorderLayout.EAST);
-
-        // Set a default preferred size for the sidebar (proportional to window size)
-        adjustSidebarSize();
-
-        // Add a resize listener to ensure the sidebar adapts dynamically
+        // Add a resize listener to adjust the sidebar dynamically
         addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
             public void componentResized(java.awt.event.ComponentEvent evt) {
@@ -40,26 +36,32 @@ public class GameScreenPanel extends JPanel {
 
         // Start the game thread
         playModePanel.startGameThread();
-
-        // Request focus on the game area
-        SwingUtilities.invokeLater(playModePanel::requestFocusInWindow);
+        SwingUtilities.invokeLater(playModePanel::requestFocusInWindow); // Ensure play area gets focus
     }
 
     /**
-     * Adjusts the size of the sidebar dynamically based on the window dimensions.
+     * Dynamically adjusts the sidebar size to ensure it does not overlap the play area.
      */
     private void adjustSidebarSize() {
-        int panelWidth = getWidth();
-        int panelHeight = getHeight();
+        int totalWidth = getWidth();
+        int totalHeight = getHeight();
 
-        // Sidebar width is 23% of the screen width, height matches the panel height
-        int sidebarWidth = Math.max(panelWidth * 18 / 100, 190); // Minimum width of 200px
-        int sidebarHeight = panelHeight;
+        // Set the sidebar width to a fixed percentage of the total width (25%)
+        int sidebarWidth = totalWidth * 23 / 100;
 
-        sidebarPanel.setPreferredSize(new Dimension(sidebarWidth, sidebarHeight));
-        sidebarPanel.setMinimumSize(new Dimension(sidebarWidth, sidebarHeight));
+        // Ensure the sidebar width is at least 150 pixels
+        sidebarWidth = Math.max(sidebarWidth, 150);
+
+        // Update sidebar dimensions
+        sidebarPanel.setPreferredSize(new Dimension(sidebarWidth, totalHeight));
+        sidebarPanel.setMinimumSize(new Dimension(sidebarWidth, totalHeight));
+
+        // Ensure the play area adjusts accordingly
+        playModePanel.setPreferredSize(new Dimension(totalWidth - sidebarWidth, totalHeight));
+        playModePanel.setMinimumSize(new Dimension(totalWidth - sidebarWidth, totalHeight));
 
         revalidate();
         repaint();
     }
+
 }
