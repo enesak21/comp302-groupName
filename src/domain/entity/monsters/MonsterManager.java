@@ -1,5 +1,8 @@
 package domain.entity.monsters;
 
+import domain.entity.monsters.Factories.ArcherMonsterFactory;
+import domain.entity.monsters.Factories.FighterMonsterFactory;
+import domain.entity.monsters.Factories.WizardMonsterFactory;
 import domain.game.CollisionChecker;
 import domain.game.Game;
 import domain.panels.PlayModePanel;
