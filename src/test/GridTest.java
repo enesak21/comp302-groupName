@@ -1,15 +1,13 @@
 package test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotEquals;
-
 import org.junit.Test;
 
 import org.junit.BeforeClass;
 
 import domain.game.Grid;
 import domain.game.Tile;
+
+import static org.junit.Assert.*;
 
 public class GridTest {
 
@@ -50,5 +48,35 @@ public class GridTest {
         assertNotEquals("Tiles at different positions should not be identical", tile1, tile2);
     }
 
+    @Test
+    public void testGetTileAtWithinBounds() {
+        // Act
+        Tile tile = grid.getTileAt(2, 3);
+
+        // Assert
+        assertNotNull(tile);
+        assertEquals(2, tile.getGridX());
+        assertEquals(3, tile.getGridY());
+    }
+
+    @Test
+    public void testGetTileAtOutOfBounds() {
+        // Act
+        Tile tile = grid.getTileAt(20, 20);
+
+        // Assert
+        assertNull(tile);
+    }
+
+    @Test
+    public void testGetTileAtEdge() {
+        // Act
+        Tile tile = grid.getTileAt(4, 4);
+
+        // Assert
+        assertNotNull(tile);
+        assertEquals(4, tile.getGridX());
+        assertEquals(4, tile.getGridY());
+    }
 
 }
