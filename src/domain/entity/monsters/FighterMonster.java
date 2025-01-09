@@ -1,5 +1,7 @@
 package domain.entity.monsters;
 
+import domain.enchantments.BaseEnchantment;
+import domain.enchantments.LuringGem;
 import domain.entity.Direction;
 import domain.entity.playerObjects.Player;
 import domain.game.CollisionChecker;
@@ -30,18 +32,18 @@ public class FighterMonster extends BaseMonster {
 
     }
 
-    public void move(Game game) {
-        //simple random movement code
-        int random_direction = random.nextInt(4);//0: UP, 1: DOWN, 2: LEFT, 3:RIGHT
+    // directionNum: //0: UP, 1: DOWN, 2: LEFT, 3:RIGHT
+    public void move(Game game, int directionNum) {
+
 
         if(!moving){
-            if(random_direction == 0){
+            if(directionNum == 0){
                 direction = Direction.UP;
-            }else if(random_direction == 1){
+            }else if(directionNum == 1){
                 direction = Direction.DOWN;
-            }else if(random_direction == 2){
+            }else if(directionNum == 2){
                 direction = Direction.LEFT;
-            }else if(random_direction == 3){
+            }else if(directionNum == 3){
                 direction = Direction.RIGHT;
             }
 
@@ -86,9 +88,28 @@ public class FighterMonster extends BaseMonster {
     @Override
     public void update(Game game) {
         moveCounter++;
-        //Speed of the monster is controlled by this if statement. The higher the number, the slower the monster.
-        if(moveCounter >= SPEED * 2){
-            move(game);
+        for (BaseEnchantment enchantment : game.getActiveEnchantments()) {
+            if (enchantment.getName().equals("Luring Gem")) {
+                game.setLuringGemActive(true);
+                break;
+            }
+        }
+        // Speed of the monster is controlled by this if statement. The higher the number, the slower the monster.
+        if (moveCounter >= SPEED * 2) {
+            // the direction is random by default. if there is an active luring gem it is specified.
+            int direction = random.nextInt(4);
+            if (game.isLuringGemActive()) {
+                // Use the direction from the luring gem logic (1..4)
+                for (BaseEnchantment enchantment : game.getActiveEnchantments()) {
+                    if (enchantment.getName().equals("Luring Gem")) {
+                        direction = ((LuringGem) enchantment).getDirection();
+                    }
+                }
+                move(game, direction);
+            } else {
+                // Simple random movement
+                move(game, direction);
+            }
             moveCounter = 0;
         }
         attack(game.getPlayer());

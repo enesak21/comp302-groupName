@@ -1,5 +1,9 @@
 package domain.entity.playerObjects;
 
+import domain.enchantments.BaseEnchantment;
+import domain.enchantments.CloakOfProtection;
+import domain.enchantments.LuringGem;
+import domain.enchantments.Reveal;
 import domain.entity.Direction;
 import domain.game.CollisionChecker;
 import domain.game.Tile;
@@ -166,5 +170,26 @@ public void setCollisionChecker(CollisionChecker collisionChecker) {
 
     public void setInvisibleToArchers(boolean invisibleToArchers) {
         this.invisibleToArchers = invisibleToArchers;
+    }
+
+    public void useRevealEnchantment() {
+        BaseEnchantment revealEnchantment = new Reveal(0, 0, tileSize); // Adjust parameters as needed
+        revealEnchantment.applyEffect(playModePanel.getGame());
+        this.getInventory().removeItem("Reveal");
+        System.out.println("Reveal enchantment used. Highlighting region.");
+    }
+
+    public void useCloakOfProtectionEnchantment() {
+        BaseEnchantment cloak = new CloakOfProtection(0, 0, tileSize); // Adjust parameters as needed
+        cloak.applyEffect(playModePanel.getGame());
+        this.getInventory().removeItem("Cloak of Protection");
+        System.out.println("CLOAK OF PROTECTION enchantment used.");
+    }
+
+    public void useLuringGemEnchantment(int direction) {
+        BaseEnchantment gem = new LuringGem(0, 0, tileSize, direction);
+        gem.applyEffect(playModePanel.getGame());
+        this.getInventory().removeItem("Luring Gem");
+        System.out.println("Luring Gem enchantment used.");
     }
 }
