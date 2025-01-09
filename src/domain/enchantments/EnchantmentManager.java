@@ -39,10 +39,10 @@ public class EnchantmentManager {
         // Add factories for different enchantments
         factories = new ArrayList<>();
 
-        //factories.add(new ExtraTimeEnchantmentFactory());
-        //factories.add(new RevealEnchantmentFactory());
-        //factories.add(new ExtraLifeEnchantmentFactory());
-        //factories.add(new CloakOfProtectionEnchantmentFactory());
+        factories.add(new ExtraTimeEnchantmentFactory());
+        factories.add(new RevealEnchantmentFactory());
+        factories.add(new ExtraLifeEnchantmentFactory());
+        factories.add(new CloakOfProtectionEnchantmentFactory());
         factories.add(new SpeedUpEnchantmentFactory());
 
     }
