@@ -212,6 +212,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
     //REVEAL KEY HANDLER WILL BE OUT LATER
+    private boolean bPressed = false;
     private void addKeyListenerForUseEnchantments() {
         this.addKeyListener(new KeyAdapter() {
             @Override
@@ -234,11 +235,32 @@ public class PlayModePanel extends JPanel implements Runnable {
                         break;
                     case KeyEvent.VK_B:
                         if (game.getPlayer().getInventory().isInInventory("Luring Gem")) {
-                            game.getPlayer().useLuringGemEnchantment();
+                            bPressed = true;
                         } else {
-                            System.out.println("No Luring Gem in inventory.");
+                            System.out.println("No Luring enchantment in inventory.");
                         }
                         break;
+                    case KeyEvent.VK_A:
+                        if (bPressed) {
+                            game.getPlayer().useLuringGemEnchantment();
+                            bPressed = false;
+                        }
+                    case KeyEvent.VK_D:
+                        if (bPressed) {
+                            game.getPlayer().useLuringGemEnchantment();
+                            bPressed = false;
+                        }
+                    case KeyEvent.VK_W:
+                        if (bPressed) {
+                            game.getPlayer().useLuringGemEnchantment();
+                            bPressed = false;
+                        }
+                    case KeyEvent.VK_S:
+                        if (bPressed) {
+                            game.getPlayer().useLuringGemEnchantment();
+                            bPressed = false;
+                        }
+
                 }
             }
         });
