@@ -5,10 +5,7 @@ import domain.UI.PlayerView;
 import domain.UI.MonsterView;
 
 
-import domain.enchantments.BaseEnchantment;
-import domain.enchantments.CloakOfProtection;
-import domain.enchantments.EnchantmentManager;
-import domain.enchantments.Reveal;
+import domain.enchantments.*;
 import domain.handlers.*;
 import domain.entity.Entity;
 
@@ -236,6 +233,18 @@ public class PlayModePanel extends JPanel implements Runnable {
 
                     } else {
                         System.out.println("No Cloak of Protection available in inventory.");
+                    }
+                }
+                if (e.getKeyCode() == KeyEvent.VK_Q) {
+                    if (game.getPlayer().getInventory().isInInventory("Speed Up")) {
+                        BaseEnchantment revealEnchantment =
+                                new SpeedUp(0, 0, tileSize);  //MUST BE CHANGED
+                        revealEnchantment.applyEffect(game);
+                        game.getPlayer().getInventory().removeItem("Speed Up");
+                        System.out.println("speed up enchantment used.");
+
+                    } else {
+                        System.out.println("no speed up enchantment in inventory.");
                     }
                 }
             }

@@ -13,6 +13,7 @@ public class Player extends Entity {
     private Inventory inventory;
     private Tile location;
     boolean moving = false;
+    private int speed;
     int pixelCounter = 0;
     private static Player instance;
     private boolean invisibleToArchers = false;
@@ -125,6 +126,7 @@ public class Player extends Entity {
     public int getHealth() {
         return health;
     }
+    public void setSpeed(int speed) {this.speed = speed;}
 
     public void setHealth(int health){
         if (this.health < 4) {
