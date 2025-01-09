@@ -6,7 +6,6 @@ import java.awt.*;
 
 public class LuringGem extends BaseEnchantment {
     private Image icon;
-    private boolean isActive;
     private long activationTime; // Timestamp when the effect was activated
     private final String name = "Luring Gem";
 
@@ -17,5 +16,13 @@ public class LuringGem extends BaseEnchantment {
     @Override
     public void applyEffect(Game game) {
 
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Image getIcon() {
+        return icon;
     }
 }

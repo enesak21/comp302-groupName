@@ -20,6 +20,7 @@ public abstract class BaseEnchantment {
         this.tileSize = tileSize;
         this.icon = icon;
         this.spawnTime = System.currentTimeMillis();
+        this.isActive = false;
     }
 
 
@@ -31,6 +32,7 @@ public abstract class BaseEnchantment {
     public int getGridY() {
         return gridY;
     }
+
     public String getName() {
         return name;
     }

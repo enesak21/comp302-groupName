@@ -13,7 +13,7 @@ public class ExtraLife extends BaseEnchantment {
     private long spawnTime; // When the enchantment was spawned
     private int gridX;      // X position on the grid
     private int gridY;      // Y position on the grid
-    private String name;
+    private String name = "Extra Life";
 
 
 
@@ -24,7 +24,7 @@ public class ExtraLife extends BaseEnchantment {
     }
 
     public String getName() {
-        return "Extra Life";
+        return name;
     }
 
 

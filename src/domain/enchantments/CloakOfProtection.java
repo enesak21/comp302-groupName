@@ -10,13 +10,11 @@ import java.awt.*;
  */
 public class CloakOfProtection extends BaseEnchantment {
     private Image icon;
-    private boolean isActive;
     private long activationTime; // Timestamp when the effect was activated
     private final String name = "Cloak of Protection";
 
     public CloakOfProtection(int gridX, int gridY, int tileSize) {
         super(gridX, gridY, tileSize);
-        this.isActive = false;
     }
 
     public String getName() {

@@ -10,7 +10,6 @@ import java.awt.*;
 
 public class Reveal extends BaseEnchantment {
     private Image icon;
-
     private long activationTime; // Timestamp when the effect was activated
     private final String name = "Reveal";
 
