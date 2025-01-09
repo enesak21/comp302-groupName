@@ -54,6 +54,8 @@ public class Inventory {
 
     public Inventory() {
         this.content = new HashMap<>();
+        content.put("Reveal", 0);
+        content.put("Cloak of Protection", 0);
     }
 
     /**

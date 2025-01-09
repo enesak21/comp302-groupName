@@ -108,11 +108,6 @@ public class InventoryPanel extends JPanel {
             }
         }
 
-        if (quantity == 0) {
-            System.out.println("Cannot add an item with quantity zero.");
-            return;
-        }
-
         for (SlotPanel slot : slots) {
             if (slot.getItemName() == null) {
                 ImageIcon itemIcon = new ImageIcon(itemImages.get(itemName));
