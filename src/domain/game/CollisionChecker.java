@@ -18,6 +18,14 @@ public class CollisionChecker {
      * Checks if the given entity collides with the given tile when moving
      * @param entity
      * @return true if the entity cannot move into tile
+     *
+     *
+     *
+     * Requires: entity is not null
+     * Modifies: None
+     * Effects: Checks if the given entity collides with the next tile based on its current position and direction.
+     *          Returns true if the entity cannot move into the next tile (i.e., the tile is solid or out of bounds),
+     *          otherwise returns false.
      */
     public boolean checkCollision(Entity entity) {
         int gridX = entity.getGridX();// Get the gridX position of the entity
