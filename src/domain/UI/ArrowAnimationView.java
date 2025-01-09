@@ -35,7 +35,6 @@ public class ArrowAnimationView {
         this.angle = Math.atan2(endY - startY, endX - startX);
         this.finished = false;
         uploadImage();
-        System.out.println("ArrowAnimationView created");
     }
 
 

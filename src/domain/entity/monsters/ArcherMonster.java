@@ -123,7 +123,6 @@ public class ArcherMonster extends BaseMonster{
         //IF PLAYER INVISIBLE TO ARCHER THEN DO NOTHING
         if(!game.getPlayer().getIsInvisibleToArchers()){
             game.getPlayer().reduceHealth();
-            System.out.println("throwArrow is working");
 
             ArrowAnimationView arrowAnimationView = new ArrowAnimationView(this, game.getPlayer());
             game.getPlayer().getPlayModePanel().addArrowAnimation(arrowAnimationView);
