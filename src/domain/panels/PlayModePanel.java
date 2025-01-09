@@ -444,6 +444,13 @@ public class PlayModePanel extends JPanel implements Runnable {
         //FOR HIGHLETED REGION
         drawHighlightedRegion(g2);
 
+        //Draw the arrow animations
+        if (!arrowAnimations.isEmpty()) {
+            for (ArrowAnimationView animation : arrowAnimations) {
+                animation.draw(g2);
+            }
+        }
+
         if (inTransition) {
             drawTransitionScreen(g2);
         } else {
@@ -465,13 +472,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         ((TimeLeftPanel) sidebarPanel.getTimeLeftPanel()).updateTimeLeft(timeController.getTimeLeft());
         // Draw Hearts Left
         ((HeartsLeftPanel) sidebarPanel.getHeartsLeftPanel()).updateHeartsLeft(game.getPlayer().getHealth());
-
-        //Draw the arrow animations
-        if (!arrowAnimations.isEmpty()) {
-            for (ArrowAnimationView animation : arrowAnimations) {
-                animation.draw(g2);
-            }
-        }
 
         g2.dispose();
     }

@@ -53,7 +53,6 @@ public class ArrowAnimationView {
 
     public void draw(Graphics2D g2) {
         if (!finished) {
-            System.out.println("Arrow drawing method is called");
             AffineTransform old = g2.getTransform();
             g2.translate(currentX, currentY);
             g2.rotate(angle);
