@@ -4,7 +4,7 @@ import domain.enchantments.EnchantmentManager;
 import domain.game.Grid;
 import domain.game.SearchRuneController;
 import domain.game.Tile;
-import domain.panels.PlayModePanel;
+import domain.UI.panels.PlayModePanel;
 
 import java.awt.*;
 

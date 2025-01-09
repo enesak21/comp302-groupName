@@ -4,7 +4,7 @@ package domain.game;
 import domain.enchantments.BaseEnchantment;
 import java.util.Random;
 import domain.entity.playerObjects.Player;
-import domain.panels.PlayModePanel;
+import domain.UI.panels.PlayModePanel;
 
 import java.util.ArrayList;
 

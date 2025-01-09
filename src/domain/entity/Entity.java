@@ -1,6 +1,6 @@
 package domain.entity;
 
-import domain.panels.PlayModePanel;
+import domain.UI.panels.PlayModePanel;
 
 /**
  * The Entity class represents an abstract entity in a grid-based game.

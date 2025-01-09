@@ -4,7 +4,6 @@ import domain.game.Game;
 
 
 import domain.game.CollisionChecker;
-import domain.panels.sideBarComponents.HeartsLeftPanel;
 
 import java.awt.*;
 

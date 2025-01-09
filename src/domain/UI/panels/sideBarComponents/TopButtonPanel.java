@@ -1,6 +1,6 @@
-package domain.panels.sideBarComponents;
+package domain.UI.panels.sideBarComponents;
 
-import domain.panels.PlayModePanel;
+import domain.UI.panels.PlayModePanel;
 
 import javax.swing.*;
 import java.awt.*;

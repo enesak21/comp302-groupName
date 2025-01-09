@@ -3,7 +3,7 @@ package domain.game;
 import java.util.List;
 import java.util.Random;
 import domain.structures.Structure;
-import domain.panels.PlayModePanel;
+import domain.UI.panels.PlayModePanel;
 import domain.audio.AudioManager;
 
 
