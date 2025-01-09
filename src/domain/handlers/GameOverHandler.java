@@ -33,7 +33,7 @@ public class GameOverHandler {
     private void drawGameOverScreen(Graphics2D g2) {
         // Draw a semi-transparent dark overlay
         g2.setColor(new Color(0, 0, 0, 150)); // Semi-transparent black
-        g2.fillRect(0, 0, screenWidth, screenHeight);
+        g2.fillRect(0, 0, playModePanel.getWidth(), playModePanel.getHeight());
 
         // Draw the game over message
         g2.setFont(font.deriveFont(40f));
@@ -41,8 +41,8 @@ public class GameOverHandler {
 
         FontMetrics fm = g2.getFontMetrics();
         String gameOverText = "Game Over!";
-        int gameOverX = (screenWidth - fm.stringWidth(gameOverText)) / 2;
-        int gameOverY = (screenHeight - fm.getHeight()) / 2 + fm.getAscent();
+        int gameOverX = (playModePanel.getWidth() - fm.stringWidth(gameOverText)) / 2;
+        int gameOverY = (playModePanel.getHeight() - fm.getHeight()) / 2 + fm.getAscent();
 
         g2.drawString(gameOverText, gameOverX, gameOverY);
 
@@ -51,7 +51,7 @@ public class GameOverHandler {
         int buttonHeight = 50;
 
         // Calculate button positions
-        int startX = (screenWidth - buttonWidth) / 2;
+        int startX = (playModePanel.getWidth() - buttonWidth) / 2;
         int buttonY = gameOverY + fm.getHeight() + 30; // Position below the text
 
         // Draw "Try Again" button
