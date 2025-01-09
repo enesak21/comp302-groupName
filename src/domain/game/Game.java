@@ -33,6 +33,9 @@ public class Game {
         this.monsterManager = new MonsterManager(this, tileSize);
 
     }
+    public void removeFromActiveEnchantments(BaseEnchantment baseEnchantment) {
+        activeEnchantments.remove(baseEnchantment);
+    }
 
     public boolean isRuneFound() {
         return this.isRuneFound;

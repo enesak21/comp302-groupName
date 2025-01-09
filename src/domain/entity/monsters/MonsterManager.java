@@ -66,8 +66,10 @@ public class MonsterManager {
 
     public void updateMonsters(){
         long timeLeft = game.getTimeController().getTimeLeft(); //52
+
         if (lastSpawnLeftTime - timeLeft > SPAWN_INTERVAL) { // If 8 seconds have passed since the last spawn
             System.out.println("spawning monster");
+
             spawnMonster(game.getGrid().getColumns(), game.getGrid().getRows());
             lastSpawnLeftTime = timeLeft;
         }
