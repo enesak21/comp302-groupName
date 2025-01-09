@@ -29,7 +29,6 @@ public class CloakOfProtection extends BaseEnchantment {
 
     @Override
     public void applyEffect(Game game) {
-        //System.out.println("AREA WILL BE HIGHLITED");
         if (!isActive) {
             isActive = true;
             activationTime = System.currentTimeMillis();
@@ -43,6 +42,9 @@ public class CloakOfProtection extends BaseEnchantment {
 
         if (isActive && System.currentTimeMillis() - activationTime >= 10_000) {
             game.getPlayer().setInvisibleToArchers(false);
+            isActive = false;
+            game.getActiveEnchantments().removeIf(enchantment -> enchantment == this);
+            System.out.println("Cloak of Protection deactivated");
         }
     }
 

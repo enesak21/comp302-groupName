@@ -65,14 +65,14 @@ public class Reveal extends BaseEnchantment {
     }
 
     public void update(Game game) {
-        System.out.println("highliter updatinnnnnnnnnnnnnnnnnnnnnnnnnng");
         if (isActive && System.currentTimeMillis() - activationTime >= 10_000) {
             deactivateRegion(game);
+            game.getActiveEnchantments().removeIf(enchantment -> enchantment == this);
+            System.out.println("Region Higlight removed. Deactivated Reveal.");
         }
     }
 
     private void deactivateRegion(Game game) {
-        System.out.println("AREA DEACTIVATEDDDDDDDDDDDD");
         Tile runeTile = game.getSearchRuneController().getRuneTile();
         if (runeTile != null) {
             int runeX = runeTile.getGridX();
@@ -91,7 +91,6 @@ public class Reveal extends BaseEnchantment {
         }
 
         isActive = false;
-        System.out.println("Highlight removed.");
     }
 
     @Override

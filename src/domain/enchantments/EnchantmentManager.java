@@ -9,6 +9,7 @@ import domain.panels.PlayModePanel;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -69,6 +70,9 @@ public class EnchantmentManager {
     }
 
     public void updateEnchantments() {
+        // Deactivate the enchantments whose time has expired
+        updateActiveEnchantments();
+
         long currentTime = System.currentTimeMillis();
         // Spawn a new enchantment if the spawn interval has passed
         if (currentTime - lastSpawnTime >= SPAWN_INTERVAL) {
@@ -76,8 +80,12 @@ public class EnchantmentManager {
             lastSpawnTime = currentTime;
         }
 
-        for (int i = 0; i < enchantments.size(); i++) {
-            BaseEnchantment enchantment = enchantments.get(i);
+        // Use iterator to avoid ConcurrentModificationException
+        Iterator<BaseEnchantment> iterator = enchantments.iterator();
+        Iterator<EnchantmentView> viewIterator = enchantmentViews.iterator();
+
+        while (iterator.hasNext()) {
+            BaseEnchantment enchantment = iterator.next();
 
             // Check if the enchantment has expired (disappear after 6 seconds)
             if (currentTime - enchantment.getSpawnTime() > 6000) {
@@ -88,13 +96,29 @@ public class EnchantmentManager {
                 if (isValidTile(gridX, gridY)) {
                     game.getGrid().getTileAt(gridX, gridY).setSolid(false);
                 }
-                enchantments.remove(i);
-                enchantmentViews.remove(i);
+                iterator.remove(); // Remove using iterator
+                viewIterator.next(); // Move the view iterator to match removal in enchantmentViews
+                viewIterator.remove();
                 System.out.println("Enchantment REMOVED: " + enchantment.getName());
-                i--; // Adjust index to avoid skipping
             }
         }
     }
+
+    public void updateActiveEnchantments() {
+        // Iterate through the active enchantments
+        for (int i = 0; i < game.getActiveEnchantments().size(); i++) {
+            BaseEnchantment enchantment = enchantments.get(i);
+
+            // Call the update method on each enchantment
+            int prevSize = game.getActiveEnchantments().size();
+            enchantment.update(game);
+            int currentSize = game.getActiveEnchantments().size();
+            if (prevSize != currentSize) {
+                i--;
+            }
+        }
+    }
+
 
     private boolean isValidTile(int x, int y) {
         return x >= 0 && y >= 0 && x < game.getGrid().getColumns() && y < game.getGrid().getRows();
@@ -108,48 +132,43 @@ public class EnchantmentManager {
 
     //COMMON FOR ALL ENCHANTMENTS TO COLLECT THEM
     public void enchantmentCollected(Tile clickedTile) {
-        // Check if there is an enchantment at the clicked tile
-         Tile playerTile = game.getGrid().getTileAt(game.getPlayer().getGridX(), game.getPlayer().getGridY());
-         //System.out.println("player tile :"+playerTile.getGridX()+" "+playerTile.getGridY());
+        Tile playerTile = game.getGrid().getTileAt(game.getPlayer().getGridX(), game.getPlayer().getGridY());
 
-        for (int i = 0; i < enchantments.size(); i++) {
-            BaseEnchantment enchantment = enchantments.get(i);
-            //System.out.println("ENCHANTMENTCOLLECTED IS CLICKED: " + clickedTile);
-            //System.out.println(enchantment.getName()+" is on the screen");
-            if (Game.isInRange(clickedTile, playerTile,1)){
-                //System.out.println("YES IN RANGE SİR!!!");
-                if ((enchantment.getGridX() - 2 ) == clickedTile.getGridX() && (enchantment.getGridY() - 2 ) == clickedTile.getGridY()) {
-                    // Apply the effect of the enchantment
+        Iterator<BaseEnchantment> iterator = enchantments.iterator();
+        Iterator<EnchantmentView> viewIterator = enchantmentViews.iterator();
+
+        while (iterator.hasNext() && viewIterator.hasNext()) {
+            BaseEnchantment enchantment = iterator.next();
+
+            if (Game.isInRange(clickedTile, playerTile, 1)) {
+                if ((enchantment.getGridX() - 2) == clickedTile.getGridX() && (enchantment.getGridY() - 2) == clickedTile.getGridY()) {
 
                     String enchantmentType = enchantment.getName();
                     if (enchantmentType.equals("Reveal")) {
-                        game.getPlayer().getInventory().addItem(enchantmentType); // Add to inventory
-                    }
-                    else if(enchantmentType.equals("Cloak of Protection")) {
-                        System.out.println("cloak added to the inventory by encmanager");
                         game.getPlayer().getInventory().addItem(enchantmentType);
+                    } else if (enchantmentType.equals("Cloak of Protection")) {
+                        System.out.println("Cloak added to the inventory by EnchantmentManager");
+                        game.getPlayer().getInventory().addItem(enchantmentType);
+                    } else {
+                        enchantment.applyEffect(game);
                     }
-                    else {
-                        enchantment.applyEffect(game); // Apply effect for extralife and extratime directly
-                    }
-                    //System.out.println("Enchantment "+ enchantment.getName()+" is located at: "+enchantment.getGridX()+", "+enchantment.getGridY());
-                    //System.out.println("Clicked tile :" +clickedTile.getGridX() + ", " + clickedTile.getGridY());
+
+                    int gridX = enchantment.getGridX() - PlayModePanel.offsetX;
+                    int gridY = enchantment.getGridY() - PlayModePanel.offsetY;
 
                     // Remove the enchantment from the grid
-                    game.getGrid().getTileAt(enchantment.getGridX(), enchantment.getGridY()).setSolid(false);
-                    enchantments.remove(i);
-                    enchantmentViews.remove(i);
+                    if (isValidTile(gridX, gridY)) {
+                        game.getGrid().getTileAt(gridX, gridY).setSolid(false);
+                    }
+                    iterator.remove();
+                    viewIterator.next(); // Move view iterator to match removal in enchantmentViews
+                    viewIterator.remove();
 
                     System.out.println("Enchantment collected: " + enchantment.getName());
-                    return; // Exit after finding the clicked enchantment
+                    return;
                 }
-                //System.out.println("No enchantment at clicked tile.");
             }
-
-
         }
-
-
     }
 
 
