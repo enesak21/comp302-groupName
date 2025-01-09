@@ -1,8 +1,10 @@
 package domain.enchantments;
 
+import domain.entity.monsters.BaseMonster;
 import domain.game.Game;
 
 import java.awt.*;
+import java.util.List;
 
 public class LuringGem extends BaseEnchantment {
     private Image icon;
@@ -15,6 +17,7 @@ public class LuringGem extends BaseEnchantment {
 
     @Override
     public void applyEffect(Game game) {
+        List<BaseMonster> monsters = game.getMonsterManager().getMonsters();
 
     }
 

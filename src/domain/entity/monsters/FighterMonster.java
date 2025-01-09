@@ -1,5 +1,6 @@
 package domain.entity.monsters;
 
+import domain.enchantments.BaseEnchantment;
 import domain.entity.Direction;
 import domain.entity.playerObjects.Player;
 import domain.game.CollisionChecker;
@@ -30,9 +31,10 @@ public class FighterMonster extends BaseMonster {
 
     }
 
-    public void move(Game game) {
+    // directionNum: //0: UP, 1: DOWN, 2: LEFT, 3:RIGHT
+    public void move(Game game, int directionNum) {
         //simple random movement code
-        int random_direction = random.nextInt(4);//0: UP, 1: DOWN, 2: LEFT, 3:RIGHT
+        int random_direction = random.nextInt(4);
 
         if(!moving){
             if(random_direction == 0){
@@ -86,9 +88,23 @@ public class FighterMonster extends BaseMonster {
     @Override
     public void update(Game game) {
         moveCounter++;
-        //Speed of the monster is controlled by this if statement. The higher the number, the slower the monster.
-        if(moveCounter >= SPEED * 2){
-            move(game);
+        boolean luringGemActive = false;
+        for (BaseEnchantment enchantment : game.getActiveEnchantments()) {
+            if (enchantment.getName().equals("Luring Gem")) {
+                luringGemActive = true;
+                break;
+            }
+        }
+        // Speed of the monster is controlled by this if statement. The higher the number, the slower the monster.
+        if (moveCounter >= SPEED * 2) {
+            if (luringGemActive) {
+                // Use the direction from the luring gem logic (1..4)
+                move(game, 3); // DIRECTION MUST BE TAKEN FROM KEY LISTENER. THIS IS ONLY FOR TEST
+            } else {
+                // Simple random movement
+                int random_direction = random.nextInt(4); // 0: UP, 1: DOWN, 2: LEFT, 3: RIGHT
+                move(game, random_direction);
+            }
             moveCounter = 0;
         }
         attack(game.getPlayer());

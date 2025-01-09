@@ -154,7 +154,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         searchRuneController.placeRune();
 
 
-        game = new Game(player, tileSize, this, grid, searchRuneController);
+        game = new Game(player, tileSize, grid, searchRuneController);
         enchantmentManager = new EnchantmentManager(game, tileSize);
 
         timeController = game.getTimeController();
@@ -167,7 +167,8 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         this.addKeyListener(player.getPlayerInputHandler());
         //initialize monsterManager
-        monsterManager = new MonsterManager(game, tileSize);
+        monsterManager = game.getMonsterManager();
+                //new MonsterManager(game, tileSize);
         countMonster = 0;
         monsterViewList = new CopyOnWriteArrayList<>();
         for (int i = 0; i < monsterManager.getMonsters().size(); i++) {
@@ -215,31 +216,29 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_R) {
-                    if (game.getPlayer().getInventory().isInInventory("Reveal")) {
-                        BaseEnchantment revealEnchantment =
-                                new Reveal(0, 0, tileSize);  //MUST BE CHANGED
-                        revealEnchantment.applyEffect(game);
-                        game.getPlayer().getInventory().removeItem("Reveal");
-                        System.out.println("Reveal enchantment used. Highlighting region.");
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_R:
+                        if (game.getPlayer().getInventory().isInInventory("Reveal")) {
+                            game.getPlayer().useRevealEnchantment();
 
-                    } else {
-                        System.out.println("No Reveal enchantment in inventory.");
-                    }
-                }
-                if (e.getKeyCode() == KeyEvent.VK_P) {
-                    if (game.getPlayer().getInventory().isInInventory("Cloak of Protection")) {
-                        BaseEnchantment cloak =
-                                new CloakOfProtection(0, 0, tileSize);  //MUST BE CHANGED
-                                                                                    //there should not be created a new object
-                        cloak.applyEffect(game);
-
-                        game.getPlayer().getInventory().removeItem("Cloak of Protection");
-                        System.out.println("CLOAK OF PROTECTION enchantment used.");
-
-                    } else {
-                        System.out.println("No Cloak of Protection available in inventory.");
-                    }
+                        } else {
+                            System.out.println("No Reveal enchantment in inventory.");
+                        }
+                        break;
+                    case KeyEvent.VK_P:
+                        if (game.getPlayer().getInventory().isInInventory("Cloak of Protection")) {
+                            game.getPlayer().useCloakOfProtectionEnchantment();
+                        } else {
+                            System.out.println("No Cloak of Protection enchantment in inventory.");
+                        }
+                        break;
+                    case KeyEvent.VK_B:
+                        if (game.getPlayer().getInventory().isInInventory("Luring Gem")) {
+                            game.getPlayer().useCloakOfProtectionEnchantment();
+                        } else {
+                            System.out.println("No Luring Gem in inventory.");
+                        }
+                        break;
                 }
             }
         });
@@ -682,15 +681,12 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
 
-
-
-
     // Getters
     public int getScale() {
         return scale;
     }
 
-    public int getTileSize() {
+    public static int getTileSize() {
         return tileSize;
     }
 
@@ -807,4 +803,6 @@ public class PlayModePanel extends JPanel implements Runnable {
     public EnchantmentManager getEnchantmentManager() {
         return enchantmentManager;
     }
+
+
 }

@@ -3,6 +3,8 @@ package domain.game;
 
 import domain.enchantments.BaseEnchantment;
 import java.util.Random;
+
+import domain.entity.monsters.MonsterManager;
 import domain.entity.playerObjects.Player;
 import domain.panels.PlayModePanel;
 
@@ -17,13 +19,18 @@ public class Game {
     private TimeController timeController;
     private SearchRuneController searchRuneController;
     private ArrayList<BaseEnchantment> activeEnchantments = new ArrayList<>();
+    private int tileSize;
+    private MonsterManager monsterManager;
 
-    public Game(Player player, int tileSize, PlayModePanel playModePanel, Grid grid, SearchRuneController searchRuneController) {
+    public Game(Player player, int tileSize, Grid grid, SearchRuneController searchRuneController) {
         this.player = player;
         this.grid = grid;
         this.remainingTime = 60; // Initialize with a default value
         this.timeController = new TimeController();
         this.searchRuneController = searchRuneController;
+        this.tileSize = tileSize;
+        this.monsterManager = new MonsterManager(this, tileSize);
+
     }
 
     public boolean isRuneFound() {
@@ -83,6 +90,10 @@ public class Game {
     // Add the new methods
     public int getRemainingTime() {
         return remainingTime;
+    }
+
+    public MonsterManager getMonsterManager() {
+        return monsterManager;
     }
 
     /**
