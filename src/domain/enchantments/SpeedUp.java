@@ -18,7 +18,7 @@ public class SpeedUp extends BaseEnchantment{
             activationTime = System.currentTimeMillis();
             game.getActiveEnchantments().add(this);
             setActive(true);
-            System.out.println("ZİBBİDİ GONZALES");
+            //System.out.println("ZİBBİDİ GONZALES");
             game.getPlayer().setSpeed(8);
         }
 
@@ -31,7 +31,7 @@ public class SpeedUp extends BaseEnchantment{
             slowDown(game);
             setActive(false);
 
-            System.out.println("Speed Up Deactivated");
+           // System.out.println("Speed Up Deactivated");
 
 
         }
