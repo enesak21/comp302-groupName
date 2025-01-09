@@ -252,17 +252,14 @@ public class PlayModePanel extends JPanel implements Runnable {
                             game.getPlayer().useLuringGemEnchantment(3);
                             bPressed = false;
                         }
+                    case KeyEvent.VK_Q:
+
                 }
                 if (e.getKeyCode() == KeyEvent.VK_Q) {
                     if (game.getPlayer().getInventory().isInInventory("Speed Up")) {
-                        BaseEnchantment revealEnchantment =
-                                new SpeedUp(0, 0, tileSize);  //MUST BE CHANGED
-                        revealEnchantment.applyEffect(game);
-                        game.getPlayer().getInventory().removeItem("Speed Up");
-                        System.out.println("speed up enchantment used.");
-
+                        game.getPlayer().useSpeedUpManagement();
                     } else {
-                        System.out.println("no speed up enchantment in inventory.");
+                        System.out.println("no Speed Up enchantment in inventory.");
                     }
                 }
             }

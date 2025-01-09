@@ -1,9 +1,6 @@
 package domain.entity.playerObjects;
 
-import domain.enchantments.BaseEnchantment;
-import domain.enchantments.CloakOfProtection;
-import domain.enchantments.LuringGem;
-import domain.enchantments.Reveal;
+import domain.enchantments.*;
 import domain.entity.Direction;
 import domain.game.CollisionChecker;
 import domain.game.Tile;
@@ -193,5 +190,13 @@ public void setCollisionChecker(CollisionChecker collisionChecker) {
         gem.applyEffect(playModePanel.getGame());
         this.getInventory().removeItem("Luring Gem");
         System.out.println("Luring Gem enchantment used.");
+    }
+
+    public void useSpeedUpManagement() {
+        BaseEnchantment revealEnchantment =
+                new SpeedUp(0, 0, tileSize);  //MUST BE CHANGED
+        revealEnchantment.applyEffect(playModePanel.getGame());
+        this.getInventory().removeItem("Speed Up");
+        System.out.println("Speed Up enchantment used.");
     }
 }
