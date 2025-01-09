@@ -61,7 +61,13 @@ public class SearchRuneController {
             Structure randomStructure = structureList.get(randomIndex);
             rune.setStoredStructure(randomStructure);
         }
+    }
 
+    public Tile getRuneTile() {
+        if (rune != null && rune.getStoredStructure() != null) {
+            return rune.getStoredStructure().getTile();
+        }
+        return null;
     }
 
 }

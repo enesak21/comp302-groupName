@@ -66,4 +66,7 @@ public class Structure {
     public void setHasRune(boolean hasRune) {
         this.hasRune = hasRune;
     }
+
+    //TO HIGHLIGHT THE RUNE
+    public Tile getTile() { return position; }
 }
