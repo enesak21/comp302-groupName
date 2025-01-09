@@ -234,7 +234,7 @@ public class PlayModePanel extends JPanel implements Runnable {
                         break;
                     case KeyEvent.VK_B:
                         if (game.getPlayer().getInventory().isInInventory("Luring Gem")) {
-                            game.getPlayer().useCloakOfProtectionEnchantment();
+                            game.getPlayer().useLuringGemEnchantment();
                         } else {
                             System.out.println("No Luring Gem in inventory.");
                         }

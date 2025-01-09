@@ -2,6 +2,7 @@ package domain.entity.playerObjects;
 
 import domain.enchantments.BaseEnchantment;
 import domain.enchantments.CloakOfProtection;
+import domain.enchantments.LuringGem;
 import domain.enchantments.Reveal;
 import domain.entity.Direction;
 import domain.game.CollisionChecker;
@@ -183,5 +184,12 @@ public void setCollisionChecker(CollisionChecker collisionChecker) {
         cloak.applyEffect(playModePanel.getGame());
         this.getInventory().removeItem("Cloak of Protection");
         System.out.println("CLOAK OF PROTECTION enchantment used.");
+    }
+
+    public void useLuringGemEnchantment() {
+        BaseEnchantment gem = new LuringGem(0, 0, tileSize);
+        gem.applyEffect(playModePanel.getGame());
+        this.getInventory().removeItem("Luring Gem");
+        System.out.println("Luring Gem enchantment used.");
     }
 }
