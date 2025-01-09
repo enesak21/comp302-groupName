@@ -21,6 +21,7 @@ public class GameWinningHandler {
 
     public void handle() {
         playModePanel.setState("TryAgain");
+
         playModePanel.getTimeController().pauseTimer();
         drawWinningScreen(playModePanel.getGraphics2());
     }
