@@ -156,6 +156,7 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         game = new Game(player, tileSize, grid, searchRuneController);
         enchantmentManager = new EnchantmentManager(game, tileSize);
+        monsterManager = game.getMonsterManager();
 
         timeController = game.getTimeController();
 
@@ -166,9 +167,6 @@ public class PlayModePanel extends JPanel implements Runnable {
 
 
         this.addKeyListener(player.getPlayerInputHandler());
-        //initialize monsterManager
-        monsterManager = game.getMonsterManager();
-                //new MonsterManager(game, tileSize);
         countMonster = 0;
         monsterViewList = new CopyOnWriteArrayList<>();
         for (int i = 0; i < monsterManager.getMonsters().size(); i++) {
