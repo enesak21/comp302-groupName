@@ -105,19 +105,22 @@ public class EnchantmentManager {
     }
 
     public void updateActiveEnchantments() {
-        // Iterate through the active enchantments
-        for (int i = 0; i < game.getActiveEnchantments().size(); i++) {
-            BaseEnchantment enchantment = enchantments.get(i);
+        List<BaseEnchantment> enchantments = game.getActiveEnchantments();
+        Iterator<BaseEnchantment> iterator = enchantments.iterator();
+
+        while (iterator.hasNext()) {
+            BaseEnchantment enchantment = iterator.next();
 
             // Call the update method on each enchantment
-            int prevSize = game.getActiveEnchantments().size();
             enchantment.update(game);
-            int currentSize = game.getActiveEnchantments().size();
-            if (prevSize != currentSize) {
-                i--;
+
+            // Optionally, check if the enchantment should be removed
+            if (!enchantment.isActive()) {
+                iterator.remove(); // Safe removal using iterator
             }
         }
     }
+
 
 
     private boolean isValidTile(int x, int y) {

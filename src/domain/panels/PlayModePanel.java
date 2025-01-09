@@ -197,7 +197,7 @@ public class PlayModePanel extends JPanel implements Runnable {
                         revealEnchantment.applyEffect(game);
                         game.getPlayer().getInventory().removeItem("Reveal");
                         System.out.println("Reveal enchantment used. Highlighting region.");
-                        game.getActiveEnchantments().add(revealEnchantment);
+
                     } else {
                         System.out.println("No Reveal enchantment in inventory.");
                     }
@@ -210,7 +210,7 @@ public class PlayModePanel extends JPanel implements Runnable {
                         cloak.applyEffect(game);
                         game.getPlayer().getInventory().removeItem("Cloak of Protection");
                         System.out.println("CLOAK OF PROTECTION enchantment used.");
-                        game.getActiveEnchantments().add(cloak);
+
                     } else {
                         System.out.println("No Cloak of Protection available in inventory.");
                     }

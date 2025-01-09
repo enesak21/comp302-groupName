@@ -12,6 +12,7 @@ public abstract class BaseEnchantment {
     private long spawnTime;
     private CollisionChecker collisionChecker;
     private String name;
+    private boolean isActive;
 
     public BaseEnchantment(int gridX, int gridY, int tileSize) {
         this.gridX = gridX;
@@ -57,5 +58,9 @@ public abstract class BaseEnchantment {
         if (collisionChecker != null) {
             // Perform collision checking or additional updates if needed
         }
+    }
+
+    public boolean isActive() {
+        return isActive;
     }
 }
