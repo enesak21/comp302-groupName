@@ -114,7 +114,7 @@ public class Game {
 
     public ArrayList<BaseEnchantment> getActiveEnchantments() {
         return activeEnchantments;
-
+    }
     /**
      * Teleports the player to a random empty location.
      * This method is called by wizard in CloseToLosingBehavior.
