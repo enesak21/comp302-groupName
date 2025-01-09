@@ -11,7 +11,7 @@ import java.io.IOException;
  * It contains the player images and the draw method that draws the player on the screen.
  */
 public class PlayerView extends EntityView {
-    private BufferedImage upImage, downImage, leftImage, rightImage; // Player images
+    private BufferedImage upImage, downImage, leftImage, rightImage ,leftProtectedImage,rightProtectedImage; // Player images
     private BufferedImage prevImage;
     /**
      * Constructor for PlayerView.
@@ -31,6 +31,9 @@ public class PlayerView extends EntityView {
         try {
             leftImage = ImageIO.read(getClass().getResourceAsStream("/resources/player/playerLeft.png"));
             rightImage = ImageIO.read(getClass().getResourceAsStream("/resources/player/playerRight.png"));
+            leftProtectedImage = ImageIO.read(getClass().getResourceAsStream("/resources/player/playerLeft_protected.png"));
+            rightProtectedImage = ImageIO.read(getClass().getResourceAsStream("/resources/player/playerRight_protected.png"));
+
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to load player images.", e);
@@ -44,22 +47,46 @@ public class PlayerView extends EntityView {
     @Override
     public void draw(Graphics2D g2) {
         Player player = (Player) entity; // Cast Entity to Player
-        BufferedImage currentImage = switch (player.getDirection()) {
+        if (!player.getIsInvisibleToArchers()) {
+            BufferedImage currentImage = switch (player.getDirection()) {
+                case UP -> prevImage;
+                case DOWN -> prevImage;
+                case LEFT -> leftImage;
+                case RIGHT -> rightImage;
+            };
+
+            prevImage = currentImage;
+
+            g2.drawImage( // Draw the player image
+                    currentImage,
+                    player.getPixelX(),
+                    player.getPixelY(),
+                    player.getTileSize(),
+                    player.getTileSize(),
+                    null
+            );
+        }
+        else{BufferedImage currentImage = switch (player.getDirection()) {
             case UP -> prevImage;
             case DOWN -> prevImage;
-            case LEFT -> leftImage;
-            case RIGHT -> rightImage;
+            case LEFT -> leftProtectedImage;
+            case RIGHT -> rightProtectedImage;
         };
 
-        prevImage = currentImage;
+            prevImage = currentImage;
 
-        g2.drawImage( // Draw the player image
-                currentImage,
-                player.getPixelX(),
-                player.getPixelY(),
-                player.getTileSize(),
-                player.getTileSize(),
-                null
-        );
-    }
+            g2.drawImage( // Draw the player image
+                    currentImage,
+                    player.getPixelX(),
+                    player.getPixelY(),
+                    player.getTileSize(),
+                    player.getTileSize(),
+                    null
+            );
+        }
+
+        }
+
+
+
 }
