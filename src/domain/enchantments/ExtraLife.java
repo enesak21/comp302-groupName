@@ -37,11 +37,7 @@ public class ExtraLife extends BaseEnchantment {
 
 
     public void applyEffect(Game game) {
-        game.getTimeController().setTimeLeft(game.getTimeController().getTimeLeft() +5);
         game.getPlayer().setHealth(game.getPlayer().getHealth()+1);
-
-        //game.setRemainingTime(game.getRemainingTime() + 5);
-        //System.out.println("EXTRA TIME ADDED");
     }
 
     @Override
