@@ -42,6 +42,7 @@ public class EnchantmentManager {
         factories.add(new RevealEnchantmentFactory());
         factories.add(new ExtraLifeEnchantmentFactory());
         factories.add(new CloakOfProtectionEnchantmentFactory());
+        factories.add(new LuringGemEnchantmentFactory());
     }
 
     public void spawnEnchantment(int gridWidth, int gridHeight) {
