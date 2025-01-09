@@ -118,7 +118,7 @@ public class EnchantmentManager {
             // Optionally, check if the enchantment should be removed
             if (!enchantment.isActive()) {
                 iterator.remove(); // Safe removal using iterator
-                game.removeFromActiveEnchantments(enchantment);
+               // game.removeFromActiveEnchantments(enchantment);
                 System.out.println(game.getActiveEnchantments()+" should be empty");
             }
         }
