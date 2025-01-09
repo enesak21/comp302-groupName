@@ -167,7 +167,6 @@ public class EnchantmentManager {
                     viewIterator.next(); // Move view iterator to match removal in enchantmentViews
                     viewIterator.remove();
 
-                    //System.out.println("Enchantment collected: " + enchantment.getName());
                     return;
                 }
             }
