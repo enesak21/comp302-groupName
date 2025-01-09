@@ -395,7 +395,7 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         playerView.draw(g2);
         drawWallsAndCorners(g2);
-        drawInventory(g2);  //check the location
+        // drawInventory(g2);  //check the location
 
         //Draw monsters
         //monsterManager'daki her monsterı çek ve onlar için bire View classı oluştur
@@ -491,8 +491,8 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
     private void loadSmallInventoryImages(){
         try{
-            revealSmallIcon =  ImageIO.read(getClass().getResource("/resources/enchantments/reveal.png"));
-            cloakSmallIcon =  ImageIO.read(getClass().getResource("/resources/enchantments/cloakOfProtection.png"));
+            revealSmallIcon =  ImageIO.read(getClass().getResource("/resources/items/reveal.png"));
+            cloakSmallIcon =  ImageIO.read(getClass().getResource("/resources/items/cloakOfProtection.png"));
         }
         catch (IOException e){
             e.printStackTrace();
@@ -802,9 +802,9 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public void setSidebarPanel(SidebarPanel sidebarPanel) {
         this.sidebarPanel = sidebarPanel;
+    }
 
     public EnchantmentManager getEnchantmentManager() {
         return enchantmentManager;
-
     }
 }
