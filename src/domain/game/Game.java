@@ -114,6 +114,13 @@ public class Game {
         this.remainingTime = remainingTime;
     }
 
+    /**
+     * Toggles the pause state of the game.
+     *
+     * Requires: The game must be in a state where pausing or unpausing is valid.
+     * Modifies: this.isPaused
+     * Effects: If the game is currently paused, it will be unpaused. If the game is currently unpaused, it will be paused.
+     */
     public void togglePause() {
         isPaused = !isPaused;
     }
