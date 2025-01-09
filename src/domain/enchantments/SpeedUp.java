@@ -30,8 +30,9 @@ public class SpeedUp extends BaseEnchantment{
             //game.getPlayer().setInvisibleToArchers(false);
             slowDown(game);
             setActive(false);
+
             System.out.println("Speed Up Deactivated");
-            System.out.println(game.getActiveEnchantments()+"should be empty");
+
 
         }
     }
