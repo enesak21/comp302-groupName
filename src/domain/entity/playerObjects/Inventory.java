@@ -78,7 +78,7 @@ public class Inventory {
             if (count > 1) {
                 content.put(enchantmentType, count - 1);
             } else {
-                content.remove(enchantmentType);
+                content.put(enchantmentType, 0);
             }
             System.out.println("Removed from inventory: " + enchantmentType);
             return true;
@@ -95,11 +95,6 @@ public class Inventory {
         return content.containsKey(enchantmentType);
     }
 
-    // Optional: Display the inventory contents
-    public void displayInventory() {
-        System.out.println("Inventory Contents:");
-        content.forEach((key, value) -> System.out.println(key + ": " + value));
-    }
 
     public HashMap<String, Integer> getContent() {
         return content;

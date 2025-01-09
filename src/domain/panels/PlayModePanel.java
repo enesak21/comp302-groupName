@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 public class PlayModePanel extends JPanel implements Runnable {
 
@@ -201,13 +202,9 @@ public class PlayModePanel extends JPanel implements Runnable {
         ((HeartsLeftPanel) sidebarPanel.getHeartsLeftPanel()).initHearts();
         ((TimeLeftPanel) sidebarPanel.getTimeLeftPanel()).updateTimeLeft(timeController.getTimeLeft());
 
-        // for testing purposes
-        ((InventoryPanel) sidebarPanel.getInventoryPanel()).addItem("Cloak of Protection", 1);
-        ((InventoryPanel) sidebarPanel.getInventoryPanel()).addItem("Luring Gem", 9);
-        ((InventoryPanel) sidebarPanel.getInventoryPanel()).addItem("Reveal", 3);
-        ((InventoryPanel) sidebarPanel.getInventoryPanel()).addItem("Extra Life (Closed Chest)", 2);
-        ((InventoryPanel) sidebarPanel.getInventoryPanel()).addItem("Heart Symbol", 3);
-        ((InventoryPanel) sidebarPanel.getInventoryPanel()).addItem("Extra Life (Opened Chest)", 1);
+        for (Map.Entry<String, Integer> entry: game.getPlayer().getInventory().getContent().entrySet()) {
+            ((InventoryPanel) sidebarPanel.getInventoryPanel()).setItem(entry.getKey(), entry.getValue());
+        }
     }
 
     //REVEAL KEY HANDLER WILL BE OUT LATER
@@ -368,13 +365,10 @@ public class PlayModePanel extends JPanel implements Runnable {
                 countMonster = monsterManager.getMonsters().size();
             }
 
-//            ///HERE WE STOP HERE CORRECT THIS METHOD AND CONTINUE
-//            if ((game.getPlayer().getInventory().getContent()).size() != 0) {
-//                //System.out.println("inventory contentim bu abe"+game.getPlayer().getInventory().getContent());
-//                enchantmentManager.getEnchantments().getFirst().update(game);
-//            }
-
-
+            // Update the player's inventory
+            for (Map.Entry<String, Integer> entry: game.getPlayer().getInventory().getContent().entrySet()) {
+                ((InventoryPanel) sidebarPanel.getInventoryPanel()).setItem(entry.getKey(), entry.getValue());
+            }
         }
     }
 
@@ -403,9 +397,6 @@ public class PlayModePanel extends JPanel implements Runnable {
             monsterView.draw(g2);
         }
 
-
-	      //Structures are drawn after entities
-
         //ENCHANTMENT IS PAINTED HERE
         enchantmentManager.drawEnchantments(g2);
 
@@ -431,7 +422,6 @@ public class PlayModePanel extends JPanel implements Runnable {
             }
         }
 
-        // Draw the sidebar
         // Draw Time (always display the sidebar)
         ((TimeLeftPanel) sidebarPanel.getTimeLeftPanel()).updateTimeLeft(timeController.getTimeLeft());
         // Draw Hearts Left
@@ -487,16 +477,6 @@ public class PlayModePanel extends JPanel implements Runnable {
             x = (getWidth() - fm.stringWidth(resumeText)) / 2;
             y += fm.getHeight() + 20;
             g2.drawString(resumeText, x, y);
-        }
-    }
-    private void loadSmallInventoryImages(){
-        try{
-            revealSmallIcon =  ImageIO.read(getClass().getResource("/resources/items/reveal.png"));
-            cloakSmallIcon =  ImageIO.read(getClass().getResource("/resources/items/cloakOfProtection.png"));
-        }
-        catch (IOException e){
-            e.printStackTrace();
-            System.err.println("Error loading wall images. Please check the file paths.");
         }
     }
 
@@ -622,44 +602,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         }
     }
 
-    private void initializeInventoryImages(){
-        try {
-            inventoryMainImage = ImageIO.read(getClass().getResource("/resources/inventory/Inventory.png")); // Update the path
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
-
-
-    private void drawInventory(Graphics2D g2) {
-        // Ensure the inventory image is loaded
-        initializeInventoryImages();
-        loadSmallInventoryImages();
-        if (inventoryMainImage != null) {
-            // Define inventory position and size
-            int inventoryX = sidebarX +20; // Adjust X position
-            int inventoryY = sidebarY + gridHeight -300; // Adjust Y position
-            //INVENTORY IMAGE CAN BE RESIZED
-            int inventoryWidth = 100; // Width of the inventory
-            int inventoryHeight = 150; // Height of the inventory
-
-            g2.drawImage(inventoryMainImage, inventoryX, inventoryY,inventoryWidth,inventoryHeight, null);
-
-
-            HashMap<String, Integer> inventoryContent = game.getPlayer().getInventory().getContent();
-
-            for (String enchantmentType : inventoryContent.keySet()) {
-                //CHECK FOR EACH
-                if(enchantmentType.equals("Reveal")){
-                    g2.drawImage(revealSmallIcon, inventoryX+22, inventoryY+60,18,18, null);
-                }
-                if(enchantmentType.equals("Cloak of Protection")){
-                    g2.drawImage(cloakSmallIcon, inventoryX+42, inventoryY+60,18,18, null);
-                }
-            }
-        }
-    }
 
     private void drawHighlightedRegion(Graphics2D g2) {
         for (int x = 0; x < grid.getColumns(); x++) {
@@ -680,10 +623,6 @@ public class PlayModePanel extends JPanel implements Runnable {
             }
         }
     }
-
-
-
-
 
     // Getters
     public int getScale() {

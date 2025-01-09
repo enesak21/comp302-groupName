@@ -3,9 +3,6 @@ package domain.panels.sideBarComponents;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * A custom panel representing a single inventory slot with an item icon and quantity indicator.
- */
 public class SlotPanel extends JPanel {
 
     private JLabel itemIconLabel;
@@ -15,24 +12,21 @@ public class SlotPanel extends JPanel {
     private int slotSize;
 
     public SlotPanel(int slotSize) {
-        this.slotSize = slotSize; // Initial size
-        setLayout(new OverlayLayout(this)); // Layer icon and quantity labels
+        this.slotSize = slotSize;
+        setLayout(new OverlayLayout(this));
         setOpaque(false);
 
-        // Create and configure the item icon label
         itemIconLabel = new JLabel();
-        itemIconLabel.setAlignmentX(0.5f); // Center horizontally
-        itemIconLabel.setAlignmentY(0.5f); // Center vertically
+        itemIconLabel.setAlignmentX(0.5f);
+        itemIconLabel.setAlignmentY(0.5f);
 
-        // Create and configure the quantity label
         quantityLabel = new JLabel();
-        quantityLabel.setFont(new Font("Serif", Font.BOLD, slotSize / 6)); // Dynamically set font size
+        quantityLabel.setFont(new Font("Serif", Font.BOLD, slotSize / 6));
         quantityLabel.setForeground(Color.WHITE);
-        quantityLabel.setBackground(new Color(0, 0, 0, 150)); // Semi-transparent background
-        quantityLabel.setAlignmentX(1.0f); // Align to the top-right
-        quantityLabel.setAlignmentY(0.0f); // Align to the top-right
+        quantityLabel.setBackground(new Color(0, 0, 0, 150));
+        quantityLabel.setAlignmentX(1.0f);
+        quantityLabel.setAlignmentY(0.0f);
 
-        // Add the labels to the panel
         add(quantityLabel);
         add(itemIconLabel);
     }
@@ -40,12 +34,13 @@ public class SlotPanel extends JPanel {
     public void setSlotSize(int slotSize) {
         this.slotSize = slotSize;
         setPreferredSize(new Dimension(slotSize, slotSize));
-        quantityLabel.setFont(new Font("Serif", Font.BOLD, slotSize / 2)); // Adjust font size relative to slot size
+        quantityLabel.setFont(new Font("Serif", Font.BOLD, slotSize / 2));
 
-        // If an item icon exists, scale it to the new size
         if (itemIconLabel.getIcon() != null) {
             itemIconLabel.setIcon(scaleIcon((ImageIcon) itemIconLabel.getIcon(), slotSize));
         }
+        revalidate();
+        repaint();
     }
 
     public void setItem(String itemName, ImageIcon itemIcon, int quantity) {
@@ -57,15 +52,25 @@ public class SlotPanel extends JPanel {
 
     public void updateQuantity(int newQuantity) {
         this.quantity = newQuantity;
-        quantityLabel.setText("x" + newQuantity); // Display "xN" format
+
+        if (newQuantity > 0) {
+            quantityLabel.setText("x" + newQuantity);
+        } else {
+            clearSlot();
+        }
     }
 
     public String getItemName() {
         return itemName;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public void clearSlot() {
+        this.itemName = null;
+        this.quantity = 0;
+        itemIconLabel.setIcon(null);
+        quantityLabel.setText("");
+        revalidate();
+        repaint();
     }
 
     private ImageIcon scaleIcon(ImageIcon icon, int size) {
