@@ -3,14 +3,14 @@ package domain.entity.monsters;
 import domain.game.Game;
 
 public class WizardMonsterFactory implements MonsterFactory{
-    private Game game;
+    private MonsterManager monsterManager;
 
-    public WizardMonsterFactory(Game game) {
-        this.game = game;
+    public WizardMonsterFactory(MonsterManager monsterManager) {
+        this.monsterManager = monsterManager;
     }
 
     @Override
     public BaseMonster createMonster(int gridX, int gridY, int tileSize) {
-        return new WizardMonster(gridX, gridY, tileSize, game);
+        return new WizardMonster(gridX, gridY, tileSize, monsterManager);
     }
 }

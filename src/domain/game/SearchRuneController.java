@@ -37,7 +37,7 @@ public class SearchRuneController {
         if (Game.isInRange(clickedTile, playerTile, 1)) {
             if (clickedStructure != null) {
                 if (clickedStructure.hasRune()) {
-
+                    clickedStructure.setHasRune(false);
                     playModePanel.moveToNextHall();
                 }
                 else {
