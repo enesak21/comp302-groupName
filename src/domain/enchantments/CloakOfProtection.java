@@ -39,7 +39,6 @@ public class CloakOfProtection extends BaseEnchantment {
 
     public void update(Game game) {
         if (isActive() && System.currentTimeMillis() - activationTime >= 10_000) {
-            System.out.println(System.currentTimeMillis() - activationTime);
             game.getPlayer().setInvisibleToArchers(false);
             setActive(false);
             System.out.println("Cloak of Protection deactivated");
