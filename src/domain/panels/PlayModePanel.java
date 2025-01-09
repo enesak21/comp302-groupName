@@ -152,8 +152,9 @@ public class PlayModePanel extends JPanel implements Runnable {
         searchRuneController.placeRune();
 
 
-        game = new Game(player, tileSize, this, grid, searchRuneController);
+        game = new Game(player, tileSize, grid, searchRuneController);
         enchantmentManager = new EnchantmentManager(game, tileSize);
+        monsterManager = game.getMonsterManager();
 
         timeController = game.getTimeController();
 
@@ -164,8 +165,6 @@ public class PlayModePanel extends JPanel implements Runnable {
 
 
         this.addKeyListener(player.getPlayerInputHandler());
-        //initialize monsterManager
-        monsterManager = new MonsterManager(game, tileSize);
         countMonster = 0;
         monsterViewList = new CopyOnWriteArrayList<>();
         for (int i = 0; i < monsterManager.getMonsters().size(); i++) {
@@ -205,35 +204,54 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
     //REVEAL KEY HANDLER WILL BE OUT LATER
+    private boolean bPressed = false;
     private void addKeyListenerForUseEnchantments() {
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_R) {
-                    if (game.getPlayer().getInventory().isInInventory("Reveal")) {
-                        BaseEnchantment revealEnchantment =
-                                new Reveal(0, 0, tileSize);  //MUST BE CHANGED
-                        revealEnchantment.applyEffect(game);
-                        game.getPlayer().getInventory().removeItem("Reveal");
-                        System.out.println("Reveal enchantment used. Highlighting region.");
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_R:
+                        if (game.getPlayer().getInventory().isInInventory("Reveal")) {
+                            game.getPlayer().useRevealEnchantment();
 
-                    } else {
-                        System.out.println("No Reveal enchantment in inventory.");
-                    }
-                }
-                if (e.getKeyCode() == KeyEvent.VK_P) {
-                    if (game.getPlayer().getInventory().isInInventory("Cloak of Protection")) {
-                        BaseEnchantment cloak =
-                                new CloakOfProtection(0, 0, tileSize);  //MUST BE CHANGED
-                                                                                    //there should not be created a new object
-                        cloak.applyEffect(game);
-
-                        game.getPlayer().getInventory().removeItem("Cloak of Protection");
-                        System.out.println("CLOAK OF PROTECTION enchantment used.");
-
-                    } else {
-                        System.out.println("No Cloak of Protection available in inventory.");
-                    }
+                        } else {
+                            System.out.println("No Reveal enchantment in inventory.");
+                        }
+                        break;
+                    case KeyEvent.VK_P:
+                        if (game.getPlayer().getInventory().isInInventory("Cloak of Protection")) {
+                            game.getPlayer().useCloakOfProtectionEnchantment();
+                        } else {
+                            System.out.println("No Cloak of Protection enchantment in inventory.");
+                        }
+                        break;
+                    case KeyEvent.VK_B:
+                        if (game.getPlayer().getInventory().isInInventory("Luring Gem")) {
+                            bPressed = true;
+                        } else {
+                            System.out.println("No Luring enchantment in inventory.");
+                        }
+                        break;
+                    case KeyEvent.VK_W:
+                        if (bPressed) {
+                            game.getPlayer().useLuringGemEnchantment(0);
+                            bPressed = false;
+                        }
+                    case KeyEvent.VK_S:
+                        if (bPressed) {
+                            game.getPlayer().useLuringGemEnchantment(1);
+                            bPressed = false;
+                        }
+                    case KeyEvent.VK_A:
+                        if (bPressed) {
+                            game.getPlayer().useLuringGemEnchantment(2);
+                            bPressed = false;
+                        }
+                    case KeyEvent.VK_D:
+                        if (bPressed) {
+                            game.getPlayer().useLuringGemEnchantment(3);
+                            bPressed = false;
+                        }
                 }
                 if (e.getKeyCode() == KeyEvent.VK_Q) {
                     if (game.getPlayer().getInventory().isInInventory("Speed Up")) {
@@ -519,10 +537,8 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("Error loading wall images. Please check the file paths.");
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            System.err.println("Image file not found. Please ensure the file exists at the specified path.");
         }
     }
 
@@ -634,12 +650,13 @@ public class PlayModePanel extends JPanel implements Runnable {
         }
     }
 
+
     // Getters
     public int getScale() {
         return scale;
     }
 
-    public int getTileSize() {
+    public static int getTileSize() {
         return tileSize;
     }
 
@@ -756,4 +773,6 @@ public class PlayModePanel extends JPanel implements Runnable {
     public EnchantmentManager getEnchantmentManager() {
         return enchantmentManager;
     }
+
+
 }

@@ -121,7 +121,6 @@ public class ArcherMonster extends BaseMonster{
 
         //IF PLAYER INVISIBLE TO ARCHER THEN DO NOTHİNG
         if(!player.getIsInvisibleToArchers()){player.reduceHealth();}
-        else System.out.println("INVISIBLE BILADERRR");
 
     }
 

@@ -24,7 +24,7 @@ public class MonsterManager {
         this.random = new Random();
         this.tileSize = tileSize;
         this.game = game;
-        this.lastSpawnLeftTime = game.getTimeController().getTimeLeft(); // 60
+        this.lastSpawnLeftTime = game.getRemainingTime(); // 60
         // Add factories for different monsters
         factories = new ArrayList<>();
         factories.add(new ArcherMonsterFactory());
@@ -65,10 +65,11 @@ public class MonsterManager {
     }
 
     public void updateMonsters(){
-
         long timeLeft = game.getTimeController().getTimeLeft(); //52
-        if (lastSpawnLeftTime - timeLeft > SPAWN_INTERVAL) {
-            // If 8 seconds have passed since the last spawn
+
+        if (lastSpawnLeftTime - timeLeft > SPAWN_INTERVAL) { // If 8 seconds have passed since the last spawn
+            System.out.println("spawning monster");
+
             spawnMonster(game.getGrid().getColumns(), game.getGrid().getRows());
             lastSpawnLeftTime = timeLeft;
         }

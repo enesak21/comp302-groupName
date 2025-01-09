@@ -28,6 +28,7 @@ public class EnchantmentView {
             enchantmentIcons.put("Reveal", ImageIO.read(getClass().getResource("/resources/items/reveal.png")));
             enchantmentIcons.put("Extra Life", ImageIO.read(getClass().getResource("/resources/player/heart.png")));
             enchantmentIcons.put("Cloak of Protection", ImageIO.read(getClass().getResource("/resources/items/cloakOfProtection.png")));
+            enchantmentIcons.put("Luring Gem", ImageIO.read(getClass().getResource("/resources/items/luringGem.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }

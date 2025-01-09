@@ -38,11 +38,13 @@ public class EnchantmentManager {
 
         // Add factories for different enchantments
         factories = new ArrayList<>();
+
         //factories.add(new ExtraTimeEnchantmentFactory());
         //factories.add(new RevealEnchantmentFactory());
         //factories.add(new ExtraLifeEnchantmentFactory());
         //factories.add(new CloakOfProtectionEnchantmentFactory());
         factories.add(new SpeedUpEnchantmentFactory());
+
     }
 
     public void spawnEnchantment(int gridWidth, int gridHeight) {
@@ -155,11 +157,16 @@ public class EnchantmentManager {
                     } else if (enchantmentType.equals("Cloak of Protection")) {
                         //System.out.println("Cloak added to the inventory by EnchantmentManager");
                         game.getPlayer().getInventory().addItem(enchantmentType);
+
                     }
                     else if (enchantmentType.equals("Speed Up")) {
                         //System.out.println("Cloak added to the inventory by EnchantmentManager");
                         game.getPlayer().getInventory().addItem(enchantmentType);
-                    }else {
+                    
+                    } else if (enchantmentType.equals("Luring Gem")) {
+                        game.getPlayer().getInventory().addItem(enchantmentType);
+                    } else {
+
                         enchantment.applyEffect(game);
                     }
 

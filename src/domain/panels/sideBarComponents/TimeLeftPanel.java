@@ -110,7 +110,6 @@ public class TimeLeftPanel extends JPanel {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(lotrFont);
         } catch (FontFormatException | IOException e) {
-            System.err.println("Failed to load LOTR font: " + e.getMessage());
             lotrFont = null; // Fallback to default font
         }
     }

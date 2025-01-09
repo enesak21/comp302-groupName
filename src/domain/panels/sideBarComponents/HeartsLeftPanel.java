@@ -195,13 +195,11 @@ public class HeartsLeftPanel extends JPanel {
         try {
             ImageIcon icon = new ImageIcon(path);
             if (icon.getIconWidth() <= 0 || icon.getIconHeight() <= 0) {
-                System.err.println("Error loading icon: " + path);
                 return null;
             }
             Image scaledImage = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
             return new ImageIcon(scaledImage);
         } catch (Exception e) {
-            System.err.println("Error loading or scaling icon: " + path + " - " + e.getMessage());
             return null;
         }
     }
