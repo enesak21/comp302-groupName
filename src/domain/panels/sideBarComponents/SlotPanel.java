@@ -7,62 +7,57 @@ import java.awt.*;
  * A custom panel representing a single inventory slot with an item icon and quantity indicator.
  */
 public class SlotPanel extends JPanel {
+
     private JLabel itemIconLabel;
     private JLabel quantityLabel;
     private String itemName;
     private int quantity;
+    private int slotSize;
 
-    public SlotPanel() {
-        setLayout(new BorderLayout()); // Use BorderLayout to center the layered pane
-        setOpaque(false); // Transparent background
-        setBorder(BorderFactory.createLineBorder(Color.GRAY, 1)); // Optional border for debugging
+    public SlotPanel(int slotSize) {
+        this.slotSize = slotSize; // Initial size
+        setLayout(new OverlayLayout(this)); // Layer icon and quantity labels
+        setOpaque(false);
 
-        // Create a layered pane for the icon and quantity
-        JLayeredPane layeredPane = new JLayeredPane();
-        layeredPane.setPreferredSize(new Dimension(48, 48));
-
-        // Create the icon label
+        // Create and configure the item icon label
         itemIconLabel = new JLabel();
-        itemIconLabel.setBounds(0, 0, 48, 48); // Full slot size
-        itemIconLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        itemIconLabel.setVerticalAlignment(SwingConstants.CENTER);
-        layeredPane.add(itemIconLabel, JLayeredPane.DEFAULT_LAYER); // Add to the default layer
+        itemIconLabel.setAlignmentX(0.5f); // Center horizontally
+        itemIconLabel.setAlignmentY(0.5f); // Center vertically
 
-        // Create the quantity label
+        // Create and configure the quantity label
         quantityLabel = new JLabel();
-        quantityLabel.setBounds(0, 0, 48, 48); // Full slot size
-        quantityLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        quantityLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-        quantityLabel.setFont(new Font("Serif", Font.BOLD, 12));
+        quantityLabel.setFont(new Font("Serif", Font.BOLD, slotSize / 6)); // Dynamically set font size
         quantityLabel.setForeground(Color.WHITE);
-        layeredPane.add(quantityLabel, JLayeredPane.PALETTE_LAYER); // Add to a higher layer
+        quantityLabel.setBackground(new Color(0, 0, 0, 150)); // Semi-transparent background
+        quantityLabel.setAlignmentX(1.0f); // Align to the top-right
+        quantityLabel.setAlignmentY(0.0f); // Align to the top-right
 
-        // Add the layered pane to this panel
-        add(layeredPane, BorderLayout.CENTER);
+        // Add the labels to the panel
+        add(quantityLabel);
+        add(itemIconLabel);
     }
 
-    /**
-     * Sets the item icon and quantity in the slot.
-     *
-     * @param itemName  The name of the item.
-     * @param itemIcon  The icon of the item.
-     * @param quantity  The quantity of the item.
-     */
+    public void setSlotSize(int slotSize) {
+        this.slotSize = slotSize;
+        setPreferredSize(new Dimension(slotSize, slotSize));
+        quantityLabel.setFont(new Font("Serif", Font.BOLD, slotSize / 2)); // Adjust font size relative to slot size
+
+        // If an item icon exists, scale it to the new size
+        if (itemIconLabel.getIcon() != null) {
+            itemIconLabel.setIcon(scaleIcon((ImageIcon) itemIconLabel.getIcon(), slotSize));
+        }
+    }
+
     public void setItem(String itemName, ImageIcon itemIcon, int quantity) {
         this.itemName = itemName;
         this.quantity = quantity;
-        itemIconLabel.setIcon(scaleIcon(itemIcon, 32, 32)); // Scale the icon to fit the slot
-        quantityLabel.setText("x" + quantity);
+        itemIconLabel.setIcon(scaleIcon(itemIcon, slotSize));
+        updateQuantity(quantity);
     }
 
-    /**
-     * Updates the quantity of the item in the slot.
-     *
-     * @param newQuantity The new quantity of the item.
-     */
     public void updateQuantity(int newQuantity) {
         this.quantity = newQuantity;
-        quantityLabel.setText("x" + newQuantity);
+        quantityLabel.setText("x" + newQuantity); // Display "xN" format
     }
 
     public String getItemName() {
@@ -73,8 +68,11 @@ public class SlotPanel extends JPanel {
         return quantity;
     }
 
-    private static ImageIcon scaleIcon(ImageIcon icon, int width, int height) {
-        Image scaledImage = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        return new ImageIcon(scaledImage);
+    private ImageIcon scaleIcon(ImageIcon icon, int size) {
+        if (icon != null) {
+            Image scaledImage = icon.getImage().getScaledInstance(size - 10, size - 10, Image.SCALE_SMOOTH);
+            return new ImageIcon(scaledImage);
+        }
+        return null;
     }
 }

@@ -19,10 +19,6 @@ public class TopButtonPanel extends JPanel {
     private ImageIcon exitIcon;
     private ImageIcon backgroundIcon;
 
-    // Button dimensions
-    private static final int BUTTON_WIDTH = 40;
-    private static final int BUTTON_HEIGHT = 40;
-
     // State variable: true = game is stopped/paused, false = game is running
     private boolean isStopped = false;
 
@@ -31,101 +27,131 @@ public class TopButtonPanel extends JPanel {
     public TopButtonPanel(PlayModePanel playModePanel) {
         this.playModePanel = playModePanel;
 
-        // Layout for the two buttons
-        setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        setBorder(BorderFactory.createLineBorder(new Color(101, 89, 93), 2));
+        // Use a BoxLayout for vertical alignment
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
+        // Add empty glue components to center the buttons vertically
+        add(Box.createVerticalGlue());
 
         loadIcons();
         initComponents();
+
+        // Add another glue to push everything towards the center
+        add(Box.createVerticalGlue());
+
+        // Add a resize listener for dynamic scaling
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                adjustButtonSizes();
+            }
+        });
     }
 
     /**
-     * Loads and scales the icons for pause/resume, exit, and background.
+     * Loads the icons for stop/resume, exit, and background.
      */
     private void loadIcons() {
         stopIcon = new ImageIcon("src/resources/buttons/pause.png");
         resumeIcon = new ImageIcon("src/resources/buttons/resume.png");
         exitIcon = new ImageIcon("src/resources/buttons/exit.png");
         backgroundIcon = new ImageIcon("src/resources/buttons/Background_cobbleStone.png");
-
-        // Scale the stop/resume icons
-        Image tempStop = stopIcon.getImage()
-                .getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, Image.SCALE_SMOOTH);
-        stopIcon = new ImageIcon(tempStop);
-
-        Image tempResume = resumeIcon.getImage()
-                .getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, Image.SCALE_SMOOTH);
-        resumeIcon = new ImageIcon(tempResume);
-
-        // Scale the exit icon
-        Image tempExit = exitIcon.getImage()
-                .getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, Image.SCALE_SMOOTH);
-        exitIcon = new ImageIcon(tempExit);
     }
 
     /**
-     * Creates and configures the Stop/Resume and Exit buttons.
+     * Initializes the buttons and their actions.
      */
     private void initComponents() {
-        // If the game starts as "running", we show the 'stopIcon'
-        stopResumeButton = new JButton(stopIcon);
-        stopResumeButton.setOpaque(false);
-        stopResumeButton.setContentAreaFilled(false);
-        stopResumeButton.setBorderPainted(false);
-        stopResumeButton.setFocusPainted(false);
-        stopResumeButton.setFocusable(false);
+        stopResumeButton = createButton(stopIcon);
+        exitButton = createButton(exitIcon);
 
-        exitButton = new JButton(exitIcon);
-        exitButton.setOpaque(false);
-        exitButton.setContentAreaFilled(false);
-        exitButton.setBorderPainted(false);
-        exitButton.setFocusPainted(false);
-        exitButton.setFocusable(false);
+        // Create a sub-panel to hold buttons in a row
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0)); // Horizontal alignment
+        buttonPanel.setOpaque(false); // Ensure transparency for background painting
 
-        // Add them to this panel
-        add(stopResumeButton);
-        add(exitButton);
+        buttonPanel.add(stopResumeButton);
+        buttonPanel.add(exitButton);
 
-        // Toggle pause/resume on click
+        // Add the button panel to the main panel
+        add(buttonPanel);
+
+        // Stop/Resume action
         stopResumeButton.addActionListener(e -> {
             isStopped = !isStopped;
+            stopResumeButton.setIcon(isStopped ? resumeIcon : stopIcon);
             if (isStopped) {
-                stopResumeButton.setIcon(resumeIcon);
-                System.out.println("Game Stopped/Paused...");
                 playModePanel.pauseGame();
                 playModePanel.setPaused(true);
-                // Pause logic here
             } else {
-                stopResumeButton.setIcon(stopIcon);
-                System.out.println("Game Resumed...");
                 playModePanel.resumeGame();
                 playModePanel.setPaused(false);
-                // Resume logic here
             }
         });
 
-        // Exit button example
-        exitButton.addActionListener(e -> {
-            System.out.println("Exit clicked!");
-            playModePanel.exitGame();
-            // e.g., switch to a different screen or close the game
-        });
+        // Exit action
+        exitButton.addActionListener(e -> playModePanel.exitGame());
     }
 
     /**
-     * Paints a background image if available, filling the entire panel area.
+     * Creates a button with the given icon.
+     * @param icon The icon for the button.
+     * @return Configured JButton.
+     */
+    private JButton createButton(ImageIcon icon) {
+        JButton button = new JButton(icon);
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setFocusPainted(false);
+        button.setFocusable(false);
+        return button;
+    }
+
+    /**
+     * Adjusts the button sizes dynamically based on panel size.
+     */
+    private void adjustButtonSizes() {
+        int panelHeight = getHeight();
+
+        // Set button size to a fraction of panel height, with a minimum and maximum constraint
+        int buttonSize = Math.min(Math.max(panelHeight, 24), 40); // Between 24px and 40px
+
+        stopResumeButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
+        exitButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
+
+        scaleIcon(stopIcon, buttonSize);
+        scaleIcon(resumeIcon, buttonSize);
+        scaleIcon(exitIcon, buttonSize);
+
+        stopResumeButton.setIcon(isStopped ? resumeIcon : stopIcon);
+        exitButton.setIcon(exitIcon);
+
+        revalidate();
+        repaint();
+    }
+
+    /**
+     * Scales an icon to the specified size.
+     * @param icon The icon to scale.
+     * @param size The size to scale to.
+     */
+    private void scaleIcon(ImageIcon icon, int size) {
+        if (icon != null && icon.getImage() != null) {
+            Image scaledImage = icon.getImage().getScaledInstance(size, size, Image.SCALE_SMOOTH);
+            icon.setImage(scaledImage);
+        }
+    }
+
+    /**
+     * Paints the background image dynamically scaled to fill the panel.
      */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if (backgroundIcon != null) {
-            Image backgroundImage = backgroundIcon.getImage();
-            // Fill the panel with the background image
-            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        if (backgroundIcon != null && backgroundIcon.getImage() != null) {
+            g.drawImage(backgroundIcon.getImage(), 0, 0, getWidth(), getHeight(), this);
         } else {
-            // Fallback to a solid color if no image
             g.setColor(new Color(66, 40, 53));
             g.fillRect(0, 0, getWidth(), getHeight());
         }

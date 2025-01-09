@@ -183,6 +183,10 @@ public class PlayModePanel extends JPanel implements Runnable {
         // for testing purposes
         ((InventoryPanel) sidebarPanel.getInventoryPanel()).addItem("Cloak of Protection", 1);
         ((InventoryPanel) sidebarPanel.getInventoryPanel()).addItem("Luring Gem", 9);
+        ((InventoryPanel) sidebarPanel.getInventoryPanel()).addItem("Reveal", 3);
+        ((InventoryPanel) sidebarPanel.getInventoryPanel()).addItem("Extra Life (Closed Chest)", 2);
+        ((InventoryPanel) sidebarPanel.getInventoryPanel()).addItem("Heart Symbol", 3);
+        ((InventoryPanel) sidebarPanel.getInventoryPanel()).addItem("Extra Life (Opened Chest)", 1);
     }
 
     public void moveToNextHall() {

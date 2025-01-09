@@ -5,47 +5,47 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * A dedicated panel for displaying inventory items with images, quantity indicators, and a background image.
- */
 public class InventoryPanel extends JPanel {
 
     private static final int MAX_SLOTS = 6; // Maximum number of inventory slots
+    private static final int MAX_SLOT_SIZE = 70; // Maximum size for each slot
+    private static final int MIN_SLOT_SIZE = 40; // Minimum size for each slot
+    private static final double SCALE_FACTOR = 0.5; // Fine-tuning factor for slot size
+
+    private final SlotPanel[] slots; // Array to represent inventory slots
     private Map<String, String> itemImages; // Map item names to image file paths
-    private SlotPanel[] slots; // Array to represent inventory slots
     private Image backgroundImage; // Background image for the inventory
 
     public InventoryPanel() {
-        setPreferredSize(new Dimension(200, 350)); // Set panel dimensions
-        loadBackgroundImage();
-
         setOpaque(false); // Ensure transparency for the background image
-        setLayout(null); // Use null layout for absolute positioning
+        setLayout(new GridBagLayout()); // Use GridBagLayout for precise positioning
 
-        itemImages = initializeItemImages(); // Initialize item-image mapping
-        slots = new SlotPanel[MAX_SLOTS]; // Initialize slots array
-        initEmptySlots(); // Create and position empty slots
+        // Add padding/margin to shift the entire grid
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0)); // Top, left, bottom, right padding
+
+        slots = new SlotPanel[MAX_SLOTS];
+        itemImages = initializeItemImages();
+
+        loadBackgroundImage();
+        initEmptySlots();
+
+        // Add a resize listener to adjust slot sizes and icons dynamically
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                adjustSlotSizes();
+            }
+        });
     }
 
-    /**
-     * Loads the background image for the panel.
-     */
     private void loadBackgroundImage() {
         try {
             backgroundImage = new ImageIcon("src/resources/inventory/inventory_large.png").getImage();
-            if (backgroundImage == null) {
-                throw new Exception("Background image not found.");
-            }
         } catch (Exception e) {
             System.err.println("Error loading background image: " + e.getMessage());
         }
     }
 
-    /**
-     * Initializes a mapping of item names to their image file paths.
-     *
-     * @return A map of item names to image file paths.
-     */
     private Map<String, String> initializeItemImages() {
         Map<String, String> images = new HashMap<>();
         images.put("Cloak of Protection", "src/resources/items/cloakOfProtection.png");
@@ -57,39 +57,53 @@ public class InventoryPanel extends JPanel {
         return images;
     }
 
-    /**
-     * Initializes empty inventory slots and positions them based on the background image.
-     */
     private void initEmptySlots() {
-        // Define positions for a 2x2x2 layout (x, y for each slot)
-        int[][] slotPositions = {
-                {30, 100}, {91, 100},   // Row 1
-                {30, 160}, {91, 160},   // Row 2
-                {30, 220}, {91, 220}    // Row 3
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.NONE; // No stretching
+        gbc.insets = new Insets(10, 15, 10, 35); // Fine-tuned spacing for vertical and horizontal alignment
+
+        // Define rows and columns (2 slots per row, 3 rows in total)
+        int[][] positions = {
+                {0, 0}, {0, 1}, // Row 1
+                {1, 0}, {1, 1}, // Row 2
+                {2, 0}, {2, 1}  // Row 3
         };
 
         for (int i = 0; i < MAX_SLOTS; i++) {
-            SlotPanel slot = new SlotPanel();
-            slot.setBounds(slotPositions[i][0], slotPositions[i][1], 48, 48); // Set bounds for each slot
-            slots[i] = slot; // Add the slot to the array
-            add(slot); // Add the slot to the panel
+            SlotPanel slot = new SlotPanel(MAX_SLOT_SIZE); // Adjust slot size dynamically
+            slots[i] = slot;
+
+            // Assign grid positions for each slot
+            gbc.gridx = positions[i][1]; // Column index
+            gbc.gridy = positions[i][0]; // Row index
+
+            add(slot, gbc); // Add the slot to the grid
         }
     }
 
 
-    /**
-     * Adds an item to the inventory or increments its quantity if it already exists.
-     *
-     * @param itemName The name of the item (e.g., "Cloak of Protection").
-     * @param quantity The quantity of the item to add.
-     */
+    private void adjustSlotSizes() {
+        int panelWidth = getWidth();
+        int panelHeight = getHeight();
+        int calculatedSlotSize = (int) (Math.min(panelWidth / 2, panelHeight / 3) * SCALE_FACTOR); // Apply scaling for 2x2x2 layout
+
+        // Ensure slot size stays within defined limits
+        int slotSize = Math.max(MIN_SLOT_SIZE, Math.min(MAX_SLOT_SIZE, calculatedSlotSize));
+
+        for (SlotPanel slot : slots) {
+            slot.setSlotSize(slotSize);
+        }
+
+        revalidate();
+        repaint();
+    }
+
     public void addItem(String itemName, int quantity) {
         if (!itemImages.containsKey(itemName)) {
             System.err.println("Invalid item name: " + itemName);
             return;
         }
 
-        // Check for an existing slot with the same item
         for (SlotPanel slot : slots) {
             if (slot.getItemName() != null && slot.getItemName().equals(itemName)) {
                 slot.updateQuantity(slot.getQuantity() + quantity);
@@ -97,7 +111,6 @@ public class InventoryPanel extends JPanel {
             }
         }
 
-        // Add the item to the first empty slot
         for (SlotPanel slot : slots) {
             if (slot.getItemName() == null) {
                 ImageIcon itemIcon = new ImageIcon(itemImages.get(itemName));
@@ -109,11 +122,6 @@ public class InventoryPanel extends JPanel {
         System.out.println("Inventory is full!");
     }
 
-    /**
-     * Paints the background image.
-     *
-     * @param g The Graphics object.
-     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

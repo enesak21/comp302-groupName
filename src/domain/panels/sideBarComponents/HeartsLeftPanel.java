@@ -11,54 +11,85 @@ import java.util.List;
 public class HeartsLeftPanel extends JPanel {
 
     private int heartsLeft;
-    private List<JLabel> heartIcons; // Holds heart icons or text
+    private final List<JLabel> heartIcons; // Holds heart icons
     private static final int MAX_HEARTS = 10; // Maximum number of hearts displayed
 
-    // Set desired width and height for the hearts
-    private int heartWidth = 32;  // Desired heart width
-    private int heartHeight = 32; // Desired heart height
-
+    // Desired dimensions for heart scaling
+    private int heartWidth = 32;  // Default heart width
+    private int heartHeight = 32; // Default heart height
 
     /**
      * Constructs the HeartsLeftPanel with a custom background and hearts display.
+     * @param initialHearts Initial number of hearts to display.
      */
     public HeartsLeftPanel(int initialHearts) {
-        this.heartsLeft = Math.min(initialHearts, MAX_HEARTS); // Ensure hearts don't exceed MAX_HEARTS
+        this.heartsLeft = Math.min(initialHearts, MAX_HEARTS); // Limit initial hearts to MAX_HEARTS
 
         // Set the panel layout and background
         setBackground(new Color(101, 89, 93));
-        setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5)); // Horizontal layout with small gaps
+        setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5)); // Default gaps; will adjust dynamically
 
         // Initialize heart icons
         heartIcons = new ArrayList<>();
         initHearts();
+
+        // Add a resize listener to make the hearts adaptable
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                adjustHeartSizes();
+            }
+        });
     }
 
     /**
      * Initializes the hearts display with the current number of hearts.
      */
     public void initHearts() {
-        // Clear any existing icons
         removeAll();
         heartIcons.clear();
 
-        // Create icons for the number of hearts left
         for (int i = 0; i < MAX_HEARTS; i++) {
             JLabel heartLabel;
             if (i < heartsLeft) {
-                // Filled heart
-                ImageIcon filledIcon = new ImageIcon("src/resources/player/heart.png");
-                Image scaledFilledImage = filledIcon.getImage().getScaledInstance(heartWidth, heartHeight, Image.SCALE_SMOOTH);
-                heartLabel = new JLabel(new ImageIcon(scaledFilledImage));
+                ImageIcon filledIcon = loadScaledIcon("src/resources/player/heart.png", heartWidth, heartHeight);
+                heartLabel = new JLabel(filledIcon != null ? filledIcon : new ImageIcon());
             } else {
-                // Empty placeholder (optional, or skip entirely)
-                heartLabel = new JLabel();
+                heartLabel = new JLabel(); // Empty label for unused hearts
             }
             heartIcons.add(heartLabel);
             add(heartLabel);
         }
 
-        revalidate(); // Refresh the panel
+        revalidate();
+        repaint();
+    }
+
+    /**
+     * Adjusts the heart sizes dynamically based on panel dimensions.
+     */
+    private void adjustHeartSizes() {
+        int panelWidth = getWidth();
+        int panelHeight = getHeight();
+
+        // Calculate heart size based on the panel size
+        int baseHeartSize = Math.min(panelWidth / MAX_HEARTS - 10, panelHeight / 2);
+
+        // Apply a scaling factor to make the hearts slightly larger
+        heartWidth = Math.max(baseHeartSize, 32); // Ensure at least 32x32 size
+        heartHeight = heartWidth; // Keep hearts square
+
+        // Update icons for each heart
+        for (int i = 0; i < heartIcons.size(); i++) {
+            JLabel heartLabel = heartIcons.get(i);
+            if (i < heartsLeft) {
+                heartLabel.setIcon(loadScaledIcon("src/resources/player/heart.png", heartWidth, heartHeight));
+            } else {
+                heartLabel.setIcon(null); // Empty slot
+            }
+        }
+
+        revalidate();
         repaint();
     }
 
@@ -68,45 +99,66 @@ public class HeartsLeftPanel extends JPanel {
      */
     public void updateHeartsLeft(int newHearts) {
         if (newHearts < heartsLeft) {
-            // Play animation for the disappearing heart
             int disappearingHeartIndex = heartsLeft - 1;
             playDisappearingAnimation(disappearingHeartIndex);
         }
         this.heartsLeft = Math.min(newHearts, MAX_HEARTS); // Ensure it doesn't exceed MAX_HEARTS
     }
 
+    /**
+     * Plays a disappearing animation for a specific heart.
+     * @param index The index of the heart to animate.
+     */
     private void playDisappearingAnimation(int index) {
         if (index < 0 || index >= heartIcons.size()) return;
 
         JLabel heartLabel = heartIcons.get(index);
 
-        // Load the GIF animation
+        // Load the GIF
         ImageIcon gifIcon = new ImageIcon("src/resources/player/heart_disappear.gif");
 
-        // Scale the GIF to match the normal heart size
-        int heartWidth = 32;  // Replace with your desired heart width
-        int heartHeight = 32; // Replace with your desired heart height
-        Image scaledGifImage = gifIcon.getImage().getScaledInstance(heartWidth, heartHeight, Image.SCALE_DEFAULT);
-        ImageIcon scaledGifIcon = new ImageIcon(scaledGifImage);
+        // Scale the GIF to match the heart's size
+        Image scaledGif = gifIcon.getImage().getScaledInstance(heartWidth, heartHeight, Image.SCALE_DEFAULT);
+        ImageIcon scaledGifIcon = new ImageIcon(scaledGif);
 
         // Set the scaled GIF as the heart's icon
         heartLabel.setIcon(scaledGifIcon);
 
-        // Hardcoded GIF duration (adjust based on the actual length of your GIF)
+        // Approximate or hardcode the GIF duration
         int gifDuration = 1000; // 1 second (1000ms)
 
-        // Use a Timer to remove the heart from the panel after the animation
+        // Use a Timer to remove the heart from the panel after the animation completes
         Timer animationTimer = new Timer(gifDuration, e -> {
-            // Remove the heart label from the panel and list
-            heartIcons.remove(index); // Remove by index for clarity
-            remove(heartLabel);       // Remove the JLabel from the panel
+            heartIcons.remove(index);
+            remove(heartLabel);
 
-            // Refresh the layout and repaint
             revalidate();
             repaint();
         });
 
         animationTimer.setRepeats(false); // Ensure the timer runs only once
-        animationTimer.start();           // Start the timer
+        animationTimer.start();
+    }
+
+    /**
+     * Loads and scales an icon from the specified file path.
+     * @param path The file path to the image.
+     * @param width The desired width of the icon.
+     * @param height The desired height of the icon.
+     * @return A scaled ImageIcon.
+     */
+    private ImageIcon loadScaledIcon(String path, int width, int height) {
+        try {
+            ImageIcon icon = new ImageIcon(path);
+            if (icon.getIconWidth() <= 0 || icon.getIconHeight() <= 0) {
+                System.err.println("Error loading icon: " + path);
+                return null;
+            }
+            Image scaledImage = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            return new ImageIcon(scaledImage);
+        } catch (Exception e) {
+            System.err.println("Error loading or scaling icon: " + path + " - " + e.getMessage());
+            return null;
+        }
     }
 }

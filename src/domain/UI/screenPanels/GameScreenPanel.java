@@ -21,18 +21,45 @@ public class GameScreenPanel extends JPanel {
         // Use a BorderLayout
         setLayout(new BorderLayout());
 
-        // The "center" area will be your main game (PlayModePanel).
-        // The "east" area will be your sidebar.
+        // Add the PlayModePanel to the center (main game area)
         add(playModePanel, BorderLayout.CENTER);
+
+        // Add the SidebarPanel to the east (right side)
         add(sidebarPanel, BorderLayout.EAST);
 
-        // Optional: if you want to fix a certain width for the sidebar,
-        // you can set a preferred size on the sidebar panel
-        sidebarPanel.setPreferredSize(new Dimension(playModePanel.getScreenWidth() * 23 / 100, playModePanel.getScreenHeight() * 99 / 100));
+        // Set a default preferred size for the sidebar (proportional to window size)
+        adjustSidebarSize();
+
+        // Add a resize listener to ensure the sidebar adapts dynamically
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                adjustSidebarSize();
+            }
+        });
 
         // Start the game thread
-        playModePanel.startGameThread(); // Start the game loop
-        SwingUtilities.invokeLater(playModePanel::requestFocusInWindow); // Request focus for
+        playModePanel.startGameThread();
+
+        // Request focus on the game area
+        SwingUtilities.invokeLater(playModePanel::requestFocusInWindow);
+    }
+
+    /**
+     * Adjusts the size of the sidebar dynamically based on the window dimensions.
+     */
+    private void adjustSidebarSize() {
+        int panelWidth = getWidth();
+        int panelHeight = getHeight();
+
+        // Sidebar width is 23% of the screen width, height matches the panel height
+        int sidebarWidth = Math.max(panelWidth * 18 / 100, 190); // Minimum width of 200px
+        int sidebarHeight = panelHeight;
+
+        sidebarPanel.setPreferredSize(new Dimension(sidebarWidth, sidebarHeight));
+        sidebarPanel.setMinimumSize(new Dimension(sidebarWidth, sidebarHeight));
+
+        revalidate();
+        repaint();
     }
 }
-
