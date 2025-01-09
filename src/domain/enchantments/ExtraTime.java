@@ -1,6 +1,5 @@
 package domain.enchantments;
 
-import domain.enchantments.Enchantment;
 import domain.game.CollisionChecker;
 import domain.game.Game;
 

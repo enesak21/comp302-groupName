@@ -2,10 +2,16 @@ package domain.enchantments;
 
 import domain.game.Game;
 
-public class LuringGem extends Enchantment {
+import java.awt.*;
 
-    public LuringGem(String type, float visibilityDuration) {
-        super(type, visibilityDuration);
+public class LuringGem extends BaseEnchantment {
+    private Image icon;
+    private boolean isActive;
+    private long activationTime; // Timestamp when the effect was activated
+    private final String name = "Luring Gem";
+
+    public LuringGem(int gridX, int gridY, int tileSize) {
+        super(gridX, gridY, tileSize);
     }
 
     @Override

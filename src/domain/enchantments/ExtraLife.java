@@ -1,12 +1,9 @@
 package domain.enchantments;
 
-import domain.entity.playerObjects.Player;
 import domain.game.Game;
 
 
-import domain.enchantments.Enchantment;
 import domain.game.CollisionChecker;
-import domain.game.Game;
 
 import java.awt.*;
 
