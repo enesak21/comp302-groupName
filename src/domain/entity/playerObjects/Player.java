@@ -167,4 +167,8 @@ public void setCollisionChecker(CollisionChecker collisionChecker) {
     public void setInvisibleToArchers(boolean invisibleToArchers) {
         this.invisibleToArchers = invisibleToArchers;
     }
+
+    public PlayModePanel getPlayModePanel() {
+        return playModePanel;
+    }
 }
