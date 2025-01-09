@@ -20,7 +20,7 @@ public class EnchantmentManager {
     private Random random;
     private int tileSize;
     private Game game;
-    private final int SPAWN_INTERVAL = 12 * 1000; // Write it in milliseconds
+    private final int SPAWN_INTERVAL = 6 * 1000; // Write it in milliseconds
     private CollisionChecker collisionChecker;
     private long lastSpawnTime; // Track spawn time in milliseconds
     private PlayModePanel playModePanel;
