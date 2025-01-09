@@ -17,6 +17,48 @@ public class GameTest {
     }
 
     @Test
+    public void testIsInRangeWithinRange() {
+        // Arrange
+        Tile tile1 = new Tile(0, 0, false, null);
+        Tile tile2 = new Tile(1, 1, false, null);
+        float range = 2.0f;
+
+        // Act
+        boolean result = Game.isInRange(tile1, tile2, range);
+
+        // Assert
+        assertTrue(result);
+    }
+
+    @Test
+    public void testIsInRangeOutOfRange() {
+        // Arrange
+        Tile tile1 = new Tile(0, 0, false, null);
+        Tile tile2 = new Tile(5, 5, false, null);
+        float range = 2.0f;
+
+        // Act
+        boolean result = Game.isInRange(tile1, tile2, range);
+
+        // Assert
+        assertFalse(result);
+    }
+
+    @Test
+    public void testIsInRangeAtEdgeOfRange() {
+        // Arrange
+        Tile tile1 = new Tile(0, 0, false, null);
+        Tile tile2 = new Tile(3, 4, false, null); // Distance is 5
+        float range = 5.0f;
+
+        // Act
+        boolean result = Game.isInRange(tile1, tile2, range);
+
+        // Assert
+        assertTrue(result);
+    }
+
+    @Test
     public void testTogglePause() {
         game.togglePause();
         assertTrue("Game should be paused", game.isPaused());
@@ -41,4 +83,4 @@ public class GameTest {
     }
 
 
-}
+    }
