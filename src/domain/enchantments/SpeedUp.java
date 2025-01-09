@@ -4,6 +4,7 @@ import domain.game.Game;
 
 public class SpeedUp extends BaseEnchantment{
     String name;
+
     private long activationTime;
     public SpeedUp(int gridX, int gridY, int tileSize) {
         super(gridX, gridY, tileSize);
@@ -13,16 +14,31 @@ public class SpeedUp extends BaseEnchantment{
 
     @Override
     public void applyEffect(Game game) {
-        System.out.println("ZİBBİDİ GONZALES");
-        game.getPlayer().setSpeed(8);
+        if(!isActive()){
+            activationTime = System.currentTimeMillis();
+            game.getActiveEnchantments().add(this);
+            setActive(true);
+            System.out.println("ZİBBİDİ GONZALES");
+            game.getPlayer().setSpeed(8);
+        }
+
     }
 
     public void update(Game game) {
-        if (isActive() && System.currentTimeMillis() - activationTime >= 20_000) {
-            game.getPlayer().setInvisibleToArchers(false);
+
+        if (isActive() && System.currentTimeMillis() - activationTime >= 5_000) {
+            //game.getPlayer().setInvisibleToArchers(false);
+            slowDown(game);
             setActive(false);
-            System.out.println("Cloak of Protection deactivated");
+            System.out.println("Speed Up Deactivated");
+            System.out.println(game.getActiveEnchantments()+"should be empty");
+
         }
+    }
+
+    public void slowDown(Game game) {
+        game.getPlayer().setSpeed(4);
+        setActive(false);
     }
 
     public String getName() {return name;}
