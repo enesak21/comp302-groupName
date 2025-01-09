@@ -173,7 +173,7 @@ public void setCollisionChecker(CollisionChecker collisionChecker) {
 
     public PlayModePanel getPlayModePanel() {
         return playModePanel;
-
+    }
     public void useRevealEnchantment() {
         BaseEnchantment revealEnchantment = new Reveal(0, 0, tileSize); // Adjust parameters as needed
         revealEnchantment.applyEffect(playModePanel.getGame());
