@@ -7,21 +7,19 @@ import java.util.Map;
 
 public class InventoryPanel extends JPanel {
 
-    private static final int MAX_SLOTS = 6; // Maximum number of inventory slots
-    private static final int MAX_SLOT_SIZE = 70; // Maximum size for each slot
-    private static final int MIN_SLOT_SIZE = 40; // Minimum size for each slot
-    private static final double SCALE_FACTOR = 0.5; // Fine-tuning factor for slot size
+    private static final int MAX_SLOTS = 6;
+    private static final int MAX_SLOT_SIZE = 70;
+    private static final int MIN_SLOT_SIZE = 40;
+    private static final double SCALE_FACTOR = 0.5;
 
-    private final SlotPanel[] slots; // Array to represent inventory slots
-    private Map<String, String> itemImages; // Map item names to image file paths
-    private Image backgroundImage; // Background image for the inventory
+    private final SlotPanel[] slots;
+    private Map<String, String> itemImages;
+    private Image backgroundImage;
 
     public InventoryPanel() {
-        setOpaque(false); // Ensure transparency for the background image
-        setLayout(new GridBagLayout()); // Use GridBagLayout for precise positioning
-
-        // Add padding/margin to shift the entire grid
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0)); // Top, left, bottom, right padding
+        setOpaque(false);
+        setLayout(new GridBagLayout());
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0));
 
         slots = new SlotPanel[MAX_SLOTS];
         itemImages = initializeItemImages();
@@ -29,7 +27,6 @@ public class InventoryPanel extends JPanel {
         loadBackgroundImage();
         initEmptySlots();
 
-        // Add a resize listener to adjust slot sizes and icons dynamically
         addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
             public void componentResized(java.awt.event.ComponentEvent evt) {
@@ -59,35 +56,31 @@ public class InventoryPanel extends JPanel {
 
     private void initEmptySlots() {
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.NONE; // No stretching
-        gbc.insets = new Insets(10, 15, 10, 35); // Fine-tuned spacing for vertical and horizontal alignment
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.insets = new Insets(10, 15, 10, 35);
 
-        // Define rows and columns (2 slots per row, 3 rows in total)
         int[][] positions = {
-                {0, 0}, {0, 1}, // Row 1
-                {1, 0}, {1, 1}, // Row 2
-                {2, 0}, {2, 1}  // Row 3
+                {0, 0}, {0, 1},
+                {1, 0}, {1, 1},
+                {2, 0}, {2, 1}
         };
 
         for (int i = 0; i < MAX_SLOTS; i++) {
-            SlotPanel slot = new SlotPanel(MAX_SLOT_SIZE); // Adjust slot size dynamically
+            SlotPanel slot = new SlotPanel(MAX_SLOT_SIZE);
             slots[i] = slot;
 
-            // Assign grid positions for each slot
-            gbc.gridx = positions[i][1]; // Column index
-            gbc.gridy = positions[i][0]; // Row index
+            gbc.gridx = positions[i][1];
+            gbc.gridy = positions[i][0];
 
-            add(slot, gbc); // Add the slot to the grid
+            add(slot, gbc);
         }
     }
-
 
     private void adjustSlotSizes() {
         int panelWidth = getWidth();
         int panelHeight = getHeight();
-        int calculatedSlotSize = (int) (Math.min(panelWidth / 2, panelHeight / 3) * SCALE_FACTOR); // Apply scaling for 2x2x2 layout
+        int calculatedSlotSize = (int) (Math.min(panelWidth / 2, panelHeight / 3) * SCALE_FACTOR);
 
-        // Ensure slot size stays within defined limits
         int slotSize = Math.max(MIN_SLOT_SIZE, Math.min(MAX_SLOT_SIZE, calculatedSlotSize));
 
         for (SlotPanel slot : slots) {
@@ -98,7 +91,7 @@ public class InventoryPanel extends JPanel {
         repaint();
     }
 
-    public void addItem(String itemName, int quantity) {
+    public void setItem(String itemName, int quantity) {
         if (!itemImages.containsKey(itemName)) {
             System.err.println("Invalid item name: " + itemName);
             return;
@@ -106,7 +99,11 @@ public class InventoryPanel extends JPanel {
 
         for (SlotPanel slot : slots) {
             if (slot.getItemName() != null && slot.getItemName().equals(itemName)) {
-                slot.updateQuantity(slot.getQuantity() + quantity);
+                if (quantity > 0) {
+                    slot.updateQuantity(quantity);
+                } else {
+                    slot.clearSlot();
+                }
                 return;
             }
         }
@@ -119,7 +116,6 @@ public class InventoryPanel extends JPanel {
             }
         }
 
-        System.out.println("Inventory is full!");
     }
 
     @Override
