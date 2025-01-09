@@ -34,17 +34,16 @@ public class FighterMonster extends BaseMonster {
 
     // directionNum: //0: UP, 1: DOWN, 2: LEFT, 3:RIGHT
     public void move(Game game, int directionNum) {
-        //simple random movement code
-        int random_direction = random.nextInt(4);
+
 
         if(!moving){
-            if(random_direction == 0){
+            if(directionNum == 0){
                 direction = Direction.UP;
-            }else if(random_direction == 1){
+            }else if(directionNum == 1){
                 direction = Direction.DOWN;
-            }else if(random_direction == 2){
+            }else if(directionNum == 2){
                 direction = Direction.LEFT;
-            }else if(random_direction == 3){
+            }else if(directionNum == 3){
                 direction = Direction.RIGHT;
             }
 

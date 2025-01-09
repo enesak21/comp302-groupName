@@ -40,8 +40,8 @@ public class EnchantmentManager {
         factories = new ArrayList<>();
         factories.add(new ExtraTimeEnchantmentFactory());
         factories.add(new RevealEnchantmentFactory());
-        factories.add(new ExtraLifeEnchantmentFactory());
-        factories.add(new CloakOfProtectionEnchantmentFactory());
+        //factories.add(new ExtraLifeEnchantmentFactory());
+        //factories.add(new CloakOfProtectionEnchantmentFactory());
         factories.add(new LuringGemEnchantmentFactory());
     }
 
@@ -152,6 +152,9 @@ public class EnchantmentManager {
                         game.getPlayer().getInventory().addItem(enchantmentType);
                     } else if (enchantmentType.equals("Cloak of Protection")) {
                         //System.out.println("Cloak added to the inventory by EnchantmentManager");
+                        game.getPlayer().getInventory().addItem(enchantmentType);
+
+                    } else if (enchantmentType.equals("Luring Gem")) {
                         game.getPlayer().getInventory().addItem(enchantmentType);
                     } else {
                         enchantment.applyEffect(game);
