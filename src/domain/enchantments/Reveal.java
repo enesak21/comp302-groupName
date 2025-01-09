@@ -37,8 +37,6 @@ public class Reveal extends BaseEnchantment {
             if (runeTile != null) {
                 highlightRegion(game, runeTile);
 
-            } else {
-                System.out.println("Rune tile not found.");
             }
         }
     }

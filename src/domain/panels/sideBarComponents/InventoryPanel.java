@@ -51,6 +51,8 @@ public class InventoryPanel extends JPanel {
         images.put("Extra Life (Opened Chest)", "src/resources/items/extraLifeOpenedChest.png");
         images.put("Luring Gem", "src/resources/items/luringGem.png");
         images.put("Reveal", "src/resources/items/reveal.png");
+        images.put("Speed Up", "src/resources/items/zibidiGonzales.png");
+
         return images;
     }
 
@@ -116,7 +118,6 @@ public class InventoryPanel extends JPanel {
             }
         }
 
-        System.out.println("Inventory is full!");
     }
 
     @Override
