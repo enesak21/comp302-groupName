@@ -369,6 +369,7 @@ public class PlayModePanel extends JPanel implements Runnable {
             for (Map.Entry<String, Integer> entry: game.getPlayer().getInventory().getContent().entrySet()) {
                 ((InventoryPanel) sidebarPanel.getInventoryPanel()).setItem(entry.getKey(), entry.getValue());
             }
+
         }
     }
 

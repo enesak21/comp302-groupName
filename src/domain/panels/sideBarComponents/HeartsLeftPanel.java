@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A dedicated panel for displaying the number of hearts left with GIF-based disappearing animation.
+ * A dedicated panel for displaying the number of hearts left with GIF-based animations.
  */
 public class HeartsLeftPanel extends JPanel {
 
     private int heartsLeft;
     private final List<JLabel> heartIcons; // Holds heart icons
-    private static final int MAX_HEARTS = 10; // Maximum number of hearts displayed
+    private static final int MAX_HEARTS = 4; // Maximum number of hearts displayed
 
     // Desired dimensions for heart scaling
     private int heartWidth = 32;  // Default heart width
@@ -94,13 +94,16 @@ public class HeartsLeftPanel extends JPanel {
     }
 
     /**
-     * Updates the number of hearts displayed on the panel with GIF animation for disappearing hearts.
+     * Updates the number of hearts displayed on the panel with animations.
      * @param newHearts Number of hearts left.
      */
     public void updateHeartsLeft(int newHearts) {
         if (newHearts < heartsLeft) {
             int disappearingHeartIndex = heartsLeft - 1;
             playDisappearingAnimation(disappearingHeartIndex);
+        } else if (newHearts > heartsLeft) {
+            int appearingHeartIndex = heartsLeft;
+            playAppearingAnimation(appearingHeartIndex);
         }
         this.heartsLeft = Math.min(newHearts, MAX_HEARTS); // Ensure it doesn't exceed MAX_HEARTS
     }
@@ -131,6 +134,47 @@ public class HeartsLeftPanel extends JPanel {
         Timer animationTimer = new Timer(gifDuration, e -> {
             heartIcons.remove(index);
             remove(heartLabel);
+
+            revalidate();
+            repaint();
+        });
+
+        animationTimer.setRepeats(false); // Ensure the timer runs only once
+        animationTimer.start();
+    }
+
+    /**
+     * Plays an appearing animation for a specific heart.
+     * @param index The index where the heart will appear.
+     */
+    private void playAppearingAnimation(int index) {
+        if (index < 0 || index >= MAX_HEARTS) return;
+
+        // Create a placeholder JLabel for the new heart
+        JLabel heartLabel = new JLabel();
+        heartIcons.add(index, heartLabel);
+        add(heartLabel, index);
+
+        revalidate();
+        repaint();
+
+        // Load the GIF for the reverse disappearance animation (appearing animation)
+        ImageIcon gifIcon = new ImageIcon("src/resources/player/heart_appear.gif");
+
+        // Scale the GIF to match the heart's size
+        Image scaledGif = gifIcon.getImage().getScaledInstance(heartWidth, heartHeight, Image.SCALE_DEFAULT);
+        ImageIcon scaledGifIcon = new ImageIcon(scaledGif);
+
+        // Set the scaled GIF as the heart's icon
+        heartLabel.setIcon(scaledGifIcon);
+
+        // Approximate or hardcode the GIF duration
+        int gifDuration = 1000; // 1 second (1000ms)
+
+        // Use a Timer to switch to a static heart image after the animation completes
+        Timer animationTimer = new Timer(gifDuration, e -> {
+            ImageIcon filledIcon = loadScaledIcon("src/resources/player/heart.png", heartWidth, heartHeight);
+            heartLabel.setIcon(filledIcon != null ? filledIcon : new ImageIcon());
 
             revalidate();
             repaint();
