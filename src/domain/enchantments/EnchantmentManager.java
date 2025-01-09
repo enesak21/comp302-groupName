@@ -47,6 +47,12 @@ public class EnchantmentManager {
 
     }
 
+    /**
+     * Requires: gridWidth > 0, gridHeight > 0, factories is not empty
+     * Modifies: this.enchantments, this.enchantmentViews, game.getGrid().getTileAt(gridX, gridY)
+     * Effects: Spawns a new enchantment at a random valid position within the grid and adds it to the enchantments list.
+     *          Also creates a view for the enchantment and adds it to the enchantmentViews list.
+     */
     public void spawnEnchantment(int gridWidth, int gridHeight) {
         int factoryIndex = random.nextInt(factories.size()); // Randomly select a factory
         EnchantmentFactory selectedFactory = factories.get(factoryIndex); // Select a factory
