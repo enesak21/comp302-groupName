@@ -1,7 +1,6 @@
-package domain.enchantments;
+package domain.enchantments.Factories;
 
-import java.awt.*;
-import java.util.Random;
+import domain.enchantments.BaseEnchantment;
 
 public interface EnchantmentFactory{
     BaseEnchantment createEnchantment(int gridX, int gridY, int tileSize);

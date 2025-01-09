@@ -1,13 +1,9 @@
-package domain.enchantments;
+package domain.enchantments.Factories;
 
 
 
-import domain.entity.monsters.ArcherMonster;
-import domain.entity.monsters.BaseMonster;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.io.IOException;
+import domain.enchantments.BaseEnchantment;
+import domain.enchantments.ExtraTime;
 
 public class ExtraTimeEnchantmentFactory implements EnchantmentFactory {
     public BaseEnchantment createEnchantment(int gridX, int gridY, int tileSize) {

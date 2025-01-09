@@ -1,7 +1,7 @@
 package domain.enchantments;
 
 import domain.UI.EnchantmentView;
-import domain.enchantments.EnchantmentFactory;
+import domain.enchantments.Factories.*;
 import domain.game.CollisionChecker;
 import domain.game.Game;
 import domain.game.Tile;

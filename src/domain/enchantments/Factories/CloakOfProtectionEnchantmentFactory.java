@@ -1,4 +1,7 @@
-package domain.enchantments;
+package domain.enchantments.Factories;
+
+import domain.enchantments.BaseEnchantment;
+import domain.enchantments.CloakOfProtection;
 
 public class CloakOfProtectionEnchantmentFactory implements EnchantmentFactory {
     @Override

@@ -1,4 +1,7 @@
-package domain.enchantments;
+package domain.enchantments.Factories;
+
+import domain.enchantments.BaseEnchantment;
+import domain.enchantments.LuringGem;
 
 public class LuringGemEnchantmentFactory implements EnchantmentFactory {
     @Override

@@ -1,4 +1,4 @@
-package domain.enchantments;
+package domain.enchantments.Factories;
 
 
 //first will be used for trial
