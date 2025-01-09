@@ -21,6 +21,22 @@ public class Grid {
         tileGenerator();
     }
 
+    /**
+     * Generates tiles for the grid.
+     *
+     *<p> Requires:
+     * - The {@code columns} and {@code rows} variables must be initialized and represent the dimensions of the grid.
+     * - The {@code tiles} array must be initialized with dimensions matching {@code columns} and {@code rows}.
+     * - The resource "/resources/tiles/background.png" must be available in the classpath.</p>
+     *
+     * <p>Modifies:
+     * - The {@code tiles} array, by populating it with {@code Tile} objects.</p>
+     *
+     * <p>Effects:
+     * - Reads the default background image from the specified resource path.
+     * - Iterates through each cell in the grid and creates a new {@code Tile} object with the default background image.
+     * - If an IOException occurs during image reading, the stack trace is printed.</p>
+     */
     public void tileGenerator() {
         try {
             BufferedImage defaultImage = ImageIO.read(getClass().getResourceAsStream("/resources/tiles/background.png"));
