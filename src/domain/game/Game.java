@@ -25,6 +25,9 @@ public class Game {
         this.timeController = new TimeController();
         this.searchRuneController = searchRuneController;
     }
+    public void removeFromActiveEnchantments(BaseEnchantment baseEnchantment) {
+        activeEnchantments.remove(baseEnchantment);
+    }
 
     public boolean isRuneFound() {
         return this.isRuneFound;
