@@ -1,5 +1,6 @@
 package domain.panels;
 
+import domain.UI.ArrowAnimationView;
 import domain.UI.GridView;
 import domain.UI.PlayerView;
 import domain.UI.MonsterView;
@@ -104,6 +105,9 @@ public class PlayModePanel extends JPanel implements Runnable {
     //Inventory image
     private Image inventoryMainImage;
     private Image revealSmallIcon;
+
+    //ARROW ANIMATION
+    private List<ArrowAnimationView> arrowAnimations = new ArrayList<>();
 
 
     int FPS = 60;
@@ -299,6 +303,11 @@ public class PlayModePanel extends JPanel implements Runnable {
         }
     }
 
+    // Add an arrow animation to the list
+    public void addArrowAnimation(ArrowAnimationView animation) {
+        arrowAnimations.add(animation);
+    }
+
     private void addPauseKeyListener() {
 
         this.addKeyListener(new KeyAdapter() {
@@ -377,8 +386,13 @@ public class PlayModePanel extends JPanel implements Runnable {
             game.getPlayer().update();
 
             //Update monsters
-
             monsterManager.updateMonsters();
+            // Update the arrow animations
+            for (ArrowAnimationView animation : arrowAnimations) {
+                animation.update();
+            }
+            arrowAnimations.removeIf(ArrowAnimationView::isFinished);
+
             enchantmentManager.updateEnchantments();
             //Update monsters view list if there is a new monster
             if (countMonster < monsterManager.getMonsters().size()) {
@@ -451,6 +465,13 @@ public class PlayModePanel extends JPanel implements Runnable {
         ((TimeLeftPanel) sidebarPanel.getTimeLeftPanel()).updateTimeLeft(timeController.getTimeLeft());
         // Draw Hearts Left
         ((HeartsLeftPanel) sidebarPanel.getHeartsLeftPanel()).updateHeartsLeft(game.getPlayer().getHealth());
+
+        //Draw the arrow animations
+        if (!arrowAnimations.isEmpty()) {
+            for (ArrowAnimationView animation : arrowAnimations) {
+                animation.draw(g2);
+            }
+        }
 
         g2.dispose();
     }

@@ -112,11 +112,12 @@ public class FighterMonster extends BaseMonster {
             }
             moveCounter = 0;
         }
-        attack(game.getPlayer());
+        attack(game);
     }
 
     @Override
-    public void attack(Player player) {
+    public void attack(Game game) {
+        Player player = game.getPlayer();
 
         if (isInRange(this.getGridX(), this.getGridY(),player.getGridX() ,player.getGridY(), DAGGER_RANGE)) {
             long currentTime = System.currentTimeMillis();
