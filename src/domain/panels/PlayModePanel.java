@@ -5,6 +5,10 @@ import domain.UI.PlayerView;
 import domain.UI.MonsterView;
 
 
+import domain.enchantments.BaseEnchantment;
+import domain.enchantments.CloakOfProtection;
+import domain.enchantments.EnchantmentManager;
+import domain.enchantments.Reveal;
 import domain.handlers.*;
 import domain.entity.Entity;
 
@@ -28,6 +32,9 @@ import java.awt.event.KeyEvent;
 import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -66,6 +73,9 @@ public class PlayModePanel extends JPanel implements Runnable {
     private PlayerView playerView;
     private GridView gridView;
 
+    //ENCHANTMENT MANAGER
+    public EnchantmentManager enchantmentManager;
+
     private MonsterManager monsterManager;
     private int countMonster = 0;
     private CopyOnWriteArrayList<MonsterView> monsterViewList = new CopyOnWriteArrayList<>();
@@ -86,6 +96,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     private Image openedWall, closedWall;
     private boolean[][] wallGrid;
     private SearchRuneController searchRuneController;
+    private Image cloakSmallIcon;
 
     //FLAG IMAGES
     private Image hallOfAirFlag, hallOfWaterFlag, hallOfEarthFlag, hallOfFireFlag;
@@ -93,7 +104,8 @@ public class PlayModePanel extends JPanel implements Runnable {
     private String state = "Default";
 
     //Inventory image
-    private Image inventoryImage;
+    private Image inventoryMainImage;
+    private Image revealSmallIcon;
 
 
     int FPS = 60;
@@ -117,6 +129,13 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         loadFont();
         addPauseKeyListener();
+
+        //KEYLISTENER FOR REVEAL WILL BE REMOVED
+        addKeyListenerForUseEnchantments();
+
+        gameWinningHandler = new GameWinningHandler(this);
+        gameOverHandler = new GameOverHandler(this);
+
     }
 
     public void initializeGameComponents(int hallNum) {
@@ -135,14 +154,16 @@ public class PlayModePanel extends JPanel implements Runnable {
         searchRuneController.placeRune();
 
 
-
         game = new Game(player, tileSize, this, grid, searchRuneController);
+        enchantmentManager = new EnchantmentManager(game, tileSize);
 
         timeController = game.getTimeController();
+
         // Set the time based on the number of structures placed
         // timeController.setTimeLeft(halls.get(hallNum).getPlacedStructuresCount() * 5);
 
         timeController.setTimeLeft(60); // Set the time to 60 seconds for testing purposes
+
 
         this.addKeyListener(player.getPlayerInputHandler());
         //initialize monsterManager
@@ -188,6 +209,42 @@ public class PlayModePanel extends JPanel implements Runnable {
         ((InventoryPanel) sidebarPanel.getInventoryPanel()).addItem("Heart Symbol", 3);
         ((InventoryPanel) sidebarPanel.getInventoryPanel()).addItem("Extra Life (Opened Chest)", 1);
     }
+
+    //REVEAL KEY HANDLER WILL BE OUT LATER
+    private void addKeyListenerForUseEnchantments() {
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_R) {
+                    if (game.getPlayer().getInventory().isInInventory("Reveal")) {
+                        BaseEnchantment revealEnchantment =
+                                new Reveal(0, 0, tileSize);  //MUST BE CHANGED
+                        revealEnchantment.applyEffect(game);
+                        game.getPlayer().getInventory().removeItem("Reveal");
+                        System.out.println("Reveal enchantment used. Highlighting region.");
+
+                    } else {
+                        System.out.println("No Reveal enchantment in inventory.");
+                    }
+                }
+                if (e.getKeyCode() == KeyEvent.VK_P) {
+                    if (game.getPlayer().getInventory().isInInventory("Cloak of Protection")) {
+                        BaseEnchantment cloak =
+                                new CloakOfProtection(0, 0, tileSize);  //MUST BE CHANGED
+                                                                                    //there should not be created a new object
+                        cloak.applyEffect(game);
+
+                        game.getPlayer().getInventory().removeItem("Cloak of Protection");
+                        System.out.println("CLOAK OF PROTECTION enchantment used.");
+
+                    } else {
+                        System.out.println("No Cloak of Protection available in inventory.");
+                    }
+                }
+            }
+        });
+    }
+
 
     public void moveToNextHall() {
         hallNum++; // Move to the next hall
@@ -299,7 +356,9 @@ public class PlayModePanel extends JPanel implements Runnable {
             game.getPlayer().update();
 
             //Update monsters
+
             monsterManager.updateMonsters();
+            enchantmentManager.updateEnchantments();
             //Update monsters view list if there is a new monster
             if (countMonster < monsterManager.getMonsters().size()) {
                 for (int i = countMonster; i < monsterManager.getMonsters().size(); i++) {
@@ -308,6 +367,14 @@ public class PlayModePanel extends JPanel implements Runnable {
                 }
                 countMonster = monsterManager.getMonsters().size();
             }
+
+//            ///HERE WE STOP HERE CORRECT THIS METHOD AND CONTINUE
+//            if ((game.getPlayer().getInventory().getContent()).size() != 0) {
+//                //System.out.println("inventory contentim bu abe"+game.getPlayer().getInventory().getContent());
+//                enchantmentManager.getEnchantments().getFirst().update(game);
+//            }
+
+
         }
     }
 
@@ -336,8 +403,16 @@ public class PlayModePanel extends JPanel implements Runnable {
             monsterView.draw(g2);
         }
 
-	    //Structures are drawn after entities
+
+	      //Structures are drawn after entities
+
+        //ENCHANTMENT IS PAINTED HERE
+        enchantmentManager.drawEnchantments(g2);
+
+
         gridView.drawStructures(g2, offsetX * tileSize, offsetY * tileSize);
+        //FOR HIGHLETED REGION
+        drawHighlightedRegion(g2);
 
         if (inTransition) {
             drawTransitionScreen(g2);
@@ -412,6 +487,16 @@ public class PlayModePanel extends JPanel implements Runnable {
             x = (screenWidth - fm.stringWidth(resumeText)) / 2;
             y += fm.getHeight() + 20;
             g2.drawString(resumeText, x, y);
+        }
+    }
+    private void loadSmallInventoryImages(){
+        try{
+            revealSmallIcon =  ImageIO.read(getClass().getResource("/resources/enchantments/reveal.png"));
+            cloakSmallIcon =  ImageIO.read(getClass().getResource("/resources/enchantments/cloakOfProtection.png"));
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            System.err.println("Error loading wall images. Please check the file paths.");
         }
     }
 
@@ -539,7 +624,7 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     private void initializeInventoryImages(){
         try {
-            inventoryImage = ImageIO.read(getClass().getResource("/resources/inventory/Inventory.png")); // Update the path
+            inventoryMainImage = ImageIO.read(getClass().getResource("/resources/inventory/Inventory.png")); // Update the path
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -550,7 +635,8 @@ public class PlayModePanel extends JPanel implements Runnable {
     private void drawInventory(Graphics2D g2) {
         // Ensure the inventory image is loaded
         initializeInventoryImages();
-        if (inventoryImage != null) {
+        loadSmallInventoryImages();
+        if (inventoryMainImage != null) {
             // Define inventory position and size
             int inventoryX = sidebarX +20; // Adjust X position
             int inventoryY = sidebarY + gridHeight -300; // Adjust Y position
@@ -558,25 +644,40 @@ public class PlayModePanel extends JPanel implements Runnable {
             int inventoryWidth = 100; // Width of the inventory
             int inventoryHeight = 150; // Height of the inventory
 
+            g2.drawImage(inventoryMainImage, inventoryX, inventoryY,inventoryWidth,inventoryHeight, null);
 
-            // Draw the inventory background
-            g2.drawImage(inventoryImage, inventoryX, inventoryY,inventoryWidth,inventoryHeight, null);
 
-            // Example: Draw items in the inventory
-            // Ensure you have a list of items (or a similar structure)
-           // List<Item> inventoryItems = game.getPlayer().getInventoryItems(); // Replace with your actual method
+            HashMap<String, Integer> inventoryContent = game.getPlayer().getInventory().getContent();
 
-//            if (inventoryItems != null) {
-//                int itemSize = 30; // Size of each item in the inventory
-//                int padding = 5; // Space between items
-//                for (int i = 0; i < inventoryItems.size(); i++) {
-//                    Item item = inventoryItems.get(i);
-//                    Image itemImage = item.getImage(); // Ensure each item has an image
-//                    int itemX = inventoryX + padding + (i % 5) * (itemSize + padding); // Adjust X position per item
-//                    int itemY = inventoryY + padding + (i / 5) * (itemSize + padding); // Adjust Y position per item
-//                    g2.drawImage(itemImage, itemX, itemY, itemSize, itemSize, null); // Draw the item
-//                }
-//            }
+            for (String enchantmentType : inventoryContent.keySet()) {
+                //CHECK FOR EACH
+                if(enchantmentType.equals("Reveal")){
+                    g2.drawImage(revealSmallIcon, inventoryX+22, inventoryY+60,18,18, null);
+                }
+                if(enchantmentType.equals("Cloak of Protection")){
+                    g2.drawImage(cloakSmallIcon, inventoryX+42, inventoryY+60,18,18, null);
+                }
+            }
+        }
+    }
+
+    private void drawHighlightedRegion(Graphics2D g2) {
+        for (int x = 0; x < grid.getColumns(); x++) {
+            for (int y = 0; y < grid.getRows(); y++) {
+                Tile tile = grid.getTileAt(x, y);
+                if (tile.isHighlighted()) {
+                    int drawX = (offsetX + x) * tileSize;
+                    int drawY = (offsetY + y) * tileSize;
+
+                    // Draw a semi-transparent rectangle for highlighting
+                    g2.setColor(new Color(255, 255, 0, 128)); // Yellow with transparency
+                    g2.fillRect(drawX, drawY, tileSize, tileSize);
+
+                    // Optional: Draw a border for better visibility
+                    g2.setColor(Color.YELLOW);
+                    g2.drawRect(drawX, drawY, tileSize, tileSize);
+                }
+            }
         }
     }
 
@@ -701,5 +802,9 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public void setSidebarPanel(SidebarPanel sidebarPanel) {
         this.sidebarPanel = sidebarPanel;
+
+    public EnchantmentManager getEnchantmentManager() {
+        return enchantmentManager;
+
     }
 }

@@ -118,7 +118,11 @@ public class ArcherMonster extends BaseMonster{
      */
 
     public void throwArrow(Player player){
-        player.reduceHealth();
+
+        //IF PLAYER INVISIBLE TO ARCHER THEN DO NOTHİNG
+        if(!player.getIsInvisibleToArchers()){player.reduceHealth();}
+        else System.out.println("INVISIBLE BILADERRR");
+
     }
 
     @Override
@@ -143,7 +147,7 @@ public class ArcherMonster extends BaseMonster{
      */
     @Override
     public void attack(Player player) {
-        if (Game.isInRange(this.getGridX(), this.getGridY(), player.getGridX(), player.getGridY(), arrowRange)) {
+        if (!player.getIsInvisibleToArchers() && Game.isInRange(this.getGridX(), this.getGridY(), player.getGridX(), player.getGridY(), arrowRange)) {
             long currentTime = System.currentTimeMillis();
             if ((currentTime - lastAttackTime) > SHOOT_FREQUENCY) {
                 throwArrow(player);

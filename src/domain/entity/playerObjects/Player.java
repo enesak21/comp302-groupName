@@ -15,6 +15,7 @@ public class Player extends Entity {
     boolean moving = false;
     int pixelCounter = 0;
     private static Player instance;
+    private boolean invisibleToArchers = false;
 
     PlayModePanel playModePanel;
     PlayerInputHandler playerInputHandler;
@@ -29,6 +30,8 @@ public class Player extends Entity {
         this.health = 4;
         this.direction = Direction.RIGHT;
         updatePixelPosition();
+        //Inventory is initialized here
+        this.inventory = new Inventory();
     }
 
 
@@ -123,6 +126,12 @@ public class Player extends Entity {
         return health;
     }
 
+    public void setHealth(int health){
+        if (this.health < 4) {
+            this.health = health;
+        }
+    }
+
     /**
      * Reduces the player's health by one. If the player's health reaches zero,
      * it sets the remaining game time to zero and triggers the game over handler.
@@ -147,5 +156,15 @@ public void setCollisionChecker(CollisionChecker collisionChecker) {
      */
     public boolean useEnchantment(String enchantmentType) {
         return false;
+    }
+    public Inventory getInventory() {
+        return inventory;
+    }
+    public boolean getIsInvisibleToArchers() {
+        return invisibleToArchers;
+    }
+
+    public void setInvisibleToArchers(boolean invisibleToArchers) {
+        this.invisibleToArchers = invisibleToArchers;
     }
 }

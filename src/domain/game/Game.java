@@ -1,8 +1,12 @@
 // src/domain/game/Game.java
 package domain.game;
 
+import domain.enchantments.BaseEnchantment;
+import java.util.Random;
 import domain.entity.playerObjects.Player;
 import domain.panels.PlayModePanel;
+
+import java.util.ArrayList;
 
 public class Game {
     private boolean isRuneFound = false;
@@ -12,6 +16,7 @@ public class Game {
     private int remainingTime; // Add this field
     private TimeController timeController;
     private SearchRuneController searchRuneController;
+    private ArrayList<BaseEnchantment> activeEnchantments = new ArrayList<>();
 
     public Game(Player player, int tileSize, PlayModePanel playModePanel, Grid grid, SearchRuneController searchRuneController) {
         this.player = player;
@@ -80,6 +85,16 @@ public class Game {
         return remainingTime;
     }
 
+    /**
+     * Returns the remaining time as a percentage of the total time.
+     * 
+     * TODO: Total time cannot be accessed, will fix later
+     * @return float
+     */
+    public float getRemainingTimePercentage() {
+        return (float) 100 * timeController.getTimeLeft() / 60;
+    }
+    
     public void setRemainingTime(int remainingTime) {
         this.remainingTime = remainingTime;
     }
@@ -96,4 +111,28 @@ public class Game {
         return searchRuneController;
     }
 
+
+    public ArrayList<BaseEnchantment> getActiveEnchantments() {
+        return activeEnchantments;
+    }
+    /**
+     * Teleports the player to a random empty location.
+     * This method is called by wizard in CloseToLosingBehavior.
+     */
+    public void teleportPlayer() {
+        //TODO: Implement this method
+        Random random = new Random();
+        int gridWidth = grid.getColumns();
+        int gridHeight = grid.getRows();
+        int newX, newY;
+
+        do {
+            newX = random.nextInt(gridWidth);
+            newY = random.nextInt(gridHeight);
+        } while (grid.getTileAt(newX - 2, newY - 2).isSolid());
+
+        player.setGridX(newX);
+        player.setGridY(newY);
+
+    }
 }
