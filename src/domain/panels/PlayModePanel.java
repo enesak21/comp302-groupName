@@ -208,6 +208,7 @@ public class PlayModePanel extends JPanel implements Runnable {
                                 new CloakOfProtection(0, 0, tileSize);  //MUST BE CHANGED
                                                                                     //there should not be created a new object
                         cloak.applyEffect(game);
+
                         game.getPlayer().getInventory().removeItem("Cloak of Protection");
                         System.out.println("CLOAK OF PROTECTION enchantment used.");
 

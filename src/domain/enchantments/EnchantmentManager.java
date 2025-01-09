@@ -59,7 +59,7 @@ public class EnchantmentManager {
         BaseEnchantment enchantment = selectedFactory.createEnchantment(gridX, gridY, tileSize);
         game.getGrid().getTileAt(gridX - PlayModePanel.offsetX, gridY - PlayModePanel.offsetY).setSolid(true);
         enchantments.add(enchantment);
-        System.out.println("Enchantment is created at: "+ gridX + ", " + gridY);
+        //System.out.println("Enchantment is created at: "+ gridX + ", " + gridY);
 
 
         // Create a view for the enchantment
@@ -99,7 +99,7 @@ public class EnchantmentManager {
                 iterator.remove(); // Remove using iterator
                 viewIterator.next(); // Move the view iterator to match removal in enchantmentViews
                 viewIterator.remove();
-                System.out.println("Enchantment REMOVED: " + enchantment.getName());
+                //System.out.println("Enchantment REMOVED: " + enchantment.getName());
             }
         }
     }
@@ -150,7 +150,7 @@ public class EnchantmentManager {
                     if (enchantmentType.equals("Reveal")) {
                         game.getPlayer().getInventory().addItem(enchantmentType);
                     } else if (enchantmentType.equals("Cloak of Protection")) {
-                        System.out.println("Cloak added to the inventory by EnchantmentManager");
+                        //System.out.println("Cloak added to the inventory by EnchantmentManager");
                         game.getPlayer().getInventory().addItem(enchantmentType);
                     } else {
                         enchantment.applyEffect(game);
@@ -167,7 +167,7 @@ public class EnchantmentManager {
                     viewIterator.next(); // Move view iterator to match removal in enchantmentViews
                     viewIterator.remove();
 
-                    System.out.println("Enchantment collected: " + enchantment.getName());
+                    //System.out.println("Enchantment collected: " + enchantment.getName());
                     return;
                 }
             }

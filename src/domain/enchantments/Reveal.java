@@ -10,13 +10,12 @@ import java.awt.*;
 
 public class Reveal extends BaseEnchantment {
     private Image icon;
-    private boolean isActive;
+
     private long activationTime; // Timestamp when the effect was activated
     private final String name = "Reveal";
 
     public Reveal(int gridX, int gridY, int tileSize) {
         super(gridX, gridY, tileSize);
-        this.isActive = false;
     }
 
     public String getName() {
@@ -30,11 +29,10 @@ public class Reveal extends BaseEnchantment {
     @Override
     public void applyEffect(Game game) {
         //System.out.println("AREA WILL BE HIGHLITED");
-        if (!isActive) {
-            isActive = true;
+        if (!isActive()) {
+            setActive(true);
             game.getActiveEnchantments().add(this);
             activationTime = System.currentTimeMillis();
-
             Tile runeTile = game.getSearchRuneController().getRuneTile();
 
             if (runeTile != null) {
@@ -66,9 +64,10 @@ public class Reveal extends BaseEnchantment {
     }
 
     public void update(Game game) {
-        if (isActive && System.currentTimeMillis() - activationTime >= 10_000) {
+        if (isActive() && System.currentTimeMillis() - activationTime >= 4_000) {
             deactivateRegion(game);
-            System.out.println("Region Higlight removed. Deactivated Reveal.");
+            setActive(false);
+            System.out.println("Region Highlight removed. Deactivated Reveal.");
         }
     }
 
@@ -89,8 +88,6 @@ public class Reveal extends BaseEnchantment {
                 }
             }
         }
-
-        isActive = false;
     }
 
     @Override
