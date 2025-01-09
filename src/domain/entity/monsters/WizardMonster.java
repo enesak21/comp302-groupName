@@ -47,7 +47,7 @@ public class WizardMonster extends BaseMonster {
     }
 
     @Override
-    public void attack(Player player) {
+    public void attack(Game game) {
         long currentTime = System.currentTimeMillis();
         if ((currentTime - lastAttackTime) > teleport_frequecy) {
             lastAttackTime = currentTime;

@@ -10,6 +10,6 @@ public class ChallengingBehavior implements IWizardBehavior {
     @Override
     public void execute(WizardMonster wizardMonster, Game game) {
         wizardMonster.setTeleportFrequecy(3000);
-        wizardMonster.attack(game.getPlayer());
+        wizardMonster.attack(game);
     }
 }

@@ -171,6 +171,9 @@ public void setCollisionChecker(CollisionChecker collisionChecker) {
         this.invisibleToArchers = invisibleToArchers;
     }
 
+    public PlayModePanel getPlayModePanel() {
+        return playModePanel;
+    }
     public void useRevealEnchantment() {
         BaseEnchantment revealEnchantment = new Reveal(0, 0, tileSize); // Adjust parameters as needed
         revealEnchantment.applyEffect(playModePanel.getGame());
@@ -198,5 +201,6 @@ public void setCollisionChecker(CollisionChecker collisionChecker) {
         revealEnchantment.applyEffect(playModePanel.getGame());
         this.getInventory().removeItem("Speed Up");
         System.out.println("Speed Up enchantment used.");
+
     }
 }
