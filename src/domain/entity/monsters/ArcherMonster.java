@@ -147,7 +147,7 @@ public class ArcherMonster extends BaseMonster{
      */
     @Override
     public void attack(Player player) {
-        if (Game.isInRange(this.getGridX(), this.getGridY(), player.getGridX(), player.getGridY(), arrowRange)) {
+        if (!player.getIsInvisibleToArchers() && Game.isInRange(this.getGridX(), this.getGridY(), player.getGridX(), player.getGridY(), arrowRange)) {
             long currentTime = System.currentTimeMillis();
             if ((currentTime - lastAttackTime) > SHOOT_FREQUENCY) {
                 throwArrow(player);
