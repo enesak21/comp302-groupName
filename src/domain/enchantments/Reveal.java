@@ -63,10 +63,9 @@ public class Reveal extends BaseEnchantment {
     }
 
     public void update(Game game) {
-        if (isActive() && System.currentTimeMillis() - activationTime >= 4_000) {
+        if (isActive() && System.currentTimeMillis() - activationTime >= 10_000) {
             deactivateRegion(game);
             setActive(false);
-            System.out.println("Region Highlight removed. Deactivated Reveal.");
         }
     }
 
