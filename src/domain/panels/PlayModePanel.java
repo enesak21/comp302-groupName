@@ -218,10 +218,7 @@ public class PlayModePanel extends JPanel implements Runnable {
                                 new Reveal(0, 0, tileSize);  //MUST BE CHANGED
                         revealEnchantment.applyEffect(game);
                         game.getPlayer().getInventory().removeItem("Reveal");
-                        System.out.println("Reveal enchantment used. Highlighting region.");
 
-                    } else {
-                        System.out.println("No Reveal enchantment in inventory.");
                     }
                 }
                 if (e.getKeyCode() == KeyEvent.VK_P) {
@@ -232,10 +229,7 @@ public class PlayModePanel extends JPanel implements Runnable {
                         cloak.applyEffect(game);
 
                         game.getPlayer().getInventory().removeItem("Cloak of Protection");
-                        System.out.println("CLOAK OF PROTECTION enchantment used.");
 
-                    } else {
-                        System.out.println("No Cloak of Protection available in inventory.");
                     }
                 }
             }
@@ -510,10 +504,8 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("Error loading wall images. Please check the file paths.");
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            System.err.println("Image file not found. Please ensure the file exists at the specified path.");
         }
     }
 

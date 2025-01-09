@@ -116,7 +116,6 @@ public class InventoryPanel extends JPanel {
             }
         }
 
-        System.out.println("Inventory is full!");
     }
 
     @Override

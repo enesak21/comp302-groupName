@@ -65,7 +65,6 @@ public class Inventory {
      */
     public void addItem(String enchantmentType) {
         content.put(enchantmentType, content.getOrDefault(enchantmentType, 0) + 1);
-        System.out.println("Added to inventory: " + enchantmentType);
     }
 
     /**
@@ -82,7 +81,6 @@ public class Inventory {
             } else {
                 content.put(enchantmentType, 0);
             }
-            System.out.println("Removed from inventory: " + enchantmentType);
             return true;
         }
         return false;
