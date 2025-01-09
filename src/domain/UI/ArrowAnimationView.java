@@ -2,7 +2,6 @@ package domain.UI;
 
 import domain.entity.monsters.ArcherMonster;
 import domain.entity.playerObjects.Player;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;

@@ -120,7 +120,7 @@ public class ArcherMonster extends BaseMonster{
 
     public void throwArrow(Game game){
 
-        //IF PLAYER INVISIBLE TO ARCHER THEN DO NOTHİNG
+        //IF PLAYER INVISIBLE TO ARCHER THEN DO NOTHING
         if(!game.getPlayer().getIsInvisibleToArchers()){
             game.getPlayer().reduceHealth();
             System.out.println("throwArrow is working");

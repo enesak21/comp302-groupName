@@ -109,7 +109,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     private Image inventoryMainImage;
     private Image revealSmallIcon;
 
-    //Cemal TEST
+    //ARROW ANIMATION
     private List<ArrowAnimationView> arrowAnimations = new ArrayList<>();
 
 
@@ -279,7 +279,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         }
     }
 
-
+    // Add an arrow animation to the list
     public void addArrowAnimation(ArrowAnimationView animation) {
         arrowAnimations.add(animation);
     }
@@ -362,18 +362,12 @@ public class PlayModePanel extends JPanel implements Runnable {
             game.getPlayer().update();
 
             //Update monsters
-
             monsterManager.updateMonsters();
-
-            //CEMAL TEST
+            // Update the arrow animations
             for (ArrowAnimationView animation : arrowAnimations) {
                 animation.update();
             }
             arrowAnimations.removeIf(ArrowAnimationView::isFinished);
-
-
-
-
 
             enchantmentManager.updateEnchantments();
             //Update monsters view list if there is a new monster
@@ -447,16 +441,12 @@ public class PlayModePanel extends JPanel implements Runnable {
         // Draw Hearts Left
         ((HeartsLeftPanel) sidebarPanel.getHeartsLeftPanel()).updateHeartsLeft(game.getPlayer().getHealth());
 
-
+        //Draw the arrow animations
         if (!arrowAnimations.isEmpty()) {
             for (ArrowAnimationView animation : arrowAnimations) {
                 animation.draw(g2);
             }
         }
-        //CEMAL TEST
-//        for (ArrowAnimationView animation : arrowAnimations) {
-//            animation.draw(g2);
-//        }
 
         g2.dispose();
     }
