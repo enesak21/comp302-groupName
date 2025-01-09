@@ -1,6 +1,7 @@
 package domain.UI;
 
 import domain.UI.screenPanels.BuildModeScreenPanel;
+import domain.UI.screenPanels.GameScreenPanel;
 import domain.UI.screenPanels.HelpScreenPanel;
 import domain.UI.screenPanels.HomeScreenPanel;
 import domain.audio.AudioManager;
@@ -23,6 +24,12 @@ public class UI {
     private JPanel mainPanel; // Main container for the different panels
     private List<Hall> halls; // List of halls created in Build Mode
     private AudioManager audioManager = new AudioManager(); // Audio manager for playing music
+
+    // Screen panels
+    private BuildModeScreenPanel buildScreen;
+    private GameScreenPanel gameScreen;
+    private HelpScreenPanel helpScreen;
+
 
     // Constructor
     public UI() {
@@ -90,7 +97,7 @@ public class UI {
     private JPanel createBuildScreen() {
         // Create a JPanel as the main container for the Build Mode screen
 
-        BuildModeScreenPanel buildScreen = new BuildModeScreenPanel(this); // Pass the current UI instance
+        buildScreen = new BuildModeScreenPanel(this); // Pass the current UI instance
         halls = buildScreen.getBuildModePanel().getHalls(); // Retrieve the halls from BuildModePanel
 
         return buildScreen;
@@ -101,18 +108,16 @@ public class UI {
         * Create the game screen with the PlayModePanel
      */
     private JPanel createGameScreen() {
-        PlayModePanel playModePanel = new PlayModePanel(halls);
-
-        playModePanel.startGameThread(); // Start the game loop
-        SwingUtilities.invokeLater(playModePanel::requestFocusInWindow); // Request focus for key events
-        return playModePanel;
+        gameScreen = new GameScreenPanel(this); // Pass the current UI instance
+        return gameScreen;
     }
 
     /*
         * Create the help screen panel with instructions
      */
     private JPanel createHelpScreen() {
-        return new HelpScreenPanel(this); // Pass the current UI instance
+        helpScreen =  new HelpScreenPanel(this); // Pass the current UI instance
+        return helpScreen;
     }
 
     /*
@@ -125,5 +130,18 @@ public class UI {
             }
         }
         return false;
+    }
+
+    // Getters for screen panels
+    public BuildModeScreenPanel getBuildScreen() {
+        return buildScreen;
+    }
+
+    public GameScreenPanel getGameScreen() {
+        return gameScreen;
+    }
+
+    public HelpScreenPanel getHelpScreen() {
+        return helpScreen;
     }
 }

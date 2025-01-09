@@ -17,7 +17,9 @@ import domain.entity.monsters.*;
 import domain.entity.playerObjects.Player;
 import domain.game.*;
 import domain.handlers.mouseHandlers.PlayModeMouseListener;
-import domain.structures.Structure;
+import domain.panels.sideBarComponents.HeartsLeftPanel;
+import domain.panels.sideBarComponents.InventoryPanel;
+import domain.panels.sideBarComponents.TimeLeftPanel;
 import domain.game.SearchRuneController;
 import main.PlayerInputHandler;
 
@@ -33,8 +35,8 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 public class PlayModePanel extends JPanel implements Runnable {
 
@@ -112,6 +114,8 @@ public class PlayModePanel extends JPanel implements Runnable {
     Rune rune;
     Graphics2D g2;
 
+    private SidebarPanel sidebarPanel;
+
 
 
     // Constructor
@@ -123,22 +127,24 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.setFocusable(true);
         this.rune = new Rune();
 
-        initializeGameComponents(0);
         loadFont();
         addPauseKeyListener();
+
         //KEYLISTENER FOR REVEAL WILL BE REMOVED
         addKeyListenerForUseEnchantments();
 
         gameWinningHandler = new GameWinningHandler(this);
         gameOverHandler = new GameOverHandler(this);
+
     }
 
-    private void initializeGameComponents(int hallNum) {
+    public void initializeGameComponents(int hallNum) {
         this.setState("Default");
         isPaused = false;
 
         Player player = Player.getInstance("Osimhen", 0, 0, tileSize, this, new PlayerInputHandler());
         playerView = new PlayerView(player);
+
         // Initialize the grid
         grid = halls.get(hallNum).toGrid(tileSize);
 
@@ -152,9 +158,12 @@ public class PlayModePanel extends JPanel implements Runnable {
         enchantmentManager = new EnchantmentManager(game, tileSize);
 
         timeController = game.getTimeController();
-        //FOR TESTING PURPOSES
-        timeController.setTimeLeft(60);
-        //timeController.setTimeLeft(halls.get(hallNum).getPlacedStructuresCount() * 5);
+
+        // Set the time based on the number of structures placed
+        // timeController.setTimeLeft(halls.get(hallNum).getPlacedStructuresCount() * 5);
+
+        timeController.setTimeLeft(60); // Set the time to 60 seconds for testing purposes
+
 
         this.addKeyListener(player.getPlayerInputHandler());
         //initialize monsterManager
@@ -183,6 +192,22 @@ public class PlayModePanel extends JPanel implements Runnable {
         }
         playModeMouseListener = new PlayModeMouseListener(this);
         this.addMouseListener(playModeMouseListener);
+
+        gameWinningHandler = new GameWinningHandler(this);
+        gameOverHandler = new GameOverHandler(this);
+
+        // Initialize the heart
+        ((HeartsLeftPanel) sidebarPanel.getHeartsLeftPanel()).updateHeartsLeft(game.getPlayer().getHealth());
+        ((HeartsLeftPanel) sidebarPanel.getHeartsLeftPanel()).initHearts();
+        ((TimeLeftPanel) sidebarPanel.getTimeLeftPanel()).updateTimeLeft(timeController.getTimeLeft());
+
+        // for testing purposes
+        ((InventoryPanel) sidebarPanel.getInventoryPanel()).addItem("Cloak of Protection", 1);
+        ((InventoryPanel) sidebarPanel.getInventoryPanel()).addItem("Luring Gem", 9);
+        ((InventoryPanel) sidebarPanel.getInventoryPanel()).addItem("Reveal", 3);
+        ((InventoryPanel) sidebarPanel.getInventoryPanel()).addItem("Extra Life (Closed Chest)", 2);
+        ((InventoryPanel) sidebarPanel.getInventoryPanel()).addItem("Heart Symbol", 3);
+        ((InventoryPanel) sidebarPanel.getInventoryPanel()).addItem("Extra Life (Opened Chest)", 1);
     }
 
     //REVEAL KEY HANDLER WILL BE OUT LATER
@@ -365,10 +390,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         g2 = (Graphics2D) g;
 
-
-        // Draw Time (always display the sidebar)
-        drawTime(g2);
-
         // Draw game grid and player
         gridView.draw(g2, offsetX * tileSize, offsetY * tileSize);
 
@@ -382,10 +403,13 @@ public class PlayModePanel extends JPanel implements Runnable {
             monsterView.draw(g2);
         }
 
+
+	      //Structures are drawn after entities
+
         //ENCHANTMENT IS PAINTED HERE
         enchantmentManager.drawEnchantments(g2);
 
-	//Structures are drawn after entities
+
         gridView.drawStructures(g2, offsetX * tileSize, offsetY * tileSize);
         //FOR HIGHLETED REGION
         drawHighlightedRegion(g2);
@@ -406,6 +430,13 @@ public class PlayModePanel extends JPanel implements Runnable {
                 gameWinningHandler.handle();
             }
         }
+
+        // Draw the sidebar
+        // Draw Time (always display the sidebar)
+        ((TimeLeftPanel) sidebarPanel.getTimeLeftPanel()).updateTimeLeft(timeController.getTimeLeft());
+        // Draw Hearts Left
+        ((HeartsLeftPanel) sidebarPanel.getHeartsLeftPanel()).updateHeartsLeft(game.getPlayer().getHealth());
+
         g2.dispose();
     }
 
@@ -436,61 +467,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         g2.drawString(line1, textX1, textY1);
         g2.drawString(line2, textX2, textY2);
     }
-
-    private void drawTime(Graphics2D g2) {
-        g2.setFont(pressStart2PFont.deriveFont(15f));
-        g2.setColor(Color.WHITE);
-
-
-        // Sidebar Background
-        g2.setColor(new Color(108, 85, 89));
-        g2.fillRoundRect(sidebarX, sidebarY, sidebarWidth, gridHeight, arcWidth, arcHeight);
-
-        // Load custom button images
-        try {
-            Image pauseButtonImage = new ImageIcon("src/resources/buttons/pause.png").getImage();
-            Image exitButtonImage = new ImageIcon("src/resources/buttons/exit.png").getImage();
-
-            int buttonWidth = 48; // Smaller button width
-            int buttonHeight = 48; // Smaller button height
-            int buttonPadding = 10; // Spacing between buttons
-            int buttonX1 = sidebarX + 10; // First button position
-            int buttonX2 = buttonX1 + buttonWidth + buttonPadding; // Second button position
-            int buttonY = sidebarY + 10; // Top margin for both buttons
-
-            // Draw Pause Button
-            g2.drawImage(pauseButtonImage, buttonX1, buttonY, buttonWidth, buttonHeight, null);
-
-            // Draw Exit Button
-            g2.drawImage(exitButtonImage, buttonX2, buttonY, buttonWidth, buttonHeight, null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Add Time section
-        try {
-            Image clockIcon = ImageIO.read(getClass().getResource("/resources/icons/clock.png"));
-            g2.drawImage(clockIcon, sidebarX + 10, sidebarY + 80, 24, 24, null); // Adjust icon position
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        g2.setFont(pressStart2PFont.deriveFont(13f));
-        g2.setColor(Color.WHITE);
-        g2.drawString("Time:", sidebarX + 40, sidebarY + 95);
-        g2.drawString(timeController.getTimeLeft() + " seconds", sidebarX + 5, sidebarY + 125);
-
-        // Add health hearts
-        try {
-            Image heartIcon = ImageIO.read(getClass().getResource("/resources/player/heart.png"));
-            for (int i = 0; i < game.getPlayer().getHealth(); i++) {
-                g2.drawImage(heartIcon, sidebarX + 5 + i * 32, sidebarY + 150, 32, 32, null);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     private void drawPauseOverlay(Graphics2D g2) {
         if (timeController.getTimeLeft() > 0) {
@@ -806,17 +782,11 @@ public class PlayModePanel extends JPanel implements Runnable {
         return g2;
     }
 
-    public List<Hall> getHalls() {
-        return halls;
-    }
 
     public int getScreenHeight() {
         return screenHeight;
     }
 
-    public PlayModeMouseListener getPlayModeMouseListener() {
-        return playModeMouseListener;
-    }
 
     public void setState(String state) {
         this.state = state;
@@ -830,7 +800,11 @@ public class PlayModePanel extends JPanel implements Runnable {
         return gameOverHandler;
     }
 
+    public void setSidebarPanel(SidebarPanel sidebarPanel) {
+        this.sidebarPanel = sidebarPanel;
+
     public EnchantmentManager getEnchantmentManager() {
         return enchantmentManager;
+
     }
 }
