@@ -13,17 +13,11 @@ public class ExtraTime extends BaseEnchantment {
     private int gridY;      // Y position on the grid
     private String name;
 
-
-
     public ExtraTime(int gridX, int gridY, int tileSize) {
         super(gridX, gridY, tileSize);
         this.name = "ExtraTime";
 
     }
-
-
-
-
 
     public String getName() {
         return "Extra Time";

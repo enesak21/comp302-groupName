@@ -1,6 +1,6 @@
 package domain.handlers.buttonHandlers;
 
-import domain.panels.PlayModePanel;
+import domain.UI.panels.PlayModePanel;
 
 import java.awt.*;
 

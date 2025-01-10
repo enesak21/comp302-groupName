@@ -1,11 +1,10 @@
 package domain.UI.screenPanels;
 
 import domain.UI.UI;
-import domain.panels.PlayModePanel;
-import domain.panels.SidebarPanel;
+import domain.UI.panels.PlayModePanel;
+import domain.UI.panels.SidebarPanel;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.*;
 
 public class GameScreenPanel extends JPanel {

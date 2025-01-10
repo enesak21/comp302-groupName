@@ -4,7 +4,6 @@ import domain.game.Game;
 
 
 import domain.game.CollisionChecker;
-import domain.panels.sideBarComponents.HeartsLeftPanel;
 
 import java.awt.*;
 
@@ -16,9 +15,6 @@ public class ExtraLife extends BaseEnchantment {
     private int gridY;      // Y position on the grid
     private String name = "Extra Life";
 
-
-
-
     public ExtraLife(int gridX, int gridY, int tileSize) {
         super(gridX, gridY, tileSize);
         this.name = "Extra Life";
@@ -29,16 +25,13 @@ public class ExtraLife extends BaseEnchantment {
         return name;
     }
 
-
     public Image getIcon() {
         return icon;
     }
 
-
     public void applyEffect(Game game) {
 
         game.getPlayer().setHealth(game.getPlayer().getHealth()+1);
-
 
     }
 

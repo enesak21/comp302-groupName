@@ -2,7 +2,7 @@ package domain.handlers;
 
 
 import domain.handlers.buttonHandlers.TryAgainButton;
-import domain.panels.PlayModePanel;
+import domain.UI.panels.PlayModePanel;
 import java.awt.*;
 
 

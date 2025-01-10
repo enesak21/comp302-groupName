@@ -1,9 +1,9 @@
-package domain.panels;
+package domain.UI.panels;
 
-import domain.panels.sideBarComponents.HeartsLeftPanel;
-import domain.panels.sideBarComponents.InventoryPanel;
-import domain.panels.sideBarComponents.TimeLeftPanel;
-import domain.panels.sideBarComponents.TopButtonPanel;
+import domain.UI.panels.sideBarComponents.HeartsLeftPanel;
+import domain.UI.panels.sideBarComponents.InventoryPanel;
+import domain.UI.panels.sideBarComponents.TimeLeftPanel;
+import domain.UI.panels.sideBarComponents.TopButtonPanel;
 
 import javax.swing.*;
 import java.awt.*;

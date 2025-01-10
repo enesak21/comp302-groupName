@@ -1,4 +1,4 @@
-package domain.panels.sideBarComponents;
+package domain.UI.panels.sideBarComponents;
 
 import javax.swing.*;
 import java.awt.*;

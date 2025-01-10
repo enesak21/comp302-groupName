@@ -6,7 +6,6 @@ import java.util.Random;
 
 import domain.entity.monsters.MonsterManager;
 import domain.entity.playerObjects.Player;
-import domain.panels.PlayModePanel;
 
 import java.util.ArrayList;
 
