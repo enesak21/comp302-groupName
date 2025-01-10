@@ -65,10 +65,20 @@ public class Game {
         return calculateDistance(tile1.getGridX(), tile1.getGridY(), tile2.getGridX(), tile2.getGridY());
     }
 
+    /**
+     * Requires: gridx1, gridy1, gridx2, gridy2 are valid grid coordinates, range >= 0.
+     * Modifies: None
+     * Effects: Returns true if the distance between two grid positions is within the specified range, otherwise returns false.
+     */
     public static boolean isInRange(int gridx1, int gridy1, int gridx2, int gridy2, float range) {
         return calculateDistance(gridx1,gridy1,gridx2,gridy2) <= range;
     }
 
+    /**
+     * Requires: tile1 and tile2 are not null and have valid grid coordinates, range >= 0.
+     * Modifies: None
+     * Effects: Returns true if the distance between two tiles is within the specified range, otherwise returns false.
+     */
     public static boolean isInRange(Tile tile1, Tile tile2, float range) {
         return isInRange(tile1.getGridX(), tile1.getGridY(), tile2.getGridX(), tile2.getGridY(), range);
     }
