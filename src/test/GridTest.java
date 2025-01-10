@@ -71,12 +71,12 @@ public class GridTest {
     @Test
     public void testGetTileAtEdge() {
         // Act
-        Tile tile = grid.getTileAt(4, 4);
+        Tile tile = grid.getTileAt(15, 15);
 
         // Assert
         assertNotNull(tile);
-        assertEquals(4, tile.getGridX());
-        assertEquals(4, tile.getGridY());
+        assertEquals(15, tile.getGridX());
+        assertEquals(15, tile.getGridY());
     }
 
 }
