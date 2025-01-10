@@ -37,7 +37,7 @@ public abstract class Entity {
     }
 
     public void setGridX(int gridX) {
-        this.gridX = gridX;
+        this.gridX = gridX - PlayModePanel.offsetX;
     }
 
     public int getGridY() {
@@ -45,7 +45,7 @@ public abstract class Entity {
     }
 
     public void setGridY(int gridY) {
-        this.gridY = gridY;
+        this.gridY = gridY - PlayModePanel.offsetY;
     }
 
     public Direction getDirection() {
