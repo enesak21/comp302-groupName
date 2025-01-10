@@ -1,27 +1,22 @@
-package domain.panels;
+package domain.UI.panels;
 
 import domain.UI.ArrowAnimationView;
 import domain.UI.GridView;
 import domain.UI.PlayerView;
 import domain.UI.MonsterView;
-
-
+import domain.UI.renderers.GameRenderer;
 import domain.enchantments.*;
 import domain.handlers.*;
 import domain.entity.Entity;
-
 import domain.entity.monsters.*;
-
 import domain.entity.playerObjects.Player;
 import domain.game.*;
 import domain.handlers.mouseHandlers.PlayModeMouseListener;
-import domain.panels.sideBarComponents.HeartsLeftPanel;
-import domain.panels.sideBarComponents.InventoryPanel;
-import domain.panels.sideBarComponents.TimeLeftPanel;
+import domain.UI.panels.sideBarComponents.HeartsLeftPanel;
+import domain.UI.panels.sideBarComponents.InventoryPanel;
+import domain.UI.panels.sideBarComponents.TimeLeftPanel;
 import domain.game.SearchRuneController;
 import main.PlayerInputHandler;
-
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -30,13 +25,12 @@ import java.awt.event.KeyEvent;
 import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+
 public class PlayModePanel extends JPanel implements Runnable {
 
     // Screen settings
@@ -61,9 +55,6 @@ public class PlayModePanel extends JPanel implements Runnable {
     int sidebarWidth = 4 * tileSize + 20; // Sidebar width
     int sidebarX = screenWidth - sidebarWidth - (tileSize + 10) + 20;
     int sidebarY = offsetY * tileSize;
-    int arcWidth = 30; // Rounded corner width
-    int arcHeight = 30; // Rounded corner height
-
 
     private TimeController timeController;
     private Grid grid;
@@ -78,7 +69,6 @@ public class PlayModePanel extends JPanel implements Runnable {
     private MonsterManager monsterManager;
     private int countMonster = 0;
     private CopyOnWriteArrayList<MonsterView> monsterViewList = new CopyOnWriteArrayList<>();
-
 
     // Declare the halls variable
     private List<Hall> halls;
@@ -109,16 +99,18 @@ public class PlayModePanel extends JPanel implements Runnable {
     //ARROW ANIMATION
     private List<ArrowAnimationView> arrowAnimations = new ArrayList<>();
 
+    // Game renderer
+    private GameRenderer gameRenderer;
 
+    // Sidebar panel
+    private SidebarPanel sidebarPanel;
+
+    // Game variables
     int FPS = 60;
     Thread gameThread;
     Game game;
     Rune rune;
     Graphics2D g2;
-
-    private SidebarPanel sidebarPanel;
-
-
 
     // Constructor
     public PlayModePanel(List<Hall> halls) {
@@ -155,7 +147,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         searchRuneController = new SearchRuneController(this);
         searchRuneController.placeRune();
 
-
         game = new Game(player, tileSize, grid, searchRuneController);
         enchantmentManager = new EnchantmentManager(game, tileSize);
         monsterManager = game.getMonsterManager();
@@ -177,7 +168,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         }
 
         this.addKeyListener(player.getPlayerInputHandler());
-
 
         gridView = new GridView(grid);
         CollisionChecker collisionChecker = new CollisionChecker(grid);
@@ -205,6 +195,10 @@ public class PlayModePanel extends JPanel implements Runnable {
         for (Map.Entry<String, Integer> entry: game.getPlayer().getInventory().getContent().entrySet()) {
             ((InventoryPanel) sidebarPanel.getInventoryPanel()).setItem(entry.getKey(), entry.getValue());
         }
+
+        // Initialize game renderer
+        gameRenderer = new GameRenderer(grid, player, monsterManager.getMonsters(), enchantmentManager);
+
     }
 
     //REVEAL KEY HANDLER WILL BE OUT LATER
@@ -356,9 +350,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
         }
-
-        initializeWalls();
-        loadWallImages();
     }
 
     public void startGameThread() {
@@ -423,26 +414,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         g2 = (Graphics2D) g;
 
-        // Draw game grid and player
-        gridView.draw(g2, offsetX * tileSize, offsetY * tileSize);
-
-        playerView.draw(g2);
-        drawWallsAndCorners(g2);
-        // drawInventory(g2);  //check the location
-
-        //Draw monsters
-        //monsterManager'daki her monsterı çek ve onlar için bire View classı oluştur
-        for(MonsterView monsterView: monsterViewList){
-            monsterView.draw(g2);
-        }
-
-        //ENCHANTMENT IS PAINTED HERE
-        enchantmentManager.drawEnchantments(g2);
-
-
-        gridView.drawStructures(g2, offsetX * tileSize, offsetY * tileSize);
-        //FOR HIGHLETED REGION
-        drawHighlightedRegion(g2);
+        gameRenderer.render(g2, offsetX, offsetY, tileSize);
 
         //Draw the arrow animations
         if (!arrowAnimations.isEmpty()) {
@@ -525,149 +497,6 @@ public class PlayModePanel extends JPanel implements Runnable {
             g2.drawString(resumeText, x, y);
         }
     }
-
-    private void loadFlagImages(){
-        try{
-            hallOfAirFlag = ImageIO.read(getClass().getResource("/resources/flags/hallOfAir flag.png"));
-            hallOfEarthFlag = ImageIO.read(getClass().getResource("/resources/flags/hallOfEarth flag.png"));
-            hallOfWaterFlag = ImageIO.read(getClass().getResource("/resources/flags/hallOfFire flag.png"));
-            hallOfFireFlag = ImageIO.read(getClass().getResource("/resources/flags/hallofWater flag.png"));
-
-        }
-        catch (IOException e){
-            e.printStackTrace();
-            System.err.println("Error loading wall images. Please check the file paths.");
-        }
-    }
-    private void loadWallImages() {
-        try {
-            leftWall = ImageIO.read(getClass().getResource("/resources/Walls/leftWall.png"));
-            rightWall = ImageIO.read(getClass().getResource("/resources/Walls/rightWall2.png"));
-            topWall = ImageIO.read(getClass().getResource("/resources/Walls/frontWall.png"));
-            bottomWall = ImageIO.read(getClass().getResource("/resources/Walls/frontWall.png"));
-            topLeftCorner = ImageIO.read(getClass().getResource("/resources/Walls/topLeftCorner.png"));
-            topRightCorner = ImageIO.read(getClass().getResource("/resources/Walls/topRightCorner.png"));
-            bottomLeftCorner = ImageIO.read(getClass().getResource("/resources/Walls/BottomLeftCorner.png"));
-            bottomRightCorner = ImageIO.read(getClass().getResource("/resources/Walls/BottomRightCorner.png"));
-
-            openedWall = ImageIO.read(getClass().getResource("/resources/Walls/doorOpened.png"));
-            closedWall = ImageIO.read(getClass().getResource("/resources/Walls/doorClosed.png"));
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void drawHallFlagNearDoor(Graphics2D g2, int doorX, int doorY) {
-        Image flag = null;
-        loadFlagImages();
-        // Determine the flag based on the current hall
-        switch (hallNum) {
-            case 0:
-                flag = hallOfAirFlag;
-                break;
-            case 1:
-                flag = hallOfWaterFlag;
-                break;
-            case 2:
-                flag = hallOfEarthFlag;
-                break;
-            case 3:
-                flag = hallOfFireFlag;
-                break;
-            default:
-                break;
-        }
-
-        // Draw the flag near the door
-        if (flag != null) {
-            int flagX = doorX-250; // Position the flag to the right of the door
-            int flagY = doorY+17 ; // Position the flag above the door
-            g2.drawImage(flag, flagX, flagY,20,16, null); // Adjust size as needed
-        }
-    }
-
-
-
-
-    private void drawWallsAndCorners(Graphics2D g2) {
-        int leftX = offsetX * tileSize - leftWall.getWidth(null); // Adjust X for left wall
-        int rightX = (offsetX + gridColumns) * tileSize;         // Adjust X for right wall
-        int topY = offsetY * tileSize - topWall.getHeight(null); // Adjust Y for top wall
-        int bottomY = (offsetY + gridRows) * tileSize;           // Adjust Y for bottom wall
-
-        // Draw top and bottom walls
-        for (int col = 0; col < gridColumns; col++) {
-            int x = (offsetX + col) * tileSize;
-            g2.drawImage(topWall, x, topY, tileSize, topWall.getHeight(null), null); // Draw with fixed width
-            g2.drawImage(bottomWall, x, bottomY, tileSize, bottomWall.getHeight(null), null); // Draw with fixed width
-        }
-
-        // Draw left and right walls
-        for (int row = 0; row < gridRows; row++) {
-            int y = (offsetY + row) * tileSize;
-
-            g2.drawImage(leftWall, leftX, y, leftWall.getWidth(null), tileSize, null); // Draw with fixed height
-            g2.drawImage(rightWall, rightX, y, rightWall.getWidth(null), tileSize, null); // Draw with fixed height
-        }
-
-        // Draw corners
-        g2.drawImage(topLeftCorner, leftX, topY, null);                  // Top-left corner
-
-        g2.drawImage(topRightCorner, rightX-11 , topY, null);     // Top-right corner (adjusted)
-        g2.drawImage(bottomLeftCorner, leftX, bottomY, null);            // Bottom-left corner
-        g2.drawImage(bottomRightCorner, rightX-11, bottomY, null); // Bottom-right corner (adjusted)
-        //DOOR OPENED OR CLOSED HERE
-        g2.drawImage(closedWall, rightX-150, bottomY-12, null);
-
-        int doorX = rightX - 150;
-        int doorY = bottomY - 12;
-
-
-        // Draw the flag near the door
-        drawHallFlagNearDoor(g2, doorX, doorY);
-        //g2.setColor(Color.RED);
-        //g2.drawRect(doorX, doorY, closedWall.getWidth(null), closedWall.getHeight(null)); //CAN BE RECTANGLE DRAWER FOR REVEAL
-    }
-
-    private void initializeWalls() {
-        wallGrid = new boolean[gridColumns][gridRows];
-
-        // Create a border of walls around the grid
-        for (int col = 0; col < gridColumns; col++) {
-            wallGrid[col][0] = true; // Top border
-            wallGrid[col][gridRows - 1] = true; // Bottom border
-        }
-        for (int row = 0; row < gridRows; row++) {
-            wallGrid[0][row] = true; // Left border
-            wallGrid[gridColumns - 1][row] = true; // Right border
-        }
-    }
-
-
-
-    private void drawHighlightedRegion(Graphics2D g2) {
-        for (int x = 0; x < grid.getColumns(); x++) {
-            for (int y = 0; y < grid.getRows(); y++) {
-                Tile tile = grid.getTileAt(x, y);
-                if (tile.isHighlighted()) {
-                    int drawX = (offsetX + x) * tileSize;
-                    int drawY = (offsetY + y) * tileSize;
-
-                    // Draw a semi-transparent rectangle for highlighting
-                    g2.setColor(new Color(255, 255, 0, 128)); // Yellow with transparency
-                    g2.fillRect(drawX, drawY, tileSize, tileSize);
-
-                    // Optional: Draw a border for better visibility
-                    g2.setColor(Color.YELLOW);
-                    g2.drawRect(drawX, drawY, tileSize, tileSize);
-                }
-            }
-        }
-    }
-
 
     // Getters
     public int getScale() {

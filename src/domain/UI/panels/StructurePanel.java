@@ -1,4 +1,4 @@
-package domain.panels;
+package domain.UI.panels;
 
 import javax.swing.*;
 import java.awt.*;

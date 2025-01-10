@@ -1,10 +1,8 @@
 package domain.enchantments;
 
-import domain.enchantments.BaseEnchantment;
 import domain.game.CollisionChecker;
 import domain.game.Game;
 import domain.game.Tile;
-import domain.panels.PlayModePanel;
 
 import java.awt.*;
 

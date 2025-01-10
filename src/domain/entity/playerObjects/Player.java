@@ -5,7 +5,7 @@ import domain.entity.Direction;
 import domain.game.CollisionChecker;
 import domain.game.Tile;
 import domain.entity.Entity;
-import domain.panels.PlayModePanel;
+import domain.UI.panels.PlayModePanel;
 import main.PlayerInputHandler;
 
 /*

@@ -1,9 +1,8 @@
 package domain.handlers;
 
 
-import domain.UI.UI;
 import domain.handlers.buttonHandlers.TryAgainButton;
-import domain.panels.PlayModePanel;
+import domain.UI.panels.PlayModePanel;
 import java.awt.*;
 
 public class GameWinningHandler {

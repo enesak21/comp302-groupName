@@ -5,7 +5,7 @@ import domain.enchantments.Factories.*;
 import domain.game.CollisionChecker;
 import domain.game.Game;
 import domain.game.Tile;
-import domain.panels.PlayModePanel;
+import domain.UI.panels.PlayModePanel;
 
 import java.awt.*;
 import java.util.ArrayList;

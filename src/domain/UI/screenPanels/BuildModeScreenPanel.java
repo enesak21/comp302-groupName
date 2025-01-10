@@ -3,7 +3,7 @@ package domain.UI.screenPanels;
 import domain.UI.UI;
 import domain.audio.AudioManager;
 import domain.handlers.BuildModeHandler;
-import domain.panels.BuildModePanel;
+import domain.UI.panels.BuildModePanel;
 
 import javax.swing.*;
 import java.awt.*;
