@@ -69,6 +69,12 @@ public class Grid {
         }
     }
 
+    /**
+     * Requires: nextX >= 0, nextX < columns, nextY >= 0, nextY < rows
+     * Modifies: None
+     * Effects: Returns the tile at the specified grid coordinates (nextX, nextY).
+     *          If the coordinates are out of bounds, returns null.
+     */
     public Tile getTileAt(int nextX, int nextY) {
         if (nextX < 0 || nextX >= columns || nextY < 0 || nextY >= rows) {
             return null;
