@@ -64,6 +64,12 @@ public class PlayerTest {
     }
 
     @Test
+    public void testSetInvalidHealth() {
+        player.setHealth(5);
+        assertNotEquals("Player health cannot be set to 5", 5, player.getHealth());
+    }
+
+    @Test
     public void testReduceHealth() {
         player.reduceHealth();
         assertEquals("Player health should be reduced by 1", 3, player.getHealth());
