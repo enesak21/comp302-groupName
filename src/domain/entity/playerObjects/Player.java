@@ -130,7 +130,7 @@ public class Player extends Entity {
     public void setSpeed(int speed) {this.speed = speed;}
 
     public void setHealth(int health){
-        if (this.health < 4) {
+        if (health <= 4) { // Health can't be more than 4
             this.health = health;
         }
     }
