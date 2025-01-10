@@ -62,7 +62,7 @@ public class HomeScreenPanel extends JPanel {
 
         // Start Button
         JButton startButton = new JButton("Start Game");
-        startButton.setBounds(300, 470, 250, 50);
+        startButton.setBounds(247, 470, 250, 50);
         startButton.setOpaque(false);
         startButton.setContentAreaFilled(false);
         startButton.setBorderPainted(false);
@@ -71,7 +71,7 @@ public class HomeScreenPanel extends JPanel {
 
         // Help Button
         JButton helpButton = new JButton("Help");
-        helpButton.setBounds(300, 530, 200, 50);
+        helpButton.setBounds(271, 530, 200, 50);
         helpButton.setOpaque(false);
         helpButton.setContentAreaFilled(false);
         helpButton.setBorderPainted(false);
