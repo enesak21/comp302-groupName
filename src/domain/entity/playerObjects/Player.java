@@ -7,6 +7,25 @@ import domain.entity.Entity;
 import domain.panels.PlayModePanel;
 import main.PlayerInputHandler;
 
+/*
+<p>Overview
+The Player class represents a player in the game. It manages the player's state, including position, health, inventory, and movement. The class also handles player interactions with the game environment.
+</p>
+<p>Abstract Function
+The abstract function maps the player's internal state to the game world:
+name represents the player's name.
+gridX and gridY represent the player's position on the game grid.
+tileSize represents the size of each tile in the game.
+playModePanel represents the panel used for play mode.
+playerInputHandler handles the player's input.
+health represents the player's health.
+speed represents the player's movement speed.
+direction represents the direction the player is facing.
+moving indicates whether the player is currently moving.
+pixelCounter tracks the player's movement in pixels.
+inventory represents the player's inventory.
+invisibleToArchers indicates whether the player is invisible to archers.</p>
+ */
 public class Player extends Entity {
     private String name;
     private int health;
@@ -127,7 +146,7 @@ public class Player extends Entity {
     }
 
     public void setHealth(int health){
-        if (this.health < 4) {
+        if (health <= 4) { // Health cannot exceed 4
             this.health = health;
         }
     }
@@ -142,6 +161,31 @@ public class Player extends Entity {
             playModePanel.getGame().getTimeController().setTimeLeft(0);
             playModePanel.getGameOverHandler().handle();
         }
+    }
+
+    /**
+     * Representation Invariant:
+     * The representation invariant ensures the player's state is valid:
+     * health must be positive.
+     * gridX and gridY must be within valid grid bounds.
+     * speed must be positive.
+     * @return true if the representation invariant is maintained
+     */
+    public boolean repOk() {
+        // Check if health is positive
+        if (health <= 0) {
+            return false;
+        }
+        // Check if grid position is valid
+        if (gridX < 0 || gridY < 0 || gridX >=16 || gridY >= 16) {
+            return false;
+        }
+        // Check if speed is positive
+        if (speed <= 0) {
+            return false;
+        }
+
+        return true;
     }
 
 public void setCollisionChecker(CollisionChecker collisionChecker) {
