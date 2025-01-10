@@ -13,6 +13,6 @@ public abstract class BaseMonster extends Entity {
     }
 
     public abstract void update(Game game);  //mandatory for all Monster classes
-    public abstract void attack(Player player);  //mandatory for specific attack
+    public abstract void attack(Game game);  //mandatory for specific attack
     public abstract void setCollisionChecker(CollisionChecker collisionChecker);
 }

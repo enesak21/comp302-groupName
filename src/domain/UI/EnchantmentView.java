@@ -24,9 +24,11 @@ public class EnchantmentView {
         enchantmentIcons = new HashMap<>();
         try {
             enchantmentIcons.put("Extra Time", ImageIO.read(getClass().getResource("/resources/icons/clock.png")));
+            enchantmentIcons.put("Speed Up", ImageIO.read(getClass().getResource("/resources/items/zibidiGonzales.png")));
             enchantmentIcons.put("Reveal", ImageIO.read(getClass().getResource("/resources/items/reveal.png")));
             enchantmentIcons.put("Extra Life", ImageIO.read(getClass().getResource("/resources/player/heart.png")));
             enchantmentIcons.put("Cloak of Protection", ImageIO.read(getClass().getResource("/resources/items/cloakOfProtection.png")));
+            enchantmentIcons.put("Luring Gem", ImageIO.read(getClass().getResource("/resources/items/luringGem.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }

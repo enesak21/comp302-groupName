@@ -1,5 +1,6 @@
 package domain.entity.monsters;
 
+import domain.UI.ArrowAnimationView;
 import domain.entity.Direction;
 import domain.entity.playerObjects.Player;
 import domain.game.CollisionChecker;
@@ -20,7 +21,7 @@ public class ArcherMonster extends BaseMonster{
     private CollisionChecker collisionChecker;
     private int moveCounter = 0;
     private AudioManager audioManager = new AudioManager();
-
+    private ArrowAnimationView arrowAnimationView;
 
     public ArcherMonster(int gridX, int gridY, int tileSize) {
         super(gridX, gridY, tileSize);
@@ -117,10 +118,15 @@ public class ArcherMonster extends BaseMonster{
     }
      */
 
-    public void throwArrow(Player player){
+    public void throwArrow(Game game){
 
-        //IF PLAYER INVISIBLE TO ARCHER THEN DO NOTHİNG
-        if(!player.getIsInvisibleToArchers()){player.reduceHealth();}
+        //IF PLAYER INVISIBLE TO ARCHER THEN DO NOTHING
+        if(!game.getPlayer().getIsInvisibleToArchers()){
+            game.getPlayer().reduceHealth();
+            ArrowAnimationView arrowAnimationView = new ArrowAnimationView(this, game.getPlayer());
+            game.getPlayer().getPlayModePanel().addArrowAnimation(arrowAnimationView);
+        }
+        else System.out.println("INVISIBLE BILADERRR");
 
     }
 
@@ -137,23 +143,31 @@ public class ArcherMonster extends BaseMonster{
             move(game);
             moveCounter = 0;
         }
-        attack(game.getPlayer());
+        attack(game);
+
+        if (arrowAnimationView != null && !arrowAnimationView.isFinished()) {
+            arrowAnimationView.update();
+        }
+
     }
 
     /**
      * Attacks the specified player if they are within range, in the given shoot frequency.
-     * @param player the player to be attacked
      */
     @Override
-    public void attack(Player player) {
-        if (!player.getIsInvisibleToArchers() && Game.isInRange(this.getGridX(), this.getGridY(), player.getGridX(), player.getGridY(), arrowRange)) {
+    public void attack(Game game) {
+        if (!game.getPlayer().getIsInvisibleToArchers() && Game.isInRange(this.getGridX(), this.getGridY(), game.getPlayer().getGridX(), game.getPlayer().getGridY(), arrowRange)) {
             long currentTime = System.currentTimeMillis();
             if ((currentTime - lastAttackTime) > SHOOT_FREQUENCY) {
-                throwArrow(player);
+                throwArrow(game);
                 lastAttackTime = currentTime;
                 audioManager.playArcherSound();
             }
         }
+    }
+
+    public float getArrowRange() {
+        return arrowRange;
     }
 
 }

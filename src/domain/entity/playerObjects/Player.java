@@ -1,5 +1,6 @@
 package domain.entity.playerObjects;
 
+import domain.enchantments.*;
 import domain.entity.Direction;
 import domain.game.CollisionChecker;
 import domain.game.Tile;
@@ -32,6 +33,7 @@ public class Player extends Entity {
     private Inventory inventory;
     private Tile location;
     boolean moving = false;
+    private int speed;
     int pixelCounter = 0;
     private static Player instance;
     private boolean invisibleToArchers = false;
@@ -144,6 +146,7 @@ public class Player extends Entity {
     public int getHealth() {
         return health;
     }
+    public void setSpeed(int speed) {this.speed = speed;}
 
     public void setHealth(int health){
         if (health <= 4) { // Health cannot exceed 4
@@ -210,5 +213,38 @@ public void setCollisionChecker(CollisionChecker collisionChecker) {
 
     public void setInvisibleToArchers(boolean invisibleToArchers) {
         this.invisibleToArchers = invisibleToArchers;
+    }
+
+    public PlayModePanel getPlayModePanel() {
+        return playModePanel;
+    }
+    public void useRevealEnchantment() {
+        BaseEnchantment revealEnchantment = new Reveal(0, 0, tileSize); // Adjust parameters as needed
+        revealEnchantment.applyEffect(playModePanel.getGame());
+        this.getInventory().removeItem("Reveal");
+        System.out.println("Reveal enchantment used. Highlighting region.");
+    }
+
+    public void useCloakOfProtectionEnchantment() {
+        BaseEnchantment cloak = new CloakOfProtection(0, 0, tileSize); // Adjust parameters as needed
+        cloak.applyEffect(playModePanel.getGame());
+        this.getInventory().removeItem("Cloak of Protection");
+        System.out.println("CLOAK OF PROTECTION enchantment used.");
+    }
+
+    public void useLuringGemEnchantment(int direction) {
+        BaseEnchantment gem = new LuringGem(0, 0, tileSize, direction);
+        gem.applyEffect(playModePanel.getGame());
+        this.getInventory().removeItem("Luring Gem");
+        System.out.println("Luring Gem enchantment used.");
+    }
+
+    public void useSpeedUpManagement() {
+        BaseEnchantment revealEnchantment =
+                new SpeedUp(0, 0, tileSize);  //MUST BE CHANGED
+        revealEnchantment.applyEffect(playModePanel.getGame());
+        this.getInventory().removeItem("Speed Up");
+        System.out.println("Speed Up enchantment used.");
+
     }
 }

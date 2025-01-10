@@ -1,8 +1,11 @@
-package domain.entity.monsters;
+package domain.entity.monsters.Factories;
 
-import domain.game.Game;
+import domain.entity.monsters.BaseMonster;
+import domain.entity.monsters.MonsterFactory;
+import domain.entity.monsters.MonsterManager;
+import domain.entity.monsters.WizardMonster;
 
-public class WizardMonsterFactory implements MonsterFactory{
+public class WizardMonsterFactory implements MonsterFactory {
     private MonsterManager monsterManager;
 
     public WizardMonsterFactory(MonsterManager monsterManager) {

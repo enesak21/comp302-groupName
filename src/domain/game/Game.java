@@ -3,6 +3,8 @@ package domain.game;
 
 import domain.enchantments.BaseEnchantment;
 import java.util.Random;
+
+import domain.entity.monsters.MonsterManager;
 import domain.entity.playerObjects.Player;
 import domain.panels.PlayModePanel;
 
@@ -17,13 +19,22 @@ public class Game {
     private TimeController timeController;
     private SearchRuneController searchRuneController;
     private ArrayList<BaseEnchantment> activeEnchantments = new ArrayList<>();
+    private int tileSize;
+    private MonsterManager monsterManager;
+    private boolean isLuringGemActive = false;
 
-    public Game(Player player, int tileSize, PlayModePanel playModePanel, Grid grid, SearchRuneController searchRuneController) {
+    public Game(Player player, int tileSize, Grid grid, SearchRuneController searchRuneController) {
         this.player = player;
         this.grid = grid;
         this.remainingTime = 60; // Initialize with a default value
         this.timeController = new TimeController();
         this.searchRuneController = searchRuneController;
+        this.tileSize = tileSize;
+        this.monsterManager = new MonsterManager(this, tileSize);
+
+    }
+    public void removeFromActiveEnchantments(BaseEnchantment baseEnchantment) {
+        activeEnchantments.remove(baseEnchantment);
     }
 
     public boolean isRuneFound() {
@@ -54,10 +65,20 @@ public class Game {
         return calculateDistance(tile1.getGridX(), tile1.getGridY(), tile2.getGridX(), tile2.getGridY());
     }
 
+    /**
+     * Requires: gridx1, gridy1, gridx2, gridy2 are valid grid coordinates, range >= 0.
+     * Modifies: None
+     * Effects: Returns true if the distance between two grid positions is within the specified range, otherwise returns false.
+     */
     public static boolean isInRange(int gridx1, int gridy1, int gridx2, int gridy2, float range) {
         return calculateDistance(gridx1,gridy1,gridx2,gridy2) <= range;
     }
 
+    /**
+     * Requires: tile1 and tile2 are not null and have valid grid coordinates, range >= 0.
+     * Modifies: None
+     * Effects: Returns true if the distance between two tiles is within the specified range, otherwise returns false.
+     */
     public static boolean isInRange(Tile tile1, Tile tile2, float range) {
         return isInRange(tile1.getGridX(), tile1.getGridY(), tile2.getGridX(), tile2.getGridY(), range);
     }
@@ -85,6 +106,10 @@ public class Game {
         return remainingTime;
     }
 
+    public MonsterManager getMonsterManager() {
+        return monsterManager;
+    }
+
     /**
      * Returns the remaining time as a percentage of the total time.
      * 
@@ -99,6 +124,13 @@ public class Game {
         this.remainingTime = remainingTime;
     }
 
+    /**
+     * Toggles the pause state of the game.
+     *
+     * Requires: The game must be in a state where pausing or unpausing is valid.
+     * Modifies: this.isPaused
+     * Effects: If the game is currently paused, it will be unpaused. If the game is currently unpaused, it will be paused.
+     */
     public void togglePause() {
         isPaused = !isPaused;
     }
@@ -134,5 +166,13 @@ public class Game {
         player.setGridX(newX);
         player.setGridY(newY);
 
+    }
+
+    public boolean isLuringGemActive() {
+        return isLuringGemActive;
+    }
+
+    public void setLuringGemActive(boolean luringGemActive) {
+        isLuringGemActive = luringGemActive;
     }
 }

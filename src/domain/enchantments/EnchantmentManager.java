@@ -38,12 +38,21 @@ public class EnchantmentManager {
 
         // Add factories for different enchantments
         factories = new ArrayList<>();
+
         factories.add(new ExtraTimeEnchantmentFactory());
         factories.add(new RevealEnchantmentFactory());
         factories.add(new ExtraLifeEnchantmentFactory());
         factories.add(new CloakOfProtectionEnchantmentFactory());
+        factories.add(new SpeedUpEnchantmentFactory());
+
     }
 
+    /**
+     * Requires: gridWidth > 0, gridHeight > 0, factories is not empty
+     * Modifies: this.enchantments, this.enchantmentViews, game.getGrid().getTileAt(gridX, gridY)
+     * Effects: Spawns a new enchantment at a random valid position within the grid and adds it to the enchantments list.
+     *          Also creates a view for the enchantment and adds it to the enchantmentViews list.
+     */
     public void spawnEnchantment(int gridWidth, int gridHeight) {
         int factoryIndex = random.nextInt(factories.size()); // Randomly select a factory
         EnchantmentFactory selectedFactory = factories.get(factoryIndex); // Select a factory
@@ -117,6 +126,8 @@ public class EnchantmentManager {
             // Optionally, check if the enchantment should be removed
             if (!enchantment.isActive()) {
                 iterator.remove(); // Safe removal using iterator
+               // game.removeFromActiveEnchantments(enchantment);
+                System.out.println(game.getActiveEnchantments()+" should be empty");
             }
         }
     }
@@ -152,7 +163,16 @@ public class EnchantmentManager {
                     } else if (enchantmentType.equals("Cloak of Protection")) {
                         //System.out.println("Cloak added to the inventory by EnchantmentManager");
                         game.getPlayer().getInventory().addItem(enchantmentType);
+
+                    }
+                    else if (enchantmentType.equals("Speed Up")) {
+                        //System.out.println("Cloak added to the inventory by EnchantmentManager");
+                        game.getPlayer().getInventory().addItem(enchantmentType);
+                    
+                    } else if (enchantmentType.equals("Luring Gem")) {
+                        game.getPlayer().getInventory().addItem(enchantmentType);
                     } else {
+
                         enchantment.applyEffect(game);
                     }
 
