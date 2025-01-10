@@ -28,7 +28,12 @@ public class SearchRuneController {
      * Handles the event when a rune is collected by the player.
      * 
      * @param clickedTile The tile that was clicked by the player.
-     * 
+     *
+     * Requires: clickedTile is not null
+     * Modifies: clickedTile's structure, playModePanel
+     * Effects: If the clicked tile is within range of the player's current tile and has a structure with a rune,
+     *          it removes the rune from the structure and moves to the next hall. If the structure does not have a rune,
+     *          it plays a "no rune" sound.
      */
     public void runeCollected(Tile clickedTile) {
         game = playModePanel.getGame();
