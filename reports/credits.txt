@@ -1,0 +1,24 @@
+0x72_16x16DungeonTileset.v5
+
+Author:	0x72
+Asset license:	Creative Commons Zero v1.0 Universal
+Url: https://0x72.itch.io/16x16-dungeon-tileset
+
+
+
+16-Bit RPG Icons
+
+Author	RandallCurtis
+Asset license	Creative Commons Zero v1.0 Universal
+Url: https://randallcurtis.itch.io/16-bit-rpg-icons
+
+
+
+UI inventory assets mini pack
+
+Author	Sr.Toasty
+Asset license	Creative Commons Zero v1.0 Universal
+Url: https://srtoasty.itch.io/ui-inventory-assets-mini-pack
+
+Minecraft Soundtrack
+Artist: C418
