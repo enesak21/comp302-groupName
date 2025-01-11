@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
+import domain.UI.panels.buildModeComponents.NavigationPanel;
 import domain.game.Hall;
 import domain.game.HallOfAir;
 import domain.game.HallOfEarth;
@@ -33,6 +34,7 @@ public class BuildModePanel extends JPanel {
     private Font pressStart2PFont;
     private BuildModeHandler buildModeHandler;
     private StructurePanel structurePanel;
+    private NavigationPanel navigationPanel;
 
 
     public BuildModePanel() {
@@ -61,7 +63,11 @@ public class BuildModePanel extends JPanel {
         gridPanel = new GridPanel(halls.get(currentGridIndex), structureMap, this);
         add(gridPanel, BorderLayout.CENTER);
 
-        JPanel navigationPanel = createNavigationPanel();
+        NavigationPanel navigationPanel = new NavigationPanel(
+                () -> switchGrid(-1), // Previous action
+                () -> switchGrid(1),  // Next action
+                this::checkCurrentHall // Check action
+        );
         add(navigationPanel, BorderLayout.SOUTH);
 
         structurePanel = new StructurePanel(structureMap);
@@ -91,61 +97,29 @@ public class BuildModePanel extends JPanel {
         return map;
     }
 
-    private JPanel createNavigationPanel() {
-        JPanel navigationPanel = new JPanel(new FlowLayout()) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                // Set a custom color for the bottom part
-                g.setColor(new Color(66, 40, 53)); // Dark gray
-                g.fillRect(0, 0, getWidth(), getHeight());
-            }
-        };
-
-        // Previous Grid Button
-        JButton prevGridButton = new JButton("Previous Grid");
-        prevGridButton.addActionListener(e -> switchGrid(-1));
-
-        // Next Grid Button
-        JButton nextGridButton = new JButton("Next Grid");
-        nextGridButton.addActionListener(e -> switchGrid(1));
-
-
-
-        // Check Button
-        JButton checkButton = new JButton("Check");
-        checkButton.addActionListener(e -> {
-            int remainingStructures = buildModeHandler.checkHall(halls.get(currentGridIndex));
-            if (remainingStructures != 0) {
-                ImageIcon warningIcon = new ImageIcon(new ImageIcon("src/resources/structures/chest.png")
-                        .getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
-                JOptionPane.showMessageDialog(this,
-                        "You need to place " + remainingStructures + " more structures to complete this hall.",
-                        "Warning",
-                        JOptionPane.WARNING_MESSAGE, warningIcon);
-            }
-            else {
-                ImageIcon successIcon = new ImageIcon(new ImageIcon("src/resources/structures/key.png")
-                        .getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
-                JOptionPane.showMessageDialog(this,
-                        "You have successfully completed this hall.",
-                        "Success",
-                        JOptionPane.INFORMATION_MESSAGE, successIcon);
-            }
-        });
-
-        navigationPanel.add(prevGridButton);
-        navigationPanel.add(nextGridButton);
-        navigationPanel.add(checkButton);
-
-        return navigationPanel;
-    }
-
     private void switchGrid(int direction) {
         currentGridIndex = (currentGridIndex + direction + halls.size()) % halls.size();
         gridPanel.setHall(halls.get(currentGridIndex)); // Update the grid panel's hall
         hallNameLabel.setText(halls.get(currentGridIndex).getName()); // Update the hall name
+    }
 
+    private void checkCurrentHall() {
+        int remainingStructures = buildModeHandler.checkHall(halls.get(currentGridIndex));
+        if (remainingStructures != 0) {
+            ImageIcon warningIcon = new ImageIcon(new ImageIcon("src/resources/structures/chest.png")
+                    .getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+            JOptionPane.showMessageDialog(this,
+                    "You need to place " + remainingStructures + " more structures to complete this hall.",
+                    "Warning",
+                    JOptionPane.WARNING_MESSAGE, warningIcon);
+        } else {
+            ImageIcon successIcon = new ImageIcon(new ImageIcon("src/resources/structures/key.png")
+                    .getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+            JOptionPane.showMessageDialog(this,
+                    "You have successfully completed this hall.",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE, successIcon);
+        }
     }
 
     public String getSelectedStructure() {
@@ -160,4 +134,3 @@ public class BuildModePanel extends JPanel {
         return buildModeHandler;
     }
 }
-
