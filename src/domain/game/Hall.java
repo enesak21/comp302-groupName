@@ -30,7 +30,7 @@ public class Hall {
             int x = (int) (Math.random() * grid.length);
             int y = (int) (Math.random() * grid[0].length);
             if (grid[x][y] == null) {
-                grid[x][y] = Structures.getRandomStructure();
+                grid[x][y] = StructureObserver.getRandomStructure();
                 placedStructuresCount++;
                 numStructuresToPlace--;
             }

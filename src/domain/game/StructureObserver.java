@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Structures {
+public class StructureObserver {
     // Static final constant for structure names (immutable list)
     private static final List<String> STRUCTURE_NAMES;
 
