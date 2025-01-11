@@ -13,6 +13,7 @@ import domain.game.HallOfEarth;
 import domain.game.HallOfFire;
 import domain.game.HallOfWater;
 import domain.handlers.BuildModeHandler;
+import domain.UI.panels.buildModeComponents.StructurePanel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,7 @@ public class BuildModePanel extends JPanel {
     private final JLabel hallNameLabel;
     private Font pressStart2PFont;
     private BuildModeHandler buildModeHandler;
+    private StructurePanel structurePanel;
 
 
     public BuildModePanel() {
@@ -43,6 +45,7 @@ public class BuildModePanel extends JPanel {
         }
         initializeHalls();
         structureMap = initializeStructureMap();
+
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(GRID_SIZE * CELL_SIZE + 150, GRID_SIZE * CELL_SIZE + 100));
@@ -61,9 +64,8 @@ public class BuildModePanel extends JPanel {
         JPanel navigationPanel = createNavigationPanel();
         add(navigationPanel, BorderLayout.SOUTH);
 
-        JPanel structurePanel = createStructurePanel();
+        structurePanel = new StructurePanel(structureMap);
         add(structurePanel, BorderLayout.EAST);
-
 
     }
 
@@ -139,66 +141,6 @@ public class BuildModePanel extends JPanel {
         return navigationPanel;
     }
 
-    private JPanel createStructurePanel() {
-        JPanel structurePanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                // Draw the BuildMode background image
-                Image bgImage = new ImageIcon("src/resources/structures/Buildmodechest.png").getImage();
-                g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), this);
-            }
-        };
-        structurePanel.setLayout(null); // Use absolute positioning
-        structurePanel.setPreferredSize(new Dimension(200, 700)); // Increased width to accommodate two columns
-
-
-        // Define button positions in two columns
-        HashMap<String, Point> buttonPositions = new HashMap<>();
-        buttonPositions.put("chest", new Point(30, 60));   // Column 1
-        buttonPositions.put("column", new Point(110, 60)); // Column 2
-        buttonPositions.put("ladder", new Point(30, 140)); // Column 1
-        buttonPositions.put("doubleBox", new Point(110, 140)); // Column 2
-        buttonPositions.put("singleBox", new Point(30, 220)); // Column 1
-        buttonPositions.put("skull", new Point(110, 220)); // Column 2
-        buttonPositions.put("tomb", new Point(30, 300));   // Column 1
-        buttonPositions.put("bottle", new Point(110, 300)); // Column 2
-
-        // Create and position buttons based on the defined layout
-        for (String key : structureMap.keySet()) {
-            JButton button = new JButton(new ImageIcon(new ImageIcon(structureMap.get(key))
-                    .getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH))); // Adjust button size
-            button.setToolTipText(key);
-            button.addActionListener(e -> setSelectedStructure(key));
-
-            // Make the button transparent
-            button.setOpaque(false);
-            button.setContentAreaFilled(false);
-            button.setBorderPainted(false);
-
-            // Set button position
-            Point position = buttonPositions.get(key);
-            button.setBounds(position.x, position.y, 40, 40); // Adjust button size and spacing
-            structurePanel.add(button);
-        }
-
-        // Add Eraser Button with an icon
-        JButton eraserButton = new JButton(new ImageIcon(new ImageIcon("src/resources/icons/eraser.png")
-                .getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH))); // Use eraser icon
-        eraserButton.setToolTipText("Eraser");
-        eraserButton.addActionListener(e -> setSelectedStructure("eraser"));
-
-        // Make the eraser button transparent
-        eraserButton.setOpaque(false);
-        eraserButton.setContentAreaFilled(false);
-        eraserButton.setBorderPainted(false);
-
-        eraserButton.setBounds(70, 380, 40, 40); // Centered below the two columns
-        structurePanel.add(eraserButton);
-
-        return structurePanel;
-    }
-
     private void switchGrid(int direction) {
         currentGridIndex = (currentGridIndex + direction + halls.size()) % halls.size();
         gridPanel.setHall(halls.get(currentGridIndex)); // Update the grid panel's hall
@@ -206,12 +148,8 @@ public class BuildModePanel extends JPanel {
 
     }
 
-    public void setSelectedStructure(String structureKey) {
-        this.selectedStructure = structureKey;
-    }
-
     public String getSelectedStructure() {
-        return selectedStructure;
+        return structurePanel.getSelectedStructure();
     }
 
     public List<Hall> getHalls() {
