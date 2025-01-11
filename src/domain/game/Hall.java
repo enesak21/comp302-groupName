@@ -37,6 +37,10 @@ public class Hall {
         }
     }
 
+    public void placeRandomStructures() {
+        placeRandomStructures(minStructures);
+    }
+
     public void removeStructure(int x, int y) {
         if (grid[x][y] != null) {
             grid[x][y] = null;

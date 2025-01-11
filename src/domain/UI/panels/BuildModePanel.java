@@ -29,7 +29,6 @@ public class BuildModePanel extends JPanel {
     private int currentGridIndex = 0;
     private final GridPanel gridPanel;
     private final HashMap<String, String> structureMap;
-    private String selectedStructure = null;
     private final JLabel hallNameLabel;
     private Font pressStart2PFont;
     private BuildModeHandler buildModeHandler;
@@ -123,7 +122,13 @@ public class BuildModePanel extends JPanel {
     }
 
     public String getSelectedStructure() {
-        return structurePanel.getSelectedStructure();
+        if (structurePanel.getSelectedStructure().equals("dice")) {
+            placeRandomStructure();
+            return null;
+        }
+        else {
+            return structurePanel.getSelectedStructure();
+        }
     }
 
     public List<Hall> getHalls() {
@@ -132,5 +137,9 @@ public class BuildModePanel extends JPanel {
 
     public BuildModeHandler getBuildModeHandler() {
         return buildModeHandler;
+    }
+
+    public void placeRandomStructure() {
+        halls.get(currentGridIndex).placeRandomStructures();
     }
 }

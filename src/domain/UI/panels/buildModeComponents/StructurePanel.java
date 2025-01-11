@@ -46,8 +46,13 @@ public class StructurePanel extends JPanel {
 
         // Add eraser button
         JButton eraserButton = createStructureButton("eraser", "src/resources/icons/eraser.png");
-        eraserButton.setBounds(70, 380, 40, 40); // Position below the other buttons
+        eraserButton.setBounds(30, 380, 40, 40); // Position below the other buttons
         add(eraserButton);
+
+        // Add dice button
+        JButton diceButton = createStructureButton("dice", "src/resources/icons/dice.png");
+        diceButton.setBounds(110, 380, 40, 40); // Position below the other buttons
+        add(diceButton);
     }
 
     @Override
