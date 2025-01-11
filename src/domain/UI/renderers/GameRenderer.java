@@ -1,5 +1,6 @@
 package domain.UI.renderers;
 
+import domain.UI.ArrowAnimationView;
 import domain.UI.GridView;
 import domain.UI.MonsterView;
 import domain.UI.PlayerView;
@@ -20,7 +21,8 @@ public class GameRenderer {
     private final EnchantmentManager enchantmentManager;
     private final GridView gridView;
     private final PlayerView playerView;
-    private WallRenderer wallRenderer;
+    private final WallRenderer wallRenderer;
+    private final ArrowAnimationRenderer arrowAnimationRenderer;
 
     // Constructor
     public GameRenderer(Grid grid, Player player, List<BaseMonster> monsters,
@@ -34,9 +36,20 @@ public class GameRenderer {
         this.playerView = new PlayerView(player);
 
         this.wallRenderer = new WallRenderer(grid.getTileSize());
+        this.arrowAnimationRenderer = new ArrowAnimationRenderer();
     }
 
-    // Method to render the entire game
+    // Add an arrow animation
+    public void addArrowAnimation(ArrowAnimationView animation) {
+        arrowAnimationRenderer.addArrowAnimation(animation);
+    }
+
+    // Update method for the renderer
+    public void update() {
+        arrowAnimationRenderer.update();
+    }
+
+    // Render the entire game
     public void render(Graphics2D g2, int offsetX, int offsetY, int tileSize) {
         drawGrid(g2, offsetX, offsetY, tileSize);
         drawWalls(g2, offsetX, offsetY);
@@ -46,6 +59,9 @@ public class GameRenderer {
         drawHighlightedRegions(g2, offsetX, offsetY, tileSize);
         drawWalls(g2, offsetX, offsetY);
         drawStructures(g2, offsetX, offsetY, tileSize);
+
+        // Draw arrow animations
+        arrowAnimationRenderer.draw(g2);
     }
 
     // Render the grid
@@ -94,9 +110,9 @@ public class GameRenderer {
         }
     }
 
+    // Render walls
     private void drawWalls(Graphics2D g2, int offsetX, int offsetY) {
         wallRenderer.drawWalls(g2, offsetX, offsetY, grid.getColumns(), grid.getRows());
         wallRenderer.drawCorners(g2, offsetX, offsetY, grid.getColumns(), grid.getRows());
     }
-
 }

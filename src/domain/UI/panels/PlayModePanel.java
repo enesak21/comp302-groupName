@@ -84,9 +84,6 @@ public class PlayModePanel extends JPanel implements Runnable {
     private PlayModeMouseListener playModeMouseListener;
     private String state = "Default";
 
-    //ARROW ANIMATION
-    private List<ArrowAnimationView> arrowAnimations = new ArrayList<>();
-
     // Game renderer
     private GameRenderer gameRenderer;
 
@@ -287,7 +284,7 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     // Add an arrow animation to the list
     public void addArrowAnimation(ArrowAnimationView animation) {
-        arrowAnimations.add(animation);
+        gameRenderer.addArrowAnimation(animation);
     }
 
     private void addPauseKeyListener() {
@@ -311,7 +308,6 @@ public class PlayModePanel extends JPanel implements Runnable {
             }
         });
     }
-
 
     public void pauseGame() {
 
@@ -366,11 +362,9 @@ public class PlayModePanel extends JPanel implements Runnable {
 
             //Update monsters
             monsterManager.updateMonsters();
-            // Update the arrow animations
-            for (ArrowAnimationView animation : arrowAnimations) {
-                animation.update();
-            }
-            arrowAnimations.removeIf(ArrowAnimationView::isFinished);
+
+            // Update the game renderer
+            gameRenderer.update();
 
             enchantmentManager.updateEnchantments();
             //Update monsters view list if there is a new monster
@@ -403,13 +397,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         g2 = (Graphics2D) g;
 
         gameRenderer.render(g2, offsetX, offsetY, tileSize);
-
-        //Draw the arrow animations
-        if (!arrowAnimations.isEmpty()) {
-            for (ArrowAnimationView animation : arrowAnimations) {
-                animation.draw(g2);
-            }
-        }
 
         if (inTransition) {
             drawTransitionScreen(g2);
