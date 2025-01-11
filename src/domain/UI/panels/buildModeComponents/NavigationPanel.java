@@ -14,15 +14,15 @@ public class NavigationPanel extends JPanel {
         setOpaque(false);
 
         // Add Previous Button
-        JButton prevGridButton = createButton("Previous Grid", e -> onPrevious.run());
+        JButton prevGridButton = createIconButton("src/resources/icons/leftArrow.png", e -> onPrevious.run());
         add(prevGridButton);
 
         // Add Next Button
-        JButton nextGridButton = createButton("Next Grid", e -> onNext.run());
+        JButton nextGridButton = createIconButton("src/resources/icons/rightArrow.png", e -> onNext.run());
         add(nextGridButton);
 
         // Add Check Button
-        JButton checkButton = createButton("Check", e -> onCheck.run());
+        JButton checkButton =  createIconButton("src/resources/icons/checkButton.png", e -> onCheck.run());
         add(checkButton);
     }
 
@@ -34,7 +34,20 @@ public class NavigationPanel extends JPanel {
         g.fillRect(0, 0, getWidth(), getHeight());
     }
 
-    private JButton createButton(String text, ActionListener actionListener) {
+    private JButton createIconButton(String iconPath, ActionListener actionListener) {
+        JButton button = new JButton(new ImageIcon(new ImageIcon(iconPath)
+                .getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+        button.addActionListener(actionListener);
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setFocusable(false);
+        button.setHorizontalAlignment(SwingConstants.CENTER);
+        button.setVerticalAlignment(SwingConstants.CENTER);
+        return button;
+    }
+
+    private JButton createTextButton(String text, ActionListener actionListener) {
         JButton button = new JButton(text);
         button.addActionListener(actionListener);
         return button;
