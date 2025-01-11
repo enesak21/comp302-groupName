@@ -139,9 +139,9 @@ public class PlayModePanel extends JPanel implements Runnable {
         timeController = game.getTimeController();
 
         // Set the time based on the number of structures placed
-        // timeController.setTimeLeft(halls.get(hallNum).getPlacedStructuresCount() * 5);
+        timeController.setTimeLeft(halls.get(hallNum).getPlacedStructuresCount() * 5);
 
-        timeController.setTimeLeft(60); // Set the time to 60 seconds for testing purposes
+        // timeController.setTimeLeft(60); // Set the time to 60 seconds for testing purposes
 
 
         this.addKeyListener(player.getPlayerInputHandler());
