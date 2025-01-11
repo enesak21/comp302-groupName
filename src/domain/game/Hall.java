@@ -7,6 +7,7 @@ public class Hall {
     private final int minStructures;
     private final String[][] grid;
     private int placedStructuresCount;
+    private final int maxStructures = 32;
 
     public Hall(String name, int minStructures) {
         this.name = name;
@@ -20,6 +21,24 @@ public class Hall {
             grid[x][y] = structureKey;
             placedStructuresCount++;
         }
+    }
+
+    public void placeRandomStructures(int numStructuresToPlace) {
+        int numStructuresCanBePlaced = maxStructures - placedStructuresCount;
+        numStructuresToPlace = Math.min(numStructuresToPlace, numStructuresCanBePlaced);
+        while (numStructuresToPlace > 0) {
+            int x = (int) (Math.random() * grid.length);
+            int y = (int) (Math.random() * grid[0].length);
+            if (grid[x][y] == null) {
+                grid[x][y] = Structures.getRandomStructure();
+                placedStructuresCount++;
+                numStructuresToPlace--;
+            }
+        }
+    }
+
+    public void placeRandomStructures() {
+        placeRandomStructures(minStructures);
     }
 
     public void removeStructure(int x, int y) {
@@ -78,4 +97,6 @@ public class Hall {
 
         return gridObject;
     }
+
+
 }

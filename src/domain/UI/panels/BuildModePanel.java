@@ -7,12 +7,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
+import domain.UI.panels.buildModeComponents.NavigationPanel;
 import domain.game.Hall;
 import domain.game.HallOfAir;
 import domain.game.HallOfEarth;
 import domain.game.HallOfFire;
 import domain.game.HallOfWater;
 import domain.handlers.BuildModeHandler;
+import domain.UI.panels.buildModeComponents.StructurePanel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +29,11 @@ public class BuildModePanel extends JPanel {
     private int currentGridIndex = 0;
     private final GridPanel gridPanel;
     private final HashMap<String, String> structureMap;
-    private String selectedStructure = null;
     private final JLabel hallNameLabel;
     private Font pressStart2PFont;
     private BuildModeHandler buildModeHandler;
+    private StructurePanel structurePanel;
+    private NavigationPanel navigationPanel;
 
 
     public BuildModePanel() {
@@ -43,6 +46,7 @@ public class BuildModePanel extends JPanel {
         }
         initializeHalls();
         structureMap = initializeStructureMap();
+
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(GRID_SIZE * CELL_SIZE + 150, GRID_SIZE * CELL_SIZE + 100));
@@ -58,12 +62,15 @@ public class BuildModePanel extends JPanel {
         gridPanel = new GridPanel(halls.get(currentGridIndex), structureMap, this);
         add(gridPanel, BorderLayout.CENTER);
 
-        JPanel navigationPanel = createNavigationPanel();
+        NavigationPanel navigationPanel = new NavigationPanel(
+                () -> switchGrid(-1), // Previous action
+                () -> switchGrid(1),  // Next action
+                this::checkCurrentHall // Check action
+        );
         add(navigationPanel, BorderLayout.SOUTH);
 
-        JPanel structurePanel = createStructurePanel();
+        structurePanel = new StructurePanel(structureMap);
         add(structurePanel, BorderLayout.EAST);
-
 
     }
 
@@ -89,129 +96,39 @@ public class BuildModePanel extends JPanel {
         return map;
     }
 
-    private JPanel createNavigationPanel() {
-        JPanel navigationPanel = new JPanel(new FlowLayout()) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                // Set a custom color for the bottom part
-                g.setColor(new Color(66, 40, 53)); // Dark gray
-                g.fillRect(0, 0, getWidth(), getHeight());
-            }
-        };
-
-        // Previous Grid Button
-        JButton prevGridButton = new JButton("Previous Grid");
-        prevGridButton.addActionListener(e -> switchGrid(-1));
-
-        // Next Grid Button
-        JButton nextGridButton = new JButton("Next Grid");
-        nextGridButton.addActionListener(e -> switchGrid(1));
-
-
-
-        // Check Button
-        JButton checkButton = new JButton("Check");
-        checkButton.addActionListener(e -> {
-            int remainingStructures = buildModeHandler.checkHall(halls.get(currentGridIndex));
-            if (remainingStructures != 0) {
-                ImageIcon warningIcon = new ImageIcon(new ImageIcon("src/resources/structures/chest.png")
-                        .getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
-                JOptionPane.showMessageDialog(this,
-                        "You need to place " + remainingStructures + " more structures to complete this hall.",
-                        "Warning",
-                        JOptionPane.WARNING_MESSAGE, warningIcon);
-            }
-            else {
-                ImageIcon successIcon = new ImageIcon(new ImageIcon("src/resources/structures/key.png")
-                        .getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
-                JOptionPane.showMessageDialog(this,
-                        "You have successfully completed this hall.",
-                        "Success",
-                        JOptionPane.INFORMATION_MESSAGE, successIcon);
-            }
-        });
-
-        navigationPanel.add(prevGridButton);
-        navigationPanel.add(nextGridButton);
-        navigationPanel.add(checkButton);
-
-        return navigationPanel;
-    }
-
-    private JPanel createStructurePanel() {
-        JPanel structurePanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                // Draw the BuildMode background image
-                Image bgImage = new ImageIcon("src/resources/structures/Buildmodechest.png").getImage();
-                g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), this);
-            }
-        };
-        structurePanel.setLayout(null); // Use absolute positioning
-        structurePanel.setPreferredSize(new Dimension(200, 700)); // Increased width to accommodate two columns
-
-
-        // Define button positions in two columns
-        HashMap<String, Point> buttonPositions = new HashMap<>();
-        buttonPositions.put("chest", new Point(30, 60));   // Column 1
-        buttonPositions.put("column", new Point(110, 60)); // Column 2
-        buttonPositions.put("ladder", new Point(30, 140)); // Column 1
-        buttonPositions.put("doubleBox", new Point(110, 140)); // Column 2
-        buttonPositions.put("singleBox", new Point(30, 220)); // Column 1
-        buttonPositions.put("skull", new Point(110, 220)); // Column 2
-        buttonPositions.put("tomb", new Point(30, 300));   // Column 1
-        buttonPositions.put("bottle", new Point(110, 300)); // Column 2
-
-        // Create and position buttons based on the defined layout
-        for (String key : structureMap.keySet()) {
-            JButton button = new JButton(new ImageIcon(new ImageIcon(structureMap.get(key))
-                    .getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH))); // Adjust button size
-            button.setToolTipText(key);
-            button.addActionListener(e -> setSelectedStructure(key));
-
-            // Make the button transparent
-            button.setOpaque(false);
-            button.setContentAreaFilled(false);
-            button.setBorderPainted(false);
-
-            // Set button position
-            Point position = buttonPositions.get(key);
-            button.setBounds(position.x, position.y, 40, 40); // Adjust button size and spacing
-            structurePanel.add(button);
-        }
-
-        // Add Eraser Button with an icon
-        JButton eraserButton = new JButton(new ImageIcon(new ImageIcon("src/resources/icons/eraser.png")
-                .getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH))); // Use eraser icon
-        eraserButton.setToolTipText("Eraser");
-        eraserButton.addActionListener(e -> setSelectedStructure("eraser"));
-
-        // Make the eraser button transparent
-        eraserButton.setOpaque(false);
-        eraserButton.setContentAreaFilled(false);
-        eraserButton.setBorderPainted(false);
-
-        eraserButton.setBounds(70, 380, 40, 40); // Centered below the two columns
-        structurePanel.add(eraserButton);
-
-        return structurePanel;
-    }
-
     private void switchGrid(int direction) {
         currentGridIndex = (currentGridIndex + direction + halls.size()) % halls.size();
         gridPanel.setHall(halls.get(currentGridIndex)); // Update the grid panel's hall
         hallNameLabel.setText(halls.get(currentGridIndex).getName()); // Update the hall name
-
     }
 
-    public void setSelectedStructure(String structureKey) {
-        this.selectedStructure = structureKey;
+    private void checkCurrentHall() {
+        int remainingStructures = buildModeHandler.checkHall(halls.get(currentGridIndex));
+        if (remainingStructures != 0) {
+            ImageIcon warningIcon = new ImageIcon(new ImageIcon("src/resources/structures/chest.png")
+                    .getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+            JOptionPane.showMessageDialog(this,
+                    "You need to place " + remainingStructures + " more structures to complete this hall.",
+                    "Warning",
+                    JOptionPane.WARNING_MESSAGE, warningIcon);
+        } else {
+            ImageIcon successIcon = new ImageIcon(new ImageIcon("src/resources/structures/key.png")
+                    .getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+            JOptionPane.showMessageDialog(this,
+                    "You have successfully completed this hall.",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE, successIcon);
+        }
     }
 
     public String getSelectedStructure() {
-        return selectedStructure;
+        if (structurePanel.getSelectedStructure().equals("dice")) {
+            placeRandomStructure();
+            return null;
+        }
+        else {
+            return structurePanel.getSelectedStructure();
+        }
     }
 
     public List<Hall> getHalls() {
@@ -221,5 +138,8 @@ public class BuildModePanel extends JPanel {
     public BuildModeHandler getBuildModeHandler() {
         return buildModeHandler;
     }
-}
 
+    public void placeRandomStructure() {
+        halls.get(currentGridIndex).placeRandomStructures();
+    }
+}
