@@ -79,22 +79,10 @@ public class PlayModePanel extends JPanel implements Runnable {
     private GameOverHandler gameOverHandler;
     private GameWinningHandler gameWinningHandler;
 
-    //WALL PART
-    private Image leftWall, rightWall, topWall, bottomWall;
-    private Image topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner;
-    private Image openedWall, closedWall;
-    private boolean[][] wallGrid;
     private SearchRuneController searchRuneController;
-    private Image cloakSmallIcon;
 
-    //FLAG IMAGES
-    private Image hallOfAirFlag, hallOfWaterFlag, hallOfEarthFlag, hallOfFireFlag;
     private PlayModeMouseListener playModeMouseListener;
     private String state = "Default";
-
-    //Inventory image
-    private Image inventoryMainImage;
-    private Image revealSmallIcon;
 
     //ARROW ANIMATION
     private List<ArrowAnimationView> arrowAnimations = new ArrayList<>();
@@ -620,6 +608,4 @@ public class PlayModePanel extends JPanel implements Runnable {
     public EnchantmentManager getEnchantmentManager() {
         return enchantmentManager;
     }
-
-
 }
