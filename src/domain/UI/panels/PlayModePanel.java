@@ -491,7 +491,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.isPaused = b;
     }
 
-
     public int getTopLeftCornerX() {
         return gridTopLeftX;
     }
@@ -570,11 +569,9 @@ public class PlayModePanel extends JPanel implements Runnable {
         return g2;
     }
 
-
     public int getScreenHeight() {
         return screenHeight;
     }
-
 
     public void setState(String state) {
         this.state = state;
