@@ -5,6 +5,7 @@ import domain.UI.GridView;
 import domain.UI.PlayerView;
 import domain.UI.MonsterView;
 import domain.UI.renderers.GameRenderer;
+import domain.audio.AudioManager;
 import domain.enchantments.*;
 import domain.handlers.*;
 import domain.entity.Entity;
@@ -295,11 +296,10 @@ public class PlayModePanel extends JPanel implements Runnable {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     isPaused = !isPaused;
                     if (isPaused) {
-                        game.pauseGame();
-
+                        pauseGame();
                         timeController.pauseTimer();
                     } else {
-                        game.resumeGame();
+                        resumeGame();
                         timeController.resumeTimer();
 
                     }
@@ -313,12 +313,14 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         isPaused = true; // Set the game state to paused
         timeController.pauseTimer(); // Pause the game timer (if applicable)
+        AudioManager.stopPlayModeMusic();
         repaint(); // Trigger a repaint to show the pause overlay
     }
 
     public void resumeGame(){
         isPaused = false;
         timeController.resumeTimer();
+        AudioManager.playPlayModeMusic();
         repaint();
     }
 

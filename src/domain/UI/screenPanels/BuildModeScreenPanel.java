@@ -9,13 +9,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BuildModeScreenPanel extends JPanel {
-    AudioManager audioManager;
     UI ui;
     BuildModePanel buildModePanel;
 
     public BuildModeScreenPanel(UI ui) {
         // Code for initializing components
-        this.audioManager = new AudioManager();
         this.ui = ui;
         initComponents();
     }
@@ -35,6 +33,7 @@ public class BuildModeScreenPanel extends JPanel {
         completeButton.addActionListener(e -> {
             if (buildModeHandler.checkBuildMode()) { // Check if the build mode is valid
                 ui.showPanel("Game");
+                AudioManager.playPlayModeMusic();
             }
             else { // Display a warning message if the build mode is not complete
                 ImageIcon warningIcon = new ImageIcon(new ImageIcon("src/resources/structures/skull.png")

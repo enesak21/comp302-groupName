@@ -21,7 +21,6 @@ public class UI {
     private CardLayout cardLayout; // CardLayout for switching between panels
     private JPanel mainPanel; // Main container for the different panels
     private List<Hall> halls; // List of halls created in Build Mode
-    private AudioManager audioManager = new AudioManager(); // Audio manager for playing music
 
     // Screen panels
     private BuildModeScreenPanel buildScreen;

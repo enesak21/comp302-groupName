@@ -17,7 +17,6 @@ public class SearchRuneController {
     private PlayModePanel playModePanel;
     private Game game;
     private Rune rune;
-    private AudioManager audioManager = new AudioManager();
 
     public SearchRuneController(PlayModePanel playModePanel) {
         this.playModePanel = playModePanel;
@@ -46,7 +45,7 @@ public class SearchRuneController {
                     playModePanel.moveToNextHall();
                 }
                 else {
-                    audioManager.playNoRuneSound();
+                    AudioManager.playNoRuneSound();
                 }
             }
         }

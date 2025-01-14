@@ -14,7 +14,6 @@ public class HomeScreenPanel extends JPanel {
     private Font lotrFont; // LOTR-themed font
 
     public HomeScreenPanel(UI ui) {
-        this.audioManager = new AudioManager();
         this.ui = ui;
         loadLOTRFont(); // Load the LOTR-themed font
         initComponents(); // Initialize UI components
@@ -45,7 +44,7 @@ public class HomeScreenPanel extends JPanel {
      */
     private void initComponents() {
         // Play background music
-        audioManager.playEnterMusic();
+        AudioManager.playEnterMusic();
 
         // Set layout and create a layered pane for background and buttons
         this.setLayout(new BorderLayout());
@@ -80,6 +79,7 @@ public class HomeScreenPanel extends JPanel {
 
         // Action Listeners for Buttons
         startButton.addActionListener(e -> ui.showPanel("Build")); // Navigate to Build mode
+        startButton.addActionListener(e -> AudioManager.stopEnterMusic()); // Stop the background music
         helpButton.addActionListener(e -> ui.showPanel("Help"));  // Navigate to Help screen
 
         // Add components to the layered pane
