@@ -27,7 +27,6 @@ public class MonsterManager {
         this.random = new Random();
         this.tileSize = tileSize;
         this.game = game;
-        this.lastSpawnLeftTime = game.getRemainingTime(); // 60
         // Add factories for different monsters
         factories = new ArrayList<>();
         factories.add(new ArcherMonsterFactory());
@@ -96,5 +95,9 @@ public class MonsterManager {
 
     public Game getGame() {
         return game;
+    }
+
+    public void setLastSpawnLeftTime(long lastSpawnLeftTime) {
+        this.lastSpawnLeftTime = lastSpawnLeftTime;
     }
 }
