@@ -179,8 +179,8 @@ public class PlayModePanel extends JPanel implements Runnable {
         ((HeartsLeftPanel) sidebarPanel.getHeartsLeftPanel()).initHearts();
         ((TimeLeftPanel) sidebarPanel.getTimeLeftPanel()).updateTimeLeft(timeController.getTimeLeft());
 
-        for (Map.Entry<String, Integer> entry: game.getPlayer().getInventory().getContent().entrySet()) {
-            ((InventoryPanel) sidebarPanel.getInventoryPanel()).setItem(entry.getKey(), entry.getValue());
+        for (Map.Entry<String, ArrayList<BaseEnchantment>> entry: game.getPlayer().getInventory().getContent().entrySet()) {
+            ((InventoryPanel) sidebarPanel.getInventoryPanel()).setItem(entry.getKey(), entry.getValue().size());
         }
 
         // Initialize game renderer
@@ -398,8 +398,8 @@ public class PlayModePanel extends JPanel implements Runnable {
             }
 
             // Update the player's inventory
-            for (Map.Entry<String, Integer> entry: game.getPlayer().getInventory().getContent().entrySet()) {
-                ((InventoryPanel) sidebarPanel.getInventoryPanel()).setItem(entry.getKey(), entry.getValue());
+            for (Map.Entry<String, ArrayList<BaseEnchantment>> entry: game.getPlayer().getInventory().getContent().entrySet()) {
+                ((InventoryPanel) sidebarPanel.getInventoryPanel()).setItem(entry.getKey(), entry.getValue().size());
             }
 
         }
