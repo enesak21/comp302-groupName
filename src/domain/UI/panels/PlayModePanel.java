@@ -6,6 +6,7 @@ import domain.UI.PlayerView;
 import domain.UI.MonsterView;
 import domain.UI.renderers.GameRenderer;
 import domain.audio.AudioManager;
+import domain.config.GameConfig;
 import domain.enchantments.*;
 import domain.handlers.*;
 import domain.entity.Entity;
@@ -34,29 +35,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PlayModePanel extends JPanel implements Runnable {
 
-    // Screen settings
-    static final int originalTileSize = 16; // our assets are 16x16 pixels originally
-    static final int scale = 2;
-    static final int tileSize = originalTileSize * scale;
-
-    static final int gridColumns = 16; // Arena sütun sayısı
-    static final int gridRows = 16;    // Arena satır sayısı
-    static final int gridWidth = gridColumns * tileSize; // Arena genişliği
-    static final int gridHeight = gridRows * tileSize;   // Arena yüksekliği
-
-    static final int screenWidth = 24 * tileSize; // Tüm ekran genişliği
-    static final int screenHeight = 20 * tileSize; // Tüm ekran yüksekliği
-
-    public static final int offsetX = ((screenWidth - gridWidth) / (2 * tileSize)) - 2; // offset for gridi ortalama (tile-based)
-    public static final int offsetY = (screenHeight - gridHeight) / (2 * tileSize);
-
-    private static final int gridTopLeftX = offsetX * tileSize;
-    private static final int gridTopLeftY = offsetY * tileSize;
-
-    int sidebarWidth = 4 * tileSize + 20; // Sidebar width
-    int sidebarX = screenWidth - sidebarWidth - (tileSize + 10) + 20;
-    int sidebarY = offsetY * tileSize;
-
+    // Game dimensions
     private TimeController timeController;
     private Grid grid;
     private Font pressStart2PFont;
@@ -91,6 +70,13 @@ public class PlayModePanel extends JPanel implements Runnable {
     // Sidebar panel
     private SidebarPanel sidebarPanel;
 
+    // Game Configurations
+    private GameConfig gameConfig;
+
+    // Offset values
+    public static int offsetX;
+    public static int offsetY;
+
     // Game variables
     int FPS = 60;
     Thread gameThread;
@@ -100,8 +86,10 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     // Constructor
     public PlayModePanel(List<Hall> halls) {
+        gameConfig = new GameConfig();
+
         this.halls = halls; // Initialize the halls variable
-        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
+        this.setPreferredSize(new Dimension(gameConfig.getScreenWidth(), gameConfig.getGridHeight()));
         this.setBackground(new Color(66, 40, 53));
         this.setDoubleBuffered(true);
         this.setFocusable(true);
@@ -116,25 +104,28 @@ public class PlayModePanel extends JPanel implements Runnable {
         gameWinningHandler = new GameWinningHandler(this);
         gameOverHandler = new GameOverHandler(this);
 
+        offsetX = gameConfig.getOffsetX();
+        offsetY = gameConfig.getOffsetY();
+
     }
 
     public void initializeGameComponents(int hallNum) {
         this.setState("Default");
         isPaused = false;
 
-        Player player = Player.getInstance("Osimhen", 0, 0, tileSize, this, new PlayerInputHandler());
+        Player player = Player.getInstance("Osimhen", 0, 0, gameConfig.getTileSize(), this, new PlayerInputHandler());
         playerView = new PlayerView(player);
 
         // Initialize the grid
-        grid = halls.get(hallNum).toGrid(tileSize);
+        grid = halls.get(hallNum).toGrid(gameConfig.getTileSize());
 
         // place The Rune
 
         searchRuneController = new SearchRuneController(this);
         searchRuneController.placeRune();
 
-        game = new Game(player, tileSize, grid, searchRuneController);
-        enchantmentManager = new EnchantmentManager(game, tileSize);
+        game = new Game(player, gameConfig.getTileSize(), grid, searchRuneController);
+        enchantmentManager = new EnchantmentManager(game, gameConfig.getTileSize());
         monsterManager = game.getMonsterManager();
 
         timeController = game.getTimeController();
@@ -417,7 +408,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         g2 = (Graphics2D) g;
 
-        gameRenderer.render(g2, offsetX, offsetY, tileSize);
+        gameRenderer.render(g2, gameConfig.getOffsetX(), gameConfig.getOffsetY(), gameConfig.getTileSize());
 
         if (inTransition) {
             drawTransitionScreen(g2);
@@ -496,11 +487,11 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     // Getters
     public int getScale() {
-        return scale;
+        return gameConfig.getScale();
     }
 
-    public static int getTileSize() {
-        return tileSize;
+    public int getTileSize() {
+        return gameConfig.getTileSize();
     }
 
     public void setGame(Game game) {
@@ -513,37 +504,21 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
     public int getTopLeftCornerX() {
-        return gridTopLeftX;
+        return gameConfig.getGridTopLeftX();
     }
 
     public boolean getIsPaused(){return isPaused;}
 
     public int getTopLeftCornerY() {
-        return gridTopLeftY;
+        return gameConfig.getGridTopLeftY();
     }
 
     public int getGridWidth() {
-        return gridWidth;
+        return gameConfig.getGridWidth();
     }
 
     public int getGridHeight() {
-        return gridHeight;
-    }
-
-    public int getSidebarWidth() {
-        return sidebarWidth;
-    }
-
-    public int getSidebarX() {
-        return sidebarX;
-    }
-
-    public int getSidebarY() {
-        return sidebarY;
-    }
-
-    public int getSidebarHeight() {
-        return gridHeight;
+        return gameConfig.getGridHeight();
     }
 
     public int getOffsetX() {
@@ -555,15 +530,15 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
     public int getScreenWidth() {
-        return screenWidth;
+        return gameConfig.getScreenWidth();
     }
 
     public int getGridColumns() {
-        return gridColumns;
+        return gameConfig.getGridColumns();
     }
 
     public int getGridRows() {
-        return gridRows;
+        return gameConfig.getGridRows();
     }
 
     public Grid getGrid() {
@@ -591,7 +566,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
     public int getScreenHeight() {
-        return screenHeight;
+        return gameConfig.getScreenHeight();
     }
 
     public void setState(String state) {
