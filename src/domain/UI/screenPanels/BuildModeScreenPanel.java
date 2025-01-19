@@ -7,6 +7,7 @@ import domain.handlers.BuildModeHandler;
 import domain.UI.panels.BuildModePanel;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 public class BuildModeScreenPanel extends JPanel {
