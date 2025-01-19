@@ -47,7 +47,7 @@ public class GridPanel extends JPanel {
                 int y = e.getY() / cellSize;
 
                 // Check if we're within the grid bounds
-                if (x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE) {
+                if (x >= 1 && x < (GRID_SIZE - 1) && y >= 1 && y < (GRID_SIZE - 1)) {
                     String selectedStructure = parentPanel.getSelectedStructure();
 
                     if ("eraser".equals(selectedStructure)) {
@@ -105,13 +105,11 @@ public class GridPanel extends JPanel {
 
         // 3. Draw grid lines (if desired) over the entire grid area
         g.setColor(Color.GRAY);
-        g.drawLine(0, 0, cellSize, cellSize); // diagonal line on (0,0) tile where the player spawns: X
-        g.drawLine(cellSize, 0, 0, cellSize); // diagonal line on (0,0) tile where the player spawns: X
-        for (int i = 0; i <= GRID_SIZE; i++) {
+        for (int i = 1; i < GRID_SIZE; i++) {
             // Vertical lines
-            g.drawLine(i * cellSize, 0, i * cellSize, gridHeight);
+            g.drawLine(i * cellSize, cellSize, i * cellSize, gridHeight - cellSize);
             // Horizontal lines
-            g.drawLine(0, i * cellSize, gridWidth, i * cellSize);
+            g.drawLine(cellSize, i * cellSize, gridWidth - cellSize, i * cellSize);
         }
 
         // 4. Draw structures (scaled to cellSize) from the hall's grid
