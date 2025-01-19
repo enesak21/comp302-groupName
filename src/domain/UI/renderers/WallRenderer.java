@@ -14,10 +14,8 @@ public class WallRenderer {
     private Image leftWall, rightWall, topWall, bottomWall;
     private Image topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner;
     private Image openedDoor, closedDoor;
-    private Image hallOfAirFlag;
-    private Image hallOfEarthFlag;
-    private Image hallOfFireFlag;
-    private Image hallOfWaterFlag;
+    private Image hallOfAirFlag, hallOfEarthFlag, hallOfFireFlag, hallOfWaterFlag;
+
 
     // Constructor
     public WallRenderer(Hall hall, int tileSize) {
@@ -62,7 +60,7 @@ public class WallRenderer {
             g2.drawImage(topWall, x, topY, tileSize, topWall.getHeight(null), null);
             g2.drawImage(bottomWall, x, bottomY, tileSize, bottomWall.getHeight(null), null);
 
-            if (col == 12) {
+            if (col == 10) {
                 Image flag = switch (hall.getName()) {
                     case "Hall of Fire" -> hallOfFireFlag;
                     case "Hall of Earth" -> hallOfEarthFlag;

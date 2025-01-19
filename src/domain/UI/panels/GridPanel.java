@@ -1,5 +1,6 @@
 package domain.UI.panels;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -83,6 +84,10 @@ public class GridPanel extends JPanel {
         Image topWall           = new ImageIcon("src/resources/tiles/walls/frontWall.png").getImage();
         Image leftWall          = new ImageIcon("src/resources/tiles/walls/leftWall.png").getImage();
         Image rightWall         = new ImageIcon("src/resources/tiles/walls/rightWall.png").getImage();
+        Image hallOfAirFlag     = new ImageIcon("/resources/flags/hallOfAirFlag.png").getImage();
+        Image hallOfEarthFlag   = new ImageIcon("/resources/flags/hallOfEarthFlag.png").getImage();
+        Image hallOfFireFlag    = new ImageIcon("/resources/flags/hallOfFireFlag.png").getImage();
+        Image hallOfWaterFlag   = new ImageIcon("/resources/flags/hallOfWaterFlag.png").getImage();
 
         // -- Draw corners --
         g.drawImage(topLeftCorner, 0, 0, cellSize, cellSize, this);
@@ -94,6 +99,18 @@ public class GridPanel extends JPanel {
         for (int x = cellSize; x < gridWidth - cellSize; x += cellSize) {
             g.drawImage(topWall, x, 0, cellSize, cellSize, this);                      // top
             g.drawImage(topWall, x, gridHeight - cellSize, cellSize, cellSize, this); // bottom
+
+            if (x == cellSize * 10 ) {
+                System.out.println(hall.getName());
+                Image flag = switch (hall.getName()) {
+                    case "Hall of Fire" -> hallOfFireFlag;
+                    case "Hall of Earth" -> hallOfEarthFlag;
+                    case "Hall of Water" -> hallOfWaterFlag;
+                    case "Hall of Air" -> hallOfAirFlag;
+                    default -> null;
+                };
+                g.drawImage(flag, x, gridHeight - cellSize, cellSize, cellSize, this);
+            }
         }
 
         // -- Draw left & right walls --
