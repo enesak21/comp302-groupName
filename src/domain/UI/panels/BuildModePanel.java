@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import domain.UI.panels.buildModeComponents.NavigationPanel;
+import domain.config.GameConfig;
 import domain.game.Hall;
 import domain.game.HallOfAir;
 import domain.game.HallOfEarth;
@@ -122,8 +123,8 @@ public class BuildModePanel extends JPanel {
 
         // -- TOP (NORTH): Hall name label
         hallNameLabel = new JLabel(halls.get(currentGridIndex).getName(), SwingConstants.CENTER);
-        hallNameLabel.setForeground(Color.WHITE);
-        hallNameLabel.setFont(pressStart2PFont);
+        hallNameLabel.setForeground(new Color(210, 180, 140)); // Gold-ish color
+        hallNameLabel.setFont(GameConfig.loadLOTRFont());
         add(hallNameLabel, BorderLayout.NORTH);
 
         // -- CENTER (split pane): gridPanel (left) + structurePanel (right)
