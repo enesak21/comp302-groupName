@@ -1,6 +1,7 @@
 package domain.UI.panels.sideBarComponents;
 
 import domain.UI.panels.PlayModePanel;
+import domain.audio.AudioManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,15 +13,19 @@ public class TopButtonPanel extends JPanel {
 
     private JButton stopResumeButton;
     private JButton exitButton;
+    private JButton volumeButton;
 
     // Icons for the buttons
     private ImageIcon stopIcon;
     private ImageIcon resumeIcon;
     private ImageIcon exitIcon;
+    private ImageIcon volumeOnIcon;
+    private ImageIcon volumeOffIcon;
     private ImageIcon backgroundIcon;
 
     // State variable: true = game is stopped/paused, false = game is running
     private boolean isStopped = false;
+    private boolean volumeOn = true;
 
     private PlayModePanel playModePanel;
 
@@ -56,6 +61,8 @@ public class TopButtonPanel extends JPanel {
         resumeIcon = new ImageIcon("src/resources/buttons/resume.png");
         exitIcon = new ImageIcon("src/resources/buttons/exit.png");
         backgroundIcon = new ImageIcon("src/resources/buttons/Background_cobbleStone.png");
+        volumeOnIcon = new ImageIcon("src/resources/buttons/volumeOn.png");
+        volumeOffIcon = new ImageIcon("src/resources/buttons/volumeOff.png");
     }
 
     /**
@@ -64,6 +71,8 @@ public class TopButtonPanel extends JPanel {
     private void initComponents() {
         stopResumeButton = createButton(stopIcon);
         exitButton = createButton(exitIcon);
+        volumeButton = createButton(volumeOnIcon);
+
 
         // Create a sub-panel to hold buttons in a row
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0)); // Horizontal alignment
@@ -71,6 +80,7 @@ public class TopButtonPanel extends JPanel {
 
         buttonPanel.add(stopResumeButton);
         buttonPanel.add(exitButton);
+        buttonPanel.add(volumeButton);
 
         // Add the button panel to the main panel
         add(buttonPanel);
@@ -90,6 +100,17 @@ public class TopButtonPanel extends JPanel {
 
         // Exit action
         exitButton.addActionListener(e -> playModePanel.exitGame());
+
+        // Volume Action
+        volumeButton.addActionListener(e -> {
+            volumeOn = !volumeOn;
+            volumeButton.setIcon(volumeOn ? volumeOnIcon : volumeOffIcon);
+            if (volumeOn) {
+                AudioManager.playPlayModeMusic();
+            } else {
+                AudioManager.stopPlayModeMusic();
+            }
+        });
     }
 
     /**
@@ -118,13 +139,17 @@ public class TopButtonPanel extends JPanel {
 
         stopResumeButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
         exitButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
+        volumeButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
 
         scaleIcon(stopIcon, buttonSize);
         scaleIcon(resumeIcon, buttonSize);
         scaleIcon(exitIcon, buttonSize);
+        scaleIcon(volumeOnIcon, buttonSize);
+        scaleIcon(volumeOffIcon, buttonSize);
 
         stopResumeButton.setIcon(isStopped ? resumeIcon : stopIcon);
         exitButton.setIcon(exitIcon);
+        volumeButton.setIcon(volumeOn ? volumeOnIcon : volumeOffIcon);
 
         revalidate();
         repaint();
