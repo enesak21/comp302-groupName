@@ -347,16 +347,34 @@ public class PlayModePanel extends JPanel implements Runnable {
     // This will be our main method which is running the Play mode screen
     @Override
     public void run() {
-        long startTime = System.currentTimeMillis();
+        long lastTime = System.nanoTime();
+        double nsPerFrame = 1000000000.0 / FPS;
+        double delta = 0;
+        int maxUpdates = 5; // Prevents excessive updates in case of lag
+
         while (gameThread != null) {
-            double drawInterval = 1000000000 / FPS;
-            if (System.nanoTime() - startTime > drawInterval) {
+            long now = System.nanoTime();
+            delta += (now - lastTime) / nsPerFrame;
+            lastTime = now;
+
+            // Process updates and renders as per the delta
+            int updates = 0;
+            while (delta >= 1 && updates < maxUpdates) {
                 update();
                 repaint();
-                startTime = System.nanoTime();
+                delta--;
+                updates++;
+            }
+
+            // Sleep briefly to prevent high CPU usage
+            try {
+                Thread.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
+
 
     public void update() {
         if (!isPaused) {
