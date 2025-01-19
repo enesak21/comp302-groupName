@@ -89,6 +89,7 @@ public class GameRenderer {
         }
         catch (Exception e) {
             // :D
+        }
     }
 
     // Render enchantments
