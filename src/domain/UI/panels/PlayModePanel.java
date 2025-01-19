@@ -98,9 +98,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         loadFont();
         addPauseKeyListener();
 
-        //KEYLISTENER FOR REVEAL WILL BE REMOVED
-        addKeyListenerForUseEnchantments();
-
         gameWinningHandler = new GameWinningHandler(this);
         gameOverHandler = new GameOverHandler(this);
 
@@ -177,71 +174,14 @@ public class PlayModePanel extends JPanel implements Runnable {
         // Initialize game renderer
         gameRenderer = new GameRenderer(grid, player, monsterManager.getMonsters(), enchantmentManager);
 
+        // Initialize key listeners
+        initializeKeyListeners();
+
     }
 
-    //REVEAL KEY HANDLER WILL BE OUT LATER
-    private boolean bPressed = false;
-    private void addKeyListenerForUseEnchantments() {
-        this.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_R:
-                        if (game.getPlayer().getInventory().isInInventory("Reveal")) {
-                            game.getPlayer().useRevealEnchantment();
-
-                        } else {
-                            System.out.println("No Reveal enchantment in inventory.");
-                        }
-                        break;
-                    case KeyEvent.VK_P:
-                        if (game.getPlayer().getInventory().isInInventory("Cloak of Protection")) {
-                            game.getPlayer().useCloakOfProtectionEnchantment();
-                        } else {
-                            System.out.println("No Cloak of Protection enchantment in inventory.");
-                        }
-                        break;
-                    case KeyEvent.VK_B:
-                        if (game.getPlayer().getInventory().isInInventory("Luring Gem")) {
-                            bPressed = true;
-                        } else {
-                            System.out.println("No Luring enchantment in inventory.");
-                        }
-                        break;
-                    case KeyEvent.VK_W:
-                        if (bPressed) {
-                            game.getPlayer().useLuringGemEnchantment(0);
-                            bPressed = false;
-                        }
-                    case KeyEvent.VK_S:
-                        if (bPressed) {
-                            game.getPlayer().useLuringGemEnchantment(1);
-                            bPressed = false;
-                        }
-                    case KeyEvent.VK_A:
-                        if (bPressed) {
-                            game.getPlayer().useLuringGemEnchantment(2);
-                            bPressed = false;
-                        }
-                    case KeyEvent.VK_D:
-                        if (bPressed) {
-                            game.getPlayer().useLuringGemEnchantment(3);
-                            bPressed = false;
-                        }
-                    case KeyEvent.VK_Q:
-
-                }
-                if (e.getKeyCode() == KeyEvent.VK_Q) {
-                    if (game.getPlayer().getInventory().isInInventory("Speed Up")) {
-                        game.getPlayer().useSpeedUpManagement();
-                    } else {
-                        System.out.println("no Speed Up enchantment in inventory.");
-                    }
-                }
-            }
-        });
+    private void initializeKeyListeners() {
+        this.addKeyListener(new PlayModeKeyListener(this));
     }
-
 
     public void moveToNextHall() {
         hallNum++; // Move to the next hall
