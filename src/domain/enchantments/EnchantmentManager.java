@@ -44,6 +44,7 @@ public class EnchantmentManager {
         factories.add(new ExtraLifeEnchantmentFactory());
         factories.add(new CloakOfProtectionEnchantmentFactory());
         factories.add(new SpeedUpEnchantmentFactory());
+        factories.add(new LuringGemEnchantmentFactory());
 
     }
 

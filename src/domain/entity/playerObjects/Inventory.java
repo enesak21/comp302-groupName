@@ -57,9 +57,11 @@ public class Inventory {
         ArrayList<BaseEnchantment> revealList = new ArrayList<>();
         ArrayList<BaseEnchantment> speedUpsList = new ArrayList<>();
         ArrayList<BaseEnchantment> cloaksList = new ArrayList<>();
+        ArrayList<BaseEnchantment> gemList = new ArrayList<>();
         content.put("Reveal", revealList);
         content.put("Speed Up", speedUpsList);
         content.put("Cloak of Protection", cloaksList);
+        content.put("Luring Gem", gemList);
     }
 
     /**
@@ -84,14 +86,8 @@ public class Inventory {
         if (content.containsKey(enchantmentType)) {
             ArrayList<BaseEnchantment> enchantmentList = content.get(enchantmentType);
 
-            // Try to remove the enchantment from the list
-            if (enchantmentList.remove(enchantment)) {
-                // If the list becomes empty after removal, clean it up
-                if (enchantmentList.isEmpty()) {
-                    content.remove(enchantmentType);
-                }
-                return true; // Successfully removed the enchantment
-            }
+            // Remove the enchantment from the list
+            return enchantmentList.remove(enchantment); // Successfully removed the enchantment
         }
         return false; // Enchantment not found or type does not exist
     }
