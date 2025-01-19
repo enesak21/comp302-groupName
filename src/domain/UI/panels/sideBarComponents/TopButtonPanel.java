@@ -21,11 +21,16 @@ public class TopButtonPanel extends JPanel {
     private ImageIcon exitIcon;
     private ImageIcon volumeOnIcon;
     private ImageIcon volumeOffIcon;
+    private ImageIcon volumeMidIcon;
+    private ImageIcon volumeLowIcon;
     private ImageIcon backgroundIcon;
+
 
     // State variable: true = game is stopped/paused, false = game is running
     private boolean isStopped = false;
-    private boolean volumeOn = true;
+    private enum VolumeState {HIGH, MID, LOW, OFF}
+    private VolumeState volumeState = VolumeState.HIGH;
+
 
     private PlayModePanel playModePanel;
 
@@ -61,7 +66,9 @@ public class TopButtonPanel extends JPanel {
         resumeIcon = new ImageIcon("src/resources/buttons/resume.png");
         exitIcon = new ImageIcon("src/resources/buttons/exit.png");
         backgroundIcon = new ImageIcon("src/resources/buttons/Background_cobbleStone.png");
-        volumeOnIcon = new ImageIcon("src/resources/buttons/volumeOn.png");
+        volumeOnIcon = new ImageIcon("src/resources/buttons/volumeHigh.png"); // Rename for clarity
+        volumeMidIcon = new ImageIcon("src/resources/buttons/volumeMid.png");
+        volumeLowIcon = new ImageIcon("src/resources/buttons/volumeLow.png");
         volumeOffIcon = new ImageIcon("src/resources/buttons/volumeOff.png");
     }
 
@@ -103,14 +110,33 @@ public class TopButtonPanel extends JPanel {
 
         // Volume Action
         volumeButton.addActionListener(e -> {
-            volumeOn = !volumeOn;
-            volumeButton.setIcon(volumeOn ? volumeOnIcon : volumeOffIcon);
-            if (volumeOn) {
-                AudioManager.playPlayModeMusic();
-            } else {
-                AudioManager.stopPlayModeMusic();
+            // Cycle through the volume states
+            switch (volumeState) {
+                case HIGH:
+                    volumeState = VolumeState.MID;
+                    volumeButton.setIcon(volumeMidIcon);
+                    AudioManager.setPlayModeVolume(2); // Set to mid level
+                    break;
+                case MID:
+                    volumeState = VolumeState.LOW;
+                    volumeButton.setIcon(volumeLowIcon);
+                    AudioManager.setPlayModeVolume(1); // Set to low level
+                    break;
+                case LOW:
+                    volumeState = VolumeState.OFF;
+                    volumeButton.setIcon(volumeOffIcon);
+                    AudioManager.setPlayModeVolume(0); // Set to off
+                    AudioManager.stopPlayModeMusic(); // Stop music
+                    break;
+                case OFF:
+                    volumeState = VolumeState.HIGH;
+                    volumeButton.setIcon(volumeOnIcon);
+                    AudioManager.setPlayModeVolume(3); // Set to high level
+                    AudioManager.playPlayModeMusic(); // Resume music
+                    break;
             }
         });
+
     }
 
     /**
@@ -145,11 +171,27 @@ public class TopButtonPanel extends JPanel {
         scaleIcon(resumeIcon, buttonSize);
         scaleIcon(exitIcon, buttonSize);
         scaleIcon(volumeOnIcon, buttonSize);
+        scaleIcon(volumeMidIcon, buttonSize);
+        scaleIcon(volumeLowIcon, buttonSize);
         scaleIcon(volumeOffIcon, buttonSize);
+
 
         stopResumeButton.setIcon(isStopped ? resumeIcon : stopIcon);
         exitButton.setIcon(exitIcon);
-        volumeButton.setIcon(volumeOn ? volumeOnIcon : volumeOffIcon);
+        switch (volumeState) {
+            case HIGH:
+                volumeButton.setIcon(volumeOnIcon);
+                break;
+            case MID:
+                volumeButton.setIcon(volumeMidIcon);
+                break;
+            case LOW:
+                volumeButton.setIcon(volumeLowIcon);
+                break;
+            case OFF:
+                volumeButton.setIcon(volumeOffIcon);
+                break;
+        }
 
         revalidate();
         repaint();
