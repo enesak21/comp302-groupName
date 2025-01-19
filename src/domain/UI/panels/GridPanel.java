@@ -101,7 +101,6 @@ public class GridPanel extends JPanel {
             g.drawImage(topWall, x, gridHeight - cellSize, cellSize, cellSize, this); // bottom
 
             if (x == cellSize * 10 ) {
-                System.out.println(hall.getName());
                 Image flag = switch (hall.getName()) {
                     case "Hall of Fire" -> hallOfFireFlag;
                     case "Hall of Earth" -> hallOfEarthFlag;
