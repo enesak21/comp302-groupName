@@ -132,16 +132,19 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         // timeController.setTimeLeft(60); // Set the time to 60 seconds for testing purposes
 
-
+        // Add key listener to the player
         this.addKeyListener(player.getPlayerInputHandler());
+
+        // Initialize key listeners
+        initializeKeyListeners();
+
+
         countMonster = 0;
         monsterViewList = new CopyOnWriteArrayList<>();
         for (int i = 0; i < monsterManager.getMonsters().size(); i++) {
             MonsterView monsterView = new MonsterView((Entity) monsterManager.getMonsters().get(i));
             monsterViewList.add(monsterView);
         }
-
-        this.addKeyListener(player.getPlayerInputHandler());
 
         gridView = new GridView(grid);
         CollisionChecker collisionChecker = new CollisionChecker(grid);
@@ -172,9 +175,6 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         // Initialize game renderer
         gameRenderer = new GameRenderer(grid, player, monsterManager.getMonsters(), enchantmentManager);
-
-        // Initialize key listeners
-        initializeKeyListeners();
 
     }
 
