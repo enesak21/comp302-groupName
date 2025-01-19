@@ -102,6 +102,7 @@ public class GridPanel extends JPanel {
             g.drawImage(rightWall, gridWidth - cellSize, y, cellSize, cellSize, this);  // right
         }
 
+
         // 3. Draw grid lines (if desired) over the entire grid area
         g.setColor(Color.GRAY);
         for (int i = 0; i <= GRID_SIZE; i++) {
