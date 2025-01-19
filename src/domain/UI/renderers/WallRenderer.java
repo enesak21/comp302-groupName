@@ -1,5 +1,8 @@
 package domain.UI.renderers;
 
+import domain.game.Hall;
+import domain.game.HallOfAir;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
@@ -7,13 +10,19 @@ import javax.imageio.ImageIO;
 public class WallRenderer {
 
     private final int tileSize;
+    private Hall hall;
     private Image leftWall, rightWall, topWall, bottomWall;
     private Image topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner;
     private Image openedDoor, closedDoor;
+    private Image hallOfAirFlag;
+    private Image hallOfEarthFlag;
+    private Image hallOfFireFlag;
+    private Image hallOfWaterFlag;
 
     // Constructor
-    public WallRenderer(int tileSize) {
+    public WallRenderer(Hall hall, int tileSize) {
         this.tileSize = tileSize;
+        this.hall = hall;
         loadWallImages();
     }
 
@@ -28,6 +37,12 @@ public class WallRenderer {
             topRightCorner = ImageIO.read(getClass().getResource("/resources/Walls/topRightCorner.png"));
             bottomLeftCorner = ImageIO.read(getClass().getResource("/resources/Walls/BottomLeftCorner.png"));
             bottomRightCorner = ImageIO.read(getClass().getResource("/resources/Walls/BottomRightCorner.png"));
+            hallOfAirFlag = ImageIO.read(getClass().getResource("/resources/flags/hallOfAirFlag.png"));
+            hallOfEarthFlag = ImageIO.read(getClass().getResource("/resources/flags/hallOfEarthFlag.png"));
+            hallOfFireFlag = ImageIO.read(getClass().getResource("/resources/flags/hallOfFireFlag.png"));
+            hallOfWaterFlag = ImageIO.read(getClass().getResource("/resources/flags/hallOfWaterFlag.png"));
+
+
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Error loading wall images. Check file paths.");
@@ -46,6 +61,17 @@ public class WallRenderer {
             int x = (offsetX + col) * tileSize;
             g2.drawImage(topWall, x, topY, tileSize, topWall.getHeight(null), null);
             g2.drawImage(bottomWall, x, bottomY, tileSize, bottomWall.getHeight(null), null);
+
+            if (col == 12) {
+                Image flag = switch (hall.getName()) {
+                    case "Hall of Fire" -> hallOfFireFlag;
+                    case "Hall of Earth" -> hallOfEarthFlag;
+                    case "Hall of Water" -> hallOfWaterFlag;
+                    case "Hall of Air" -> hallOfAirFlag;
+                    default -> null;
+                };
+                g2.drawImage(flag, x, bottomY, tileSize, bottomWall.getHeight(null), null);
+            }
         }
 
         // Draw left and right walls
