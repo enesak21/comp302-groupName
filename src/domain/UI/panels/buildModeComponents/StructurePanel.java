@@ -3,6 +3,8 @@ package domain.UI.panels.buildModeComponents;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StructurePanel extends JPanel {
 
@@ -15,62 +17,78 @@ public class StructurePanel extends JPanel {
     }
 
     private void initializePanel() {
-        // Set absolute positioning and preferred size
-        setLayout(null);
+        // (Optional) This gives an initial size but won't block resizing
         setPreferredSize(new Dimension(200, 700));
-        setBackground(new Color(66, 40, 53)); // Backup background if no image is drawn
 
-        // Paint background with custom image
-        repaint();
+        // Use a GridLayout: 5 rows, 2 columns, 10px horizontal/vertical gap
+        setLayout(new GridLayout(7, 2, 0, 0));
 
-        // Define button positions
-        HashMap<String, Point> buttonPositions = new HashMap<>();
-        buttonPositions.put("chest", new Point(30, 60));   // Column 1
-        buttonPositions.put("column", new Point(110, 60)); // Column 2
-        buttonPositions.put("ladder", new Point(30, 140)); // Column 1
-        buttonPositions.put("doubleBox", new Point(110, 140)); // Column 2
-        buttonPositions.put("singleBox", new Point(30, 220)); // Column 1
-        buttonPositions.put("skull", new Point(110, 220)); // Column 2
-        buttonPositions.put("tomb", new Point(30, 300));   // Column 1
-        buttonPositions.put("bottle", new Point(110, 300)); // Column 2
+        // Set a background color in case no image or partial coverage
+        setBackground(new Color(66, 40, 53));
 
-        // Create buttons and add them to the panel
-        for (String key : structureMap.keySet()) {
-            JButton button = createStructureButton(key, structureMap.get(key));
-            Point position = buttonPositions.get(key);
-            if (position != null) {
-                button.setBounds(position.x, position.y, 40, 40);
+        // Create buttons in the order you want them to appear in the grid
+        // We'll list out the special items (eraser & dice) plus the main structures
+
+        // 1. Put your main structure keys in a list, in the order you want
+        java.util.List<String> keys = new ArrayList<>();
+        keys.add("chest");
+        keys.add("column");
+        keys.add("ladder");
+        keys.add("doubleBox");
+        keys.add("singleBox");
+        keys.add("skull");
+        keys.add("tomb");
+        keys.add("bottle");
+        // We'll also include "eraser" and "dice" in this sequence
+        keys.add("eraser");
+        keys.add("dice");
+
+        // 2. To skip first row, add empty JLabels
+        add(new JLabel());
+        add(new JLabel());
+
+        // 3. For each key, determine the icon path
+        //    - Some come from structureMap, some are special icons
+        for (String key : keys) {
+            String iconPath;
+            if ("eraser".equals(key)) {
+                iconPath = "src/resources/icons/eraser.png";
+            } else if ("dice".equals(key)) {
+                iconPath = "src/resources/icons/dice.png";
+            } else {
+                // Otherwise, use the structureMap for the image
+                iconPath = structureMap.get(key);
             }
+            // 3. Create the button and add it to the panel
+            JButton button = createStructureButton(key, iconPath);
             add(button);
         }
-
-        // Add eraser button
-        JButton eraserButton = createStructureButton("eraser", "src/resources/icons/eraser.png");
-        eraserButton.setBounds(30, 380, 40, 40); // Position below the other buttons
-        add(eraserButton);
-
-        // Add dice button
-        JButton diceButton = createStructureButton("dice", "src/resources/icons/dice.png");
-        diceButton.setBounds(110, 380, 40, 40); // Position below the other buttons
-        add(diceButton);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        // Draw custom background
+        // Draw custom background, scaled to panel size
         Image bgImage = new ImageIcon("src/resources/structures/Buildmodechest.png").getImage();
         g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), this);
     }
 
     private JButton createStructureButton(String key, String iconPath) {
-        JButton button = new JButton(new ImageIcon(new ImageIcon(iconPath)
-                .getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+        // Safely handle potential null or missing path
+        if (iconPath == null) {
+            // fallback icon or skip
+            iconPath = "src/resources/icons/defaultIcon.png";
+        }
+        Image img = new ImageIcon(iconPath).getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+
+        JButton button = new JButton(new ImageIcon(img));
         button.setToolTipText(key);
+        // Style for transparency if desired
         button.setOpaque(false);
         button.setContentAreaFilled(false);
         button.setBorderPainted(false);
 
+        // When clicked, update the selectedStructure
         button.addActionListener(e -> setSelectedStructure(key));
         return button;
     }

@@ -9,26 +9,33 @@ import java.io.File;
 import java.io.IOException;
 
 public class HomeScreenPanel extends JPanel {
-    private AudioManager audioManager;
     private UI ui;
-    private Font lotrFont; // LOTR-themed font
+    private Font lotrFont;        // LOTR-themed font
+    private Image backgroundImage; // Will be painted in paintComponent
+
+    // Buttons declared at class-level so we can access them if needed
+    private JButton startButton;
+    private JButton helpButton;
 
     public HomeScreenPanel(UI ui) {
         this.ui = ui;
-        loadLOTRFont(); // Load the LOTR-themed font
-        initComponents(); // Initialize UI components
+
+        // 1. Load the custom font
+        loadLOTRFont();
+
+        // 2. Initialize all UI components (buttons, layouts, etc.)
+        initComponents();
     }
 
     /**
-     * Loads the custom "Ringbearer" (or any LOTR-themed) font and registers it.
+     * Loads the custom "Ringbearer" font (or falls back if unavailable).
      */
     private void loadLOTRFont() {
         try {
-            // Ensure the font file exists in your resources/fonts folder
             File fontFile = new File("src/resources/fonts/Ringbearer.ttf");
             lotrFont = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(28f);
 
-            // Register the font with the JVM
+            // Register with the local graphics environment
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(lotrFont);
 
@@ -40,54 +47,91 @@ public class HomeScreenPanel extends JPanel {
     }
 
     /**
-     * Initializes the components and applies the LOTR font to buttons.
+     * Sets up the layout, background image, and interactive buttons.
      */
     private void initComponents() {
-        // Play background music
+        // 1. Play background music
         AudioManager.playEnterMusic();
 
-        // Set layout and create a layered pane for background and buttons
-        this.setLayout(new BorderLayout());
-        JLayeredPane layeredPane = new JLayeredPane();
-        layeredPane.setPreferredSize(new Dimension(800, 600));
+        // 2. Load the background image once
+        ImageIcon originalIcon = new ImageIcon("src/resources/mainMenuBackground.png");
+        backgroundImage = originalIcon.getImage();
 
-        // Background Image
-        ImageIcon originalIcon = new ImageIcon("src/resources/Rokue-like logo 4.png");
-        Image scaledImage = originalIcon.getImage().getScaledInstance(800, 600, Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        System.out.println("Background object: " + backgroundImage);
+        System.out.println("Width: " + backgroundImage.getWidth(null) +
+                " Height: " + backgroundImage.getHeight(null));
 
-        JLabel imageLabel = new JLabel(scaledIcon);
-        imageLabel.setBounds(0, 0, 800, 600);
 
-        // Start Button
-        JButton startButton = new JButton("Start Game");
-        startButton.setBounds(247, 470, 250, 50);
-        startButton.setOpaque(false);
-        startButton.setContentAreaFilled(false);
-        startButton.setBorderPainted(false);
-        startButton.setForeground(new Color(210, 180, 140)); // Gold-ish color
-        startButton.setFont(lotrFont.deriveFont(Font.BOLD, 30f)); // Apply LOTR font
+        // 3. Use BorderLayout for the main panel
+        setLayout(new BorderLayout());
 
-        // Help Button
-        JButton helpButton = new JButton("Help");
-        helpButton.setBounds(271, 530, 200, 50);
-        helpButton.setOpaque(false);
-        helpButton.setContentAreaFilled(false);
-        helpButton.setBorderPainted(false);
-        helpButton.setForeground(new Color(210, 180, 140)); // Gold-ish color
-        helpButton.setFont(lotrFont.deriveFont(Font.BOLD, 30f)); // Apply LOTR font
+        // 4. Create a sub-panel that will hold the buttons, using a BoxLayout
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false); // let the background show through
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 
-        // Action Listeners for Buttons
-        startButton.addActionListener(e -> ui.showPanel("Build")); // Navigate to Build mode
-        startButton.addActionListener(e -> AudioManager.stopEnterMusic()); // Stop the background music
-        helpButton.addActionListener(e -> ui.showPanel("Help"));  // Navigate to Help screen
+        // 5. Create and style the "Start Game" button
+        startButton = new JButton("Start Game");
+        styleButton(startButton);
+        // Center alignment for BoxLayout
+        startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Add components to the layered pane
-        layeredPane.add(imageLabel, Integer.valueOf(0)); // Background
-        layeredPane.add(startButton, Integer.valueOf(1)); // Start Button
-        layeredPane.add(helpButton, Integer.valueOf(1)); // Help Button
+        // 6. Add an ActionListener to move to Build mode and stop music
+        startButton.addActionListener(e -> {
+            ui.showPanel("Build");       // Navigate to Build mode
+            AudioManager.stopEnterMusic();
+        });
 
-        // Add the layered pane to the panel
-        this.add(layeredPane, BorderLayout.CENTER);
+        // 7. Create and style the "Help" button
+        helpButton = new JButton("Help");
+        styleButton(helpButton);
+        // Center alignment for BoxLayout
+        helpButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // 8. Add an ActionListener to show the Help screen
+        helpButton.addActionListener(e -> ui.showPanel("Help"));
+
+        // 9. Add the buttons to the button panel with vertical spacing
+        buttonPanel.add(Box.createVerticalGlue());
+        buttonPanel.add(startButton);
+        buttonPanel.add(Box.createVerticalStrut(30)); // space between buttons
+        buttonPanel.add(helpButton);
+        buttonPanel.add(Box.createVerticalGlue());
+
+        // 10. Finally, add the button panel to the center of the main panel
+        add(buttonPanel, BorderLayout.SOUTH);
     }
+
+    /**
+     * Helper method to style buttons (font, transparency, color, etc.).
+     */
+    private void styleButton(JButton button) {
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setForeground(new Color(210, 180, 140));         // Gold-ish color
+        button.setFont(lotrFont.deriveFont(Font.BOLD, 30f));     // LOTR font, 30 pt
+    }
+
+    /**
+     * Paints a scaled background image to fill the entire panel.
+     */
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        // Draw a bright color so we can see if the panel is visible at all
+        g.setColor(Color.RED);
+        g.fillRect(0, 0, getWidth(), getHeight());
+
+        // Now draw the background image in the panel’s current size
+        if (backgroundImage != null) {
+            // Option A: Draw at natural size
+            // g.drawImage(background, 0, 0, this);
+
+            // Option B: Scale to fill the panel
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
+
 }

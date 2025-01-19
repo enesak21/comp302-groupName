@@ -47,7 +47,7 @@ public class UI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(768, 640);
         frame.setLocationRelativeTo(null);
-        frame.setResizable(false); // Change if needed
+        // frame.setResizable(false); // Change if needed
 
         // Set custom colors for message dialogs
         UIManager.put("OptionPane.background", new Color(50, 56, 66)); // Dark gray
