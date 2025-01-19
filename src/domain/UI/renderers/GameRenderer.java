@@ -42,6 +42,7 @@ public class GameRenderer {
         this.arrowAnimationRenderer = new ArrowAnimationRenderer();
     }
 
+
     // Add an arrow animation
     public void addArrowAnimation(ArrowAnimationView animation) {
         arrowAnimationRenderer.addArrowAnimation(animation);
