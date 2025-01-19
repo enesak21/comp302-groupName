@@ -241,8 +241,7 @@ public void setCollisionChecker(CollisionChecker collisionChecker) {
     }
 
     public void useSpeedUpManagement() {
-        BaseEnchantment revealEnchantment =
-                new SpeedUp(0, 0, tileSize);  //MUST BE CHANGED
+        BaseEnchantment revealEnchantment = new SpeedUp(0, 0, tileSize);  //MUST BE CHANGED
         revealEnchantment.applyEffect(playModePanel.getGame());
         this.getInventory().removeItem("Speed Up");
         System.out.println("Speed Up enchantment used.");

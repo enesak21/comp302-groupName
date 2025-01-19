@@ -50,22 +50,26 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Inventory {
-    private HashMap<String, Integer> content; // Holds the counts of enchantments
+    private HashMap<String, ArrayList<BaseEnchantment>> content; // Holds the counts of enchantments
 
     public Inventory() {
         this.content = new HashMap<>();
-        content.put("Reveal", 0);
-        content.put("Speed Up", 0);
-        content.put("Cloak of Protection", 0);
+        ArrayList<BaseEnchantment> revealList = new ArrayList<>();
+        ArrayList<BaseEnchantment> speedUpsList = new ArrayList<>();
+        ArrayList<BaseEnchantment> cloaksList = new ArrayList<>();
+        content.put("Reveal", revealList);
+        content.put("Speed Up", speedUpsList);
+        content.put("Cloak of Protection", cloaksList);
     }
 
     /**
      * Adds an enchantment to the inventory.
      *
-     * @param enchantmentType The type of the enchantment to be added
+     * @param enchantment The enchantment to be added
      */
-    public void addItem(String enchantmentType) {
-        content.put(enchantmentType, content.getOrDefault(enchantmentType, 0) + 1);
+    public void addItem(BaseEnchantment enchantment) {
+        // Add the enchantment to the corresponding list
+        content.get(enchantment.getName()).add(enchantment);
     }
 
     /**

@@ -160,7 +160,7 @@ public class EnchantmentManager {
                     String enchantmentType = enchantment.getName();
                     if (enchantmentType.equals("Reveal") || enchantmentType.equals("Cloak of Protection") ||
                             enchantmentType.equals("Speed Up") || enchantmentType.equals("Luring Gem") ) {
-                        game.getPlayer().getInventory().addItem(enchantmentType);
+                        game.getPlayer().getInventory().addItem(enchantment);
                     } else {
                         enchantment.applyEffect(game);
                     }
