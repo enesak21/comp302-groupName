@@ -175,7 +175,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         }
 
         // Initialize game renderer
-        gameRenderer = new GameRenderer(grid, player, monsterManager.getMonsters(), enchantmentManager);
+        gameRenderer = new GameRenderer(halls.get(hallNum), grid, player, monsterManager.getMonsters(), enchantmentManager);
 
     }
 

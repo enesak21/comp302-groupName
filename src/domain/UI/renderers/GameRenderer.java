@@ -8,6 +8,7 @@ import domain.entity.monsters.BaseMonster;
 import domain.entity.playerObjects.Player;
 import domain.game.Grid;
 import domain.enchantments.EnchantmentManager;
+import domain.game.Hall;
 import domain.game.Tile;
 
 import java.awt.*;
@@ -23,21 +24,24 @@ public class GameRenderer {
     private final PlayerView playerView;
     private final WallRenderer wallRenderer;
     private final ArrowAnimationRenderer arrowAnimationRenderer;
+    private Hall hall;
 
     // Constructor
-    public GameRenderer(Grid grid, Player player, List<BaseMonster> monsters,
+    public GameRenderer(Hall hall, Grid grid, Player player, List<BaseMonster> monsters,
                         EnchantmentManager enchantmentManager) {
         this.grid = grid;
         this.player = player;
         this.monsters = monsters;
         this.enchantmentManager = enchantmentManager;
+        this.hall = hall;
 
         this.gridView = new GridView(grid);
         this.playerView = new PlayerView(player);
 
-        this.wallRenderer = new WallRenderer(grid.getTileSize());
+        this.wallRenderer = new WallRenderer(hall, grid.getTileSize());
         this.arrowAnimationRenderer = new ArrowAnimationRenderer();
     }
+
 
     // Add an arrow animation
     public void addArrowAnimation(ArrowAnimationView animation) {
