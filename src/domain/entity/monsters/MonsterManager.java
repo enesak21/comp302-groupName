@@ -42,7 +42,7 @@ public class MonsterManager {
 
         int factoryIndex = random.nextInt(factories.size()); // Randomly select a factory
 
-        MonsterFactory selectedFactory = factories.get(factoryIndex); // 0: Archer, 1: Fighter, 2: Wizard
+        MonsterFactory selectedFactory = factories.get(factoryIndex); // 0: Archer, 1: Fighter, 2: Wizard, 3: Timer
 
 
         int gridX = PlayModePanel.offsetX + random.nextInt(gridWidth - (2 * PlayModePanel.offsetX) - 1);
