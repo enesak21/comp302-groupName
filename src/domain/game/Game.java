@@ -20,6 +20,7 @@ public class Game {
     private int tileSize;
     private MonsterManager monsterManager;
     private boolean isLuringGemActive = false;
+    private boolean gameWon = false;
 
     public Game(Player player, int tileSize, Grid grid, SearchRuneController searchRuneController) {
         this.player = player;
@@ -169,5 +170,13 @@ public class Game {
 
     public void setLuringGemActive(boolean luringGemActive) {
         isLuringGemActive = luringGemActive;
+    }
+
+    public boolean isGameWon() {
+        return gameWon;
+    }
+
+    public void setGameWon(boolean gameWon) {
+        this.gameWon = gameWon;
     }
 }

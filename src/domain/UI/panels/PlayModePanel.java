@@ -258,6 +258,7 @@ public class PlayModePanel extends JPanel implements Runnable {
             transitionToNextHall();
         } else {
             lastRunefound = true;
+            game.setGameWon(true);
         }
     }
 
@@ -422,7 +423,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         if (inTransition) {
             drawTransitionScreen(g2);
         } else {
-            if (isPaused) {
+            if (isPaused && !game.isGameWon()) {
                 // Draw Pause Overlay only if the game is not over
                 drawPauseOverlay(g2);
             }
