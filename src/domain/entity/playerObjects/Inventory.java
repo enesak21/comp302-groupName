@@ -75,21 +75,27 @@ public class Inventory {
     /**
      * Removes an enchantment from the inventory
      *
-     * @param enchantmentType The type of the enchantment to be removed
+     * @param enchantment The enchantment to be removed
      * @return true if the enchantment was removed
      */
-    public boolean removeItem(String enchantmentType) {
+    public boolean removeItem(BaseEnchantment enchantment) {
+        // Check if the enchantment type exists in the inventory
+        String enchantmentType = enchantment.getName();
         if (content.containsKey(enchantmentType)) {
-            int count = content.get(enchantmentType);
-            if (count > 1) {
-                content.put(enchantmentType, count - 1);
-            } else {
-                content.put(enchantmentType, 0);
+            ArrayList<BaseEnchantment> enchantmentList = content.get(enchantmentType);
+
+            // Try to remove the enchantment from the list
+            if (enchantmentList.remove(enchantment)) {
+                // If the list becomes empty after removal, clean it up
+                if (enchantmentList.isEmpty()) {
+                    content.remove(enchantmentType);
+                }
+                return true; // Successfully removed the enchantment
             }
-            return true;
         }
-        return false;
+        return false; // Enchantment not found or type does not exist
     }
+
 
     /**
      * Checks if an enchantment is in the inventory
