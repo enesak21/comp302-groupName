@@ -105,6 +105,8 @@ public class GridPanel extends JPanel {
 
         // 3. Draw grid lines (if desired) over the entire grid area
         g.setColor(Color.GRAY);
+        g.drawLine(0, 0, cellSize, cellSize); // diagonal line on (0,0) tile where the player spawns: X
+        g.drawLine(cellSize, 0, 0, cellSize); // diagonal line on (0,0) tile where the player spawns: X
         for (int i = 0; i <= GRID_SIZE; i++) {
             // Vertical lines
             g.drawLine(i * cellSize, 0, i * cellSize, gridHeight);

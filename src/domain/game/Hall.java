@@ -17,7 +17,7 @@ public class Hall {
     }
 
     public void placeStructure(int x, int y, String structureKey) {
-        if (grid[x][y] == null) {
+        if (grid[x][y] == null && !(x==0 && y==0)) {
             grid[x][y] = structureKey;
             placedStructuresCount++;
         }
@@ -29,7 +29,7 @@ public class Hall {
         while (numStructuresToPlace > 0) {
             int x = (int) (Math.random() * grid.length);
             int y = (int) (Math.random() * grid[0].length);
-            if (grid[x][y] == null) {
+            if (grid[x][y] == null && !(x==0 && y==0)) {
                 grid[x][y] = StructureObserver.getRandomStructure();
                 placedStructuresCount++;
                 numStructuresToPlace--;
