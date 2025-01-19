@@ -158,21 +158,10 @@ public class EnchantmentManager {
                 if ((enchantment.getGridX() - 2) == clickedTile.getGridX() && (enchantment.getGridY() - 2) == clickedTile.getGridY()) {
 
                     String enchantmentType = enchantment.getName();
-                    if (enchantmentType.equals("Reveal")) {
-                        game.getPlayer().getInventory().addItem(enchantmentType);
-                    } else if (enchantmentType.equals("Cloak of Protection")) {
-                        //System.out.println("Cloak added to the inventory by EnchantmentManager");
-                        game.getPlayer().getInventory().addItem(enchantmentType);
-
-                    }
-                    else if (enchantmentType.equals("Speed Up")) {
-                        //System.out.println("Cloak added to the inventory by EnchantmentManager");
-                        game.getPlayer().getInventory().addItem(enchantmentType);
-                    
-                    } else if (enchantmentType.equals("Luring Gem")) {
+                    if (enchantmentType.equals("Reveal") || enchantmentType.equals("Cloak of Protection") ||
+                            enchantmentType.equals("Speed Up") || enchantmentType.equals("Luring Gem") ) {
                         game.getPlayer().getInventory().addItem(enchantmentType);
                     } else {
-
                         enchantment.applyEffect(game);
                     }
 
