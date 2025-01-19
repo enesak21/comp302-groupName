@@ -96,7 +96,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.rune = new Rune();
 
         loadFont();
-        addPauseKeyListener();
 
         gameWinningHandler = new GameWinningHandler(this);
         gameOverHandler = new GameOverHandler(this);
@@ -219,27 +218,6 @@ public class PlayModePanel extends JPanel implements Runnable {
     // Add an arrow animation to the list
     public void addArrowAnimation(ArrowAnimationView animation) {
         gameRenderer.addArrowAnimation(animation);
-    }
-
-    private void addPauseKeyListener() {
-
-        this.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    isPaused = !isPaused;
-                    if (isPaused) {
-                        pauseGame();
-                        timeController.pauseTimer();
-                    } else {
-                        resumeGame();
-                        timeController.resumeTimer();
-
-                    }
-                    repaint();
-                }
-            }
-        });
     }
 
     public void pauseGame() {

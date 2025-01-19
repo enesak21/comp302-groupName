@@ -21,25 +21,13 @@ public class PlayModeKeyListener extends KeyAdapter {
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_R:
-                if (game.getPlayer().getInventory().isInInventory("Reveal")) {
-                    game.getPlayer().useRevealEnchantment();
-                } else {
-                    System.out.println("No Reveal enchantment in inventory.");
-                }
+                handleRevealEnchantment();
                 break;
             case KeyEvent.VK_P:
-                if (game.getPlayer().getInventory().isInInventory("Cloak of Protection")) {
-                    game.getPlayer().useCloakOfProtectionEnchantment();
-                } else {
-                    System.out.println("No Cloak of Protection enchantment in inventory.");
-                }
+                handleCloakOfProtectionEnchantment();
                 break;
             case KeyEvent.VK_B:
-                if (game.getPlayer().getInventory().isInInventory("Luring Gem")) {
-                    bPressed = true;
-                } else {
-                    System.out.println("No Luring enchantment in inventory.");
-                }
+                handleLuringGemPress();
                 break;
             case KeyEvent.VK_W:
             case KeyEvent.VK_S:
@@ -48,17 +36,37 @@ public class PlayModeKeyListener extends KeyAdapter {
                 handleLuringGemMovement(e);
                 break;
             case KeyEvent.VK_Q:
-                if (game.getPlayer().getInventory().isInInventory("Speed Up")) {
-                    game.getPlayer().useSpeedUpManagement();
-                } else {
-                    System.out.println("No Speed Up enchantment in inventory.");
-                }
+                handleSpeedUpEnchantment();
                 break;
             case KeyEvent.VK_ESCAPE:
                 togglePause();
                 break;
             default:
                 break;
+        }
+    }
+
+    private void handleRevealEnchantment() {
+        if (game.getPlayer().getInventory().isInInventory("Reveal")) {
+            game.getPlayer().useRevealEnchantment();
+        } else {
+            System.out.println("No Reveal enchantment in inventory.");
+        }
+    }
+
+    private void handleCloakOfProtectionEnchantment() {
+        if (game.getPlayer().getInventory().isInInventory("Cloak of Protection")) {
+            game.getPlayer().useCloakOfProtectionEnchantment();
+        } else {
+            System.out.println("No Cloak of Protection enchantment in inventory.");
+        }
+    }
+
+    private void handleLuringGemPress() {
+        if (game.getPlayer().getInventory().isInInventory("Luring Gem")) {
+            bPressed = true;
+        } else {
+            System.out.println("No Luring enchantment in inventory.");
         }
     }
 
@@ -73,11 +81,20 @@ public class PlayModeKeyListener extends KeyAdapter {
         bPressed = false;
     }
 
+    private void handleSpeedUpEnchantment() {
+        if (game.getPlayer().getInventory().isInInventory("Speed Up")) {
+            game.getPlayer().useSpeedUpManagement();
+        } else {
+            System.out.println("No Speed Up enchantment in inventory.");
+        }
+    }
+
     private void togglePause() {
         if (playModePanel.getIsPaused()) {
             playModePanel.resumeGame();
         } else {
             playModePanel.pauseGame();
         }
+        playModePanel.repaint();
     }
 }
