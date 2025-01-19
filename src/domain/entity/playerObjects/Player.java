@@ -101,7 +101,7 @@ public class Player extends Entity {
             } else if (playerInputHandler.rightPressed) {
                 direction = Direction.RIGHT;
             }
-            if (playerInputHandler.movePressed()) {
+            if (playerInputHandler.movePressed() && !collisionChecker.checkCollision(this)) {
                 moving = true;
             }
         }
