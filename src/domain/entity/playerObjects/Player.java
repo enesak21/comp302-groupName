@@ -241,13 +241,14 @@ public void setCollisionChecker(CollisionChecker collisionChecker) {
 
     public void useLuringGemEnchantment(int direction) {
         BaseEnchantment gem = this.getInventory().getContent().get("Luring Gem").getFirst();
+        ((LuringGem) gem).setDirection(direction);
         gem.applyEffect(playModePanel.getGame());
         this.getInventory().removeItem(gem);
         System.out.println("Luring Gem enchantment used.");
     }
 
     public void useSpeedUpManagement() {
-        BaseEnchantment speedUp = this.getInventory().getContent().get("Speed Up").getFirst();
+        BaseEnchantment speedUp= this.getInventory().getContent().get("Speed Up").getFirst();
         speedUp.applyEffect(playModePanel.getGame());
         this.getInventory().removeItem(speedUp);
         System.out.println("Speed Up enchantment used.");
