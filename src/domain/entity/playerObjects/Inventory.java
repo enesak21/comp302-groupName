@@ -93,8 +93,10 @@ public class Inventory {
      * @return true if the enchantment is in the inventory
      */
     public boolean isInInventory(String enchantmentType) {
-        return content.containsKey(enchantmentType);
+        // Check if the inventory contains the item and its value is greater than 0
+        return content.containsKey(enchantmentType) && content.get(enchantmentType) > 0;
     }
+
 
 
     public HashMap<String, Integer> getContent() {
