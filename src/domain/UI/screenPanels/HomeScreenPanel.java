@@ -2,6 +2,7 @@ package domain.UI.screenPanels;
 
 import domain.UI.UI;
 import domain.audio.AudioManager;
+import domain.config.GameConfig;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,30 +22,12 @@ public class HomeScreenPanel extends JPanel {
         this.ui = ui;
 
         // 1. Load the custom font
-        loadLOTRFont();
+        this.lotrFont = GameConfig.loadLOTRFont();
 
         // 2. Initialize all UI components (buttons, layouts, etc.)
         initComponents();
     }
 
-    /**
-     * Loads the custom "Ringbearer" font (or falls back if unavailable).
-     */
-    private void loadLOTRFont() {
-        try {
-            File fontFile = new File("src/resources/fonts/Ringbearer.ttf");
-            lotrFont = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(28f);
-
-            // Register with the local graphics environment
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(lotrFont);
-
-        } catch (FontFormatException | IOException e) {
-            e.printStackTrace();
-            // Fallback to a standard font if loading fails
-            lotrFont = new Font("Serif", Font.PLAIN, 28);
-        }
-    }
 
     /**
      * Sets up the layout, background image, and interactive buttons.

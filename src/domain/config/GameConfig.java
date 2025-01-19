@@ -1,5 +1,8 @@
 package domain.config;
 
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 
 public class GameConfig implements Serializable {
@@ -11,6 +14,7 @@ public class GameConfig implements Serializable {
     private int scale = 2; // Scaling factor for the game resolution
     private int gridColumns = 16; // Number of columns in the grid
     private int gridRows = 16; // Number of rows in the grid
+
 
     public int getTileSize() {
         return originalTileSize * scale;
@@ -91,5 +95,25 @@ public class GameConfig implements Serializable {
         this.fontSize = fontSize;
     }
 
+    /**
+     * Loads the custom "Ringbearer" font (or falls back if unavailable).
+     */
+    public static Font loadLOTRFont() {
+        Font lotrFont;
+        try {
+            File fontFile = new File("src/resources/fonts/Ringbearer.ttf");
+            lotrFont = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(28f);
+
+            // Register with the local graphics environment
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(lotrFont);
+
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+            // Fallback to a standard font if loading fails
+            lotrFont = new Font("Serif", Font.PLAIN, 28);
+        }
+        return lotrFont;
+    }
 
 }

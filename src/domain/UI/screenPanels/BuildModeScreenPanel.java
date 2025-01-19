@@ -2,6 +2,7 @@ package domain.UI.screenPanels;
 
 import domain.UI.UI;
 import domain.audio.AudioManager;
+import domain.config.GameConfig;
 import domain.handlers.BuildModeHandler;
 import domain.UI.panels.BuildModePanel;
 
@@ -40,6 +41,7 @@ public class BuildModeScreenPanel extends JPanel {
 
         // The "Complete Build" button at the bottom (SOUTH)
         JButton completeButton = new JButton("Complete Build");
+        styleButton(completeButton);
         completeButton.addActionListener(e -> {
             if (buildModeHandler.checkBuildMode()) {
                 ui.showPanel("Game");
@@ -100,6 +102,18 @@ public class BuildModeScreenPanel extends JPanel {
             );
         }
     }
+
+    /**
+     * Helper method to style buttons (font, transparency, color, etc.).
+     */
+    private void styleButton(JButton button) {
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setForeground(new Color(210, 180, 140));         // Gold-ish color
+        button.setFont(GameConfig.loadLOTRFont().deriveFont(Font.BOLD, 30f));     // LOTR font, 30 pt
+    }
+
 
     public BuildModePanel getBuildModePanel() {
         return buildModePanel;
