@@ -36,6 +36,7 @@ public class AudioManager {
 
         // If you have a winMusic file, load it here
         // winClip = loadClip("music/winMusic.wav");
+
     }
 
     /**
@@ -77,6 +78,7 @@ public class AudioManager {
     }
 
     public static void playPlayModeMusic() {
+        setVolume(playModeMusic, 0.7f);
         if (playModeMusic != null) {
             playModeMusic.loop(Clip.LOOP_CONTINUOUSLY);
         }
@@ -120,4 +122,27 @@ public class AudioManager {
             archerSound.start();
         }
     }
+
+    /**
+     * Sets the volume of a single Clip to a specified [0..1] range.
+     */
+    public static void setVolume(Clip clip, float volume) {
+        if (clip == null) return;
+        // Clamp volume to [0..1]
+        volume = Math.max(0f, Math.min(volume, 1f));
+
+        try {
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+
+            float min = gainControl.getMinimum(); // often around -80.0f
+            float max = gainControl.getMaximum(); // often around +6.0f
+            float dB = min + (max - min) * volume;
+            gainControl.setValue(dB);
+
+        } catch (IllegalArgumentException e) {
+            // The clip does not support MASTER_GAIN
+            System.err.println("Volume control not supported for this clip.");
+        }
+    }
+
 }
