@@ -81,10 +81,14 @@ public class GameRenderer {
 
     // Render monsters
     private void drawMonsters(Graphics2D g2) {
-        for (BaseMonster monster : monsters) {
-            MonsterView monsterView = new MonsterView(monster);
-            monsterView.draw(g2);
+        try {
+            for (BaseMonster monster : monsters) {
+                MonsterView monsterView = new MonsterView(monster);
+                monsterView.draw(g2);
+            }
         }
+        catch (Exception e) {
+            // :D
     }
 
     // Render enchantments
