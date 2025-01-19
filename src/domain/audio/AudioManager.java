@@ -78,7 +78,6 @@ public class AudioManager {
     }
 
     public static void playPlayModeMusic() {
-        setVolume(playModeMusic, 0.7f);
         if (playModeMusic != null) {
             playModeMusic.loop(Clip.LOOP_CONTINUOUSLY);
         }
@@ -142,6 +141,23 @@ public class AudioManager {
         } catch (IllegalArgumentException e) {
             // The clip does not support MASTER_GAIN
             System.err.println("Volume control not supported for this clip.");
+        }
+    }
+
+    public static void setPlayModeVolume(int volume) {
+        switch (volume) {
+            case 3:
+                setVolume(playModeMusic, 1.0f);
+                break;
+            case 2:
+                setVolume(playModeMusic, 0.8f);
+                break;
+            case 1:
+                setVolume(playModeMusic, 0.5f);
+                break;
+            case 0:
+                setVolume(playModeMusic, 0.0f);
+                break;
         }
     }
 
