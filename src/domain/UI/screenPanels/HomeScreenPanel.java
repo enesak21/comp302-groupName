@@ -57,10 +57,6 @@ public class HomeScreenPanel extends JPanel {
         ImageIcon originalIcon = new ImageIcon("src/resources/mainMenuBackground.png");
         backgroundImage = originalIcon.getImage();
 
-        System.out.println("Background object: " + backgroundImage);
-        System.out.println("Width: " + backgroundImage.getWidth(null) +
-                " Height: " + backgroundImage.getHeight(null));
-
 
         // 3. Use BorderLayout for the main panel
         setLayout(new BorderLayout());

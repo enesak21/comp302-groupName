@@ -125,8 +125,6 @@ public class ArcherMonster extends BaseMonster{
             ArrowAnimationView arrowAnimationView = new ArrowAnimationView(this, game.getPlayer());
             game.getPlayer().getPlayModePanel().addArrowAnimation(arrowAnimationView);
         }
-        else System.out.println("INVISIBLE BILADERRR");
-
     }
 
     @Override

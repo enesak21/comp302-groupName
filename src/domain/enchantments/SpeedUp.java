@@ -9,7 +9,6 @@ public class SpeedUp extends BaseEnchantment{
     public SpeedUp(int gridX, int gridY, int tileSize) {
         super(gridX, gridY, tileSize);
         this.name = "Speed Up";
-        System.out.println("speedUp created");
     }
 
     @Override
@@ -18,7 +17,6 @@ public class SpeedUp extends BaseEnchantment{
             activationTime = System.currentTimeMillis();
             game.getActiveEnchantments().add(this);
             setActive(true);
-            //System.out.println("ZİBBİDİ GONZALES");
             game.getPlayer().setSpeed(8);
         }
 
@@ -30,10 +28,6 @@ public class SpeedUp extends BaseEnchantment{
             //game.getPlayer().setInvisibleToArchers(false);
             slowDown(game);
             setActive(false);
-
-           // System.out.println("Speed Up Deactivated");
-
-
         }
     }
 

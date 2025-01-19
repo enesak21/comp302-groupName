@@ -21,7 +21,6 @@ public class EnchantmentManager {
     private int tileSize;
     private Game game;
     private final int SPAWN_INTERVAL = 6 * 1000; // Write it in milliseconds
-    private CollisionChecker collisionChecker;
     private long lastSpawnTime; // Track spawn time in milliseconds
     private PlayModePanel playModePanel;
 
@@ -69,8 +68,6 @@ public class EnchantmentManager {
         BaseEnchantment enchantment = selectedFactory.createEnchantment(gridX, gridY, tileSize);
         game.getGrid().getTileAt(gridX - PlayModePanel.offsetX, gridY - PlayModePanel.offsetY).setSolid(true);
         enchantments.add(enchantment);
-        //System.out.println("Enchantment is created at: "+ gridX + ", " + gridY);
-
 
         // Create a view for the enchantment
         int drawX = gridX * tileSize;
@@ -109,7 +106,6 @@ public class EnchantmentManager {
                 iterator.remove(); // Remove using iterator
                 viewIterator.next(); // Move the view iterator to match removal in enchantmentViews
                 viewIterator.remove();
-                //System.out.println("Enchantment REMOVED: " + enchantment.getName());
             }
         }
     }

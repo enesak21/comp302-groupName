@@ -96,6 +96,10 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.rune = new Rune();
 
         loadFont();
+        addPauseKeyListener();
+
+        //KEYLISTENER FOR REVEAL WILL BE REMOVED
+        addKeyListenerForUseEnchantments();
 
         gameWinningHandler = new GameWinningHandler(this);
         gameOverHandler = new GameOverHandler(this);
@@ -132,19 +136,16 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         // timeController.setTimeLeft(60); // Set the time to 60 seconds for testing purposes
 
-        // Add key listener to the player
+
         this.addKeyListener(player.getPlayerInputHandler());
-
-        // Initialize key listeners
-        initializeKeyListeners();
-
-
         countMonster = 0;
         monsterViewList = new CopyOnWriteArrayList<>();
         for (int i = 0; i < monsterManager.getMonsters().size(); i++) {
             MonsterView monsterView = new MonsterView((Entity) monsterManager.getMonsters().get(i));
             monsterViewList.add(monsterView);
         }
+
+        this.addKeyListener(player.getPlayerInputHandler());
 
         gridView = new GridView(grid);
         CollisionChecker collisionChecker = new CollisionChecker(grid);
@@ -178,9 +179,61 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     }
 
-    private void initializeKeyListeners() {
-        this.addKeyListener(new PlayModeKeyListener(this));
+    //REVEAL KEY HANDLER WILL BE OUT LATER
+    private boolean bPressed = false;
+    private void addKeyListenerForUseEnchantments() {
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_R:
+                        if (game.getPlayer().getInventory().isInInventory("Reveal")) {
+                            game.getPlayer().useRevealEnchantment();
+
+                        }
+                        break;
+                    case KeyEvent.VK_P:
+                        if (game.getPlayer().getInventory().isInInventory("Cloak of Protection")) {
+                            game.getPlayer().useCloakOfProtectionEnchantment();
+                        }
+                        break;
+                    case KeyEvent.VK_B:
+                        if (game.getPlayer().getInventory().isInInventory("Luring Gem")) {
+                            bPressed = true;
+                        }
+                        break;
+                    case KeyEvent.VK_W:
+                        if (bPressed) {
+                            game.getPlayer().useLuringGemEnchantment(0);
+                            bPressed = false;
+                        }
+                    case KeyEvent.VK_S:
+                        if (bPressed) {
+                            game.getPlayer().useLuringGemEnchantment(1);
+                            bPressed = false;
+                        }
+                    case KeyEvent.VK_A:
+                        if (bPressed) {
+                            game.getPlayer().useLuringGemEnchantment(2);
+                            bPressed = false;
+                        }
+                    case KeyEvent.VK_D:
+                        if (bPressed) {
+                            game.getPlayer().useLuringGemEnchantment(3);
+                            bPressed = false;
+                        }
+                    case KeyEvent.VK_Q:
+
+                }
+                if (e.getKeyCode() == KeyEvent.VK_Q) {
+                    if (game.getPlayer().getInventory().isInInventory("Speed Up")) {
+                        game.getPlayer().useSpeedUpManagement();
+                    }
+                }
+            }
+        });
     }
+
 
     public void moveToNextHall() {
         hallNum++; // Move to the next hall
@@ -218,6 +271,27 @@ public class PlayModePanel extends JPanel implements Runnable {
     // Add an arrow animation to the list
     public void addArrowAnimation(ArrowAnimationView animation) {
         gameRenderer.addArrowAnimation(animation);
+    }
+
+    private void addPauseKeyListener() {
+
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    isPaused = !isPaused;
+                    if (isPaused) {
+                        pauseGame();
+                        timeController.pauseTimer();
+                    } else {
+                        resumeGame();
+                        timeController.resumeTimer();
+
+                    }
+                    repaint();
+                }
+            }
+        });
     }
 
     public void pauseGame() {

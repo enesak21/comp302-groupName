@@ -32,7 +32,6 @@ public class LuringGem extends BaseEnchantment {
         if (isActive() && System.currentTimeMillis() - activationTime >= 5_000) {
             game.setLuringGemActive(false);
             setActive(false);
-            System.out.println("Luring Gem deactivated");
         }
     }
 

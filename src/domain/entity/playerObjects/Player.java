@@ -101,7 +101,7 @@ public class Player extends Entity {
             } else if (playerInputHandler.rightPressed) {
                 direction = Direction.RIGHT;
             }
-            if (playerInputHandler.movePressed() && !collisionChecker.checkCollision(this)) {
+            if (playerInputHandler.movePressed()) {
                 moving = true;
             }
         }
@@ -227,8 +227,6 @@ public void setCollisionChecker(CollisionChecker collisionChecker) {
 
         // Remove the used enchantment from the inventory
         this.getInventory().removeItem(revealEnchantment);
-
-        System.out.println("Reveal enchantment used. Highlighting region.");
     }
 
 
@@ -236,7 +234,6 @@ public void setCollisionChecker(CollisionChecker collisionChecker) {
         BaseEnchantment cloak = this.getInventory().getContent().get("Cloak of Protection").getFirst();
         cloak.applyEffect(playModePanel.getGame());
         this.getInventory().removeItem(cloak);
-        System.out.println("CLOAK OF PROTECTION enchantment used.");
     }
 
     public void useLuringGemEnchantment(int direction) {
@@ -244,14 +241,11 @@ public void setCollisionChecker(CollisionChecker collisionChecker) {
         ((LuringGem) gem).setDirection(direction);
         gem.applyEffect(playModePanel.getGame());
         this.getInventory().removeItem(gem);
-        System.out.println("Luring Gem enchantment used.");
     }
 
     public void useSpeedUpManagement() {
         BaseEnchantment speedUp= this.getInventory().getContent().get("Speed Up").getFirst();
         speedUp.applyEffect(playModePanel.getGame());
         this.getInventory().removeItem(speedUp);
-        System.out.println("Speed Up enchantment used.");
-
     }
 }

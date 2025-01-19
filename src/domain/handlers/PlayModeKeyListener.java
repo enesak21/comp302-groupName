@@ -57,16 +57,12 @@ public class PlayModeKeyListener extends KeyAdapter {
     private void handleCloakOfProtectionEnchantment() {
         if (game.getPlayer().getInventory().isInInventory("Cloak of Protection")) {
             game.getPlayer().useCloakOfProtectionEnchantment();
-        } else {
-            System.out.println("No Cloak of Protection enchantment in inventory.");
         }
     }
 
     private void handleLuringGemPress() {
         if (game.getPlayer().getInventory().isInInventory("Luring Gem")) {
             bPressed = true;
-        } else {
-            System.out.println("No Luring enchantment in inventory.");
         }
     }
 
@@ -84,8 +80,6 @@ public class PlayModeKeyListener extends KeyAdapter {
     private void handleSpeedUpEnchantment() {
         if (game.getPlayer().getInventory().isInInventory("Speed Up")) {
             game.getPlayer().useSpeedUpManagement();
-        } else {
-            System.out.println("No Speed Up enchantment in inventory.");
         }
     }
 
