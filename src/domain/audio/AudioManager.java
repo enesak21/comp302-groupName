@@ -13,6 +13,7 @@ public class AudioManager {
     private static Clip enterMusic;
     private static Clip[] noRuneSounds;
     private static Clip archerSound;
+    private static Clip timeStealerSound;
 
     /**
      * Static block to initialize all your audio clips.
@@ -33,6 +34,7 @@ public class AudioManager {
         noRuneSounds = new Clip[]{noRuneSound1, noRuneSound2, noRuneSound3};
 
         archerSound = loadClip("sound/archerSound.wav");
+        timeStealerSound = loadClip("sound/timerAttack.wav");
 
         // If you have a winMusic file, load it here
         // winClip = loadClip("music/winMusic.wav");
@@ -119,6 +121,14 @@ public class AudioManager {
             archerSound.stop();
             archerSound.setFramePosition(0);
             archerSound.start();
+        }
+    }
+
+    public  static void playTimeStealerSound() {
+        if (timeStealerSound != null) {
+            timeStealerSound.stop();
+            timeStealerSound.setFramePosition(0);
+            timeStealerSound.start();
         }
     }
 

@@ -2,6 +2,7 @@ package domain.entity.monsters;
 
 import domain.entity.monsters.Factories.ArcherMonsterFactory;
 import domain.entity.monsters.Factories.FighterMonsterFactory;
+import domain.entity.monsters.Factories.TimerMonsterFactory;
 import domain.entity.monsters.Factories.WizardMonsterFactory;
 import domain.game.CollisionChecker;
 import domain.game.Game;
@@ -32,6 +33,7 @@ public class MonsterManager {
         factories.add(new ArcherMonsterFactory());
         factories.add(new FighterMonsterFactory());
         factories.add(new WizardMonsterFactory(this));
+        factories.add(new TimerMonsterFactory());
 
         spawnMonster(game.getGrid().getColumns(), game.getGrid().getRows());
     }
@@ -41,6 +43,7 @@ public class MonsterManager {
         int factoryIndex = random.nextInt(factories.size()); // Randomly select a factory
 
         MonsterFactory selectedFactory = factories.get(factoryIndex); // 0: Archer, 1: Fighter, 2: Wizard
+
 
         int gridX = PlayModePanel.offsetX + random.nextInt(gridWidth - (2 * PlayModePanel.offsetX) - 1);
         int gridY = PlayModePanel.offsetY + random.nextInt(gridHeight - (2 *PlayModePanel.offsetY) - 1);
