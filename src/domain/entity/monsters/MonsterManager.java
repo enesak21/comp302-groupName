@@ -10,6 +10,7 @@ import domain.UI.panels.PlayModePanel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MonsterManager {
 
@@ -24,7 +25,7 @@ public class MonsterManager {
     private List<MonsterFactory> factories;
 
     public MonsterManager(Game game,int tileSize) {
-        this.monsters = new ArrayList<>();
+        this.monsters = new CopyOnWriteArrayList<>();
         this.random = new Random();
         this.tileSize = tileSize;
         this.game = game;
