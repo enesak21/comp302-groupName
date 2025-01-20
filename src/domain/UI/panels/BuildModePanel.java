@@ -54,7 +54,7 @@ public class BuildModePanel extends JPanel {
         structureMap = initializeStructureMap();
 
         // 4) (Optional) load a background image
-        loadBackgroundImage("src/resources/buildModeBackground.png");
+        // loadBackgroundImage("src/resources/buildModeBackground.png");
 
         // 5) Overall layout
         setLayout(new BorderLayout());
@@ -104,15 +104,15 @@ public class BuildModePanel extends JPanel {
         return map;
     }
 
-    private void loadBackgroundImage(String path) {
-        File bgFile = new File(path);
-        if (!bgFile.exists()) {
-            System.err.println("Background image not found: " + path);
-        } else {
-            ImageIcon icon = new ImageIcon(path);
-            backgroundImage = icon.getImage();
-        }
-    }
+    //    private void loadBackgroundImage(String path) {
+    //        File bgFile = new File(path);
+    //        if (!bgFile.exists()) {
+    //            // System.err.println("Background image not found: " + path);
+    //        } else {
+    //            ImageIcon icon = new ImageIcon(path);
+    //            backgroundImage = icon.getImage();
+    //        }
+    //    }
 
     /**
      * Sets up the UI components (label at top, nav at bottom, split pane in center).

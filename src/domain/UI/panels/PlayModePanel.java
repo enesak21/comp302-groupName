@@ -113,7 +113,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.setState("Default");
         isPaused = false;
 
-        Player player = Player.getInstance("Osimhen", 0, 0, gameConfig.getTileSize(), this, new PlayerInputHandler());
+        Player player = Player.getInstance("Osimhen", (int) (Math.random() * 16), (int) (Math.random() * 16), gameConfig.getTileSize(), this, new PlayerInputHandler());
         playerView = new PlayerView(player);
 
         // Initialize the grid
