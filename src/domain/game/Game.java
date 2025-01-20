@@ -162,7 +162,7 @@ public class Game {
         do {
             newX = random.nextInt(gridWidth);
             newY = random.nextInt(gridHeight);
-        } while (grid.getTileAt(newX - 2, newY - 2).isSolid());
+        } while (grid.getTileAt(newX -2, newY -2) != null && grid.getTileAt(newX - 2, newY - 2).isSolid());
 
         player.setGridX(newX);
         player.setGridY(newY);
