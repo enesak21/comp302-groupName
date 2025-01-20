@@ -21,6 +21,7 @@ public class Game {
     private int tileSize;
     private MonsterManager monsterManager;
     private boolean isLuringGemActive = false;
+    private int initialTime;
 
     public Game(Player player, int tileSize, Grid grid, SearchRuneController searchRuneController) {
         this.player = player;
@@ -112,11 +113,14 @@ public class Game {
     /**
      * Returns the remaining time as a percentage of the total time.
      * 
-     * TODO: Total time cannot be accessed, will fix later
      * @return float
      */
     public float getRemainingTimePercentage() {
-        return (float) 100 * timeController.getTimeLeft() / 60;
+        return (float) 100 * timeController.getTimeLeft() / initialTime;
+    }
+
+    public void setInitialTime(int time) {
+        this.initialTime = time;
     }
     
     public void setRemainingTime(int remainingTime) {
