@@ -10,9 +10,9 @@ public class IndecisiveBehavior implements IWizardBehavior {
 
     @Override
     public void execute(WizardMonster wizardMonster, Game game) {
-        // long currentTime = System.currentTimeMillis();
-        // if ((currentTime - wizardMonster.getLastTeleportTime() > 2000)) {
-        //     wizardMonster.disappear();
-        // }
+        long currentTime = System.currentTimeMillis();
+        if ((currentTime - wizardMonster.getLastTeleportTime() > 2000)) {
+            wizardMonster.disappear();
+        }
     }
 }
