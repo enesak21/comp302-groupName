@@ -14,7 +14,6 @@ public class Game {
     private boolean isPaused = false;
     private Player player;
     private Grid grid;
-    private int remainingTime; // Add this field
     private TimeController timeController;
     private SearchRuneController searchRuneController;
     private ArrayList<BaseEnchantment> activeEnchantments = new ArrayList<>();
@@ -22,16 +21,15 @@ public class Game {
     private MonsterManager monsterManager;
     private boolean isLuringGemActive = false;
     private int initialTime;
+    private boolean gameWon = false;
 
     public Game(Player player, int tileSize, Grid grid, SearchRuneController searchRuneController) {
         this.player = player;
         this.grid = grid;
-        this.remainingTime = 60; // Initialize with a default value
         this.timeController = new TimeController();
         this.searchRuneController = searchRuneController;
         this.tileSize = tileSize;
         this.monsterManager = new MonsterManager(this, tileSize);
-
     }
     public void removeFromActiveEnchantments(BaseEnchantment baseEnchantment) {
         activeEnchantments.remove(baseEnchantment);
@@ -103,7 +101,7 @@ public class Game {
 
     // Add the new methods
     public int getRemainingTime() {
-        return remainingTime;
+        return timeController.getTimeLeft();
     }
 
     public MonsterManager getMonsterManager() {
@@ -124,7 +122,7 @@ public class Game {
     }
     
     public void setRemainingTime(int remainingTime) {
-        this.remainingTime = remainingTime;
+        this.timeController.setTimeLeft(remainingTime);
     }
 
     /**
@@ -168,7 +166,6 @@ public class Game {
 
         player.setGridX(newX);
         player.setGridY(newY);
-
     }
 
     public boolean isLuringGemActive() {
@@ -177,5 +174,13 @@ public class Game {
 
     public void setLuringGemActive(boolean luringGemActive) {
         isLuringGemActive = luringGemActive;
+    }
+
+    public boolean isGameWon() {
+        return gameWon;
+    }
+
+    public void setGameWon(boolean gameWon) {
+        this.gameWon = gameWon;
     }
 }

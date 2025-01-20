@@ -2,12 +2,15 @@ package domain.game;
 
 import domain.structures.Structure;
 
+import java.util.Random;
+
 public class Hall {
     private final String name;
     private final int minStructures;
     private final String[][] grid;
     private int placedStructuresCount;
     private final int maxStructures = 32;
+    private final Random random = new Random();
 
     public Hall(String name, int minStructures) {
         this.name = name;
@@ -17,7 +20,7 @@ public class Hall {
     }
 
     public void placeStructure(int x, int y, String structureKey) {
-        if (grid[x][y] == null) {
+        if (grid[x][y] == null && !(x==0 && y==0)) {
             grid[x][y] = structureKey;
             placedStructuresCount++;
         }
@@ -27,9 +30,9 @@ public class Hall {
         int numStructuresCanBePlaced = maxStructures - placedStructuresCount;
         numStructuresToPlace = Math.min(numStructuresToPlace, numStructuresCanBePlaced);
         while (numStructuresToPlace > 0) {
-            int x = (int) (Math.random() * grid.length);
-            int y = (int) (Math.random() * grid[0].length);
-            if (grid[x][y] == null) {
+            int x = random.nextInt(grid.length - 2) + 1;
+            int y = random.nextInt(grid[0].length - 2) + 1;
+            if (grid[x][y] == null && !(x==0 && y==0)) {
                 grid[x][y] = StructureObserver.getRandomStructure();
                 placedStructuresCount++;
                 numStructuresToPlace--;

@@ -218,33 +218,34 @@ public void setCollisionChecker(CollisionChecker collisionChecker) {
     public PlayModePanel getPlayModePanel() {
         return playModePanel;
     }
+
     public void useRevealEnchantment() {
-        BaseEnchantment revealEnchantment = new Reveal(0, 0, tileSize); // Adjust parameters as needed
+        // Retrieve the first Reveal enchantment from the inventory
+        BaseEnchantment revealEnchantment = this.getInventory().getContent().get("Reveal").getFirst();
+
         revealEnchantment.applyEffect(playModePanel.getGame());
-        this.getInventory().removeItem("Reveal");
-        System.out.println("Reveal enchantment used. Highlighting region.");
+
+        // Remove the used enchantment from the inventory
+        this.getInventory().removeItem(revealEnchantment);
     }
 
+
     public void useCloakOfProtectionEnchantment() {
-        BaseEnchantment cloak = new CloakOfProtection(0, 0, tileSize); // Adjust parameters as needed
+        BaseEnchantment cloak = this.getInventory().getContent().get("Cloak of Protection").getFirst();
         cloak.applyEffect(playModePanel.getGame());
-        this.getInventory().removeItem("Cloak of Protection");
-        System.out.println("CLOAK OF PROTECTION enchantment used.");
+        this.getInventory().removeItem(cloak);
     }
 
     public void useLuringGemEnchantment(int direction) {
-        BaseEnchantment gem = new LuringGem(0, 0, tileSize, direction);
+        BaseEnchantment gem = this.getInventory().getContent().get("Luring Gem").getFirst();
+        ((LuringGem) gem).setDirection(direction);
         gem.applyEffect(playModePanel.getGame());
-        this.getInventory().removeItem("Luring Gem");
-        System.out.println("Luring Gem enchantment used.");
+        this.getInventory().removeItem(gem);
     }
 
     public void useSpeedUpManagement() {
-        BaseEnchantment revealEnchantment =
-                new SpeedUp(0, 0, tileSize);  //MUST BE CHANGED
-        revealEnchantment.applyEffect(playModePanel.getGame());
-        this.getInventory().removeItem("Speed Up");
-        System.out.println("Speed Up enchantment used.");
-
+        BaseEnchantment speedUp= this.getInventory().getContent().get("Speed Up").getFirst();
+        speedUp.applyEffect(playModePanel.getGame());
+        this.getInventory().removeItem(speedUp);
     }
 }

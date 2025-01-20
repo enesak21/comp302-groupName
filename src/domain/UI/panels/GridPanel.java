@@ -1,18 +1,17 @@
 package domain.UI.panels;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 
 import domain.game.Hall;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 public class GridPanel extends JPanel {
 
-    private static final int GRID_SIZE = 16; // Number of cells in the grid
-    private static final int CELL_SIZE = 32; // Restore original cell size
+    private static final int GRID_SIZE = 16; // Number of cells in each dimension
     private Hall hall;
     private final HashMap<String, String> structureMap;
     private final BuildModePanel parentPanel;
@@ -22,20 +21,36 @@ public class GridPanel extends JPanel {
         this.structureMap = structureMap;
         this.parentPanel = parentPanel;
 
-        setPreferredSize(new Dimension(GRID_SIZE * CELL_SIZE, GRID_SIZE * CELL_SIZE));
+        // You can keep a preferred size as a default, but it won't stop resizing:
+        setPreferredSize(new Dimension(16 * 32, 16 * 32));
+
         initializeMouseListener();
+    }
+
+    /**
+     * A helper method to compute the current cell size based on panel dimensions.
+     * Returns at least 1 to avoid division-by-zero issues when panel is very small.
+     */
+    private int getCellSize() {
+        int cellSize = Math.min(getWidth() / GRID_SIZE, getHeight() / GRID_SIZE);
+        return Math.max(cellSize, 1);  // Ensure it's never zero
     }
 
     private void initializeMouseListener() {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                int x = e.getX() / CELL_SIZE;
-                int y = e.getY() / CELL_SIZE;
+                // Compute the current cellSize for click detection
+                int cellSize = getCellSize();
 
-                String selectedStructure = parentPanel.getSelectedStructure();
+                // Translate the mouse pixel to grid coordinates
+                int x = e.getX() / cellSize;
+                int y = e.getY() / cellSize;
 
-                if (x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE) {
+                // Check if we're within the grid bounds
+                if (x >= 1 && x < (GRID_SIZE - 1) && y >= 1 && y < (GRID_SIZE - 1)) {
+                    String selectedStructure = parentPanel.getSelectedStructure();
+
                     if ("eraser".equals(selectedStructure)) {
                         hall.removeStructure(x, y);
                     } else if (selectedStructure != null) {
@@ -51,66 +66,89 @@ public class GridPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // Load and draw the custom background image
+        // Compute dynamic cellSize
+        int cellSize = getCellSize();
+        // The total pixel width/height of our 16×16 grid
+        int gridWidth = cellSize * GRID_SIZE;
+        int gridHeight = cellSize * GRID_SIZE;
+
+        // 1. Draw the background scaled to the entire panel
         Image bgImage = new ImageIcon("src/resources/tiles/background.png").getImage();
         g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), this);
 
-        // Load wall images
-        Image topLeftCorner = new ImageIcon("src/resources/tiles/walls/topLeftCorner.png").getImage();
-        Image topRightCorner = new ImageIcon("src/resources/tiles/walls/topRightCorner.png").getImage();
-        Image bottomLeftCorner = new ImageIcon("src/resources/tiles/walls/bottomLeftCorner.png").getImage();
+        // 2. Load wall/corner images (each drawn at 'cellSize')
+        Image topLeftCorner     = new ImageIcon("src/resources/tiles/walls/topLeftCorner.png").getImage();
+        Image topRightCorner    = new ImageIcon("src/resources/tiles/walls/topRightCorner.png").getImage();
+        Image bottomLeftCorner  = new ImageIcon("src/resources/tiles/walls/bottomLeftCorner.png").getImage();
         Image bottomRightCorner = new ImageIcon("src/resources/tiles/walls/bottomRightCorner.png").getImage();
-        Image topWall = new ImageIcon("src/resources/tiles/walls/frontWall.png").getImage();
-        Image leftWall = new ImageIcon("src/resources/tiles/walls/leftWall.png").getImage();
-        Image rightWall = new ImageIcon("src/resources/tiles/walls/rightWall.png").getImage();
+        Image topWall           = new ImageIcon("src/resources/tiles/walls/frontWall.png").getImage();
+        Image leftWall          = new ImageIcon("src/resources/tiles/walls/leftWall.png").getImage();
+        Image rightWall         = new ImageIcon("src/resources/tiles/walls/rightWall.png").getImage();
+        Image hallOfAirFlag     = new ImageIcon("/resources/flags/hallOfAirFlag.png").getImage();
+        Image hallOfEarthFlag   = new ImageIcon("/resources/flags/hallOfEarthFlag.png").getImage();
+        Image hallOfFireFlag    = new ImageIcon("/resources/flags/hallOfFireFlag.png").getImage();
+        Image hallOfWaterFlag   = new ImageIcon("/resources/flags/hallOfWaterFlag.png").getImage();
 
-        // Grid dimensions
-        int gridWidth = GRID_SIZE * CELL_SIZE;
-        int gridHeight = GRID_SIZE * CELL_SIZE;
+        // -- Draw corners --
+        g.drawImage(topLeftCorner, 0, 0, cellSize, cellSize, this);
+        g.drawImage(topRightCorner, gridWidth - cellSize, 0, cellSize, cellSize, this);
+        g.drawImage(bottomLeftCorner, 0, gridHeight - cellSize, cellSize, cellSize, this);
+        g.drawImage(bottomRightCorner, gridWidth - cellSize, gridHeight - cellSize, cellSize, cellSize, this);
 
-        // Draw corners
-        g.drawImage(topLeftCorner, 0, 0, CELL_SIZE, CELL_SIZE, this); // Top-left
-        g.drawImage(topRightCorner, gridWidth - CELL_SIZE, 0, CELL_SIZE, CELL_SIZE, this); // Top-right
-        g.drawImage(bottomLeftCorner, 0, gridHeight - CELL_SIZE, CELL_SIZE, CELL_SIZE, this); // Bottom-left
-        g.drawImage(bottomRightCorner, gridWidth - CELL_SIZE, gridHeight - CELL_SIZE, CELL_SIZE, CELL_SIZE, this); // Bottom-right
+        // -- Draw top & bottom walls --
+        for (int x = cellSize; x < gridWidth - cellSize; x += cellSize) {
+            g.drawImage(topWall, x, 0, cellSize, cellSize, this);                      // top
+            g.drawImage(topWall, x, gridHeight - cellSize, cellSize, cellSize, this); // bottom
 
-        // Draw top and bottom walls
-        for (int x = CELL_SIZE; x < gridWidth - CELL_SIZE; x += CELL_SIZE) {
-            g.drawImage(topWall, x, 0, CELL_SIZE, CELL_SIZE, this); // Top wall
-            g.drawImage(topWall, x, gridHeight - CELL_SIZE, CELL_SIZE, CELL_SIZE, this); // Bottom wall
+            if (x == cellSize * 10 ) {
+                Image flag = switch (hall.getName()) {
+                    case "Hall of Fire" -> hallOfFireFlag;
+                    case "Hall of Earth" -> hallOfEarthFlag;
+                    case "Hall of Water" -> hallOfWaterFlag;
+                    case "Hall of Air" -> hallOfAirFlag;
+                    default -> null;
+                };
+                g.drawImage(flag, x, gridHeight - cellSize, cellSize, cellSize, this);
+            }
         }
 
-        // Draw left and right walls
-        for (int y = CELL_SIZE; y < gridHeight - CELL_SIZE; y += CELL_SIZE) {
-            g.drawImage(leftWall, 0, y, CELL_SIZE, CELL_SIZE, this); // Left wall
-            g.drawImage(rightWall, gridWidth - CELL_SIZE, y, CELL_SIZE, CELL_SIZE, this); // Right wall
+        // -- Draw left & right walls --
+        for (int y = cellSize; y < gridHeight - cellSize; y += cellSize) {
+            g.drawImage(leftWall, 0, y, cellSize, cellSize, this);                       // left
+            g.drawImage(rightWall, gridWidth - cellSize, y, cellSize, cellSize, this);  // right
         }
 
-        // Draw grid lines
+
+        // 3. Draw grid lines (if desired) over the entire grid area
         g.setColor(Color.GRAY);
-        for (int i = 0; i <= GRID_SIZE; i++) {
-            g.drawLine(i * CELL_SIZE, 0, i * CELL_SIZE, gridHeight);
-            g.drawLine(0, i * CELL_SIZE, gridWidth, i * CELL_SIZE);
+        for (int i = 1; i < GRID_SIZE; i++) {
+            // Vertical lines
+            g.drawLine(i * cellSize, cellSize, i * cellSize, gridHeight - cellSize);
+            // Horizontal lines
+            g.drawLine(cellSize, i * cellSize, gridWidth - cellSize, i * cellSize);
         }
 
-        // Draw structures on the grid
+        // 4. Draw structures (scaled to cellSize) from the hall's grid
         String[][] grid = hall.getGrid();
-        for (int x = 0; x < GRID_SIZE; x++) {
-            for (int y = 0; y < GRID_SIZE; y++) {
-                String structureKey = grid[x][y];
+        for (int gx = 0; gx < GRID_SIZE; gx++) {
+            for (int gy = 0; gy < GRID_SIZE; gy++) {
+                String structureKey = grid[gx][gy];
                 if (structureKey != null) {
-                    g.drawImage(new ImageIcon(structureMap.get(structureKey)).getImage(),
-                            x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE, null);
+                    Image structImg = new ImageIcon(structureMap.get(structureKey)).getImage();
+                    g.drawImage(structImg,
+                            gx * cellSize,       // x position in pixels
+                            gy * cellSize,       // y position in pixels
+                            cellSize,            // width
+                            cellSize,            // height
+                            null);
                 }
             }
         }
     }
 
+    /** Update the hall reference and redraw. */
     public void setHall(Hall hall) {
         this.hall = hall;
         repaint();
     }
 }
-
-
-

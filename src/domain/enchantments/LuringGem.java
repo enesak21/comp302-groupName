@@ -16,10 +16,6 @@ public class LuringGem extends BaseEnchantment {
         super(gridX, gridY, tileSize);
     }
 
-    public LuringGem(int gridX, int gridY, int tileSize, int direction) {
-        super(gridX, gridY, tileSize);
-        this.direction = direction;
-    }
 
     @Override
     public void applyEffect(Game game) {
@@ -36,7 +32,6 @@ public class LuringGem extends BaseEnchantment {
         if (isActive() && System.currentTimeMillis() - activationTime >= 5_000) {
             game.setLuringGemActive(false);
             setActive(false);
-            System.out.println("Luring Gem deactivated");
         }
     }
 
@@ -52,4 +47,6 @@ public class LuringGem extends BaseEnchantment {
     public int getDirection() {
         return direction;
     }
+
+    public void setDirection(int direction) {this.direction = direction;}
 }

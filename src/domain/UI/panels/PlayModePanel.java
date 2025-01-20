@@ -5,6 +5,8 @@ import domain.UI.GridView;
 import domain.UI.PlayerView;
 import domain.UI.MonsterView;
 import domain.UI.renderers.GameRenderer;
+import domain.audio.AudioManager;
+import domain.config.GameConfig;
 import domain.enchantments.*;
 import domain.handlers.*;
 import domain.entity.Entity;
@@ -33,29 +35,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PlayModePanel extends JPanel implements Runnable {
 
-    // Screen settings
-    static final int originalTileSize = 16; // our assets are 16x16 pixels originally
-    static final int scale = 2;
-    static final int tileSize = originalTileSize * scale;
-
-    static final int gridColumns = 16; // Arena sütun sayısı
-    static final int gridRows = 16;    // Arena satır sayısı
-    static final int gridWidth = gridColumns * tileSize; // Arena genişliği
-    static final int gridHeight = gridRows * tileSize;   // Arena yüksekliği
-
-    static final int screenWidth = 24 * tileSize; // Tüm ekran genişliği
-    static final int screenHeight = 20 * tileSize; // Tüm ekran yüksekliği
-
-    public static final int offsetX = ((screenWidth - gridWidth) / (2 * tileSize)) - 2; // offset for gridi ortalama (tile-based)
-    public static final int offsetY = (screenHeight - gridHeight) / (2 * tileSize);
-
-    private static final int gridTopLeftX = offsetX * tileSize;
-    private static final int gridTopLeftY = offsetY * tileSize;
-
-    int sidebarWidth = 4 * tileSize + 20; // Sidebar width
-    int sidebarX = screenWidth - sidebarWidth - (tileSize + 10) + 20;
-    int sidebarY = offsetY * tileSize;
-
+    // Game dimensions
     private TimeController timeController;
     private Grid grid;
     private Font pressStart2PFont;
@@ -90,6 +70,13 @@ public class PlayModePanel extends JPanel implements Runnable {
     // Sidebar panel
     private SidebarPanel sidebarPanel;
 
+    // Game Configurations
+    private GameConfig gameConfig;
+
+    // Offset values
+    public static int offsetX;
+    public static int offsetY;
+
     // Game variables
     int FPS = 60;
     Thread gameThread;
@@ -99,8 +86,10 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     // Constructor
     public PlayModePanel(List<Hall> halls) {
+        gameConfig = new GameConfig();
+
         this.halls = halls; // Initialize the halls variable
-        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
+        this.setPreferredSize(new Dimension(gameConfig.getScreenWidth(), gameConfig.getGridHeight()));
         this.setBackground(new Color(66, 40, 53));
         this.setDoubleBuffered(true);
         this.setFocusable(true);
@@ -115,32 +104,39 @@ public class PlayModePanel extends JPanel implements Runnable {
         gameWinningHandler = new GameWinningHandler(this);
         gameOverHandler = new GameOverHandler(this);
 
+        offsetX = gameConfig.getOffsetX();
+        offsetY = gameConfig.getOffsetY();
+
     }
 
     public void initializeGameComponents(int hallNum) {
         this.setState("Default");
         isPaused = false;
 
-        Player player = Player.getInstance("Osimhen", 0, 0, tileSize, this, new PlayerInputHandler());
+        Player player = Player.getInstance("Osimhen", 0, 0, gameConfig.getTileSize(), this, new PlayerInputHandler());
         playerView = new PlayerView(player);
 
         // Initialize the grid
-        grid = halls.get(hallNum).toGrid(tileSize);
+        grid = halls.get(hallNum).toGrid(gameConfig.getTileSize());
 
         // place The Rune
 
         searchRuneController = new SearchRuneController(this);
         searchRuneController.placeRune();
 
-        game = new Game(player, tileSize, grid, searchRuneController);
-        enchantmentManager = new EnchantmentManager(game, tileSize);
+        game = new Game(player, gameConfig.getTileSize(), grid, searchRuneController);
+        enchantmentManager = new EnchantmentManager(game, gameConfig.getTileSize());
         monsterManager = game.getMonsterManager();
 
         timeController = game.getTimeController();
 
         // Set the time based on the number of structures placed
         timeController.setTimeLeft(halls.get(hallNum).getPlacedStructuresCount() * 5);
+
         game.setInitialTime(timeController.getTimeLeft());
+
+        monsterManager.setLastSpawnLeftTime(timeController.getTimeLeft());
+
         // timeController.setTimeLeft(60); // Set the time to 60 seconds for testing purposes
 
 
@@ -177,12 +173,12 @@ public class PlayModePanel extends JPanel implements Runnable {
         ((HeartsLeftPanel) sidebarPanel.getHeartsLeftPanel()).initHearts();
         ((TimeLeftPanel) sidebarPanel.getTimeLeftPanel()).updateTimeLeft(timeController.getTimeLeft());
 
-        for (Map.Entry<String, Integer> entry: game.getPlayer().getInventory().getContent().entrySet()) {
-            ((InventoryPanel) sidebarPanel.getInventoryPanel()).setItem(entry.getKey(), entry.getValue());
+        for (Map.Entry<String, ArrayList<BaseEnchantment>> entry: game.getPlayer().getInventory().getContent().entrySet()) {
+            ((InventoryPanel) sidebarPanel.getInventoryPanel()).setItem(entry.getKey(), entry.getValue().size());
         }
 
         // Initialize game renderer
-        gameRenderer = new GameRenderer(grid, player, monsterManager.getMonsters(), enchantmentManager);
+        gameRenderer = new GameRenderer(halls.get(hallNum), grid, player, monsterManager.getMonsters(), enchantmentManager);
 
     }
 
@@ -197,22 +193,16 @@ public class PlayModePanel extends JPanel implements Runnable {
                         if (game.getPlayer().getInventory().isInInventory("Reveal")) {
                             game.getPlayer().useRevealEnchantment();
 
-                        } else {
-                            System.out.println("No Reveal enchantment in inventory.");
                         }
                         break;
                     case KeyEvent.VK_P:
                         if (game.getPlayer().getInventory().isInInventory("Cloak of Protection")) {
                             game.getPlayer().useCloakOfProtectionEnchantment();
-                        } else {
-                            System.out.println("No Cloak of Protection enchantment in inventory.");
                         }
                         break;
                     case KeyEvent.VK_B:
                         if (game.getPlayer().getInventory().isInInventory("Luring Gem")) {
                             bPressed = true;
-                        } else {
-                            System.out.println("No Luring enchantment in inventory.");
                         }
                         break;
                     case KeyEvent.VK_W:
@@ -241,8 +231,6 @@ public class PlayModePanel extends JPanel implements Runnable {
                 if (e.getKeyCode() == KeyEvent.VK_Q) {
                     if (game.getPlayer().getInventory().isInInventory("Speed Up")) {
                         game.getPlayer().useSpeedUpManagement();
-                    } else {
-                        System.out.println("no Speed Up enchantment in inventory.");
                     }
                 }
             }
@@ -256,6 +244,7 @@ public class PlayModePanel extends JPanel implements Runnable {
             transitionToNextHall();
         } else {
             lastRunefound = true;
+            game.setGameWon(true);
         }
     }
 
@@ -295,11 +284,10 @@ public class PlayModePanel extends JPanel implements Runnable {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     isPaused = !isPaused;
                     if (isPaused) {
-                        game.pauseGame();
-
+                        pauseGame();
                         timeController.pauseTimer();
                     } else {
-                        game.resumeGame();
+                        resumeGame();
                         timeController.resumeTimer();
 
                     }
@@ -313,12 +301,14 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         isPaused = true; // Set the game state to paused
         timeController.pauseTimer(); // Pause the game timer (if applicable)
+        AudioManager.stopPlayModeMusic();
         repaint(); // Trigger a repaint to show the pause overlay
     }
 
     public void resumeGame(){
         isPaused = false;
         timeController.resumeTimer();
+        AudioManager.playPlayModeMusic();
         repaint();
     }
 
@@ -344,16 +334,34 @@ public class PlayModePanel extends JPanel implements Runnable {
     // This will be our main method which is running the Play mode screen
     @Override
     public void run() {
-        long startTime = System.currentTimeMillis();
+        long lastTime = System.nanoTime();
+        double nsPerFrame = 1000000000.0 / FPS;
+        double delta = 0;
+        int maxUpdates = 5; // Prevents excessive updates in case of lag
+
         while (gameThread != null) {
-            double drawInterval = 1000000000 / FPS;
-            if (System.nanoTime() - startTime > drawInterval) {
+            long now = System.nanoTime();
+            delta += (now - lastTime) / nsPerFrame;
+            lastTime = now;
+
+            // Process updates and renders as per the delta
+            int updates = 0;
+            while (delta >= 1 && updates < maxUpdates) {
                 update();
                 repaint();
-                startTime = System.nanoTime();
+                delta--;
+                updates++;
+            }
+
+            // Sleep briefly to prevent high CPU usage
+            try {
+                Thread.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
+
 
     public void update() {
         if (!isPaused) {
@@ -377,8 +385,8 @@ public class PlayModePanel extends JPanel implements Runnable {
             }
 
             // Update the player's inventory
-            for (Map.Entry<String, Integer> entry: game.getPlayer().getInventory().getContent().entrySet()) {
-                ((InventoryPanel) sidebarPanel.getInventoryPanel()).setItem(entry.getKey(), entry.getValue());
+            for (Map.Entry<String, ArrayList<BaseEnchantment>> entry: game.getPlayer().getInventory().getContent().entrySet()) {
+                ((InventoryPanel) sidebarPanel.getInventoryPanel()).setItem(entry.getKey(), entry.getValue().size());
             }
 
         }
@@ -396,12 +404,12 @@ public class PlayModePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         g2 = (Graphics2D) g;
 
-        gameRenderer.render(g2, offsetX, offsetY, tileSize);
+        gameRenderer.render(g2, gameConfig.getOffsetX(), gameConfig.getOffsetY(), gameConfig.getTileSize());
 
         if (inTransition) {
             drawTransitionScreen(g2);
         } else {
-            if (isPaused) {
+            if (isPaused && !game.isGameWon()) {
                 // Draw Pause Overlay only if the game is not over
                 drawPauseOverlay(g2);
             }
@@ -475,11 +483,11 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     // Getters
     public int getScale() {
-        return scale;
+        return gameConfig.getScale();
     }
 
-    public static int getTileSize() {
-        return tileSize;
+    public int getTileSize() {
+        return gameConfig.getTileSize();
     }
 
     public void setGame(Game game) {
@@ -492,37 +500,21 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
     public int getTopLeftCornerX() {
-        return gridTopLeftX;
+        return gameConfig.getGridTopLeftX();
     }
 
     public boolean getIsPaused(){return isPaused;}
 
     public int getTopLeftCornerY() {
-        return gridTopLeftY;
+        return gameConfig.getGridTopLeftY();
     }
 
     public int getGridWidth() {
-        return gridWidth;
+        return gameConfig.getGridWidth();
     }
 
     public int getGridHeight() {
-        return gridHeight;
-    }
-
-    public int getSidebarWidth() {
-        return sidebarWidth;
-    }
-
-    public int getSidebarX() {
-        return sidebarX;
-    }
-
-    public int getSidebarY() {
-        return sidebarY;
-    }
-
-    public int getSidebarHeight() {
-        return gridHeight;
+        return gameConfig.getGridHeight();
     }
 
     public int getOffsetX() {
@@ -534,15 +526,15 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
     public int getScreenWidth() {
-        return screenWidth;
+        return gameConfig.getScreenWidth();
     }
 
     public int getGridColumns() {
-        return gridColumns;
+        return gameConfig.getGridColumns();
     }
 
     public int getGridRows() {
-        return gridRows;
+        return gameConfig.getGridRows();
     }
 
     public Grid getGrid() {
@@ -570,7 +562,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
     public int getScreenHeight() {
-        return screenHeight;
+        return gameConfig.getScreenHeight();
     }
 
     public void setState(String state) {

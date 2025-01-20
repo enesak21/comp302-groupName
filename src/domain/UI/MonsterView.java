@@ -1,10 +1,7 @@
 package domain.UI;
 
 import domain.entity.Entity;
-import domain.entity.monsters.ArcherMonster;
-import domain.entity.monsters.BaseMonster;
-import domain.entity.monsters.FighterMonster;
-import domain.entity.monsters.WizardMonster;
+import domain.entity.monsters.*;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -13,7 +10,7 @@ import java.io.IOException;
 // MonsterView class is responsible for drawing the monsters on the screen
 public class MonsterView extends EntityView{
 
-    private BufferedImage archerMonster, fighterMonster, wizardMonster; // Images for the monsters
+    private BufferedImage archerMonster, fighterMonster, wizardMonster, timerMonster; // Images for the monsters
     /**
      * Constructor for MonsterView
      * @param entity The entity to be drawn
@@ -32,6 +29,7 @@ public class MonsterView extends EntityView{
             archerMonster = ImageIO.read(getClass().getResourceAsStream("/resources/monsters/archer.png"));
             fighterMonster = ImageIO.read(getClass().getResourceAsStream("/resources/monsters/fighter.png"));
             wizardMonster = ImageIO.read(getClass().getResourceAsStream("/resources/monsters/wizard.png"));
+            timerMonster = ImageIO.read(getClass().getResourceAsStream("/resources/monsters/timeStealer.png"));
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to load monster images.", e);
@@ -54,6 +52,8 @@ public class MonsterView extends EntityView{
             monsterImage = fighterMonster;
         } else if (entity instanceof WizardMonster) {
             monsterImage = wizardMonster;
+        } else if (entity instanceof TimerMonster) {
+            monsterImage = timerMonster;
         }
 
         g2.drawImage( // Draw the monster image

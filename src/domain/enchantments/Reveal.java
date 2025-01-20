@@ -25,7 +25,7 @@ public class Reveal extends BaseEnchantment {
 
     @Override
     public void applyEffect(Game game) {
-        //System.out.println("AREA WILL BE HIGHLITED");
+
         if (!isActive()) {
             setActive(true);
             game.getActiveEnchantments().add(this);
@@ -40,7 +40,6 @@ public class Reveal extends BaseEnchantment {
     }
 
     private void highlightRegion(Game game, Tile runeTile) {
-        //System.out.println("AREA HIGHLIGTEDDDDDDDDDDDD");
         int runeX = runeTile.getGridX();
         int runeY = runeTile.getGridY();
 
@@ -54,8 +53,6 @@ public class Reveal extends BaseEnchantment {
                 game.getGrid().getTileAt(x, y).setHighlighted(true);
             }
         }
-
-        //System.out.println("Region highlighted from (" + startX + ", " + startY + ") to (" + endX + ", " + endY + ").");
     }
 
     public void update(Game game) {

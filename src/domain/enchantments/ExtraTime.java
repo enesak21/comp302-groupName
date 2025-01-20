@@ -32,7 +32,6 @@ public class ExtraTime extends BaseEnchantment {
     public void applyEffect(Game game) {
         game.getTimeController().setTimeLeft(game.getTimeController().getTimeLeft() +5);
         //game.setRemainingTime(game.getRemainingTime() + 5);
-        //System.out.println("EXTRA TIME ADDED");
     }
 
     @Override

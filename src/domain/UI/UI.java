@@ -21,7 +21,6 @@ public class UI {
     private CardLayout cardLayout; // CardLayout for switching between panels
     private JPanel mainPanel; // Main container for the different panels
     private List<Hall> halls; // List of halls created in Build Mode
-    private AudioManager audioManager = new AudioManager(); // Audio manager for playing music
 
     // Screen panels
     private BuildModeScreenPanel buildScreen;
@@ -48,7 +47,7 @@ public class UI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(768, 640);
         frame.setLocationRelativeTo(null);
-        frame.setResizable(false); // Change if needed
+        // frame.setResizable(false); // Change if needed
 
         // Set custom colors for message dialogs
         UIManager.put("OptionPane.background", new Color(50, 56, 66)); // Dark gray

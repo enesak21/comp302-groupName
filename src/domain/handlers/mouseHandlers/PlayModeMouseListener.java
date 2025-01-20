@@ -11,7 +11,6 @@ public class PlayModeMouseListener extends MouseAdapter {
 
     private final PlayModePanel playModePanel;
     private final GridMouseListener gridMouseListener;
-    private final SidebarMouseListener sidebarMouseListener;
 
 
     // Constructor with parameters
@@ -19,7 +18,6 @@ public class PlayModeMouseListener extends MouseAdapter {
         this.playModePanel = playModePanel;
 
         this.gridMouseListener = new GridMouseListener(playModePanel);
-        this.sidebarMouseListener = new SidebarMouseListener(playModePanel);
     }
 
     public void mouseClicked(MouseEvent e) {
@@ -37,9 +35,6 @@ public class PlayModeMouseListener extends MouseAdapter {
             if (isInGridRegion(clickPoint)) {
                 // Possibly transform the click to grid coordinates if needed
                 gridMouseListener.handleGridClick(clickPoint);
-            } else if (isInSidebarRegion(clickPoint)) {
-                // Possibly transform or just send it as-is
-                sidebarMouseListener.handleSidebarClick(clickPoint);
             }
         }
     }
@@ -53,10 +48,5 @@ public class PlayModeMouseListener extends MouseAdapter {
     private boolean isInGridRegion(Point clickPoint) {
         // Check if the click point is within the grid
         return isWithinBounds(clickPoint, playModePanel.getTopLeftCornerX(), playModePanel.getTopLeftCornerY(), playModePanel.getGridWidth(), playModePanel.getGridHeight());
-    }
-
-    private boolean isInSidebarRegion(Point clickPoint) {
-        // Check if the click point is within the sidebar
-        return isWithinBounds(clickPoint, playModePanel.getSidebarX(), playModePanel.getSidebarY(), playModePanel.getSidebarWidth(), playModePanel.getSidebarHeight());
     }
 }

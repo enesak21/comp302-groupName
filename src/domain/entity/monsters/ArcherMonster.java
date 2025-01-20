@@ -20,7 +20,6 @@ public class ArcherMonster extends BaseMonster{
     private boolean moving = false;
     private CollisionChecker collisionChecker;
     private int moveCounter = 0;
-    private AudioManager audioManager = new AudioManager();
     private ArrowAnimationView arrowAnimationView;
 
     public ArcherMonster(int gridX, int gridY, int tileSize) {
@@ -126,8 +125,6 @@ public class ArcherMonster extends BaseMonster{
             ArrowAnimationView arrowAnimationView = new ArrowAnimationView(this, game.getPlayer());
             game.getPlayer().getPlayModePanel().addArrowAnimation(arrowAnimationView);
         }
-        else System.out.println("INVISIBLE BILADERRR");
-
     }
 
     @Override
@@ -161,7 +158,7 @@ public class ArcherMonster extends BaseMonster{
             if ((currentTime - lastAttackTime) > SHOOT_FREQUENCY) {
                 throwArrow(game);
                 lastAttackTime = currentTime;
-                audioManager.playArcherSound();
+                AudioManager.playArcherSound();
             }
         }
     }
