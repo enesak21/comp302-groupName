@@ -93,7 +93,7 @@ public class MonsterManager {
 
     public void removeMonster(BaseMonster monster) {
         monsters.remove(monster);
-        game.getGrid().getTileAt(monster.getGridX() - 2, monster.getGridY() - 2).setSolid(false); // Update the grid to mark the tile as not solid
+        game.getGrid().getTileAt(monster.getGridX(), monster.getGridY()).setSolid(false); // Update the grid to mark the tile as not solid
     }
 
     public Game getGame() {
