@@ -196,7 +196,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         isPaused = false;
 
         // Initialize the grid
-        grid = loadedGame.getHallsList().get(hallNum).toGrid(gameConfig.getTileSize());
+        grid = loadedGame.getHallsList().get(loadedGame.getHallNum()).toGrid(gameConfig.getTileSize());
 
         // Initialize Player
         Player player = initializePlayer(grid, loadedGame.getPlayerInfo().getGridX(), loadedGame.getPlayerInfo().getGridY(), loadedGame.getPlayerInfo().getHealth(), loadedGame.getPlayerInfo().getInventoryInfo().InfoToInventory());
