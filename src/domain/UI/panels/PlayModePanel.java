@@ -114,8 +114,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.setState("Default");
         isPaused = false;
 
-
-
         // Initialize the grid
         grid = halls.get(hallNum).toGrid(gameConfig.getTileSize());
 
@@ -123,11 +121,11 @@ public class PlayModePanel extends JPanel implements Runnable {
         Player player = initializePlayer(grid);
         playerView = new PlayerView(player);
 
-        // place The Rune
-
+        // Place The Rune
         searchRuneController = new SearchRuneController(this);
         searchRuneController.placeRune();
 
+        // Initialize Game
         game = new Game(player, gameConfig.getTileSize(), grid, searchRuneController);
         enchantmentManager = new EnchantmentManager(game, gameConfig.getTileSize());
         monsterManager = game.getMonsterManager();
@@ -137,8 +135,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         // Set the time based on the number of structures placed
         timeController.setTimeLeft(halls.get(hallNum).getPlacedStructuresCount() * 5);
         monsterManager.setLastSpawnLeftTime(timeController.getTimeLeft());
-
-        // timeController.setTimeLeft(60); // Set the time to 60 seconds for testing purposes
 
 
         this.addKeyListener(player.getPlayerInputHandler());
