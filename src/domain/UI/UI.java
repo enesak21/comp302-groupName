@@ -65,6 +65,9 @@ public class UI {
                 case "Game":
                     mainPanel.add(createGameScreen(), "Game");
                     break;
+                case "LoadedGame":
+                    mainPanel.add(gameScreen, "LoadedGame");
+                    break;
                 case "Build":
                     mainPanel.add(createBuildScreen(), "Build");
                     break;
@@ -107,6 +110,13 @@ public class UI {
     private JPanel createGameScreen() {
         gameScreen = new GameScreenPanel(this); // Pass the current UI instance
         return gameScreen;
+    }
+
+    /*
+        * Create the loaded game screen with the PlayModePanel
+     */
+    public void createLoadedGame(List<Hall> hallList, int hallNum) {
+        gameScreen = new GameScreenPanel(this, hallNum, hallList); // Pass the current UI instance
     }
 
     /*

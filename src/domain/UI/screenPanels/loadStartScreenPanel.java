@@ -1,6 +1,9 @@
 package domain.UI.screenPanels;
 
 import domain.UI.UI;
+import domain.config.GameConfig;
+import domain.config.GameState;
+import domain.config.SaveLoad;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,10 +14,6 @@ public class loadStartScreenPanel extends JPanel {
         setSize(400, 300);
         setLayout(new BorderLayout());
 
-        JLabel title = new JLabel("Welcome to My Game", SwingConstants.CENTER);
-        title.setFont(new Font("Arial", Font.BOLD, 24));
-        add(title, BorderLayout.NORTH);
-
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -22,6 +21,9 @@ public class loadStartScreenPanel extends JPanel {
 
         JButton newGameButton = new JButton("Start New Game");
         JButton loadGameButton = new JButton("Load Game");
+
+        styleButton(newGameButton);
+        styleButton(loadGameButton);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -35,23 +37,23 @@ public class loadStartScreenPanel extends JPanel {
         newGameButton.addActionListener(e -> ui.showPanel("Build"));
 
         loadGameButton.addActionListener(e -> loadGame(ui));
-
-        addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentResized(java.awt.event.ComponentEvent evt) {
-                title.setFont(new Font("Arial", Font.BOLD, Math.max(24, getWidth() / 20)));
-            }
-        });
     }
 
     private void loadGame(UI ui) {
-//        String fileName = "gameState.dat";
-//        GameState loadedState = SaveLoadManager.loadGameState(fileName);
-//        if (loadedState != null) {
-//            System.out.println("Loaded game: " + loadedState);
-//            ui.showPanel("Build");
-//            JOptionPane.showMessageDialog(null, "Game loaded: " + loadedState);
-//        } else {
-//            JOptionPane.showMessageDialog(null, "No saved game found!", "Error", JOptionPane.ERROR_MESSAGE);
-//        }
+        GameState loadedState = SaveLoad.loadGameState();
+        if (loadedState != null) {
+            ui.createLoadedGame(loadedState.getHallsList(), loadedState.getHallNum());
+            ui.showPanel("LoadedGame");
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to load game.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void styleButton(JButton button) {
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setForeground(new Color(210, 180, 140));         // Gold-ish color
+        button.setFont(GameConfig.loadLOTRFont().deriveFont(Font.BOLD, 30f));     // LOTR font, 30 pt
     }
 }

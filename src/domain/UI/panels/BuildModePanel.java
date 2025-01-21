@@ -232,6 +232,11 @@ public class BuildModePanel extends JPanel {
         return halls;
     }
 
+    public void setHalls(List<Hall> halls) {
+        this.halls.clear();
+        this.halls.addAll(halls);
+    }
+
     public BuildModeHandler getBuildModeHandler() {
         return buildModeHandler;
     }

@@ -23,5 +23,13 @@ public class GameState implements Serializable {
     public void setHallsList(List<Hall> hallList){
         this.hallList = hallList;
     }
+
+    public int getHallNum(){
+        return hallNum;
+    }
+
+    public void setHallNum(int hallNum){
+        this.hallNum = hallNum;
+    }
 }
 
