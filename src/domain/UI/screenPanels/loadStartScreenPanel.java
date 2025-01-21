@@ -1,6 +1,7 @@
 package domain.UI.screenPanels;
 
 import domain.UI.UI;
+import domain.audio.AudioManager;
 import domain.config.GameConfig;
 import domain.config.GameState;
 import domain.config.SaveLoad;
@@ -55,6 +56,7 @@ public class loadStartScreenPanel extends JPanel {
         if (loadedState != null) {
             ui.createLoadedGame(loadedState.getHallsList(), loadedState.getHallNum());
             ui.showPanel("LoadedGame");
+            AudioManager.playPlayModeMusic();
         } else {
             JOptionPane.showMessageDialog(this, "Failed to load game.", "Error", JOptionPane.ERROR_MESSAGE);
         }
