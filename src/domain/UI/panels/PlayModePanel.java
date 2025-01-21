@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
@@ -113,11 +114,14 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.setState("Default");
         isPaused = false;
 
-        Player player = Player.getInstance("Osimhen", 0, 0, gameConfig.getTileSize(), this, new PlayerInputHandler());
-        playerView = new PlayerView(player);
+
 
         // Initialize the grid
         grid = halls.get(hallNum).toGrid(gameConfig.getTileSize());
+
+        // Initialize Player
+        Player player = initializePlayer(grid);
+        playerView = new PlayerView(player);
 
         // place The Rune
 
@@ -177,6 +181,16 @@ public class PlayModePanel extends JPanel implements Runnable {
         // Initialize game renderer
         gameRenderer = new GameRenderer(halls.get(hallNum), grid, player, monsterManager.getMonsters(), enchantmentManager);
 
+    }
+
+    public Player initializePlayer(Grid grid) {
+        Random random = new Random();
+        int randomX = random.nextInt(gameConfig.getGridColumns());
+        int randomY = random.nextInt(gameConfig.getGridRows());
+        if (!grid.getTileAt(randomX, randomY).containsStructure()) {
+            return Player.getInstance("Osimhen", randomX, randomY, gameConfig.getTileSize(), this, new PlayerInputHandler());
+        }
+        return initializePlayer(grid);
     }
 
     //REVEAL KEY HANDLER WILL BE OUT LATER
