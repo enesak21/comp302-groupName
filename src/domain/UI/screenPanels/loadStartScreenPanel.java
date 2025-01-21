@@ -54,7 +54,7 @@ public class loadStartScreenPanel extends JPanel {
     private void loadGame(UI ui) {
         GameState loadedState = SaveLoad.loadGameState();
         if (loadedState != null) {
-            ui.createLoadedGame(loadedState.getHallsList(), loadedState.getHallNum());
+            ui.createLoadedGame(loadedState.getHallsList(), loadedState.getHallNum(), loadedState.getMonsterInfo());
             ui.showPanel("LoadedGame");
             AudioManager.playPlayModeMusic();
         } else {

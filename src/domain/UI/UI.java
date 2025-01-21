@@ -1,6 +1,7 @@
 package domain.UI;
 
 import domain.UI.screenPanels.*;
+import domain.entity.monsters.MonsterInfo;
 import domain.game.Hall;
 
 import java.util.List;
@@ -115,8 +116,8 @@ public class UI {
     /*
         * Create the loaded game screen with the PlayModePanel
      */
-    public void createLoadedGame(List<Hall> hallList, int hallNum) {
-        gameScreen = new GameScreenPanel(this, hallNum, hallList); // Pass the current UI instance
+    public void createLoadedGame(List<Hall> hallList, int hallNum, List<MonsterInfo> monsterInfo) {
+        gameScreen = new GameScreenPanel(this, hallNum, hallList, monsterInfo); // Pass the current UI instance
     }
 
     /*

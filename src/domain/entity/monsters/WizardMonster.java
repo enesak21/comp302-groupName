@@ -86,4 +86,9 @@ public class WizardMonster extends BaseMonster {
     public void disappear() {
         monsterManager.removeMonster(this);
     }
+
+    @Override
+    public String toString() {
+        return "WizardMonster";
+    }
 }

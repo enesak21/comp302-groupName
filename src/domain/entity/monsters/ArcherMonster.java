@@ -167,4 +167,9 @@ public class ArcherMonster extends BaseMonster{
         return arrowRange;
     }
 
+    @Override
+    public String toString() {
+        return "ArcherMonster";
+    }
+
 }

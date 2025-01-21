@@ -20,6 +20,7 @@ import domain.UI.panels.sideBarComponents.HeartsLeftPanel;
 import domain.UI.panels.sideBarComponents.InventoryPanel;
 import domain.UI.panels.sideBarComponents.TimeLeftPanel;
 import domain.game.SearchRuneController;
+import domain.entity.monsters.MonsterInfo;
 import main.Main;
 import main.PlayerInputHandler;
 import javax.imageio.ImageIO;
@@ -30,11 +31,13 @@ import java.awt.event.KeyEvent;
 import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
+
 
 
 public class PlayModePanel extends JPanel implements Runnable {
@@ -507,10 +510,43 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public void saveGame() {
         // Save the game state
-        GameState gameState = new GameState(halls, hallNum);
+        List<MonsterInfo> monsterList = MonsterToInfo();
+        GameState gameState = new GameState(halls, hallNum, monsterList);
 
         // Save the game state to a file
         SaveLoad.saveGameState(gameState);
+    }
+
+    public List<MonsterInfo> MonsterToInfo(){
+        List<MonsterInfo> monsterList = new ArrayList<>();
+        for (BaseMonster monster : monsterManager.getMonsters()) {
+            monsterList.add(new MonsterInfo(monster.toString(), monster.getGridX() + 2, monster.getGridY() + 2));
+        }
+        return monsterList;
+    }
+
+    public void InfoToMonster(List<MonsterInfo> monsterList){
+        monsterManager.getMonsters().clear();
+        for (MonsterInfo monsterInfo : monsterList) {
+            switch (monsterInfo.getMonsterType()) {
+                case "ArcherMonster":
+                    ArcherMonster archerMonster = new ArcherMonster(monsterInfo.getGridX(), monsterInfo.getGridY(), gameConfig.getTileSize());
+                    monsterManager.getMonsters().add(archerMonster);
+                    break;
+                case "FighterMonster":
+                    FighterMonster fighterMonster = new FighterMonster(monsterInfo.getGridX(), monsterInfo.getGridY(), gameConfig.getTileSize());
+                    monsterManager.getMonsters().add(fighterMonster);
+                    break;
+                case "WizardMonster":
+                    WizardMonster wizardMonster = new WizardMonster(monsterInfo.getGridX(), monsterInfo.getGridY(), gameConfig.getTileSize(), monsterManager);
+                    monsterManager.getMonsters().add(wizardMonster);
+                    break;
+                case "TimerMonster":
+                    TimerMonster timerMonster = new TimerMonster(monsterInfo.getGridX(), monsterInfo.getGridY(), gameConfig.getTileSize());
+                    monsterManager.getMonsters().add(timerMonster);
+                    break;
+            }
+        }
     }
 
     // Getters
@@ -615,5 +651,9 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public EnchantmentManager getEnchantmentManager() {
         return enchantmentManager;
+    }
+
+    public void setMonsters(List<MonsterInfo> monsterInfo) {
+        InfoToMonster(monsterInfo);
     }
 }
