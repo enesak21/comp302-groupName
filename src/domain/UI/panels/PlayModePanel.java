@@ -417,7 +417,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         Container parent = this.getTopLevelAncestor();
         if (parent instanceof JFrame) {
             ((JFrame) parent).dispose(); // Close the JFrame
-            AudioManager.stopPlayModeMusic();
+            AudioManager.stopMusic();
             gameThread = null; // Stop the game thread
             Main.main(null);
         }
