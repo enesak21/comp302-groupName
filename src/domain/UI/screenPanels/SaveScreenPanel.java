@@ -1,7 +1,6 @@
 package domain.UI.screenPanels;
 
-import domain.UI.UI;
-import domain.audio.AudioManager;
+import domain.config.GameConfig;
 import domain.config.GameState;
 import domain.config.SaveLoad;
 
@@ -9,10 +8,18 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SaveScreenPanel extends JPanel {
+    private final Image backgroundImage;
 
     public SaveScreenPanel(GameState gameState) {
-        setLayout(new GridLayout(1, 3, 20, 20));
-        setBackground(new Color(30, 30, 30)); // Dark gray background
+        // Load the background image
+        backgroundImage = new ImageIcon("src/resources/backgrounds/slotBackground.png").getImage();
+
+        setLayout(new BorderLayout());
+        setOpaque(false); // Ensure transparency for the background image
+
+        // Panel for save slots
+        JPanel slotsPanel = new JPanel(new GridLayout(1, 3, 20, 20));
+        slotsPanel.setOpaque(false);
 
         for (int i = 1; i <= 3; i++) {
             JButton slotButton = new JButton();
@@ -28,15 +35,49 @@ public class SaveScreenPanel extends JPanel {
             slotButton.setIcon(new ImageIcon(scaledImage));
 
             int slotNumber = i;
-            slotButton.addActionListener(e -> SaveLoad.saveGameState(gameState, slotNumber));
-            add(slotButton);
+            slotButton.addActionListener(e -> {
+                SaveLoad.saveGameState(gameState, slotNumber);
+                JOptionPane.showMessageDialog(this, "Game saved to Slot " + slotNumber + ".",
+                        "Save Successful", JOptionPane.INFORMATION_MESSAGE);
+            });
+            slotsPanel.add(slotButton);
         }
+
+        add(slotsPanel, BorderLayout.CENTER);
+
+        // "Go Back to Game" button
+        JButton goBackButton = new JButton("Go Back to Game");
+        goBackButton.setContentAreaFilled(false);
+        goBackButton.setBorderPainted(false);
+        goBackButton.setFocusPainted(false);
+        styleButton(goBackButton);
+        goBackButton.addActionListener(e -> closeFrame());
+
+        add(goBackButton, BorderLayout.SOUTH);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(getBackground());
-        g.fillRect(0, 0, getWidth(), getHeight());
+
+        // Draw the background image
+        if (backgroundImage != null) {
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
+
+    private void styleButton(JButton button) {
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setForeground(new Color(210, 180, 140));         // Gold-ish color
+        button.setFont(GameConfig.loadLOTRFont().deriveFont(Font.BOLD, 30f));     // LOTR font, 30 pt
+    }
+
+    private void closeFrame() {
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        if (frame != null) {
+            frame.dispose(); // Close the save screen frame
+        }
     }
 }

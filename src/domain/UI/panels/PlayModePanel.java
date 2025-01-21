@@ -603,7 +603,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         // Show SaveScreenPanel in a centered frame
         JFrame saveFrame = new JFrame("Save Game");
         saveFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        saveFrame.setSize(600, 200);
+        saveFrame.setSize(768, 640);
         saveFrame.setLayout(new BorderLayout());
 
         SaveScreenPanel saveScreenPanel = new SaveScreenPanel(gameState);

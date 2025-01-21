@@ -9,10 +9,14 @@ import javax.swing.*;
 import java.awt.*;
 
 public class LoadScreenPanel extends JPanel {
+    private final Image backgroundImage;
 
     public LoadScreenPanel(UI ui) {
+        // Load the background image
+        backgroundImage = new ImageIcon("src/resources/backgrounds/slotBackground.png").getImage();
+
         setLayout(new GridLayout(1, 3, 20, 20));
-        setBackground(new Color(30, 30, 30)); // Dark gray background
+        setOpaque(false); // Ensure the background image is visible
 
         for (int i = 1; i <= 3; i++) {
             JButton slotButton = new JButton();
@@ -47,7 +51,7 @@ public class LoadScreenPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(getBackground());
-        g.fillRect(0, 0, getWidth(), getHeight());
+        // Draw the background image
+        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
     }
 }
