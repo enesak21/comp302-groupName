@@ -12,7 +12,7 @@ public class SaveScreenPanel extends JPanel {
 
     public SaveScreenPanel(GameState gameState) {
         // Load the background image
-        backgroundImage = new ImageIcon("src/resources/backgrounds/slotBackground.png").getImage();
+        backgroundImage = new ImageIcon("src/resources/backgrounds/saveBackground.png").getImage();
 
         setLayout(new BorderLayout());
         setOpaque(false); // Ensure transparency for the background image
@@ -36,9 +36,8 @@ public class SaveScreenPanel extends JPanel {
 
             int slotNumber = i;
             slotButton.addActionListener(e -> {
-                SaveLoad.saveGameState(gameState, slotNumber);
-                JOptionPane.showMessageDialog(this, "Game saved to Slot " + slotNumber + ".",
-                        "Save Successful", JOptionPane.INFORMATION_MESSAGE);
+                SaveLoad.saveGameState(gameState, slotNumber); // Only save here
+
             });
             slotsPanel.add(slotButton);
         }
