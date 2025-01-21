@@ -74,6 +74,13 @@ public class AudioManager {
     // Static methods for playback
     // -------------------------------
 
+    public static void stopMusic() {
+        stopPlayModeMusic();
+        stopEnterMusic();
+        stopGameOverMusic();
+        stopGameWinMusic();
+    }
+
     public static void playWinMusic() {
         if (winClip != null) {
             winClip.stop();
