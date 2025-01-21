@@ -61,6 +61,6 @@ public class loadStartScreenPanel extends JPanel {
         button.setContentAreaFilled(false);
         button.setBorderPainted(false);
         button.setForeground(new Color(210, 180, 140));         // Gold-ish color
-        button.setFont(GameConfig.loadLOTRFont().deriveFont(Font.BOLD, 30f));     // LOTR font, 30 pt
+        button.setFont(GameConfig.loadLOTRFont().deriveFont(Font.BOLD, 28f));     // LOTR font, 30 pt
     }
 }
