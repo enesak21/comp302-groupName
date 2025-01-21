@@ -270,13 +270,13 @@ public class PlayModePanel extends JPanel implements Runnable {
         int randomX = random.nextInt(gameConfig.getGridColumns());
         int randomY = random.nextInt(gameConfig.getGridRows());
         if (!grid.getTileAt(randomX, randomY).containsStructure()) {
-            return Player.getInstance("Osimhen", randomX, randomY, gameConfig.getTileSize(), this, new PlayerInputHandler());
+            return Player.getInstance("Rafa Silva", randomX, randomY, gameConfig.getTileSize(), this, new PlayerInputHandler());
         }
         return initializePlayer(grid);
     }
 
     public Player initializePlayer(Grid grid, int x, int y, int health, Inventory inventory) {
-        Player player = Player.getInstance("Osimhen", x, y, gameConfig.getTileSize(), this, new PlayerInputHandler());
+        Player player = Player.getInstance("Rafa Silva", x, y, gameConfig.getTileSize(), this, new PlayerInputHandler());
         player.setHealth(health);
         player.setInventory(inventory);
         return player;
@@ -417,7 +417,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         Container parent = this.getTopLevelAncestor();
         if (parent instanceof JFrame) {
             ((JFrame) parent).dispose(); // Close the JFrame
-            AudioManager.stopPlayModeMusic();
+            AudioManager.stopMusic();
             gameThread = null; // Stop the game thread
             Main.main(null);
         }
