@@ -106,7 +106,7 @@ public class TopButtonPanel extends JPanel {
         });
 
         // Exit action
-        exitButton.addActionListener(e -> playModePanel.exitGame());
+        exitButton.addActionListener(e -> playModePanel.returnToMainScreen());
 
         // Volume Action
         volumeButton.addActionListener(e -> {

@@ -11,9 +11,11 @@ public class GameScreenPanel extends JPanel {
 
     private PlayModePanel playModePanel;
     private SidebarPanel sidebarPanel;
+    private UI ui;
 
     public GameScreenPanel(UI ui) {
-        this.playModePanel = new PlayModePanel(ui.getBuildScreen().getBuildModePanel().getHalls());
+        this.ui = ui;
+        this.playModePanel = new PlayModePanel(this, ui.getBuildScreen().getBuildModePanel().getHalls());
         this.sidebarPanel = new SidebarPanel(playModePanel);
         this.playModePanel.setSidebarPanel(sidebarPanel);
         playModePanel.initializeGameComponents(0);
@@ -63,4 +65,7 @@ public class GameScreenPanel extends JPanel {
         repaint();
     }
 
+    public UI getUi() {
+        return ui;
+    }
 }

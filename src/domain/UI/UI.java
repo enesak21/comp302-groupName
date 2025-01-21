@@ -74,6 +74,8 @@ public class UI {
                 case "Help":
                     mainPanel.add(createHelpScreen(), "Help");
                     break;
+                case "Home":
+                    mainPanel.add(createHomeScreen(), "Home");
             }
         }
         cardLayout.show(mainPanel, panelName); // Show the panel with the given name

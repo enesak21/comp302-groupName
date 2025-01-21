@@ -1,10 +1,9 @@
 package domain.UI.panels;
 
-import domain.UI.ArrowAnimationView;
-import domain.UI.GridView;
-import domain.UI.PlayerView;
-import domain.UI.MonsterView;
+import domain.UI.*;
 import domain.UI.renderers.GameRenderer;
+import domain.UI.screenPanels.GameScreenPanel;
+import domain.UI.screenPanels.HomeScreenPanel;
 import domain.audio.AudioManager;
 import domain.config.GameConfig;
 import domain.enchantments.*;
@@ -52,6 +51,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     private CopyOnWriteArrayList<MonsterView> monsterViewList = new CopyOnWriteArrayList<>();
 
     // Declare the halls variable
+    private GameScreenPanel gameScreenPanel;
     private List<Hall> halls;
     private int hallNum = 0;
     private boolean lastRunefound = false;
@@ -86,9 +86,10 @@ public class PlayModePanel extends JPanel implements Runnable {
     Graphics2D g2;
 
     // Constructor
-    public PlayModePanel(List<Hall> halls) {
+    public PlayModePanel(GameScreenPanel gameScreenPanel, List<Hall> halls) {
         gameConfig = new GameConfig();
 
+        this.gameScreenPanel = gameScreenPanel;
         this.halls = halls; // Initialize the halls variable
         this.setPreferredSize(new Dimension(gameConfig.getScreenWidth(), gameConfig.getGridHeight()));
         this.setBackground(new Color(66, 40, 53));
@@ -280,6 +281,7 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     // Add an arrow animation to the list
     public void addArrowAnimation(ArrowAnimationView animation) {
+
         gameRenderer.addArrowAnimation(animation);
     }
 
@@ -305,7 +307,6 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
     public void pauseGame() {
-
         isPaused = true; // Set the game state to paused
         timeController.pauseTimer(); // Pause the game timer (if applicable)
         AudioManager.stopPlayModeMusic();
@@ -319,8 +320,9 @@ public class PlayModePanel extends JPanel implements Runnable {
         repaint();
     }
 
-    public void exitGame() {
-        System.exit(0);
+    public void returnToMainScreen() {
+        pauseGame();
+        gameScreenPanel.getUi().showPanel("Home");
     }
 
     private void loadFont() {
