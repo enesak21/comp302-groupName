@@ -6,6 +6,7 @@ import domain.game.CollisionChecker;
 import domain.game.Tile;
 import domain.entity.Entity;
 import domain.UI.panels.PlayModePanel;
+import domain.audio.AudioManager;
 import main.PlayerInputHandler;
 
 /*
@@ -162,6 +163,8 @@ public class Player extends Entity {
         health--;
         if (health == 0) {
             playModePanel.getGame().getTimeController().setTimeLeft(0);
+            AudioManager.stopPlayModeMusic();
+            AudioManager.playGameOverMusic();
             playModePanel.getGameOverHandler().handle();
         }
     }
