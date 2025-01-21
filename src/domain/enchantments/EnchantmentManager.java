@@ -149,31 +149,31 @@ public class EnchantmentManager {
         while (iterator.hasNext() && viewIterator.hasNext()) {
             BaseEnchantment enchantment = iterator.next();
 
-            if (Game.isInRange(clickedTile, playerTile, 1)) {
-                if ((enchantment.getGridX() - 2) == clickedTile.getGridX() && (enchantment.getGridY() - 2) == clickedTile.getGridY()) {
+            if ((enchantment.getGridX() - 2) == clickedTile.getGridX()
+                    && (enchantment.getGridY() - 2) == clickedTile.getGridY()) {
 
-                    String enchantmentType = enchantment.getName();
-                    if (enchantmentType.equals("Reveal") || enchantmentType.equals("Cloak of Protection") ||
-                            enchantmentType.equals("Speed Up") || enchantmentType.equals("Luring Gem") ) {
-                        game.getPlayer().getInventory().addItem(enchantment);
-                    } else {
-                        enchantment.applyEffect(game);
-                    }
-
-                    int gridX = enchantment.getGridX() - PlayModePanel.offsetX;
-                    int gridY = enchantment.getGridY() - PlayModePanel.offsetY;
-
-                    // Remove the enchantment from the grid
-                    if (isValidTile(gridX, gridY)) {
-                        game.getGrid().getTileAt(gridX, gridY).setSolid(false);
-                    }
-                    iterator.remove();
-                    viewIterator.next(); // Move view iterator to match removal in enchantmentViews
-                    viewIterator.remove();
-
-                    return;
+                String enchantmentType = enchantment.getName();
+                if (enchantmentType.equals("Reveal") || enchantmentType.equals("Cloak of Protection") ||
+                        enchantmentType.equals("Speed Up") || enchantmentType.equals("Luring Gem")) {
+                    game.getPlayer().getInventory().addItem(enchantment);
+                } else {
+                    enchantment.applyEffect(game);
                 }
+
+                int gridX = enchantment.getGridX() - PlayModePanel.offsetX;
+                int gridY = enchantment.getGridY() - PlayModePanel.offsetY;
+
+                // Remove the enchantment from the grid
+                if (isValidTile(gridX, gridY)) {
+                    game.getGrid().getTileAt(gridX, gridY).setSolid(false);
+                }
+                iterator.remove();
+                viewIterator.next(); // Move view iterator to match removal in enchantmentViews
+                viewIterator.remove();
+
+                return;
             }
+
         }
     }
 
