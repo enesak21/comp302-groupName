@@ -134,9 +134,14 @@ public class EnchantmentManager {
     }
 
     public void drawEnchantments(Graphics2D g2) {
-        for (EnchantmentView view : enchantmentViews) {
-            view.draw(g2);
+        try {
+            for (EnchantmentView view : enchantmentViews) {
+                view.draw(g2);
+            }
+        } catch (Exception e) {
+            // :D
         }
+
     }
 
     //COMMON FOR ALL ENCHANTMENTS TO COLLECT THEM
