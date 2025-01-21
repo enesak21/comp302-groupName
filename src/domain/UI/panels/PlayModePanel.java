@@ -5,9 +5,15 @@ import domain.UI.GridView;
 import domain.UI.PlayerView;
 import domain.UI.MonsterView;
 import domain.UI.renderers.GameRenderer;
+import domain.UI.screenPanels.SaveScreenPanel;
 import domain.audio.AudioManager;
 import domain.config.GameConfig;
+import domain.config.GameState;
+import domain.config.InformationExpertPattern.InventoryInfo;
+import domain.config.InformationExpertPattern.PlayerInfo;
+import domain.config.SaveLoad;
 import domain.enchantments.*;
+import domain.entity.playerObjects.Inventory;
 import domain.handlers.*;
 import domain.entity.Entity;
 import domain.entity.monsters.*;
@@ -17,19 +23,22 @@ import domain.handlers.mouseHandlers.PlayModeMouseListener;
 import domain.UI.panels.sideBarComponents.HeartsLeftPanel;
 import domain.UI.panels.sideBarComponents.InventoryPanel;
 import domain.UI.panels.sideBarComponents.TimeLeftPanel;
+import domain.game.SearchRuneController;
+import domain.config.InformationExpertPattern.MonsterInfo;
+import main.Main;
 import main.PlayerInputHandler;
-import javax.imageio.ImageIO;
+
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
+
 
 
 public class PlayModePanel extends JPanel implements Runnable {
@@ -109,6 +118,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
     public void initializeGameComponents(int hallNum) {
+        this.hallNum = hallNum;
         this.setState("Default");
         isPaused = false;
 
@@ -180,6 +190,80 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     }
 
+    public void initializeGameComponents(GameState loadedGame) {
+        this.setState("Default");
+        isPaused = false;
+
+        // Initialize the grid
+        grid = loadedGame.getHallsList().get(loadedGame.getHallNum()).toGrid(gameConfig.getTileSize());
+
+        // Initialize Player
+        Player player = initializePlayer(grid, loadedGame.getPlayerInfo().getGridX(), loadedGame.getPlayerInfo().getGridY(), loadedGame.getPlayerInfo().getHealth(), loadedGame.getPlayerInfo().getInventoryInfo().InfoToInventory());
+        playerView = new PlayerView(player);
+
+        // Place The Rune
+        searchRuneController = new SearchRuneController(this);
+        searchRuneController.placeRune();
+
+        // Initialize Game
+        game = new Game(player, gameConfig.getTileSize(), grid, searchRuneController);
+        enchantmentManager = new EnchantmentManager(game, gameConfig.getTileSize());
+        monsterManager = game.getMonsterManager();
+        this.setMonsters(loadedGame.getMonsterInfo());
+
+        timeController = game.getTimeController();
+
+        // Set the time based on the number of structures placed
+        timeController.setTimeLeft(halls.get(hallNum).getPlacedStructuresCount() * 5);
+
+        game.setInitialTime(timeController.getTimeLeft());
+
+        monsterManager.setLastSpawnLeftTime(timeController.getTimeLeft());
+
+
+        this.addKeyListener(player.getPlayerInputHandler());
+        countMonster = 0;
+        monsterViewList = new CopyOnWriteArrayList<>();
+        for (int i = 0; i < monsterManager.getMonsters().size(); i++) {
+            MonsterView monsterView = new MonsterView((Entity) monsterManager.getMonsters().get(i));
+            monsterViewList.add(monsterView);
+        }
+
+        this.addKeyListener(player.getPlayerInputHandler());
+
+        gridView = new GridView(grid);
+        CollisionChecker collisionChecker = new CollisionChecker(grid);
+        player.setCollisionChecker(collisionChecker);
+        monsterManager.setCollisionChecker(collisionChecker);
+
+        timeController = game.getTimeController();
+        timeController.setTimeLeft(loadedGame.getTime());
+
+        // Create a mouse listener for the Play Mode screen
+
+        if (this.getMouseListeners().length > 0) {
+            this.removeMouseListener(this.getMouseListeners()[0]);
+        }
+        playModeMouseListener = new PlayModeMouseListener(this);
+        this.addMouseListener(playModeMouseListener);
+
+        gameWinningHandler = new GameWinningHandler(this);
+        gameOverHandler = new GameOverHandler(this);
+
+        // Initialize the heart
+        ((HeartsLeftPanel) sidebarPanel.getHeartsLeftPanel()).updateHeartsLeft(game.getPlayer().getHealth());
+        ((HeartsLeftPanel) sidebarPanel.getHeartsLeftPanel()).initHearts();
+        ((TimeLeftPanel) sidebarPanel.getTimeLeftPanel()).updateTimeLeft(timeController.getTimeLeft());
+
+        for (Map.Entry<String, ArrayList<BaseEnchantment>> entry: game.getPlayer().getInventory().getContent().entrySet()) {
+            ((InventoryPanel) sidebarPanel.getInventoryPanel()).setItem(entry.getKey(), entry.getValue().size());
+        }
+
+        // Initialize game renderer
+        gameRenderer = new GameRenderer(halls.get(hallNum), grid, player, monsterManager.getMonsters(), enchantmentManager);
+
+    }
+
     public Player initializePlayer(Grid grid) {
         Random random = new Random();
         int randomX = random.nextInt(gameConfig.getGridColumns());
@@ -188,6 +272,13 @@ public class PlayModePanel extends JPanel implements Runnable {
             return Player.getInstance("Osimhen", randomX, randomY, gameConfig.getTileSize(), this, new PlayerInputHandler());
         }
         return initializePlayer(grid);
+    }
+
+    public Player initializePlayer(Grid grid, int x, int y, int health, Inventory inventory) {
+        Player player = Player.getInstance("Osimhen", x, y, gameConfig.getTileSize(), this, new PlayerInputHandler());
+        player.setHealth(health);
+        player.setInventory(inventory);
+        return player;
     }
 
     //REVEAL KEY HANDLER WILL BE OUT LATER
@@ -321,7 +412,14 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
     public void exitGame() {
-        System.exit(0);
+        // Close the current game window
+        Container parent = this.getTopLevelAncestor();
+        if (parent instanceof JFrame) {
+            ((JFrame) parent).dispose(); // Close the JFrame
+            AudioManager.stopPlayModeMusic();
+            gameThread = null; // Stop the game thread
+            Main.main(null);
+        }
     }
 
     private void loadFont() {
@@ -497,6 +595,74 @@ public class PlayModePanel extends JPanel implements Runnable {
         }
     }
 
+    public void saveGame() {
+        // Save the game state
+        List<MonsterInfo> monsterList = MonsterToInfo();
+        PlayerInfo playerInfo = new PlayerInfo(
+                game.getPlayer().getGridX(),
+                game.getPlayer().getGridY(),
+                game.getPlayer().getHealth(),
+                InventoryToInfo(game.getPlayer().getInventory())
+        );
+
+        GameState gameState = new GameState(halls, hallNum, monsterList, playerInfo, timeController.getTimeLeft());
+
+        // Show SaveScreenPanel in a centered frame
+        JFrame saveFrame = new JFrame("Save Game");
+        saveFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        saveFrame.setSize(768, 640);
+        saveFrame.setLayout(new BorderLayout());
+
+        SaveScreenPanel saveScreenPanel = new SaveScreenPanel(gameState);
+        saveFrame.add(saveScreenPanel, BorderLayout.CENTER);
+
+        // Center the frame on the screen
+        saveFrame.setLocationRelativeTo(null);
+
+        saveFrame.setVisible(true);
+    }
+
+
+    public List<MonsterInfo> MonsterToInfo(){
+        List<MonsterInfo> monsterList = new ArrayList<>();
+        for (BaseMonster monster : monsterManager.getMonsters()) {
+            monsterList.add(new MonsterInfo(monster.toString(), monster.getGridX() + 2, monster.getGridY() + 2));
+        }
+        return monsterList;
+    }
+
+    public void InfoToMonster(List<MonsterInfo> monsterList){
+        monsterManager.getMonsters().clear();
+        for (MonsterInfo monsterInfo : monsterList) {
+            switch (monsterInfo.getMonsterType()) {
+                case "ArcherMonster":
+                    ArcherMonster archerMonster = new ArcherMonster(monsterInfo.getGridX(), monsterInfo.getGridY(), gameConfig.getTileSize());
+                    monsterManager.getMonsters().add(archerMonster);
+                    break;
+                case "FighterMonster":
+                    FighterMonster fighterMonster = new FighterMonster(monsterInfo.getGridX(), monsterInfo.getGridY(), gameConfig.getTileSize());
+                    monsterManager.getMonsters().add(fighterMonster);
+                    break;
+                case "WizardMonster":
+                    WizardMonster wizardMonster = new WizardMonster(monsterInfo.getGridX(), monsterInfo.getGridY(), gameConfig.getTileSize(), monsterManager);
+                    monsterManager.getMonsters().add(wizardMonster);
+                    break;
+                case "TimerMonster":
+                    TimerMonster timerMonster = new TimerMonster(monsterInfo.getGridX(), monsterInfo.getGridY(), gameConfig.getTileSize());
+                    monsterManager.getMonsters().add(timerMonster);
+                    break;
+            }
+        }
+    }
+
+    public HashMap<String, Integer> InventoryToInfo(Inventory inv){
+        HashMap<String, Integer> inventoryInfo = new HashMap<>();
+        for (String enchantmentType : inv.getContent().keySet()) {
+            inventoryInfo.put(enchantmentType, inv.getContent().get(enchantmentType).size());
+        }
+        return inventoryInfo;
+    }
+
     // Getters
     public int getScale() {
         return gameConfig.getScale();
@@ -599,5 +765,9 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     public EnchantmentManager getEnchantmentManager() {
         return enchantmentManager;
+    }
+
+    public void setMonsters(List<MonsterInfo> monsterInfo) {
+        InfoToMonster(monsterInfo);
     }
 }

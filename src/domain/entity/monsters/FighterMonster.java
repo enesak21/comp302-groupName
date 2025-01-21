@@ -132,4 +132,9 @@ public class FighterMonster extends BaseMonster {
     public void setCollisionChecker(CollisionChecker collisionChecker) {
         this.collisionChecker = collisionChecker;
     }
+
+    @Override
+    public String toString() {
+        return "FighterMonster";
+    }
 }

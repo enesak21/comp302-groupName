@@ -1,10 +1,9 @@
 package domain.UI;
 
-import domain.UI.screenPanels.BuildModeScreenPanel;
-import domain.UI.screenPanels.GameScreenPanel;
-import domain.UI.screenPanels.HelpScreenPanel;
-import domain.UI.screenPanels.HomeScreenPanel;
-import domain.audio.AudioManager;
+import domain.UI.screenPanels.*;
+import domain.config.GameState;
+import domain.config.InformationExpertPattern.MonsterInfo;
+import domain.config.InformationExpertPattern.PlayerInfo;
 import domain.game.Hall;
 
 import java.util.List;
@@ -26,6 +25,7 @@ public class UI {
     private BuildModeScreenPanel buildScreen;
     private GameScreenPanel gameScreen;
     private HelpScreenPanel helpScreen;
+    private loadStartScreenPanel loadStartScreen;
 
 
     // Constructor
@@ -68,11 +68,20 @@ public class UI {
                 case "Game":
                     mainPanel.add(createGameScreen(), "Game");
                     break;
+                case "LoadedGame":
+                    mainPanel.add(gameScreen, "LoadedGame");
+                    break;
                 case "Build":
                     mainPanel.add(createBuildScreen(), "Build");
                     break;
                 case "Help":
                     mainPanel.add(createHelpScreen(), "Help");
+                    break;
+                case "LoadStart":
+                    mainPanel.add(createLoadStartScreen(), "LoadStart");
+                    break;
+                case "Load":
+                    mainPanel.add(createLoadScreen(), "Load");
                     break;
             }
         }
@@ -110,11 +119,33 @@ public class UI {
     }
 
     /*
+        * Create the loaded game screen with the PlayModePanel
+     */
+    public void createLoadedGame(GameState loadedGame) {
+        gameScreen = new GameScreenPanel(this, loadedGame); // Pass the current UI instance
+    }
+
+    /*
         * Create the help screen panel with instructions
      */
     private JPanel createHelpScreen() {
         helpScreen =  new HelpScreenPanel(this); // Pass the current UI instance
         return helpScreen;
+    }
+
+    /*
+        * Create the save start screen panel with instructions
+     */
+    private JPanel createLoadStartScreen() {
+        loadStartScreen = new loadStartScreenPanel(this); // Pass the current UI instance
+        return loadStartScreen;
+    }
+
+    /*
+        * Create the load screen panel with instructions
+     */
+    private JPanel createLoadScreen() {
+        return new LoadScreenPanel(this); // Pass the current
     }
 
     /*

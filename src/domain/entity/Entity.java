@@ -79,4 +79,9 @@ public abstract class Entity {
     public void setTileSize(int tileSize) {
         this.tileSize = tileSize;
     }
+
+    public void setPosition(int x, int y) {
+        this.setGridX(x);
+        this.setGridY(y);
+    }
 }

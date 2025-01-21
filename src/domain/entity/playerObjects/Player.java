@@ -210,6 +210,11 @@ public void setCollisionChecker(CollisionChecker collisionChecker) {
     public Inventory getInventory() {
         return inventory;
     }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
     public boolean getIsInvisibleToArchers() {
         return invisibleToArchers;
     }

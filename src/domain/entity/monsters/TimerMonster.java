@@ -135,4 +135,9 @@ public class TimerMonster extends BaseMonster {
     public void setCollisionChecker(CollisionChecker collisionChecker) {
         this.collisionChecker = collisionChecker;
     }
+
+    @Override
+    public String toString() {
+        return "TimerMonster";
+    }
 }

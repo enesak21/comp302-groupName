@@ -37,7 +37,7 @@ public class HomeScreenPanel extends JPanel {
         AudioManager.playEnterMusic();
 
         // 2. Load the background image once
-        ImageIcon originalIcon = new ImageIcon("src/resources/mainMenuBackground.png");
+        ImageIcon originalIcon = new ImageIcon("src/resources/backgrounds/mainMenuBackground.png");
         backgroundImage = originalIcon.getImage();
 
 
@@ -55,9 +55,9 @@ public class HomeScreenPanel extends JPanel {
         // Center alignment for BoxLayout
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // 6. Add an ActionListener to move to Build mode and stop music
+        // 6. Add an ActionListener to move to LoadStart screen
         startButton.addActionListener(e -> {
-            ui.showPanel("Build");       // Navigate to Build mode
+            ui.showPanel("LoadStart");       // LoadStart
             AudioManager.stopEnterMusic();
         });
 
