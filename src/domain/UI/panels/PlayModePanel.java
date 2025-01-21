@@ -276,7 +276,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
     public Player initializePlayer(Grid grid, int x, int y, int health, Inventory inventory) {
-        Player player = Player.getInstance("Osimhen", x, y, gameConfig.getTileSize(), this, new PlayerInputHandler());
+        Player player = Player.getInstance("Rafa Silva", x, y, gameConfig.getTileSize(), this, new PlayerInputHandler());
         player.setHealth(health);
         player.setInventory(inventory);
         return player;

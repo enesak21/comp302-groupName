@@ -17,7 +17,7 @@ public class GameManager {
     public void startNewGame() {
         //Create a new Hall and Grid
         Grid grid = new Grid(playModePanel.getTileSize());
-        Player player = Player.getInstance("Osimhen", 0, 0, playModePanel.getTileSize(), playModePanel, new PlayerInputHandler());
+        Player player = Player.getInstance("Rafa Silva", 0, 0, playModePanel.getTileSize(), playModePanel, new PlayerInputHandler());
 
         // currentGame = new Game(player, playModePanel.getTileSize(), playModePanel, grid, searc);
 
