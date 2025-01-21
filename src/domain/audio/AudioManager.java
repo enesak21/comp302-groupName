@@ -14,6 +14,8 @@ public class AudioManager {
     private static Clip[] noRuneSounds;
     private static Clip archerSound;
     private static Clip timeStealerSound;
+    private static Clip gameOverMusic;
+    private static Clip gameWinMusic;
 
     /**
      * Static block to initialize all your audio clips.
@@ -22,7 +24,8 @@ public class AudioManager {
     static {
         enterMusic = loadClip("music/enter.wav");
         playModeMusic = loadClip("music/playModeMusic.wav");
-
+        gameOverMusic = loadClip("music/game_over.wav");
+        gameWinMusic = loadClip("music/game_win.wav");
         // If you want to load a loseClip:
         // loseClip = loadClip("music/loseMusic.wav");
         // (If you don't have one yet, you can remove this field.)
@@ -89,6 +92,36 @@ public class AudioManager {
         if (playModeMusic != null) {
             playModeMusic.stop();
             playModeMusic.setFramePosition(0);
+        }
+    }
+
+    public static void playGameOverMusic() {
+        if (gameOverMusic != null) {
+            gameOverMusic.stop();
+            gameOverMusic.setFramePosition(0);
+            gameOverMusic.start();
+        }
+    }
+
+    public static void playGameWinMusic() {
+        if (gameWinMusic != null) {
+            gameWinMusic.stop();
+            gameWinMusic.setFramePosition(0);
+            gameWinMusic.start();
+        }
+    }
+
+    public static void stopGameWinMusic() {
+        if (gameWinMusic != null) {
+            gameWinMusic.stop();
+            gameWinMusic.setFramePosition(0);
+        }
+    }
+
+    public static void stopGameOverMusic() {
+        if (gameOverMusic != null) {
+            gameOverMusic.stop();
+            gameOverMusic.setFramePosition(0);
         }
     }
 

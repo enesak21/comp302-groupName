@@ -33,7 +33,6 @@ import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -524,9 +523,17 @@ public class PlayModePanel extends JPanel implements Runnable {
 
             // Check if Time is over
             if (timeController.getTimeLeft() <= 0) {
+                if (!isPaused) {
+                    AudioManager.stopPlayModeMusic();
+                    AudioManager.playGameOverMusic();
+                }
                 isPaused = true;
                 gameOverHandler.handle();
             } else if (lastRunefound) {
+                if (!isPaused) {
+                    AudioManager.stopPlayModeMusic();
+                    AudioManager.playGameWinMusic();
+                }
                 gameWinningHandler.handle();
             }
         }
