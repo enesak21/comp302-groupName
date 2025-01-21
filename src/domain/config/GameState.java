@@ -14,12 +14,14 @@ public class GameState implements Serializable {
     private int hallNum;
     private List<MonsterInfo> monsterInfo;
     private PlayerInfo playerInfo;
+    private int time;
 
-    public GameState(List<Hall> hallList, int hallNum, List<MonsterInfo> monsterInfo, PlayerInfo playerInfo) {
+    public GameState(List<Hall> hallList, int hallNum, List<MonsterInfo> monsterInfo, PlayerInfo playerInfo, int time) {
         this.hallList = hallList;
         this.hallNum = hallNum;
         this.monsterInfo = monsterInfo;
         this.playerInfo = playerInfo;
+        this.time = time;
 
     }
 
@@ -53,6 +55,14 @@ public class GameState implements Serializable {
 
     public void setPlayerInfo(PlayerInfo playerInfo) {
         this.playerInfo = playerInfo;
+    }
+
+    public int getTime(){
+        return time;
+    }
+
+    public void setTime(int time){
+        this.time = time;
     }
 
 

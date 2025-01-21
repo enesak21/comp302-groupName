@@ -238,6 +238,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         monsterManager.setCollisionChecker(collisionChecker);
 
         timeController = game.getTimeController();
+        timeController.setTimeLeft(loadedGame.getTime());
 
         // Create a mouse listener for the Play Mode screen
 
@@ -597,7 +598,7 @@ public class PlayModePanel extends JPanel implements Runnable {
                 InventoryToInfo(game.getPlayer().getInventory())
         );
 
-        GameState gameState = new GameState(halls, hallNum, monsterList, playerInfo);
+        GameState gameState = new GameState(halls, hallNum, monsterList, playerInfo, timeController.getTimeLeft());
 
         // Show SaveScreenPanel in a centered frame
         JFrame saveFrame = new JFrame("Save Game");
