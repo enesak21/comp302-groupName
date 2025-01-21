@@ -8,9 +8,11 @@ import domain.UI.renderers.GameRenderer;
 import domain.audio.AudioManager;
 import domain.config.GameConfig;
 import domain.config.GameState;
+import domain.config.InformationExpertPattern.InventoryInfo;
 import domain.config.InformationExpertPattern.PlayerInfo;
 import domain.config.SaveLoad;
 import domain.enchantments.*;
+import domain.entity.playerObjects.Inventory;
 import domain.handlers.*;
 import domain.entity.Entity;
 import domain.entity.monsters.*;
@@ -26,16 +28,15 @@ import main.Main;
 import main.PlayerInputHandler;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
@@ -197,7 +198,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         grid = loadedGame.getHallsList().get(hallNum).toGrid(gameConfig.getTileSize());
 
         // Initialize Player
-        Player player = initializePlayer(grid, loadedGame.getPlayerInfo().getGridX(), loadedGame.getPlayerInfo().getGridY(), loadedGame.getPlayerInfo().getHealth());
+        Player player = initializePlayer(grid, loadedGame.getPlayerInfo().getGridX(), loadedGame.getPlayerInfo().getGridY(), loadedGame.getPlayerInfo().getHealth(), loadedGame.getPlayerInfo().getInventoryInfo().InfoToInventory());
         playerView = new PlayerView(player);
 
         // Place The Rune
@@ -272,9 +273,10 @@ public class PlayModePanel extends JPanel implements Runnable {
         return initializePlayer(grid);
     }
 
-    public Player initializePlayer(Grid grid, int x, int y, int health) {
+    public Player initializePlayer(Grid grid, int x, int y, int health, Inventory inventory) {
         Player player = Player.getInstance("Osimhen", x, y, gameConfig.getTileSize(), this, new PlayerInputHandler());
         player.setHealth(health);
+        player.setInventory(inventory);
         return player;
     }
 
@@ -417,10 +419,7 @@ public class PlayModePanel extends JPanel implements Runnable {
             gameThread = null; // Stop the game thread
             Main.main(null);
         }
-
-
     }
-
 
     private void loadFont() {
         try {
@@ -590,7 +589,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     public void saveGame() {
         // Save the game state
         List<MonsterInfo> monsterList = MonsterToInfo();
-        PlayerInfo playerInfo = new PlayerInfo(game.getPlayer().getGridX(), game.getPlayer().getGridY(), game.getPlayer().getHealth());
+        PlayerInfo playerInfo = new PlayerInfo(game.getPlayer().getGridX(), game.getPlayer().getGridY(), game.getPlayer().getHealth(), InventoryToInfo(game.getPlayer().getInventory()));
         System.out.println(playerInfo);
 
         GameState gameState = new GameState(halls, hallNum, monsterList, playerInfo);
@@ -629,6 +628,14 @@ public class PlayModePanel extends JPanel implements Runnable {
                     break;
             }
         }
+    }
+
+    public HashMap<String, Integer> InventoryToInfo(Inventory inv){
+        HashMap<String, Integer> inventoryInfo = new HashMap<>();
+        for (String enchantmentType : inv.getContent().keySet()) {
+            inventoryInfo.put(enchantmentType, inv.getContent().get(enchantmentType).size());
+        }
+        return inventoryInfo;
     }
 
     // Getters
