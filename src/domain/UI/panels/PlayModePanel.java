@@ -270,7 +270,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         int randomX = random.nextInt(gameConfig.getGridColumns());
         int randomY = random.nextInt(gameConfig.getGridRows());
         if (!grid.getTileAt(randomX, randomY).containsStructure()) {
-            return Player.getInstance("Osimhen", randomX, randomY, gameConfig.getTileSize(), this, new PlayerInputHandler());
+            return Player.getInstance("Rafa Silva", randomX, randomY, gameConfig.getTileSize(), this, new PlayerInputHandler());
         }
         return initializePlayer(grid);
     }
