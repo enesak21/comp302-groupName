@@ -431,6 +431,10 @@ public class PlayModePanel extends JPanel implements Runnable {
                 isPaused = true;
                 gameOverHandler.handle();
             } else if (lastRunefound) {
+                if (!isPaused) {
+                    AudioManager.stopPlayModeMusic();
+                    AudioManager.playGameWinMusic();
+                }
                 gameWinningHandler.handle();
             }
         }
