@@ -1,10 +1,6 @@
 package domain.UI;
 
-import domain.UI.screenPanels.BuildModeScreenPanel;
-import domain.UI.screenPanels.GameScreenPanel;
-import domain.UI.screenPanels.HelpScreenPanel;
-import domain.UI.screenPanels.HomeScreenPanel;
-import domain.audio.AudioManager;
+import domain.UI.screenPanels.*;
 import domain.game.Hall;
 
 import java.util.List;
@@ -26,6 +22,7 @@ public class UI {
     private BuildModeScreenPanel buildScreen;
     private GameScreenPanel gameScreen;
     private HelpScreenPanel helpScreen;
+    private loadStartScreenPanel loadStartScreen;
 
 
     // Constructor
@@ -74,6 +71,9 @@ public class UI {
                 case "Help":
                     mainPanel.add(createHelpScreen(), "Help");
                     break;
+                case "LoadStart":
+                    mainPanel.add(createLoadStartScreen(), "LoadStart");
+                    break;
             }
         }
         cardLayout.show(mainPanel, panelName); // Show the panel with the given name
@@ -115,6 +115,14 @@ public class UI {
     private JPanel createHelpScreen() {
         helpScreen =  new HelpScreenPanel(this); // Pass the current UI instance
         return helpScreen;
+    }
+
+    /*
+        * Create the save start screen panel with instructions
+     */
+    private JPanel createLoadStartScreen() {
+        loadStartScreen = new loadStartScreenPanel(this); // Pass the current UI instance
+        return loadStartScreen;
     }
 
     /*

@@ -2,9 +2,12 @@ package domain.game;
 
 import domain.structures.Structure;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Hall {
+public class Hall implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private final String name;
     private final int minStructures;
     private final String[][] grid;

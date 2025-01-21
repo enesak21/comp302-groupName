@@ -7,6 +7,8 @@ import domain.UI.MonsterView;
 import domain.UI.renderers.GameRenderer;
 import domain.audio.AudioManager;
 import domain.config.GameConfig;
+import domain.config.GameState;
+import domain.config.SaveLoad;
 import domain.enchantments.*;
 import domain.handlers.*;
 import domain.entity.Entity;
@@ -489,6 +491,14 @@ public class PlayModePanel extends JPanel implements Runnable {
             y += fm.getHeight() + 20;
             g2.drawString(resumeText, x, y);
         }
+    }
+
+    public void saveGame() {
+        // Save the game state
+        GameState gameState = new GameState(halls, hallNum);
+
+        // Save the game state to a file
+        SaveLoad.saveGameState(gameState);
     }
 
     // Getters
