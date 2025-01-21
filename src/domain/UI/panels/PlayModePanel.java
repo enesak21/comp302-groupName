@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
@@ -113,17 +114,18 @@ public class PlayModePanel extends JPanel implements Runnable {
         this.setState("Default");
         isPaused = false;
 
-        Player player = Player.getInstance("Osimhen", (int) (Math.random() * 16), (int) (Math.random() * 16), gameConfig.getTileSize(), this, new PlayerInputHandler());
-        playerView = new PlayerView(player);
-
         // Initialize the grid
         grid = halls.get(hallNum).toGrid(gameConfig.getTileSize());
 
-        // place The Rune
+        // Initialize Player
+        Player player = initializePlayer(grid);
+        playerView = new PlayerView(player);
 
+        // Place The Rune
         searchRuneController = new SearchRuneController(this);
         searchRuneController.placeRune();
 
+        // Initialize Game
         game = new Game(player, gameConfig.getTileSize(), grid, searchRuneController);
         enchantmentManager = new EnchantmentManager(game, gameConfig.getTileSize());
         monsterManager = game.getMonsterManager();
@@ -136,8 +138,6 @@ public class PlayModePanel extends JPanel implements Runnable {
         game.setInitialTime(timeController.getTimeLeft());
 
         monsterManager.setLastSpawnLeftTime(timeController.getTimeLeft());
-
-        // timeController.setTimeLeft(60); // Set the time to 60 seconds for testing purposes
 
 
         this.addKeyListener(player.getPlayerInputHandler());
@@ -180,6 +180,16 @@ public class PlayModePanel extends JPanel implements Runnable {
         // Initialize game renderer
         gameRenderer = new GameRenderer(halls.get(hallNum), grid, player, monsterManager.getMonsters(), enchantmentManager);
 
+    }
+
+    public Player initializePlayer(Grid grid) {
+        Random random = new Random();
+        int randomX = random.nextInt(gameConfig.getGridColumns());
+        int randomY = random.nextInt(gameConfig.getGridRows());
+        if (!grid.getTileAt(randomX, randomY).containsStructure()) {
+            return Player.getInstance("Osimhen", randomX, randomY, gameConfig.getTileSize(), this, new PlayerInputHandler());
+        }
+        return initializePlayer(grid);
     }
 
     //REVEAL KEY HANDLER WILL BE OUT LATER
