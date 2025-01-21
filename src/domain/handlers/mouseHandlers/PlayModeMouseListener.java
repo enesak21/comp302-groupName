@@ -1,6 +1,7 @@
 package domain.handlers.mouseHandlers;
 
 import domain.UI.panels.PlayModePanel;
+import domain.audio.AudioManager;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -27,6 +28,8 @@ public class PlayModeMouseListener extends MouseAdapter {
             // Possibly do something with the click in the game over state
 
             if (isWithinBounds(clickPoint, 284, 410, 200, 50)) {
+                AudioManager.stopGameOverMusic();
+                AudioManager.playPlayModeMusic();
                 playModePanel.restartGame();
             }
 

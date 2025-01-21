@@ -101,6 +101,13 @@ public class AudioManager {
         }
     }
 
+    public static void stopGameOverMusic() {
+        if (gameOverMusic != null) {
+            gameOverMusic.stop();
+            gameOverMusic.setFramePosition(0);
+        }
+    }
+
     public static void playEnterMusic() {
         if (enterMusic != null) {
             enterMusic.loop(Clip.LOOP_CONTINUOUSLY);
