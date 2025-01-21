@@ -20,6 +20,7 @@ import domain.UI.panels.sideBarComponents.HeartsLeftPanel;
 import domain.UI.panels.sideBarComponents.InventoryPanel;
 import domain.UI.panels.sideBarComponents.TimeLeftPanel;
 import domain.game.SearchRuneController;
+import main.Main;
 import main.PlayerInputHandler;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -326,8 +327,18 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
     public void exitGame() {
-        System.exit(0);
+        // Close the current game window
+        Container parent = this.getTopLevelAncestor();
+        if (parent instanceof JFrame) {
+            ((JFrame) parent).dispose(); // Close the JFrame
+            AudioManager.stopPlayModeMusic();
+            gameThread = null; // Stop the game thread
+            Main.main(null);
+        }
+
+
     }
+
 
     private void loadFont() {
         try {

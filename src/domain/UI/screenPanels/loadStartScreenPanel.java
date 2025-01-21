@@ -7,14 +7,19 @@ import domain.config.SaveLoad;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 public class loadStartScreenPanel extends JPanel {
+    private Image backgroundImage;
+
     public loadStartScreenPanel(UI ui) {
+        // Load the background image
+        backgroundImage = new ImageIcon("src/resources/backgrounds/saveLoadBackground.png").getImage();
+
         setSize(400, 300);
         setLayout(new BorderLayout());
 
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false); // Make the button panel transparent
         buttonPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -37,6 +42,12 @@ public class loadStartScreenPanel extends JPanel {
         newGameButton.addActionListener(e -> ui.showPanel("Build"));
 
         loadGameButton.addActionListener(e -> loadGame(ui));
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this); // Scale background image to fit the panel
     }
 
     private void loadGame(UI ui) {

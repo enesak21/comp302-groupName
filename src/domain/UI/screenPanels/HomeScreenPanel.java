@@ -37,7 +37,7 @@ public class HomeScreenPanel extends JPanel {
         AudioManager.playEnterMusic();
 
         // 2. Load the background image once
-        ImageIcon originalIcon = new ImageIcon("src/resources/mainMenuBackground.png");
+        ImageIcon originalIcon = new ImageIcon("src/resources/backgrounds/mainMenuBackground.png");
         backgroundImage = originalIcon.getImage();
 
 
