@@ -191,6 +191,7 @@ public class PlayModePanel extends JPanel implements Runnable {
     }
 
     public void initializeGameComponents(GameState loadedGame) {
+        hallNum = loadedGame.getHallNum();
         this.setState("Default");
         isPaused = false;
 
