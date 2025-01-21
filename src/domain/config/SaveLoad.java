@@ -24,8 +24,7 @@ public class SaveLoad {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
             return (GameState) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Failed to load game from Slot " + slot + ": " + e.getMessage(),
-                    "Load Failed", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Failed to load game from Slot " + slot + ". " + "You do not have a saved game in this slot.");
             return null;
         }
     }

@@ -27,9 +27,11 @@ public class loadStartScreenPanel extends JPanel {
 
         JButton newGameButton = new JButton("Start New Game");
         JButton loadGameButton = new JButton("Load Game");
+        JButton backButton = new JButton("Go Back");
 
         styleButton(newGameButton);
         styleButton(loadGameButton);
+        styleButton(backButton);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -38,11 +40,14 @@ public class loadStartScreenPanel extends JPanel {
         gbc.gridy = 1;
         buttonPanel.add(loadGameButton, gbc);
 
+        gbc.gridy = 2;
+        buttonPanel.add(backButton, gbc);
+
         add(buttonPanel, BorderLayout.CENTER);
 
         newGameButton.addActionListener(e -> ui.showPanel("Build"));
-
         loadGameButton.addActionListener(e -> ui.showPanel("Load"));
+        backButton.addActionListener(e -> ui.showPanel("Home"));
     }
 
     @Override
