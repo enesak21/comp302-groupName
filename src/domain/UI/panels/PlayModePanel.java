@@ -17,14 +17,12 @@ import domain.handlers.mouseHandlers.PlayModeMouseListener;
 import domain.UI.panels.sideBarComponents.HeartsLeftPanel;
 import domain.UI.panels.sideBarComponents.InventoryPanel;
 import domain.UI.panels.sideBarComponents.TimeLeftPanel;
-import domain.game.SearchRuneController;
 import main.PlayerInputHandler;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -426,6 +424,10 @@ public class PlayModePanel extends JPanel implements Runnable {
 
             // Check if Time is over
             if (timeController.getTimeLeft() <= 0) {
+                if (!isPaused) {
+                    AudioManager.stopPlayModeMusic();
+                    AudioManager.playGameOverMusic();
+                }
                 isPaused = true;
                 gameOverHandler.handle();
             } else if (lastRunefound) {
