@@ -42,24 +42,13 @@ public class loadStartScreenPanel extends JPanel {
 
         newGameButton.addActionListener(e -> ui.showPanel("Build"));
 
-        loadGameButton.addActionListener(e -> loadGame(ui));
+        loadGameButton.addActionListener(e -> ui.showPanel("Load"));
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this); // Scale background image to fit the panel
-    }
-
-    private void loadGame(UI ui) {
-        GameState loadedState = SaveLoad.loadGameState();
-        if (loadedState != null) {
-            ui.createLoadedGame(loadedState);
-            ui.showPanel("LoadedGame");
-            AudioManager.playPlayModeMusic();
-        } else {
-            JOptionPane.showMessageDialog(this, "Failed to load game.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
     }
 
     private void styleButton(JButton button) {

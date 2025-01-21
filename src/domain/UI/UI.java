@@ -80,6 +80,9 @@ public class UI {
                 case "LoadStart":
                     mainPanel.add(createLoadStartScreen(), "LoadStart");
                     break;
+                case "Load":
+                    mainPanel.add(createLoadScreen(), "Load");
+                    break;
             }
         }
         cardLayout.show(mainPanel, panelName); // Show the panel with the given name
@@ -136,6 +139,13 @@ public class UI {
     private JPanel createLoadStartScreen() {
         loadStartScreen = new loadStartScreenPanel(this); // Pass the current UI instance
         return loadStartScreen;
+    }
+
+    /*
+        * Create the load screen panel with instructions
+     */
+    private JPanel createLoadScreen() {
+        return new LoadScreenPanel(this); // Pass the current
     }
 
     /*

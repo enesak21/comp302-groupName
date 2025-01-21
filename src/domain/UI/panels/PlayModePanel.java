@@ -5,6 +5,7 @@ import domain.UI.GridView;
 import domain.UI.PlayerView;
 import domain.UI.MonsterView;
 import domain.UI.renderers.GameRenderer;
+import domain.UI.screenPanels.SaveScreenPanel;
 import domain.audio.AudioManager;
 import domain.config.GameConfig;
 import domain.config.GameState;
@@ -589,14 +590,30 @@ public class PlayModePanel extends JPanel implements Runnable {
     public void saveGame() {
         // Save the game state
         List<MonsterInfo> monsterList = MonsterToInfo();
-        PlayerInfo playerInfo = new PlayerInfo(game.getPlayer().getGridX(), game.getPlayer().getGridY(), game.getPlayer().getHealth(), InventoryToInfo(game.getPlayer().getInventory()));
-        System.out.println(playerInfo);
+        PlayerInfo playerInfo = new PlayerInfo(
+                game.getPlayer().getGridX(),
+                game.getPlayer().getGridY(),
+                game.getPlayer().getHealth(),
+                InventoryToInfo(game.getPlayer().getInventory())
+        );
 
         GameState gameState = new GameState(halls, hallNum, monsterList, playerInfo);
 
-        // Save the game state to a file
-        SaveLoad.saveGameState(gameState);
+        // Show SaveScreenPanel in a centered frame
+        JFrame saveFrame = new JFrame("Save Game");
+        saveFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        saveFrame.setSize(600, 200);
+        saveFrame.setLayout(new BorderLayout());
+
+        SaveScreenPanel saveScreenPanel = new SaveScreenPanel(gameState);
+        saveFrame.add(saveScreenPanel, BorderLayout.CENTER);
+
+        // Center the frame on the screen
+        saveFrame.setLocationRelativeTo(null);
+
+        saveFrame.setVisible(true);
     }
+
 
     public List<MonsterInfo> MonsterToInfo(){
         List<MonsterInfo> monsterList = new ArrayList<>();

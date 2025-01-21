@@ -3,9 +3,10 @@ package domain.config;
 import java.io.*;
 
 public class SaveLoad {
-    private static String fileName = "src/domain/config/gameState.dat";
+    private static final String BASE_FILE_NAME = "src/domain/config/gameState_slot";
 
-    public static void saveGameState(GameState gameState) {
+    public static void saveGameState(GameState gameState, int slot) {
+        String fileName = BASE_FILE_NAME + slot + ".dat";
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
             oos.writeObject(gameState);
             oos.flush(); // Ensure data is written to the file
@@ -15,7 +16,8 @@ public class SaveLoad {
         }
     }
 
-    public static GameState loadGameState() {
+    public static GameState loadGameState(int slot) {
+        String fileName = BASE_FILE_NAME + slot + ".dat";
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
             return (GameState) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
