@@ -3,8 +3,7 @@ package domain.UI.screenPanels;
 import domain.UI.UI;
 import domain.UI.panels.PlayModePanel;
 import domain.UI.panels.SidebarPanel;
-import domain.entity.monsters.MonsterInfo;
-import domain.game.Hall;
+import domain.config.GameState;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,12 +40,11 @@ public class GameScreenPanel extends JPanel {
         SwingUtilities.invokeLater(playModePanel::requestFocusInWindow); // Ensure play area gets focus
     }
 
-    public GameScreenPanel(UI ui, int hallNum, List<Hall> hallList, List<MonsterInfo> monsterInfo) {
-        this.playModePanel = new PlayModePanel(hallList);
+    public GameScreenPanel(UI ui, GameState loadedGame) {
+        this.playModePanel = new PlayModePanel(loadedGame.getHallsList());
         this.sidebarPanel = new SidebarPanel(playModePanel);
         this.playModePanel.setSidebarPanel(sidebarPanel);
-        playModePanel.initializeGameComponents(hallNum);
-        playModePanel.setMonsters(monsterInfo);
+        playModePanel.initializeGameComponents(loadedGame);
 
         // Use a BorderLayout for flexibility
         setLayout(new BorderLayout());

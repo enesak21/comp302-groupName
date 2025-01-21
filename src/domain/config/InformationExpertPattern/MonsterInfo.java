@@ -1,4 +1,4 @@
-package domain.entity.monsters;
+package domain.config.InformationExpertPattern;
 
 import java.io.Serializable;
 

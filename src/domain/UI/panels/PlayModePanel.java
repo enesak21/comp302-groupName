@@ -8,6 +8,7 @@ import domain.UI.renderers.GameRenderer;
 import domain.audio.AudioManager;
 import domain.config.GameConfig;
 import domain.config.GameState;
+import domain.config.InformationExpertPattern.PlayerInfo;
 import domain.config.SaveLoad;
 import domain.enchantments.*;
 import domain.handlers.*;
@@ -20,10 +21,10 @@ import domain.UI.panels.sideBarComponents.HeartsLeftPanel;
 import domain.UI.panels.sideBarComponents.InventoryPanel;
 import domain.UI.panels.sideBarComponents.TimeLeftPanel;
 import domain.game.SearchRuneController;
-import domain.entity.monsters.MonsterInfo;
+import domain.config.InformationExpertPattern.MonsterInfo;
 import main.Main;
 import main.PlayerInputHandler;
-import javax.imageio.ImageIO;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -31,7 +32,6 @@ import java.awt.event.KeyEvent;
 import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -189,6 +189,79 @@ public class PlayModePanel extends JPanel implements Runnable {
 
     }
 
+    public void initializeGameComponents(GameState loadedGame) {
+        this.setState("Default");
+        isPaused = false;
+
+        // Initialize the grid
+        grid = loadedGame.getHallsList().get(hallNum).toGrid(gameConfig.getTileSize());
+
+        // Initialize Player
+        Player player = initializePlayer(grid, loadedGame.getPlayerInfo().getGridX(), loadedGame.getPlayerInfo().getGridY(), loadedGame.getPlayerInfo().getHealth());
+        playerView = new PlayerView(player);
+
+        // Place The Rune
+        searchRuneController = new SearchRuneController(this);
+        searchRuneController.placeRune();
+
+        // Initialize Game
+        game = new Game(player, gameConfig.getTileSize(), grid, searchRuneController);
+        enchantmentManager = new EnchantmentManager(game, gameConfig.getTileSize());
+        monsterManager = game.getMonsterManager();
+        this.setMonsters(loadedGame.getMonsterInfo());
+
+        timeController = game.getTimeController();
+
+        // Set the time based on the number of structures placed
+        timeController.setTimeLeft(halls.get(hallNum).getPlacedStructuresCount() * 5);
+
+        game.setInitialTime(timeController.getTimeLeft());
+
+        monsterManager.setLastSpawnLeftTime(timeController.getTimeLeft());
+
+
+        this.addKeyListener(player.getPlayerInputHandler());
+        countMonster = 0;
+        monsterViewList = new CopyOnWriteArrayList<>();
+        for (int i = 0; i < monsterManager.getMonsters().size(); i++) {
+            MonsterView monsterView = new MonsterView((Entity) monsterManager.getMonsters().get(i));
+            monsterViewList.add(monsterView);
+        }
+
+        this.addKeyListener(player.getPlayerInputHandler());
+
+        gridView = new GridView(grid);
+        CollisionChecker collisionChecker = new CollisionChecker(grid);
+        player.setCollisionChecker(collisionChecker);
+        monsterManager.setCollisionChecker(collisionChecker);
+
+        timeController = game.getTimeController();
+
+        // Create a mouse listener for the Play Mode screen
+
+        if (this.getMouseListeners().length > 0) {
+            this.removeMouseListener(this.getMouseListeners()[0]);
+        }
+        playModeMouseListener = new PlayModeMouseListener(this);
+        this.addMouseListener(playModeMouseListener);
+
+        gameWinningHandler = new GameWinningHandler(this);
+        gameOverHandler = new GameOverHandler(this);
+
+        // Initialize the heart
+        ((HeartsLeftPanel) sidebarPanel.getHeartsLeftPanel()).updateHeartsLeft(game.getPlayer().getHealth());
+        ((HeartsLeftPanel) sidebarPanel.getHeartsLeftPanel()).initHearts();
+        ((TimeLeftPanel) sidebarPanel.getTimeLeftPanel()).updateTimeLeft(timeController.getTimeLeft());
+
+        for (Map.Entry<String, ArrayList<BaseEnchantment>> entry: game.getPlayer().getInventory().getContent().entrySet()) {
+            ((InventoryPanel) sidebarPanel.getInventoryPanel()).setItem(entry.getKey(), entry.getValue().size());
+        }
+
+        // Initialize game renderer
+        gameRenderer = new GameRenderer(halls.get(hallNum), grid, player, monsterManager.getMonsters(), enchantmentManager);
+
+    }
+
     public Player initializePlayer(Grid grid) {
         Random random = new Random();
         int randomX = random.nextInt(gameConfig.getGridColumns());
@@ -197,6 +270,12 @@ public class PlayModePanel extends JPanel implements Runnable {
             return Player.getInstance("Osimhen", randomX, randomY, gameConfig.getTileSize(), this, new PlayerInputHandler());
         }
         return initializePlayer(grid);
+    }
+
+    public Player initializePlayer(Grid grid, int x, int y, int health) {
+        Player player = Player.getInstance("Osimhen", x, y, gameConfig.getTileSize(), this, new PlayerInputHandler());
+        player.setHealth(health);
+        return player;
     }
 
     //REVEAL KEY HANDLER WILL BE OUT LATER
@@ -511,7 +590,10 @@ public class PlayModePanel extends JPanel implements Runnable {
     public void saveGame() {
         // Save the game state
         List<MonsterInfo> monsterList = MonsterToInfo();
-        GameState gameState = new GameState(halls, hallNum, monsterList);
+        PlayerInfo playerInfo = new PlayerInfo(game.getPlayer().getGridX(), game.getPlayer().getGridY(), game.getPlayer().getHealth());
+        System.out.println(playerInfo);
+
+        GameState gameState = new GameState(halls, hallNum, monsterList, playerInfo);
 
         // Save the game state to a file
         SaveLoad.saveGameState(gameState);

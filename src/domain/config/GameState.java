@@ -1,6 +1,7 @@
 package domain.config;
 
-import domain.entity.monsters.MonsterInfo;
+import domain.config.InformationExpertPattern.MonsterInfo;
+import domain.config.InformationExpertPattern.PlayerInfo;
 import domain.game.Hall;
 
 import java.io.Serializable;
@@ -12,11 +13,14 @@ public class GameState implements Serializable {
     private List<Hall> hallList;
     private int hallNum;
     private List<MonsterInfo> monsterInfo;
+    private PlayerInfo playerInfo;
 
-    public GameState(List<Hall> hallList, int hallNum, List<MonsterInfo> monsterInfo) {
+    public GameState(List<Hall> hallList, int hallNum, List<MonsterInfo> monsterInfo, PlayerInfo playerInfo) {
         this.hallList = hallList;
         this.hallNum = hallNum;
         this.monsterInfo = monsterInfo;
+        this.playerInfo = playerInfo;
+
     }
 
     public List<Hall> getHallsList(){
@@ -42,5 +46,15 @@ public class GameState implements Serializable {
     public void setMonsterInfo(List<MonsterInfo> monsterInfo){
         this.monsterInfo = monsterInfo;
     }
+
+    public PlayerInfo getPlayerInfo(){
+        return playerInfo;
+    }
+
+    public void setPlayerInfo(PlayerInfo playerInfo) {
+        this.playerInfo = playerInfo;
+    }
+
+
 }
 
