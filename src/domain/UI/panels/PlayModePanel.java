@@ -134,6 +134,9 @@ public class PlayModePanel extends JPanel implements Runnable {
 
         // Set the time based on the number of structures placed
         timeController.setTimeLeft(halls.get(hallNum).getPlacedStructuresCount() * 5);
+
+        game.setInitialTime(timeController.getTimeLeft());
+
         monsterManager.setLastSpawnLeftTime(timeController.getTimeLeft());
 
 
