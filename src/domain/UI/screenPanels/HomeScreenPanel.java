@@ -6,8 +6,6 @@ import domain.config.GameConfig;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 
 public class HomeScreenPanel extends JPanel {
     private UI ui;
@@ -41,7 +39,7 @@ public class HomeScreenPanel extends JPanel {
         backgroundImage = originalIcon.getImage();
 
 
-        // 3. Use BorderLayout for the main panel
+        // 3. Use BorderLayout for the domain.main panel
         setLayout(new BorderLayout());
 
         // 4. Create a sub-panel that will hold the buttons, using a BoxLayout
@@ -77,7 +75,7 @@ public class HomeScreenPanel extends JPanel {
         buttonPanel.add(helpButton);
         buttonPanel.add(Box.createVerticalGlue());
 
-        // 10. Finally, add the button panel to the center of the main panel
+        // 10. Finally, add the button panel to the center of the domain.main panel
         add(buttonPanel, BorderLayout.SOUTH);
     }
 

@@ -1,10 +1,8 @@
 package domain.UI.renderers;
 
 import domain.game.Hall;
-import domain.game.HallOfAir;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
 public class WallRenderer {

@@ -7,7 +7,6 @@ import domain.handlers.BuildModeHandler;
 import domain.UI.panels.BuildModePanel;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 
 public class BuildModeScreenPanel extends JPanel {
@@ -35,7 +34,7 @@ public class BuildModeScreenPanel extends JPanel {
         // Use BorderLayout, which adapts nicely to resizes
         this.setLayout(new BorderLayout());
 
-        // The main build mode area in the CENTER
+        // The domain.main build mode area in the CENTER
         buildModePanel = new BuildModePanel();
         BuildModeHandler buildModeHandler = buildModePanel.getBuildModeHandler();
         this.add(buildModePanel, BorderLayout.CENTER);

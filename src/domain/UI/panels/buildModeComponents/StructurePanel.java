@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.List;
 
 public class StructurePanel extends JPanel {
 
@@ -27,9 +26,9 @@ public class StructurePanel extends JPanel {
         setBackground(new Color(66, 40, 53));
 
         // Create buttons in the order you want them to appear in the grid
-        // We'll list out the special items (eraser & dice) plus the main structures
+        // We'll list out the special items (eraser & dice) plus the domain.main structures
 
-        // 1. Put your main structure keys in a list, in the order you want
+        // 1. Put your domain.main structure keys in a list, in the order you want
         java.util.List<String> keys = new ArrayList<>();
         keys.add("chest");
         keys.add("column");

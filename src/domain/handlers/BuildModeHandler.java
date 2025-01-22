@@ -2,7 +2,6 @@ package domain.handlers;
 
 import domain.game.Hall;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 

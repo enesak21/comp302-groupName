@@ -2,7 +2,7 @@ package domain.game;
 
 import domain.entity.playerObjects.Player;
 import domain.UI.panels.PlayModePanel;
-import main.PlayerInputHandler;
+import domain.main.PlayerInputHandler;
 
 public class GameManager {
     private PlayModePanel playModePanel;

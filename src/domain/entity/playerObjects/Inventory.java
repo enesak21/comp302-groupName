@@ -4,7 +4,6 @@ import domain.enchantments.BaseEnchantment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Inventory {
     private HashMap<String, ArrayList<BaseEnchantment>> content; // Holds the counts of enchantments

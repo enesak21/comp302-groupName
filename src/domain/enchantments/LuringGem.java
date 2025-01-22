@@ -1,10 +1,8 @@
 package domain.enchantments;
 
-import domain.entity.monsters.BaseMonster;
 import domain.game.Game;
 
 import java.awt.*;
-import java.util.List;
 
 public class LuringGem extends BaseEnchantment {
     private Image icon;

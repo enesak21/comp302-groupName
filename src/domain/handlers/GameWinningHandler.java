@@ -1,6 +1,7 @@
 package domain.handlers;
 
 
+import domain.handlers.buttonHandlers.GoOutButton;
 import domain.handlers.buttonHandlers.TryAgainButton;
 import domain.UI.panels.PlayModePanel;
 import java.awt.*;
@@ -10,6 +11,7 @@ public class GameWinningHandler {
     Font font;
     PlayModePanel playModePanel;
     TryAgainButton tryAgainButton;
+    GoOutButton goOutButton;
 
     public GameWinningHandler(PlayModePanel playModePanel) {
         this.playModePanel = playModePanel;
@@ -53,5 +55,8 @@ public class GameWinningHandler {
         tryAgainButton = new TryAgainButton(g2, startX, buttonY, buttonWidth, buttonHeight, font);
         tryAgainButton.drawTryAgainButton(playModePanel);
 
+        // Draw "Go Out" button
+        goOutButton = new GoOutButton(g2, startX, buttonY + buttonHeight + 20, buttonWidth, buttonHeight, font);
+        goOutButton.drawGoOutButton(playModePanel);
     }
 }

@@ -1,4 +1,4 @@
-package main;
+package domain.main;
 
 import domain.UI.UI;
 

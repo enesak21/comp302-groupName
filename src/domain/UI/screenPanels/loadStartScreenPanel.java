@@ -1,10 +1,7 @@
 package domain.UI.screenPanels;
 
 import domain.UI.UI;
-import domain.audio.AudioManager;
 import domain.config.GameConfig;
-import domain.config.GameState;
-import domain.config.SaveLoad;
 
 import javax.swing.*;
 import java.awt.*;

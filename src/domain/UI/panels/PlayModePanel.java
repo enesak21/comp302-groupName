@@ -9,9 +9,7 @@ import domain.UI.screenPanels.SaveScreenPanel;
 import domain.audio.AudioManager;
 import domain.config.GameConfig;
 import domain.config.GameState;
-import domain.config.InformationExpertPattern.InventoryInfo;
 import domain.config.InformationExpertPattern.PlayerInfo;
-import domain.config.SaveLoad;
 import domain.enchantments.*;
 import domain.entity.playerObjects.Inventory;
 import domain.handlers.*;
@@ -25,8 +23,8 @@ import domain.UI.panels.sideBarComponents.InventoryPanel;
 import domain.UI.panels.sideBarComponents.TimeLeftPanel;
 import domain.game.SearchRuneController;
 import domain.config.InformationExpertPattern.MonsterInfo;
-import main.Main;
-import main.PlayerInputHandler;
+import domain.main.Main;
+import domain.main.PlayerInputHandler;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -438,7 +436,7 @@ public class PlayModePanel extends JPanel implements Runnable {
         gameThread.start();
     }
 
-    // This will be our main method which is running the Play mode screen
+    // This will be our domain.main method which is running the Play mode screen
     @Override
     public void run() {
         long lastTime = System.nanoTime();

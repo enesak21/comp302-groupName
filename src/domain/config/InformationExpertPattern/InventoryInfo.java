@@ -4,13 +4,10 @@ import domain.enchantments.CloakOfProtection;
 import domain.enchantments.LuringGem;
 import domain.enchantments.Reveal;
 import domain.enchantments.SpeedUp;
-import domain.entity.monsters.BaseMonster;
 import domain.entity.playerObjects.Inventory;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class InventoryInfo implements Serializable {
     private static final long serialVersionUID = 1L;

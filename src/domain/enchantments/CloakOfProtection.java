@@ -1,7 +1,6 @@
 package domain.enchantments;
 import domain.game.CollisionChecker;
 import domain.game.Game;
-import domain.game.Tile;
 
 import java.awt.*;
 

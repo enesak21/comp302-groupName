@@ -7,7 +7,6 @@ import domain.config.GameState;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 public class GameScreenPanel extends JPanel {
 

@@ -1,4 +1,4 @@
-package main;
+package domain.main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

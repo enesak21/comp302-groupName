@@ -96,7 +96,7 @@ public class TopButtonPanel extends JPanel {
         buttonPanel.add(volumeButton);
         buttonPanel.add(saveButton); // Add save button to the rightmost position
 
-        // Add the button panel to the main panel
+        // Add the button panel to the domain.main panel
         add(buttonPanel);
 
         // Stop/Resume action

@@ -31,7 +31,11 @@ public class PlayModeMouseListener extends MouseAdapter {
                 AudioManager.stopGameOverMusic();
                 AudioManager.playPlayModeMusic();
                 playModePanel.restartGame();
+            } else if (isWithinBounds(clickPoint, 284, 470, 200, 50)) {
+                AudioManager.stopGameOverMusic();
+                domain.theOutsideGame.launcher.Game.launch(null);
             }
+
 
         } else {
             // Check if click is in the “grid region” or “sidebar region”

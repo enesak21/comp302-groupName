@@ -2,7 +2,6 @@ package domain.entity.monsters;
 
 import domain.UI.ArrowAnimationView;
 import domain.entity.Direction;
-import domain.entity.playerObjects.Player;
 import domain.game.CollisionChecker;
 import domain.game.Game;
 import domain.audio.AudioManager;

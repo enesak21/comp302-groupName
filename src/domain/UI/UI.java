@@ -1,9 +1,8 @@
 package domain.UI;
 
 import domain.UI.screenPanels.*;
+import domain.UI.screenPanels.*;
 import domain.config.GameState;
-import domain.config.InformationExpertPattern.MonsterInfo;
-import domain.config.InformationExpertPattern.PlayerInfo;
 import domain.game.Hall;
 
 import java.util.List;
@@ -12,7 +11,7 @@ import java.awt.*;
 
 /**
  * The UI class is responsible for managing the user interface of the game.
- * It creates and displays the main JFrame, which contains the different panels
+ * It creates and displays the domain.main JFrame, which contains the different panels
  * for the home screen, build mode, and play mode.
  */
 public class UI {
@@ -33,7 +32,7 @@ public class UI {
         initializeUI();
     }
 
-    // Initialize the main JFrame and CardLayout
+    // Initialize the domain.main JFrame and CardLayout
     private void initializeUI() {
         frame = new JFrame("2D Game");
         cardLayout = new CardLayout();
@@ -42,7 +41,7 @@ public class UI {
         // Add only the home screen initially
         mainPanel.add(createHomeScreen(), "Home");
 
-        // Add the main panel to the frame
+        // Add the domain.main panel to the frame
         frame.add(mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(768, 640);
@@ -56,7 +55,7 @@ public class UI {
     }
 
     /*
-        * Show the main JFrame and the home screen
+        * Show the domain.main JFrame and the home screen
      */
     public void show() {
         frame.setVisible(true);
@@ -86,8 +85,8 @@ public class UI {
             }
         }
         cardLayout.show(mainPanel, panelName); // Show the panel with the given name
-        mainPanel.revalidate(); // Revalidate the main panel
-        mainPanel.repaint(); // Repaint the main panel
+        mainPanel.revalidate(); // Revalidate the domain.main panel
+        mainPanel.repaint(); // Repaint the domain.main panel
     }
 
     /*
@@ -101,7 +100,7 @@ public class UI {
         * Create the build mode screen with the BuildModePanel
      */
     private JPanel createBuildScreen() {
-        // Create a JPanel as the main container for the Build Mode screen
+        // Create a JPanel as the domain.main container for the Build Mode screen
 
         buildScreen = new BuildModeScreenPanel(this); // Pass the current UI instance
         halls = buildScreen.getBuildModePanel().getHalls(); // Retrieve the halls from BuildModePanel
@@ -149,7 +148,7 @@ public class UI {
     }
 
     /*
-        * Check if a panel with the given name is already added to the main panel
+        * Check if a panel with the given name is already added to the domain.main panel
      */
     private boolean isPanelAdded(String panelName) {
         for (Component comp : mainPanel.getComponents()) {

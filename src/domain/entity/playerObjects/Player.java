@@ -7,7 +7,7 @@ import domain.game.Tile;
 import domain.entity.Entity;
 import domain.UI.panels.PlayModePanel;
 import domain.audio.AudioManager;
-import main.PlayerInputHandler;
+import domain.main.PlayerInputHandler;
 
 /*
 <p>Overview

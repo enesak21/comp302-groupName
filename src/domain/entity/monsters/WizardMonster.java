@@ -1,6 +1,5 @@
 package domain.entity.monsters;
 
-import domain.entity.playerObjects.Player;
 import domain.game.CollisionChecker;
 import domain.game.Game;
 import domain.structures.Structure;

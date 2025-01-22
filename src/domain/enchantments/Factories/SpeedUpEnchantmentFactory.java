@@ -1,7 +1,6 @@
 package domain.enchantments.Factories;
 
 import domain.enchantments.BaseEnchantment;
-import domain.enchantments.Reveal;
 import domain.enchantments.SpeedUp;
 
 public class SpeedUpEnchantmentFactory implements EnchantmentFactory {
