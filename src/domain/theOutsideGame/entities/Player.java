@@ -1,10 +1,12 @@
 package domain.theOutsideGame.entities;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import domain.theOutsideGame.input.InputHandler;
 import domain.theOutsideGame.animation.WalkAnimationPlayer;
 import domain.theOutsideGame.animation.IdleAnimationPlayer;
 import domain.theOutsideGame.animation.WalkAnimation;
+import domain.theOutsideGame.world.GameWorld;
 
 public class Player {
 
@@ -14,17 +16,18 @@ public class Player {
     private WalkAnimation currentAnimation;
     private InputHandler inputHandler;
     private boolean isMoving;
-    private boolean isMovingLeft;  // Track if the player is moving left
+    private boolean isMovingLeft;
+    private GameWorld gameWorld;
 
-    public Player(int startX, int startY, int width, int height, int speed, InputHandler inputHandler) {
+    public Player(int startX, int startY, int width, int height, int speed, InputHandler inputHandler, GameWorld gameWorld) {
         this.x = startX;
         this.y = startY;
         this.width = width;
         this.height = height;
         this.speed = speed;
         this.inputHandler = inputHandler;
+        this.gameWorld = gameWorld;
 
-        // Initially set the player to idle animation
         currentAnimation = new IdleAnimationPlayer(false);  // Default idle animation (facing right)
         isMoving = false;
         isMovingLeft = false;
@@ -51,26 +54,43 @@ public class Player {
     }
 
     private void move() {
+
         boolean wasMoving = isMoving;
         isMoving = false;  // Reset movement state before checking
 
+        int deltaX = 0;
+        int deltaY = 0;
+
         if (inputHandler.isUp()) {
-            y -= speed;
+            if (isEnteringCave()) {
+                // Close the game window if the player is entering the cave
+                gameWorld.closeWindow();
+
+            }
+            deltaY = -speed;
             isMoving = true;
         }
         if (inputHandler.isDown()) {
-            y += speed;
+            deltaY = speed;
             isMoving = true;
         }
         if (inputHandler.isLeft()) {
-            x -= speed;
+            deltaX = -speed;
             isMoving = true;
-            isMovingLeft = true;  // Set to left when moving left
+            isMovingLeft = true;
         }
         if (inputHandler.isRight()) {
-            x += speed;
+            deltaX = speed;
             isMoving = true;
-            isMovingLeft = false;  // Set to right when moving right
+            isMovingLeft = false;
+        }
+
+        // Check for collisions before moving
+        Rectangle playerBounds = new Rectangle(x + deltaX, y + deltaY, width, height);
+        if (!gameWorld.checkCollision(playerBounds)) {
+            // No collision, so update the position
+            x += deltaX;
+            y += deltaY;
         }
 
         // If the player is not moving anymore, switch to idle animation
@@ -85,5 +105,25 @@ public class Player {
 
     public void render(Graphics g) {
         g.drawImage(currentAnimation.getCurrentFrame(), x, y, width, height, null);  // Render current animation frame
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public boolean isEnteringCave() {
+        return x >= 445 && x <= 475 && y >= 110 && y <= 150;
     }
 }
