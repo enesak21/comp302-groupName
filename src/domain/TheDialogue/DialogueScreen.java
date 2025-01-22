@@ -14,12 +14,14 @@ public class DialogueScreen extends JPanel {
     public JButton button1;
     public JButton button2;
     public Font customFont;
+    public Font customFontSmall;
 
     public DialogueScreen() {
 
         try {
             File fontFile = new File("src/resources/fonts/PressStart2P-Regular.ttf"); // Replace with your font file path
-            customFont = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(18f);
+            customFont = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(16f);
+            customFontSmall = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(9f);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -45,6 +47,7 @@ public class DialogueScreen extends JPanel {
         // Bottom panel with scroll (make it smaller)
         bottomPanel = new JPanel();
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
+        bottomPanel.setBackground(new Color(66, 40, 53));
 
         Font customFont = GameConfig.loadLOTRFont();  // Assuming you have a method to load your font
 
@@ -59,6 +62,8 @@ public class DialogueScreen extends JPanel {
         buttonPanel = new JPanel(new GridLayout(2, 1)); // 2 rows
         button1 = new JButton("Button 1");
         button2 = new JButton("Button 2");
+        styleButton(button1);
+        styleButton(button2);
         buttonPanel.add(button1);
         buttonPanel.add(button2);
 
@@ -79,6 +84,7 @@ public class DialogueScreen extends JPanel {
         for (String line : lines) {
             JLabel wiseLabel = new JLabel(line);
             wiseLabel.setFont(customFont); // Set the font size
+            wiseLabel.setForeground(new Color(210, 180, 140)); // Set the color to white
             this.bottomPanel.add(wiseLabel);
         }
         this.bottomPanel.add(new JLabel("\n")); // Add an empty label for spacing
@@ -93,6 +99,7 @@ public class DialogueScreen extends JPanel {
         for (String line : lines) {
             JLabel playerLabel = new JLabel(line);
             playerLabel.setFont(customFont); // Set the font size
+            playerLabel.setForeground(new Color(210, 180, 140)); // Set the color to blue
             this.bottomPanel.add(playerLabel);
         }
         this.bottomPanel.add(new JLabel("\n")); // Add an empty label for spacing
@@ -127,6 +134,14 @@ public class DialogueScreen extends JPanel {
 
         // Convert List to array and return
         return lines.toArray(new String[0]);  // Use a zero-length array for the conversion
+    }
+
+    private void styleButton(JButton button) {
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setForeground(new Color(210, 180, 140));         // Gold-ish color
+        button.setFont(customFontSmall);     // LOTR font, 30 pt
     }
 
 }
