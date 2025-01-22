@@ -22,7 +22,7 @@ public class DialogueSetup {
 
         // A2
         ArrayList<DialogueResponse> responses2x1 = new ArrayList<>();
-        DialogueResponse response2x1 = new DialogueResponse("I came across four strange artifacts. Each one was glowing and pulsating with energy.", node3x1);
+        DialogueResponse response2x1 = new DialogueResponse("I came across 4 strange artifacts. Each one was glowing with energy.", node3x1);
         DialogueResponse response2x2 = new DialogueResponse("I saw... things. Things that I can’t explain. I don’t know what they were.", node3x2);
         responses2x1.add(response2x1);
         responses2x1.add(response2x2);

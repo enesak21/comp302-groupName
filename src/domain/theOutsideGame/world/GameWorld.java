@@ -83,11 +83,6 @@ public class GameWorld extends JPanel {
         }
 
         g.drawImage(ArwenImage, 400, 400, 70, 70, this); // Position (500, 500) and size (200x200)
-
-
-
-        // Render the HUD
-        hud.render(g);
     }
 
     // Check for collisions between player and solids

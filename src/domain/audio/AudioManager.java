@@ -16,6 +16,7 @@ public class AudioManager {
     private static Clip timeStealerSound;
     private static Clip gameOverMusic;
     private static Clip gameWinMusic;
+    private static Clip fighterSound;
 
     /**
      * Static block to initialize all your audio clips.
@@ -35,6 +36,9 @@ public class AudioManager {
         Clip noRuneSound2 = loadClip("sound/structureSound2.wav");
         Clip noRuneSound3 = loadClip("sound/structureSound3.wav");
         noRuneSounds = new Clip[]{noRuneSound1, noRuneSound2, noRuneSound3};
+
+        // Load Figther Sound
+        fighterSound = loadClip("sound/fighterSound.wav");
 
         archerSound = loadClip("sound/archerSound.wav");
         timeStealerSound = loadClip("sound/timerAttack.wav");
@@ -172,6 +176,14 @@ public class AudioManager {
         }
     }
 
+    public static void playFigtherSound() {
+        if (fighterSound != null) {
+            fighterSound.stop();
+            fighterSound.setFramePosition(0);
+            fighterSound.start();
+        }
+    }
+
     /**
      * Sets the volume of a single Clip to a specified [0..1] range.
      */
@@ -210,5 +222,4 @@ public class AudioManager {
                 break;
         }
     }
-
 }

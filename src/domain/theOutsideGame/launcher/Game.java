@@ -47,7 +47,6 @@ public class Game {
             inputHandler.update(); // Update input handler to check for key presses
             gameWorld.update();    // Update game objects (e.g., player)
             gameWorld.repaint();   // Redraw game world
-            hud.update();          // Update HUD (e.g., health, score)
         });
         gameTimer.start();
     }

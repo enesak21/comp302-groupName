@@ -1,5 +1,6 @@
 package domain.entity.monsters;
 
+import domain.audio.AudioManager;
 import domain.enchantments.BaseEnchantment;
 import domain.enchantments.LuringGem;
 import domain.entity.Direction;
@@ -124,6 +125,7 @@ public class FighterMonster extends BaseMonster {
             if ((currentTime - lastAttackTime) > ATTACK_FREQUENCY) {
                 player.reduceHealth();
                 lastAttackTime = currentTime;
+                AudioManager.playFigtherSound();
             }
         }
     }
