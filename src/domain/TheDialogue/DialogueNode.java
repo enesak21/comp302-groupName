@@ -1,6 +1,4 @@
-package TheDialogue;
-
-import TheDialogue.DialogueResponse;
+package domain.TheDialogue;
 
 import java.util.List;
 

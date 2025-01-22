@@ -15,6 +15,7 @@ public class GameWorld extends JPanel {
     private final Image caveImage;
     private final Image wallImage;
     private final Game game;
+    private final Image ArwenImage;
     private Player player;
     private InputHandler inputHandler;
     private HUD hud;
@@ -32,11 +33,13 @@ public class GameWorld extends JPanel {
         this.treeImage = Toolkit.getDefaultToolkit().getImage("src/domain/theOutsideGame/resources/world/tree.png"); // Load the tree image
         this.caveImage = Toolkit.getDefaultToolkit().getImage("src/domain/theOutsideGame/resources/world/cave.png"); // Load the cave image
         this.wallImage = Toolkit.getDefaultToolkit().getImage("src/domain/theOutsideGame/resources/world/wall.png"); // Load the wall image
+        this.ArwenImage = Toolkit.getDefaultToolkit().getImage("src/domain/theOutsideGame/resources/world/Arwen.png"); // Load the Arwen image
 
 
         // Add some solid objects (like walls, rocks, etc.)
         solids.add(new SolidObject(235, 350, 40, 5)); // Example: solid object at (300, 200) with size 100x100
         solids.add(new SolidObject(0, -20, 800, 150)); // Example: solid object at (300, 200) with size 100x100
+        solids.add(new SolidObject(435, 460, 1, 1));
 
         setFocusable(true);
     }
@@ -79,6 +82,8 @@ public class GameWorld extends JPanel {
             player.render(g); // Render the player
         }
 
+        g.drawImage(ArwenImage, 400, 400, 70, 70, this); // Position (500, 500) and size (200x200)
+
 
 
         // Render the HUD
@@ -89,6 +94,7 @@ public class GameWorld extends JPanel {
     public boolean checkCollision(Rectangle playerBounds) {
         for (SolidObject solid : solids) {
             if (playerBounds.intersects(solid.getBounds())) {
+                inputHandler.isInteractNearArwen(player.getX(), player.getY());
                 return true; // Collision detected
             }
         }
@@ -98,5 +104,4 @@ public class GameWorld extends JPanel {
     public void closeWindow() {
         game.getFrame().dispose();
     }
-
 }

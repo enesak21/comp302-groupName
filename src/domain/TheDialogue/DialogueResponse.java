@@ -1,4 +1,4 @@
-package TheDialogue;
+package domain.TheDialogue;
 
 public class DialogueResponse {
     private String playerChoice;
