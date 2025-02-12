@@ -52,6 +52,6 @@ We welcome contributions! Please follow these steps to contribute:
 ## Contact
 
 If you have any questions or suggestions, feel free to reach out to us at one of the following email:
-[groupname302@gmail.com].
+groupname302@gmail.com.
 
 ## Acknowledgements
