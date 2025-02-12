@@ -7,10 +7,10 @@ import java.awt.MouseInfo;
 public class InputHandler extends KeyAdapter {
 
     // Constants for key inputs
-    public static final int KEY_UP = KeyEvent.VK_W;
-    public static final int KEY_DOWN = KeyEvent.VK_S;
-    public static final int KEY_LEFT = KeyEvent.VK_A;
-    public static final int KEY_RIGHT = KeyEvent.VK_D;
+    public static final int KEY_UP = KeyEvent.VK_UP;
+    public static final int KEY_DOWN = KeyEvent.VK_DOWN;
+    public static final int KEY_LEFT = KeyEvent.VK_LEFT;
+    public static final int KEY_RIGHT = KeyEvent.VK_RIGHT;
     public static final int KEY_INTERACT = KeyEvent.VK_E; // 'E' key for interaction
     public static boolean dialogueTriggered = false; // Flag to prevent infinite dialogue creation
 
