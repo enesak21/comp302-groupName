@@ -47,7 +47,7 @@ We welcome contributions! Please follow these steps to contribute:
 3. Submit a pull request.
 
 ## License
-
+This project is currently unlicensed. You may use, modify, or distribute it at your own risk, but no warranty is provided.
 
 ## Contact
 
@@ -55,3 +55,24 @@ If you have any questions or suggestions, feel free to reach out to us at the fo
 groupname302@gmail.com.
 
 ## Acknowledgements
+
+We used the following materials to create this game:
+- The sound effect for the monster *Time Thief* was taken from [Ladies and Centilmen](https://www.youtube.com/watch?v=40Ka2G6qYMY)
+- The music in the main menu was taken from [Minecraft Volume Alpha](https://www.youtube.com/watch?v=qq-RGFyaq0U&list=PL3817D41C7D841E23&index=16)
+
+## Comments
+
+This game was created by the group *groupName* for the COMP 302 Software Engineering course in Fall 2024. We hope you enjoy playing it!
+
+For those who are taking the course, and are looking at this repository for inspiration, we would like to give you some advice:
+- Do not devote too much time to the game, as you won't get what you deserve from it. Fulfilling the basic requirements is more than enough.
+- Do not try to make the game perfect. It is not worth it. You will not get a higher grade for it.
+- Do not worry about equal collaboration. Neither the professor nor the TAs will check it. Just make sure that everyone has contributed something.
+- Do not worry about the quality of the code. The professor and the TAs will not check it. Just make sure that the code works.
+- Do not worry about the quality of the game. The professor and the TAs will not check it. Just make sure that the game works.
+- Do not worry about the quality of the documentation. The professor and the TAs will not check it. Just make sure that the documentation is there.
+- In case you do not know, you can present your work via a pre-recorded video. You do not have to play the game live.
+
+Instead, we recommend the following:
+- Focus on the exams. They are worth more than the project. Although percentages tell otherwise, everyone gets almost full marks from the project. Therefore, the exams are decisive.
+- Attendance points are important. Do not miss the lectures. Although not much covered in the lectures, the 3 points are very decisive; again, because everyone gets almost full marks from the project.
