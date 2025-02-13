@@ -2,6 +2,18 @@
 
 A roguelike game for the COMP 302 Software Engineering course in Fall 2024.
 
+# Contributors: groupName
+This project was a team effort, created by:
+
+- [Enes Ak](https://github.com/enesak21)
+- [Yusuf Cemâl Karataş](https://github.com/TavarishYosef)
+- [İbrahim Cebecioğlu](https://github.com/ibrahimcbc)
+- [Cemal Nişan](https://github.com/cemalnisan)
+- [Caner Kösem](https://github.com/canerkosem)
+- [Muhammed Babelli](https://github.com/muhbabelli)
+
+Great work, everyone!
+
 ## Installation
 
 ### Prerequisites
