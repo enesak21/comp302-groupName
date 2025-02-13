@@ -6,12 +6,12 @@ A roguelike game for the COMP 302 Software Engineering course in Fall 2024.
 
 This project was a team effort, created by:
 
-- <a href="https://github.com/enesak21"><img src="https://avatars.githubusercontent.com/enesak21?s=100" width="100" height="100" /></a> Enes Ak
-- <a href="https://github.com/TavarishYosef"><img src="https://avatars.githubusercontent.com/TavarishYosef?s=100" width="100" height="100" /></a> Yusuf Cemâl Karataş
-- <a href="https://github.com/ibrahimcbc"><img src="https://avatars.githubusercontent.com/ibrahimcbc?s=100" width="100" height="100" /></a> İbrahim Cebecioğlu
-- <a href="https://github.com/cemalnisan"><img src="https://avatars.githubusercontent.com/cemalnisan?s=100" width="100" height="100" /></a> Cemal Nişan
-- <a href="https://github.com/canerkosem"><img src="https://avatars.githubusercontent.com/canerkosem?s=100" width="100" height="100" /></a> Caner Kösem
-- <a href="https://github.com/muhbabelli"><img src="https://avatars.githubusercontent.com/muhbabelli?s=100" width="100" height="100" /></a> Muhammed Babelli
+- <a href="https://github.com/enesak21" style="display: flex; align-items: center;"><img src="https://avatars.githubusercontent.com/enesak21?s=100" width="100" height="100" /> Enes Ak</a>
+- <a href="https://github.com/TavarishYosef" style="display: flex; align-items: center;"><img src="https://avatars.githubusercontent.com/TavarishYosef?s=100" width="100" height="100" /> Yusuf Cemâl Karataş</a>
+- <a href="https://github.com/ibrahimcbc" style="display: flex; align-items: center;"><img src="https://avatars.githubusercontent.com/ibrahimcbc?s=100" width="100" height="100" /> İbrahim Cebecioğlu</a>
+- <a href="https://github.com/cemalnisan" style="display: flex; align-items: center;"><img src="https://avatars.githubusercontent.com/cemalnisan?s=100" width="100" height="100" /> Cemal Nişan</a>
+- <a href="https://github.com/canerkosem" style="display: flex; align-items: center;"><img src="https://avatars.githubusercontent.com/canerkosem?s=100" width="100" height="100" /> Caner Kösem</a>
+- <a href="https://github.com/muhbabelli" style="display: flex; align-items: center;"><img src="https://avatars.githubusercontent.com/muhbabelli?s=100" width="100" height="100" /> Muhammed Babelli</a>
 
 Great work, everyone!
 
