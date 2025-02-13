@@ -10,9 +10,9 @@ This project was a team effort, created by:
 
 This project was a team effort, created by:
 
-| ![Enes Ak](https://avatars.githubusercontent.com/enesak21?s=100) <br /> Enes Ak | ![Yusuf Cemâl Karataş](https://avatars.githubusercontent.com/TavarishYosef?s=100) <br /> Yusuf Cemâl Karataş | ![İbrahim Cebecioğlu](https://avatars.githubusercontent.com/ibrahimcbc?s=100) <br /> İbrahim Cebecioğlu |
+| [![Enes Ak](https://avatars.githubusercontent.com/enesak21?s=50)](https://github.com/enesak21) <br /> Enes Ak | [![Yusuf Cemâl Karataş](https://avatars.githubusercontent.com/TavarishYosef?s=50)](https://github.com/TavarishYosef) <br /> Yusuf Cemâl Karataş | [![İbrahim Cebecioğlu](https://avatars.githubusercontent.com/ibrahimcbc?s=50)](https://github.com/ibrahimcbc) <br /> İbrahim Cebecioğlu |
 |:---------------------------------------------------------------:|:-------------------------------------------------------------:|:------------------------------------------------------------:|
-| ![Cemal Nişan](https://avatars.githubusercontent.com/cemalnisan?s=100) <br /> Cemal Nişan | ![Caner Kösem](https://avatars.githubusercontent.com/canerkosem?s=100) <br /> Caner Kösem | ![Muhammed Babelli](https://avatars.githubusercontent.com/muhbabelli?s=100) <br /> Muhammed Babelli |
+| [![Cemal Nişan](https://avatars.githubusercontent.com/cemalnisan?s=50)](https://github.com/cemalnisan) <br /> Cemal Nişan | [![Caner Kösem](https://avatars.githubusercontent.com/canerkosem?s=50)](https://github.com/canerkosem) <br /> Caner Kösem | [![Muhammed Babelli](https://avatars.githubusercontent.com/muhbabelli?s=50)](https://github.com/muhbabelli) <br /> Muhammed Babelli |
 
 Great work, everyone!
 
