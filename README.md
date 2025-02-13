@@ -59,6 +59,9 @@ groupname302@gmail.com.
 We used the following materials to create this game:
 - The sound effect for the monster *Time Thief* was taken from [Ladies and Centilmen](https://www.youtube.com/watch?v=40Ka2G6qYMY)
 - The music in the main menu was taken from [Minecraft Volume Alpha](https://www.youtube.com/watch?v=qq-RGFyaq0U&list=PL3817D41C7D841E23&index=16)
+- [MEGALOVANIA](https://www.youtube.com/watch?v=0FCvzsVlXpQ)
+- [Determination](https://www.youtube.com/watch?v=h1wSPmlZV-w)
+- [Course Clear](https://www.youtube.com/watch?v=wRkp6apEovA)
 
 ## Comments
 
