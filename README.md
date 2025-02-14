@@ -16,7 +16,6 @@ This project was a team effort, created by:
 
 Great work, everyone!
 
-
 ## Installation
 
 ### Prerequisites
