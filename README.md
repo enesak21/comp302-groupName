@@ -61,7 +61,9 @@ We welcome contributions! Please follow these steps to contribute:
 3. Submit a pull request.
 
 ## License
-This project is currently unlicensed. You may use, modify, or distribute it at your own risk, but no warranty is provided.
+This work is free. You can redistribute it and/or modify it under the
+terms of the Do What The Fuck You Want To Public License, Version 2,
+as published by Sam Hocevar. See the LICENSE file for more details.
 
 ## Contact
 
